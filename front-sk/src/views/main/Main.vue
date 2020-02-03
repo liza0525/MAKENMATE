@@ -47,31 +47,28 @@ export default {
         {
           familyName: "김",
           firstName: "우재",
-          biography: "므재는 소주",
-          profileUrl: require("../../assets/images/kwj.jpg")
+          biography: "므재는 소주를 좋아해요. 사실 소주를 맥주에 말아먹는 걸 좋아한다 봐야지요ㅎㅎ",
+          profileUrl: require("../../assets/images/kwj.jpg"),
         },
         {
           familyName: "손",
           firstName: "현희",
-          biography: "혀니는 칵테일",
+          biography: "혀니는 칵테일 덕후예요. 마스터 하는 것이 취미지요.★",
           profileUrl: require("../../assets/images/shh.jpg")
         },
         {
           familyName: "이",
           firstName: "근성",
-          biography: "근성쓰는 보드카",
+          biography: "근성쓰는 보드카를 마셔요. 매일 현희를 코칭하고 있어욬ㅋㅋ",
           profileUrl: require("../../assets/images/lgs.jpg")
         },
         {
           familyName: "정",
           firstName: "윤영",
-          biography: "쩡뉴는 맥주",
+          biography: "쩡뉴는 맥주를 먹어요. 운동은 많이 먹기 위해 하는 거죠...!",
           profileUrl: require("../../assets/images/cyy.jpg")
         }
       ],
-      scrollPositionY: 0,
-      pageNum: 0,
-      pagePosition: ["main-img", "info-title"]
     };
   },
   methods: {
@@ -80,14 +77,11 @@ export default {
       let btn = document.getElementsByClassName("info-btn")
       let close = document.getElementsByClassName("close")
       
-      for (let i=0 ; i < modal.length ; i++){
-        btn[i].onclick= function() {
+      for (let i=0 ; i < this.people.length ; i++){
+        btn[i].onclick= function(e) {
           modal[i].style.display = "block"
         }
         close[i].onclick = function(e) {
-          modal[i].style.display = "none"
-        }
-        close[i].scroll = function(e) {
           modal[i].style.display = "none"
         }
       }
@@ -109,7 +103,7 @@ export default {
 <style>
 @import url("https://fonts.googleapis.com/css?family=Song+Myung&display=swap");
 body {
-  background: none;
+  background: none !important;
 }
 #fullpage {
   background-color: black;
@@ -117,7 +111,7 @@ body {
 #main-img {
   padding: 0 10rem;
   height: 42rem;
-  background: url(../../assets/images/image.png) no-repeat !important;
+  background: url(../../assets/images/image.png) no-repeat;
 }
 #main-title {
   position: relative;
@@ -162,23 +156,25 @@ body {
   position: fixed;
   z-index: 1;
   left: 0;
-  top: 50rem;
+  top: 50%;
   width: 100%;
   height: 100%;
   overflow: auto;
   background-color: rgb(0, 0, 0, 0.7);
 }
 .modal-content {
-  /* position: relative; */
+  color: black;
   background-color: #fefefe;
-  margin: 15% auto;
+  margin: 10% auto;
   padding: 20px;
   width: 50%;
+}
+::-webkit-scrollbar{
+  display: none;
 }
 .close {
   display: inline;
   font-size: 25px;
-  /* color: #fff; */
   cursor: pointer;
 }
 </style>

@@ -84,7 +84,6 @@ export default {
   }
 };
 </script>
-
 <style scoped>
 .test {
   background: linear-gradient(rgba(0, 0, 0, 0.7)),
