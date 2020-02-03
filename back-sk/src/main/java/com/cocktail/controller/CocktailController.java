@@ -11,6 +11,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import com.cocktail.dao.CocktailDao;
 import com.cocktail.dao.MaterialDao;
 
@@ -46,43 +48,22 @@ public class CocktailController {
         @Autowired
         CocktailDao cocktailDao;
 
-        @GetMapping("/posts")
-        @ApiOperation(value = "칵테일 리스트")
-        public Object getcocktails(
-                        // @PageableDefault(size = 20, sort = { "cid" }, direction = Direction.ASC)
-                        Pageable pageable, @RequestParam(required = true) final String filtered) {
-                if (filtered.equals("all")) {
-                        return cocktailDao.findAll(pageable);
-                } else {
-                        String newFiltered = "%" + filtered + "%";
-                        System.out.println(cocktailDao.findByMaterialLike(newFiltered, pageable));
-                        return cocktailDao.findByMaterialLike(newFiltered, pageable);
-                }
-
-        }
-
         @GetMapping("/cocktail/list")
         @ApiOperation(value = "칵테일 리스트")
-        public Object list(@RequestParam(required = true) final int pageNm,
-                        @RequestParam(required = true) final String filtered) {
-                List<Cocktail> clist = null;
-                long count = 0;
-                if (filtered.equals("all")) {
-                        count = cocktailDao.count() / 20;
-                        clist = cocktailDao.findAll();
-                }
-                List<Cocktail> newList = new ArrayList<>();
-                int tmp = (pageNm - 1) * 20;
-                for (int i = tmp; i < tmp + 20; i++) {
-                        newList.add(clist.get(i));
-                }
-                Map<String, Object> result = new HashMap<>();
-                result.put("status", true);
-                result.put("data", "success");
-                result.put("cocktailArray", newList);
-                result.put("filteredData", String.valueOf(count));
-                return new ResponseEntity<>(result, HttpStatus.OK);
+        public Object list(
+                // @PageableDefault(size = 20, sort = { "cid" }, direction = Direction.ASC)
+        Pageable pageable, @RequestParam(required = true) final String filtered,
+        HttpServletRequest req) {
+        	System.out.println(req.getHeader("authorization"));
+        if (filtered.equals("all")) {
+                return cocktailDao.findAll(pageable);
+        } else {
+                String newFiltered = "%" + filtered + "%";
+                System.out.println(cocktailDao.findByMaterialLike(newFiltered, pageable));
+                return cocktailDao.findByMaterialLike(newFiltered, pageable);
         }
+
+}
 
         @GetMapping("/cocktail/detail/{cid}")
         @ApiOperation(value = "칵테일 디테일")
