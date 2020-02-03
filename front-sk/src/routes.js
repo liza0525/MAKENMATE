@@ -91,15 +91,8 @@ export default [
     component: PageNotFound
   },
   {
-<<<<<<< Updated upstream
     path:"/boardlist",
     name:"BoardList",
     component:BoardList
   }
-=======
-    path:"/board/detail",
-    name:"BoardDetail",
-    component: BoardDetail
-  },
->>>>>>> Stashed changes
 ];
