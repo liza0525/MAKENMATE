@@ -2,11 +2,7 @@
   <div style="text-align:center;" class="test">
     <v-container fluid ma-0 pa-0 style="width:65%;">
       <v-row dense>
-        <v-col
-          v-for="cocktail in cocktailArray"
-          v-bind:key="cocktail.cid"
-          cols="3"
-        >
+        <v-col v-for="cocktail in cocktailArray" v-bind:key="cocktail.cid" cols="3">
           <v-card v-on:click="goToDetail(cocktail.cid)">
             <v-img
               :src="cocktail.image"
@@ -38,22 +34,12 @@
         </v-col>
       </v-row>
     </v-container>
-    <button v-on:click="fistPg()" style="margin-right:10px;">
-      {{ fistBt }}
-    </button>
-    <button v-on:click="prevPg()" style="margin-right:10px;">
-      {{ prevBt }}
-    </button>
-    <button
-      v-on:click="paginate(pageNm)"
-      v-for="pageNm in pageNms"
-      :key="pageNm"
-    >
+    <button v-on:click="fistPg()" style="margin-right:10px;">{{ fistBt }}</button>
+    <button v-on:click="prevPg()" style="margin-right:10px;">{{ prevBt }}</button>
+    <button v-on:click="paginate(pageNm)" v-for="pageNm in pageNms" :key="pageNm">
       <span style="margin-right:10px;">{{ pageNm }}</span>
     </button>
-    <button v-on:click="nextPg(filteredData)" style="margin-right:10px;">
-      {{ nextBt }}
-    </button>
+    <button v-on:click="nextPg(filteredData)" style="margin-right:10px;">{{ nextBt }}</button>
     <button v-on:click="lastPg()">{{ lastBt }}</button>
   </div>
 </template>
@@ -75,7 +61,7 @@ export default {
     };
   },
   created() {
-    this.paginate(1, this.filtered);
+    this.paginate(this.$route.params.pageNm, this.filtered);
   },
   methods: {
     paginate(pageNm) {
@@ -83,7 +69,7 @@ export default {
         pageNm
       };
       http
-        .get("/posts?page=" + (pageNm - 1), {
+        .get("/cocktail/list?page=" + (pageNm - 1), {
           params: { filtered: this.filtered }
         })
         .then(res => {
@@ -112,7 +98,9 @@ export default {
           return pageNm + 5;
         });
       }
-      this.paginate(this.pageNms[0]);
+      console.log(this.pageNms[0]);
+      this.$router.push("/cocktail/list/" + this.pageNms[0]);
+      // this.paginate(this.pageNms[0]);
     },
     prevPg() {
       var flag = false;

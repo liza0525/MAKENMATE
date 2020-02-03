@@ -1,45 +1,49 @@
 <template>
-<div class="test">
-  <v-container fluid style="width:60%">
-    <div class="title mb-1" style="text-align:center;">
-      <h1>
-        <b>{{ cocktail.cname }}</b>
-      </h1>
-    </div>
-    <v-row justify="space-around">
-      <v-col cols="4">
-        <v-img v-bind:src="cocktail.image"></v-img>
-        <div class="subheading pt-4">#AA #BB #CC</div>
-      </v-col>
-      <v-col cols="6">
-        <div class="subheading">
-          <v-row justify="space-around">
-            <v-col cols="2">
-              <b>유래</b>
-            </v-col>
-            <v-col cols="10"><div v-html="cocktail.description"></div></v-col>
-          </v-row>
-        </div>
-        <div class="subheading pt-4">
-          <v-row justify="space-around">
-            <v-col cols="2">
-              <b>재료</b>
-            </v-col>
-            <v-col cols="10">{{ cocktail.material }}</v-col>
-          </v-row>
-        </div>
-        <div class="subheading pt-4">
-          <v-row justify="space-around">
-            <v-col cols="2">
-              <b>만드는 법</b>
-            </v-col>
-            <v-col cols="10"><div v-html="cocktail.method"></div></v-col>
-          </v-row>
-        </div>
-      </v-col>
-    </v-row>
-  </v-container>
-</div>
+  <div class="test">
+    <v-container fluid style="width:60%">
+      <div class="title mb-1" style="text-align:center;">
+        <h1>
+          <b>{{ cocktail.cname }}</b>
+        </h1>
+      </div>
+      <v-row justify="space-around">
+        <v-col cols="4">
+          <v-img v-bind:src="cocktail.image"></v-img>
+          <div class="subheading pt-4">#고독을 즐기는</div>
+        </v-col>
+        <v-col cols="6">
+          <div class="subheading">
+            <v-row justify="space-around">
+              <v-col cols="2">
+                <b>유래</b>
+              </v-col>
+              <v-col cols="10">
+                <div v-html="cocktail.description"></div>
+              </v-col>
+            </v-row>
+          </div>
+          <div class="subheading pt-4">
+            <v-row justify="space-around">
+              <v-col cols="2">
+                <b>재료</b>
+              </v-col>
+              <v-col cols="10">{{ cocktail.material }}</v-col>
+            </v-row>
+          </div>
+          <div class="subheading pt-4">
+            <v-row justify="space-around">
+              <v-col cols="2">
+                <b>만드는 법</b>
+              </v-col>
+              <v-col cols="10">
+                <div v-html="cocktail.method"></div>
+              </v-col>
+            </v-row>
+          </div>
+        </v-col>
+      </v-row>
+    </v-container>
+  </div>
 </template>
 <script>
 const axios = require("axios");
