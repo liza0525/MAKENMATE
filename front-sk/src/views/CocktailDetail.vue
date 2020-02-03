@@ -1,4 +1,5 @@
 <template>
+<div class="test">
   <v-container fluid style="width:60%">
     <div class="title mb-1" style="text-align:center;">
       <h1>
@@ -38,6 +39,7 @@
       </v-col>
     </v-row>
   </v-container>
+</div>
 </template>
 <script>
 const axios = require("axios");
@@ -78,3 +80,9 @@ export default {
   }
 };
 </script>
+<style scoped>
+.test {
+  background: linear-gradient(rgba(0, 0, 0, 0.7)),
+    url(../assets/images/image.png) no-repeat;
+}
+</style>
