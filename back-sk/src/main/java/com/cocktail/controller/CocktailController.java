@@ -46,52 +46,67 @@ public class CocktailController {
         @Autowired
         CocktailDao cocktailDao;
 
-        @GetMapping("/posts")
-        @ApiOperation(value = "칵테일 리스트")
-        public Object getcocktails(
-                        // @PageableDefault(size = 20, sort = { "cid" }, direction = Direction.ASC)
-                        Pageable pageable, @RequestParam(required = true) final String filtered) {
-                if (filtered.equals("all")) {
-                        return cocktailDao.findAll(pageable);
-                } else {
-                        String newFiltered = "%" + filtered + "%";
-                        System.out.println(cocktailDao.findByMaterialLike(newFiltered, pageable));
-                        return cocktailDao.findByMaterialLike(newFiltered, pageable);
-                }
-
-        }
-
         @GetMapping("/cocktail/list")
         @ApiOperation(value = "칵테일 리스트")
-        public Object list(@RequestParam(required = true) final int pageNm,
-                        @RequestParam(required = true) final String filtered) {
-                List<Cocktail> clist = null;
-                long count = 0;
+        public Object list(
+                        // @PageableDefault(size = 20, sort = { "cid" }, direction = Direction.ASC)
+                        final Pageable pageable, @RequestParam(required = true) final String filtered,
+                        @RequestParam(required = true) final String searchFiltered) {
                 if (filtered.equals("all")) {
-                        count = cocktailDao.count() / 20;
-                        clist = cocktailDao.findAll();
+                        if (searchFiltered.equals("")) {
+                                return cocktailDao.findAll(pageable);
+                        } else {
+                                final String newSearchFiltered = "%" + searchFiltered + "%";
+                                return cocktailDao.findByCnameLike(newSearchFiltered, pageable);
+                        }
+                } else {
+                        if (searchFiltered.equals("")) {
+                                final String newFiltered = "%" + filtered + "%";
+                                System.out.println(cocktailDao.findByMaterialLike(newFiltered, pageable));
+                                return cocktailDao.findByMaterialLike(newFiltered, pageable);
+                        } else {
+                                final String newSearchFiltered = "%" + searchFiltered + "%";
+                                final String newFiltered = "%" + filtered + "%";
+                                List<Cocktail> sList = cocktailDao.findByCnameLike(newSearchFiltered);
+                                List<Cocktail> mList = cocktailDao.findByMaterialLike(newFiltered);
+                                List<Cocktail> ret = new ArrayList<>();
+                                for (int i = 0; i < sList.size(); i++) {
+                                        for (int j = 0; j < mList.size(); j++) {
+                                                if (sList.get(i).equals(mList.get(j))) {
+                                                        ret.add(sList.get(i));
+                                                        break;
+                                                }
+                                        }
+                                }
+                                return ret;
+                        }
                 }
-                List<Cocktail> newList = new ArrayList<>();
-                int tmp = (pageNm - 1) * 20;
-                for (int i = tmp; i < tmp + 20; i++) {
-                        newList.add(clist.get(i));
-                }
-                Map<String, Object> result = new HashMap<>();
-                result.put("status", true);
-                result.put("data", "success");
-                result.put("cocktailArray", newList);
-                result.put("filteredData", String.valueOf(count));
-                return new ResponseEntity<>(result, HttpStatus.OK);
+
         }
 
         @GetMapping("/cocktail/detail/{cid}")
         @ApiOperation(value = "칵테일 디테일")
         public Object detail(@PathVariable final int cid) {
-                Cocktail cocktail = cocktailDao.getCocktailByCid(cid);
+                final Cocktail cocktail = cocktailDao.getCocktailByCid(cid);
                 final BasicResponse result = new BasicResponse();
                 result.status = true;
                 result.data = "success";
                 result.object = cocktail;
+                return new ResponseEntity<>(result, HttpStatus.OK);
+        }
+
+        @GetMapping("/cocktail/name")
+        @ApiOperation(value = "칵테일 이름")
+        public Object cocktailName() {
+                final List<Cocktail> cocktailArray = cocktailDao.findAll();
+                List<String> cocktailNameArray = new ArrayList<>();
+                for (int i = 0; i < cocktailArray.size(); i++) {
+                        cocktailNameArray.add(cocktailArray.get(i).getCname());
+                }
+                final BasicResponse result = new BasicResponse();
+                result.status = true;
+                result.data = "success";
+                result.object = cocktailNameArray;
                 return new ResponseEntity<>(result, HttpStatus.OK);
         }
 
