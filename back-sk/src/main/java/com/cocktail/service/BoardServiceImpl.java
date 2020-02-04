@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import com.cocktail.dao.BoardDao;
-import com.cocktail.model.Board.board;
+import com.cocktail.model.board.board;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -23,7 +23,7 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     public board findById(int bid) {
-        board board = boardDao.findById(bid); 
+        board board = boardDao.findById(bid);
         return board;
     }
 }

@@ -55,12 +55,7 @@
       </v-row>
     </v-container>
     <div>
-      <input
-        type="text"
-        @input="autocomplete"
-        v-model="searchData"
-        @keypress.enter="clickFilter(searchData)"
-      />
+      <input type="text" @input="autocomplete" v-model="searchData" @keypress.enter="paginate(0)" />
     </div>
     <v-container v-if="searchedData.length > 0">
       <div style="text-align:center;">
@@ -125,12 +120,16 @@ export default {
       let data = {
         pageNm
       };
+      if (this.searchData === "") {
+        this.searchData = "h";
+      }
       http
         .get("/cocktail/list?page=" + (pageNm - 1), {
           params: { filtered: this.filtered, searchedFiltered: this.searchData }
         })
         .then(res => {
           this.cocktailArray = res.data.content;
+          console.log(res);
           this.cocktailArray.forEach(element => {
             if (element.image != "") {
               element.image = require(`../../../images/${element.cid}.jpg`);
@@ -146,6 +145,9 @@ export default {
             }
           } else {
             this.pageNms = [1, 2, 3, 4, 5];
+          }
+          if (this.searchData === "h") {
+            this.searchData = "";
           }
         });
     },
@@ -229,7 +231,6 @@ export default {
     cocktailName() {
       http.get("/cocktail/name").then(res => {
         this.cocktailNameArray = res.data.object;
-        console.log(this.co);
       });
     },
     autocomplete() {
@@ -246,7 +247,6 @@ export default {
           }
         }
       }
-      console.log(this.searchedData);
     },
     searchDetailPage(item) {
       let id = this.cocktailNameArray.indexOf(item) + 1;

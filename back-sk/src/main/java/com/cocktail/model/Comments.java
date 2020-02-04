@@ -14,33 +14,35 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
+import com.cocktail.model.board.board;
+import com.cocktail.model.user.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
-public class Cocktail {
+public class Comments {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int cid;
+    private int cmid;
 
-    private String cname;
-    private String base;
-    private String degree;
-    private String description;
-    private String method;
-    private String material;
-    private String image;
-    private String snack;
-    private String bar;
+    private String content;
+    private String regdate;
 
-    @ManyToOne(targetEntity = Comments.class, fetch = FetchType.EAGER)
-    @JoinColumn(name = "cmid")
-    private Comments comments;
-
+    @OneToMany
+    private List<User> UserArray = new ArrayList();
+    @OneToMany
+    private List<Cocktail> cocktailArray = new ArrayList();
+    @OneToMany
+    private List<board> boardArray = new ArrayList();
+    // @OneToMany
+    // private List<BoardRecipe> BoardRecipeArray = new ArrayList();
 }

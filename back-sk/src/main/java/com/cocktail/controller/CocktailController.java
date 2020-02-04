@@ -26,6 +26,7 @@ import aj.org.objectweb.asm.Type;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.web.PageableDefault;
@@ -51,21 +52,22 @@ public class CocktailController {
         public Object list(
                         // @PageableDefault(size = 20, sort = { "cid" }, direction = Direction.ASC)
                         final Pageable pageable, @RequestParam(required = true) final String filtered,
-                        @RequestParam(required = true) final String searchFiltered) {
+                        @RequestParam(required = true) final String searchedFiltered) {
                 if (filtered.equals("all")) {
-                        if (searchFiltered.equals("")) {
+                        if (searchedFiltered.equals("h")) {
                                 return cocktailDao.findAll(pageable);
                         } else {
-                                final String newSearchFiltered = "%" + searchFiltered + "%";
+                                final String newSearchFiltered = "%" + searchedFiltered + "%";
                                 return cocktailDao.findByCnameLike(newSearchFiltered, pageable);
                         }
                 } else {
-                        if (searchFiltered.equals("")) {
+                        if (searchedFiltered.equals("h")) {
                                 final String newFiltered = "%" + filtered + "%";
                                 System.out.println(cocktailDao.findByMaterialLike(newFiltered, pageable));
                                 return cocktailDao.findByMaterialLike(newFiltered, pageable);
                         } else {
-                                final String newSearchFiltered = "%" + searchFiltered + "%";
+
+                                final String newSearchFiltered = "%" + searchedFiltered + "%";
                                 final String newFiltered = "%" + filtered + "%";
                                 List<Cocktail> sList = cocktailDao.findByCnameLike(newSearchFiltered);
                                 List<Cocktail> mList = cocktailDao.findByMaterialLike(newFiltered);
@@ -78,7 +80,8 @@ public class CocktailController {
                                                 }
                                         }
                                 }
-                                return ret;
+                                Page<Cocktail> result = new PageImpl<>(ret, pageable, ret.size());
+                                return result;
                         }
                 }
 
