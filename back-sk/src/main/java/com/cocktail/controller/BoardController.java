@@ -4,8 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.cocktail.model.BasicResponse;
-import com.cocktail.model.Board.Bdetail;
-import com.cocktail.model.Board.Board;
+import com.cocktail.model.board.Bdetail;
+import com.cocktail.model.board.Board;
 import com.cocktail.service.BoardService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +23,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PutMapping;
 
-
 @CrossOrigin(origins = { "*" }, maxAge = 3600) // "*" => http://localhost:3000
 @RestController
 @RequestMapping("/board")
@@ -33,34 +32,35 @@ public class BoardController {
     private BoardService boardservice;
 
     @GetMapping(produces = { MediaType.APPLICATION_JSON_VALUE })
-    public Object boardlist(){
+    public Object boardlist() {
         final BasicResponse result = new BasicResponse();
-		result.status = true;
-		result.data = "success";
+        result.status = true;
+        result.data = "success";
         result.object = this.boardservice.getAllBoard();
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
-    
+
     @GetMapping(value = "/{boardno}", produces = { MediaType.APPLICATION_JSON_VALUE })
     public ResponseEntity<Bdetail> getBoard(@PathVariable("boardno") int boardno) {
-          return new ResponseEntity<Bdetail>(boardservice.findById(boardno), HttpStatus.OK);
-    }
-    
-    @PostMapping
-    public ResponseEntity<Board> save(@RequestBody Board board, @RequestParam(required = true) String username){
-        return new ResponseEntity<Board>(boardservice.save(board,username), HttpStatus.OK);
+        return new ResponseEntity<Bdetail>(boardservice.findById(boardno), HttpStatus.OK);
     }
 
-    @PutMapping(value="/{boardno}", produces = { MediaType.APPLICATION_JSON_VALUE })
-    public ResponseEntity<Map<String, String>> updateBoard(@PathVariable("boardno") int boardno, @RequestBody Board board, @RequestParam(required = true) String username){
+    @PostMapping
+    public ResponseEntity<Board> save(@RequestBody Board board, @RequestParam(required = true) String username) {
+        return new ResponseEntity<Board>(boardservice.save(board, username), HttpStatus.OK);
+    }
+
+    @PutMapping(value = "/{boardno}", produces = { MediaType.APPLICATION_JSON_VALUE })
+    public ResponseEntity<Map<String, String>> updateBoard(@PathVariable("boardno") int boardno,
+            @RequestBody Board board, @RequestParam(required = true) String username) {
         boardservice.updateById(boardno, board, username);
-        Map<String,String> resultMap = new HashMap<>();
-        resultMap.put("data","success");
+        Map<String, String> resultMap = new HashMap<>();
+        resultMap.put("data", "success");
         return new ResponseEntity<>(resultMap, HttpStatus.OK);
     }
 
-    @DeleteMapping(value = "/{boardno}", produces = {MediaType.APPLICATION_JSON_VALUE}) 
-    public ResponseEntity<Map<String, String>> deleteBoard(@PathVariable("boardno") int boardno){
+    @DeleteMapping(value = "/{boardno}", produces = { MediaType.APPLICATION_JSON_VALUE })
+    public ResponseEntity<Map<String, String>> deleteBoard(@PathVariable("boardno") int boardno) {
         boardservice.deleteById(boardno);
         Map<String, String> resultMap = new HashMap<>();
         resultMap.put("data", "Success");

@@ -11,10 +11,10 @@ import CocktailDetail from "./views/CocktailDetail.vue";
 import UserProfile from "./views/user/Userprofile";
 import UserChangePW from "./views/user/mypage/UserChangePW";
 import UserWithdraw from "./views/user/mypage/UserWithdraw";
-import BoardDetail from "./views/board/BoardDetail";
 import Main from "./views/main/Main";
 import Logout from "./views/user/Logout";
 import BoardList from "./components/board/BoardList.vue";
+import BoardDetail from "./components/board/BoardDetail.vue";
 
 export default [
   {
@@ -100,5 +100,10 @@ export default [
     path: "/boardlist",
     name: "BoardList",
     component: BoardList
+  },
+  {
+    path: "/boarddetail",
+    name: "BoardDetail",
+    component: BoardDetail
   }
 ];

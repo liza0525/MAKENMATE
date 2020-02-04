@@ -1,4 +1,4 @@
-package com.cocktail.model.Board;
+package com.cocktail.model.board;
 
 import java.io.Serializable;
 
@@ -8,7 +8,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Lob;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
@@ -24,7 +23,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class Board implements Serializable{
+public class Board implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,7 +37,7 @@ public class Board implements Serializable{
 
     @Column
     private String contents;
-    
+
     @Column
     private String regdate;
 
@@ -47,4 +46,7 @@ public class Board implements Serializable{
     // @ManyToOne
     // @JoinColumn(name = "user_uid", referencedColumnName = "uid")
     // private User user_uid;
+    // @ManyToOne(targetEntity = Comments.class, fetch = FetchType.EAGER)
+    // @JoinColumn(name = "cmid")
+    // private Comments comments;
 }
