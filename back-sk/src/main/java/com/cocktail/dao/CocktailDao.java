@@ -19,5 +19,5 @@ public interface CocktailDao extends JpaRepository<Cocktail, String> {
 
     List<Cocktail> findByCnameLike(String searchfiltered);
 
-    List<Cocktail> findByComments(int cmid);
+    List<Cocktail> findByComments(int cid);
 }

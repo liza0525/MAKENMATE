@@ -9,5 +9,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface BoardDao extends JpaRepository<board, Integer> {
     board findById(int bid);
 
-    List<board> findByComments(int cmid);
+    List<board> findByComments(int bid);
 }

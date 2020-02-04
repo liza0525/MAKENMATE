@@ -8,5 +8,5 @@ import com.cocktail.model.Comments;
 import com.cocktail.model.Material;;
 
 public interface CommentsDao extends JpaRepository<Comments, String> {
-    Material getMaterialBycmid(int cmid);
+
 }
