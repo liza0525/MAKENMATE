@@ -12,6 +12,9 @@ import UserProfile from "./views/user/Userprofile";
 import UserChangePW from "./views/user/mypage/UserChangePW";
 import UserWithdraw from "./views/user/mypage/UserWithdraw";
 import Main from "./views/main/Main";
+import BoardList from "./components/board/BoardList.vue";
+import BoardDetail from "./components/board/BoardDetail.vue";
+
 
 export default [
   {
@@ -87,5 +90,15 @@ export default [
     path: "/404",
     name: "PageNotFound",
     component: PageNotFound
+  },
+  {
+    path:"/boardlist",
+    name:"BoardList",
+    component:BoardList
+  },
+  {
+    path:"/boarddetail",
+    name:"BoardDetail",
+    component:BoardDetail
   }
 ];

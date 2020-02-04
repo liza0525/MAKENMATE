@@ -17,4 +17,6 @@ public interface UserDao extends JpaRepository<User, String> {
 	Optional<User> findByUid(int uid);
 
 	List<User> findByComments(int cmid);
+
+	User findByNickname(String nickname);
 }
