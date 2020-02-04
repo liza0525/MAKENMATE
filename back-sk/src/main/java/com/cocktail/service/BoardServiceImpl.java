@@ -5,8 +5,8 @@ import java.util.List;
 import com.cocktail.dao.BoardDao;
 import com.cocktail.dao.UserDao;
 import com.cocktail.exception.CocktailException;
-import com.cocktail.model.Board.Bdetail;
-import com.cocktail.model.Board.board;
+import com.cocktail.model.board.Bdetail;
+import com.cocktail.model.board.board;
 import com.cocktail.model.user.User;
 
 import org.springframework.beans.factory.annotation.Autowired;

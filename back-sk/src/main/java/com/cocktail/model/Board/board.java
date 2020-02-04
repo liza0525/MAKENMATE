@@ -1,4 +1,4 @@
-package com.cocktail.model.Board;
+package com.cocktail.model.board;
 
 import java.io.Serializable;
 
@@ -24,7 +24,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class board implements Serializable{
+public class board implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,7 +38,7 @@ public class board implements Serializable{
 
     @Column
     private String contents;
-    
+
     @Column
     private String regdate;
 

@@ -2,8 +2,8 @@ package com.cocktail.service;
 
 import java.util.List;
 
-import com.cocktail.model.Board.Bdetail;
-import com.cocktail.model.Board.board;
+import com.cocktail.model.board.Bdetail;
+import com.cocktail.model.board.board;
 
 public interface BoardService {
     
