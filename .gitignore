@@ -6,6 +6,7 @@ log
 .project
 .classpath
 .settings
+*.class
 /target/
 .factorypath
 # Editor directories and files
