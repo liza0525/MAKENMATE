@@ -1,4 +1,4 @@
-package com.cocktail.model.Board;
+package com.cocktail.model.board;
 
 import java.io.Serializable;
 
@@ -16,7 +16,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class Bdetail implements Serializable{
+public class Bdetail implements Serializable {
     private int bid;
 
     private String title;
@@ -24,8 +24,8 @@ public class Bdetail implements Serializable{
     private byte[] file;
 
     private String contents;
-    
+
     private String regdate;
-    
+
     private String user_name;
 }
