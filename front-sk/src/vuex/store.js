@@ -8,7 +8,14 @@ Vue.use(Vuex);
 
 const state = {
   useremail: "",
-  username: ""
+  username: "",
+  cocktail: "",
+  coctktailList: [],
+  board: "",
+  boardList: [],
+  scrapList: [],
+  user: "",
+  reply: []
 };
 
 export default new Vuex.Store({

@@ -48,6 +48,7 @@
 <script>
 const axios = require("axios");
 import http from "../http-common";
+import Constant from "../Constant";
 export default {
   data: () => {
     return {
@@ -66,21 +67,17 @@ export default {
       }
     };
   },
-  created() {
-    this.getData();
-  },
-  methods: {
-    getData() {
-      this.cid = this.$route.params.cid;
-      http.get("/cocktail/detail/" + this.cid).then(res => {
-        this.cocktail = res.data.object;
+  mounted() {
+    this.$store
+      .dispatch(Constant.GET_COCKTAIL, { cid: this.$route.params.cid })
+      .then(() => {
+        this.cocktail = { ...this.$store.state.cocktail };
         if (this.cocktail.image === "") {
           this.cocktail.image = require(`../../../images/default.png`);
         } else {
-          this.cocktail.image = require(`../../../images/${this.cid}.jpg`);
+          this.cocktail.image = require(`../../../images/${this.cocktail.cid}.jpg`);
         }
       });
-    }
   }
 };
 </script>
