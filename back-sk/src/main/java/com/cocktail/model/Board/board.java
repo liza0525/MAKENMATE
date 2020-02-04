@@ -1,6 +1,8 @@
 package com.cocktail.model.board;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,6 +17,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.cocktail.model.Comments;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -49,6 +52,12 @@ public class board implements Serializable {
 
     @Column
     private int user_uid;
+
+    // @JsonIgnore
+    // @OneToMany
+    // @JoinColumn(name = "cmid")
+    // private List<Comments> commentsArray = new ArrayList<>();
+
     // @ManyToOne
     // @JoinColumn(name = "user_uid", referencedColumnName = "uid")
     // private User user_uid;

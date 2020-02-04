@@ -13,6 +13,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -27,6 +28,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 @Builder // builder를 사용할수 있게 합니다.
 @Entity // jpa entity임을 알립니다.
@@ -34,6 +36,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
+@ToString
 public class User implements UserDetails {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -94,6 +97,12 @@ public class User implements UserDetails {
 	public void setUid(int uid) {
 		this.uid = uid;
 	}
+
+	@JsonIgnore
+	@OneToMany
+	@Builder.Default
+	@JoinColumn(name = "cmid")
+	private List<Comments> commentsArray = new ArrayList<>();
 
 	// @Column(insertable = false, updatable = false)
 	// private LocalDateTime createDate;

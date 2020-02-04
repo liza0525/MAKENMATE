@@ -14,16 +14,21 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
+@Table(name = "cocktail")
 public class Cocktail {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -39,8 +44,13 @@ public class Cocktail {
     private String snack;
     private String bar;
 
+    @JsonIgnore
+    @OneToMany
+    @JoinColumn(name = "cmid")
+    private List<Comments> commentsArray = new ArrayList<>();
+
     // @ManyToOne(targetEntity = Comments.class, fetch = FetchType.EAGER)
-    // @JoinColumn(name = "cmid")
+    // @JoinColumn(name = "comments_cmid")
     // private Comments comments;
 
 }
