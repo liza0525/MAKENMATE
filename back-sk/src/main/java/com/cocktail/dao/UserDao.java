@@ -1,5 +1,6 @@
 package com.cocktail.dao;
 
+import java.util.List;
 import java.util.Optional;
 
 import com.cocktail.model.user.User;
@@ -14,6 +15,8 @@ public interface UserDao extends JpaRepository<User, String> {
 	// User findUserByEmailAndPassword(String email, String password);
 
 	Optional<User> findByUid(int uid);
+
+	// List<User> findByComments(int uid);
 
 	User findByNickname(String nickname);
 }
