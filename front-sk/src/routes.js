@@ -15,6 +15,11 @@ import Main from "./views/main/Main";
 import Logout from "./views/user/Logout";
 import BoardList from "./components/board/BoardList.vue";
 import BoardDetail from "./components/board/BoardDetail.vue";
+<<<<<<< Updated upstream
+=======
+import BoardAdd from "./components/board/BoardAdd.vue";
+import BoardUpdate from "./components/board/BoardUpdate.vue";
+>>>>>>> Stashed changes
 
 export default [
   {
@@ -102,8 +107,19 @@ export default [
     component: BoardList
   },
   {
-    path: "/boarddetail",
-    name: "BoardDetail",
-    component: BoardDetail
+    path:"/boarddetail",
+    name:"BoardDetail",
+    component:BoardDetail
+  },
+  {
+    path:"/boardadd",
+    name:"BoardAdd",
+    component:BoardAdd  
+  },
+  {
+    path:"/boardupdate",
+    name:"BoardUpdate",
+    component:BoardUpdate,
+    props:true
   }
 ];
