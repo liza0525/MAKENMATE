@@ -16,6 +16,8 @@
                 <td v-html="board.regdate"></td>
                 <!-- 작성자 찾기-->
             </tr>       
+      </table>
+  </div>
 </template>
 
 <script>

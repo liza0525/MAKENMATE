@@ -5,7 +5,7 @@ import java.util.Map;
 
 import com.cocktail.model.BasicResponse;
 import com.cocktail.model.Board.Bdetail;
-import com.cocktail.model.Board.board;
+import com.cocktail.model.Board.Board;
 import com.cocktail.service.BoardService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,12 +47,12 @@ public class BoardController {
     }
     
     @PostMapping
-    public ResponseEntity<board> save(@RequestBody board board, @RequestParam(required = true) String username){
-        return new ResponseEntity<board>(boardservice.save(board,username), HttpStatus.OK);
+    public ResponseEntity<Board> save(@RequestBody Board board, @RequestParam(required = true) String username){
+        return new ResponseEntity<Board>(boardservice.save(board,username), HttpStatus.OK);
     }
 
     @PutMapping(value="/{boardno}", produces = { MediaType.APPLICATION_JSON_VALUE })
-    public ResponseEntity<Map<String, String>> updateBoard(@PathVariable("boardno") int boardno, @RequestBody board board, @RequestParam(required = true) String username){
+    public ResponseEntity<Map<String, String>> updateBoard(@PathVariable("boardno") int boardno, @RequestBody Board board, @RequestParam(required = true) String username){
         boardservice.updateById(boardno, board, username);
         Map<String,String> resultMap = new HashMap<>();
         resultMap.put("data","success");
