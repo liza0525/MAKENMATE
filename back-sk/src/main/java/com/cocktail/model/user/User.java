@@ -97,7 +97,7 @@ public class User implements UserDetails {
 
 	// @Column(insertable = false, updatable = false)
 	// private LocalDateTime createDate;
-	@ManyToOne(targetEntity = Comments.class, fetch = FetchType.EAGER)
-	@JoinColumn(name = "cmid")
-	private Comments comments;
+	// @ManyToOne(targetEntity = Comments.class, fetch = FetchType.EAGER)
+	// @JoinColumn(name = "cmid")
+	// private Comments comments;
 }

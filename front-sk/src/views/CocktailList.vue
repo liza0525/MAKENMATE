@@ -22,7 +22,11 @@
 
     <v-container fluid ma-0 pa-0 style="width:65%;">
       <v-row dense>
-        <v-col v-for="cocktail in cocktailArray" v-bind:key="cocktail.cid" cols="3">
+        <v-col
+          v-for="cocktail in cocktailArray"
+          v-bind:key="cocktail.cid"
+          cols="3"
+        >
           <v-card v-on:click="goToDetail(cocktail.cid)">
             <v-img
               :src="cocktail.image"
@@ -55,11 +59,20 @@
       </v-row>
     </v-container>
     <div>
-      <input type="text" @input="autocomplete" v-model="searchData" @keypress.enter="paginate(0)" />
+      <input
+        type="text"
+        @input="autocomplete"
+        v-model="searchData"
+        @keypress.enter="paginate(0)"
+      />
     </div>
     <v-container v-if="searchedData.length > 0">
       <div style="text-align:center;">
-        <v-card class="mx-auto" max-width="500" style="overflow-y:auto; float:center;">
+        <v-card
+          class="mx-auto"
+          max-width="500"
+          style="overflow-y:auto; float:center;"
+        >
           <v-list style=" float:center;">
             <v-list-item-group v-model="searchedData">
               <v-list-item v-for="(item, i) in searchedData" :key="i">
@@ -72,12 +85,22 @@
         </v-card>
       </div>
     </v-container>
-    <button v-on:click="fistPg()" style="margin-right:10px;margin-top:100px;">{{ fistBt }}</button>
-    <button v-on:click="prevPg()" style="margin-right:10px;">{{ prevBt }}</button>
-    <button v-on:click="paginate(pageNm)" v-for="pageNm in pageNms" :key="pageNm">
+    <button v-on:click="fistPg()" style="margin-right:10px;margin-top:100px;">
+      {{ fistBt }}
+    </button>
+    <button v-on:click="prevPg()" style="margin-right:10px;">
+      {{ prevBt }}
+    </button>
+    <button
+      v-on:click="paginate(pageNm)"
+      v-for="pageNm in pageNms"
+      :key="pageNm"
+    >
       <span style="margin-right:10px;">{{ pageNm }}</span>
     </button>
-    <button v-on:click="nextPg(filteredData)" style="margin-right:10px;">{{ nextBt }}</button>
+    <button v-on:click="nextPg(filteredData)" style="margin-right:10px;">
+      {{ nextBt }}
+    </button>
     <button v-on:click="lastPg()">{{ lastBt }}</button>
   </div>
 </template>
@@ -146,10 +169,10 @@ export default {
           } else {
             this.pageNms = [1, 2, 3, 4, 5];
           }
-          if (this.searchData === "h") {
-            this.searchData = "";
-          }
         });
+      if (this.searchData === "h") {
+        this.searchData = "";
+      }
     },
     nextPg(filteredData) {
       if (this.filteredData < 5) {

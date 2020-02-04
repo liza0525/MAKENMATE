@@ -37,12 +37,12 @@ public class Comments {
     private String content;
     private String regdate;
 
-    @OneToMany
-    private List<User> UserArray = new ArrayList();
-    @OneToMany
-    private List<Cocktail> cocktailArray = new ArrayList();
-    @OneToMany
-    private List<board> boardArray = new ArrayList();
+    // @OneToMany
+    // private List<User> UserArray = new ArrayList<>();
+    // @OneToMany
+    // private List<Cocktail> cocktailArray = new ArrayList<>();
+    // @OneToMany
+    // private List<board> boardArray = new ArrayList<>();
     // @OneToMany
     // private List<BoardRecipe> BoardRecipeArray = new ArrayList();
 }

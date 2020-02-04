@@ -52,7 +52,7 @@ public class board implements Serializable {
     // @ManyToOne
     // @JoinColumn(name = "user_uid", referencedColumnName = "uid")
     // private User user_uid;
-    @ManyToOne(targetEntity = Comments.class, fetch = FetchType.EAGER)
-    @JoinColumn(name = "cmid")
-    private Comments comments;
+    // @ManyToOne(targetEntity = Comments.class, fetch = FetchType.EAGER)
+    // @JoinColumn(name = "cmid")
+    // private Comments comments;
 }

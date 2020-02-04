@@ -39,8 +39,8 @@ public class Cocktail {
     private String snack;
     private String bar;
 
-    @ManyToOne(targetEntity = Comments.class, fetch = FetchType.EAGER)
-    @JoinColumn(name = "cmid")
-    private Comments comments;
+    // @ManyToOne(targetEntity = Comments.class, fetch = FetchType.EAGER)
+    // @JoinColumn(name = "cmid")
+    // private Comments comments;
 
 }
