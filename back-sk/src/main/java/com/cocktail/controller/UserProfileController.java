@@ -1,22 +1,17 @@
 package com.cocktail.controller;
 
-// import com.cocktail.dao.UserDao;
-import com.cocktail.model.BasicResponse;
-import com.cocktail.model.user.User;
-import org.json.JSONObject;
-
-import com.cocktail.model.BasicResponse;
-
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+
+// import com.cocktail.dao.UserDao;
+import com.cocktail.model.BasicResponse;
+import com.cocktail.model.user.User;
 
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;

@@ -12,9 +12,11 @@ import UserProfile from "./views/user/Userprofile";
 import UserChangePW from "./views/user/mypage/UserChangePW";
 import UserWithdraw from "./views/user/mypage/UserWithdraw";
 import Main from "./views/main/Main";
+import Logout from "./views/user/Logout";
 import BoardList from "./components/board/BoardList.vue";
 import BoardDetail from "./components/board/BoardDetail.vue";
-
+import BoardAdd from "./components/board/BoardAdd.vue";
+import BoardUpdate from "./components/board/BoardUpdate.vue";
 
 export default [
   {
@@ -26,6 +28,11 @@ export default [
     path: "/login",
     name: "Login",
     component: Login
+  },
+  {
+    path: "/logout",
+    name: "Logout",
+    component: Logout
   },
   {
     path: "/user/join",
@@ -58,7 +65,7 @@ export default [
     component: Mypage
   },
   {
-    path: "/cocktail/list",
+    path: "/cocktail/list/:pageNm",
     name: "CocktailList",
     component: CocktailList
   },
@@ -92,13 +99,24 @@ export default [
     component: PageNotFound
   },
   {
-    path:"/boardlist",
-    name:"BoardList",
-    component:BoardList
+    path: "/boardlist",
+    name: "BoardList",
+    component: BoardList
   },
   {
     path:"/boarddetail",
     name:"BoardDetail",
     component:BoardDetail
+  },
+  {
+    path:"/boardadd",
+    name:"BoardAdd",
+    component:BoardAdd  
+  },
+  {
+    path:"/boardupdate",
+    name:"BoardUpdate",
+    component:BoardUpdate,
+    props:true
   }
 ];

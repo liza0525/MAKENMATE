@@ -61,7 +61,11 @@ public class AccountController {
 		String token = jwtTokenProvider.createToken(user.getUsername(), user.getRoles());
 		response.setContentType("text/plain");
 		response.setCharacterEncoding("UTF-8");
-		response.addHeader("jwt-auth-token", token);
+		response.addHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+		// 헤더에 token을 저장하기 위한 설정
+		response.addHeader("Access-Control-Allow-Headers", "Authorization");
+		response.addHeader("Access-Control-Expose-Headers", "Authorization");
+		response.addHeader("Authorization", token);
 		final SingleResponse<User> result = new SingleResponse<>();
 		result.setStatus(true);
 		result.setObject(user);

@@ -13,6 +13,7 @@
                                     <th>날 짜</th>
                                     <th>작성자</th>
                                     <th>삭 제</th>
+                                    <th>수 정</th>
                                 </tr>
                                 <tr>
                                     <td v-html="board.bid"></td>
@@ -21,7 +22,11 @@
                                     <td v-html="board.regdate"></td>
                                     <td v-html="board.user_name"></td>
                                     <td class='button' @click="delete_board(board.bid)">
-                                        <input type="button" class="blue" value="삭제"></td>
+                                        <input type="button" class="blue" value="삭제">
+                                    </td>
+                                    <td class='button' @click="update_board(board.bid)">
+                                        <input type="button" class="blue" value="수정">
+                                    </td>
                                     </tr>
                                 </table>
                             </div>
@@ -37,7 +42,7 @@
                                             title: "",
                                             file: "",
                                             contents: "",
-                                            regdata: "",
+                                            regdate: "",
                                             user_name: ""
                                         }
                                     };
@@ -63,8 +68,6 @@
                                                 if (response.data.data == "Success") {
                                                     alert("삭제하였습니다.");
                                                     this.$router.push("BoardList");
-                                                    
-                                                   
                                                 } else {
                                                     alert("삭제 땡 ~!!");
                                                 }
@@ -73,8 +76,10 @@
                                                 this.errored = true
                                             })
                                             . finally(() => this.loading = false);
+                                    },
+                                    update_board(boardid) {
+                                        this.$router.push({name:"BoardUpdate",params: {bid: boardid}});
                                     }
-
                                 }
                             }
                         </script>
