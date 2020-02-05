@@ -46,8 +46,8 @@
   </div>
 </template>
 <script>
-const axios = require("axios");
-import http from "../http-common";
+// const axios = require("axios");
+// import http from "../http-common";
 import Constant from "../Constant";
 export default {
   data: () => {

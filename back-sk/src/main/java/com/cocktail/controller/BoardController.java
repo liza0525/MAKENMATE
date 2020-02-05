@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.cocktail.model.BasicResponse;
-import com.cocktail.model.Board.Bdetail;
+import com.cocktail.model.board.Bdetail;
 import com.cocktail.service.BoardService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,6 +51,7 @@ public class BoardController {
 
     @PostMapping
     public ResponseEntity<Integer> save(@RequestBody Bdetail bdetail){
+        System.out.println(bdetail);
         return new ResponseEntity<Integer>(boardservice.save(bdetail), HttpStatus.OK);
     }
 
