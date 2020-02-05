@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.cocktail.model.user.UserScrap;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -50,7 +51,7 @@ public class BoardRecipe {
     // @JoinColumn(name = "user_uid")
     @Column
     private int user_uid;
-
+    @JsonManagedReference
     @OneToMany(mappedBy = "boardrecipe")
     private List<UserScrap> userScrapList = new ArrayList<>();
 }

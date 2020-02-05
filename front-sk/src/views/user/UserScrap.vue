@@ -1,8 +1,8 @@
 <template>
   <div style="padding: 100px; color: blue;">
     <h1>스크랩 페이지</h1>
-    <p>{{ uid }}</p>
-    <p>{{ scrapList }}</p>
+    <p>uid : {{ uid }}</p>
+    <p>rid list : {{ scrapList }}</p>
   </div>
 </template>
 
