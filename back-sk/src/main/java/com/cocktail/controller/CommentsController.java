@@ -78,11 +78,13 @@ public class CommentsController {
         newComment.setUser_uid(user.getUid());
         newComment.setContent(content);
         newComment.setCocktail(cocktail);
-        // commentsDao.save(newComment);
+        System.out.println(newComment.getCocktail().toString());
+        cocktail.getCommentsArray().add(newComment);
+        commentsDao.save(newComment);
         final BasicResponse result = new BasicResponse();
         result.status = true;
         result.data = "success";
-        System.out.println(user.toString());
+        // System.out.println(user.toString());
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
