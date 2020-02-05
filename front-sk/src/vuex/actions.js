@@ -154,9 +154,10 @@ export default {
   [Constant.GET_SCRAPLIST]: (store, payload) => {
     return new Promise((resolve, reject) => {
       http
-        .get("/user/scrap/" + payload.username)
+        .get("/user/scrap/" + payload.uid)
         .then(res => {
-          store.commit(Constant.GET_SCRAPLIST, { scrap: res.data.object });
+          console.log(res.data.object)
+          store.commit(Constant.GET_SCRAPLIST, { scrapList: res.data.object });
           resolve();
         })
         .catch(exp => {

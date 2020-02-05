@@ -1,8 +1,12 @@
 <template>
   <div style="padding: 100px; color: blue;">
     <h1>스크랩 페이지</h1>
-    <p>uid : {{ uid }}</p>
-    <p>rid list : {{ scrapList }}</p>
+    <p><strong style="font-size:20px">uid</strong> : {{ uid }}</p>
+    <p style="font-size:20px; font-weight:bold;">scrap list</p>
+    <li v-for="scrap in scrapList" :key=scrap.id>
+      title : {{ scrap.title }} <br /> content : {{ scrap.contents }}
+      <hr />
+    </li>
   </div>
 </template>
 
@@ -15,13 +19,14 @@ export default {
       scrapList : [],
     }
   },
-  mounted() { 
-    // this.$store
-    //   .dispatch(Constant.GET_SCRAPLIST, { uid: this.$router.params.uid })
-    //   .then(() => {
-    //     this.scrapList = { ...this.$store.state.scrapList };
-    //   });
+  mounted() {
     this.uid = this.$route.params.uid
+    this.$store
+      .dispatch(Constant.GET_SCRAPLIST, { uid: this.$route.params.uid })
+      .then(() => {
+        this.scrapList = {...this.$store.state.scrapList };
+        console.log(this.scrapList)
+      });
   },
 }
 </script>
