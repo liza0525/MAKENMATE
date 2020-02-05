@@ -19,15 +19,15 @@ export default {
       scrapList : [],
     }
   },
-  mounted() {
+  created() {
     this.uid = this.$route.params.uid
     this.$store
       .dispatch(Constant.GET_SCRAPLIST, { uid: this.$route.params.uid })
       .then(() => {
         this.scrapList = {...this.$store.state.scrapList };
-        console.log(this.scrapList)
       });
   },
+
 }
 </script>
 
