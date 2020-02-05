@@ -66,7 +66,8 @@
                 http
                     .post("/board/", {
                         title: this.btitleid,
-                        contents: this.bcontentsid
+                        contents: this.bcontentsid,
+                        user_name: window.sessionStorage.getItem("login_username") ///window.sessionStorage.getItem("login_username") ??? 모르거응ㅇ
                     })
                     .then(res => {
                         this.bid = res.data;

@@ -51,6 +51,7 @@ public class BoardController {
 
     @PostMapping
     public ResponseEntity<Integer> save(@RequestBody Bdetail bdetail){
+        System.out.println(bdetail);
         return new ResponseEntity<Integer>(boardservice.save(bdetail), HttpStatus.OK);
     }
 
