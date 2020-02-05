@@ -58,7 +58,7 @@ public class BoardServiceImpl implements BoardService {
     @Override
     public void updateById(Bdetail bdetail) {
         System.out.println("service" + bdetail);
-        board b = boardDao.findById(bdetail.getBid());
+        Board b = boardDao.findById(bdetail.getBid());
         b.setContents(bdetail.getContents());
         //b.setFile(board.getFile()); //파일 수정
         b.setTitle(bdetail.getTitle());
@@ -74,7 +74,7 @@ public class BoardServiceImpl implements BoardService {
     //글작성
     @Override
     public int save(Bdetail bdetail) {
-        board b = new board();
+        Board b = new Board();
         System.out.println(bdetail);
         b.setContents(bdetail.getContents());
         //b.setFile(bdetail.getFile());

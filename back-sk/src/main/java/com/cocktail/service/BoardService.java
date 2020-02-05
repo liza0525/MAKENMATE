@@ -14,7 +14,7 @@ public interface BoardService {
     Bdetail findById(int bid);
 
     //게시글 작성
-    board save(board board, String username);
+    Board save(Board board, String username);
     int save(Bdetail bdetail);
 
     //게시글 수정

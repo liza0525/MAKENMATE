@@ -13,12 +13,14 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import com.cocktail.model.Comments;
+import com.cocktail.model.board.BoardRecipe;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -47,6 +49,12 @@ public class User implements UserDetails {
 	// private String image;
 	// private String intro;
 	private String nickname;
+
+    // @OneToMany(mappedBy = "boardrecipe")
+    // private List<BoardRecipe> boardRecipeList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user")
+    private List<UserScrap> userScrapList = new ArrayList<>();
 
 	@ElementCollection(fetch = FetchType.EAGER)
 	@Builder.Default
