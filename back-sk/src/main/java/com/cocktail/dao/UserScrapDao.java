@@ -3,7 +3,6 @@ package com.cocktail.dao;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.cocktail.model.boardRecipe.BoardRecipe;
 import com.cocktail.model.user.UserScrap;
 import org.springframework.data.jpa.repository.JpaRepository;
 

@@ -1,4 +1,4 @@
-package com.cocktail.model.boardRecipe;
+package com.cocktail.model.BoardRecipe;
 
 import java.io.Serializable;
 
@@ -21,7 +21,7 @@ public class BRdetail implements Serializable {
     private String contents;
 
     private String image;
-    
+
     private String regdate;
 
     private String user_name;

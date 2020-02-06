@@ -1,4 +1,4 @@
-package com.cocktail.model.boardRecipe;
+package com.cocktail.model.BoardRecipe;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -60,7 +60,7 @@ public class BoardRecipe {
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonIgnore
     private User user;
-    
+
     // @Column
     // private int user_uid;
     // @JsonManagedReference

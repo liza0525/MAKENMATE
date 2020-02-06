@@ -15,18 +15,12 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-<<<<<<< HEAD
-import com.cocktail.model.Comments;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-=======
 import com.cocktail.model.user.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
->>>>>>> de12b65f665c41e0fe401238133f0a059f13b483
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -58,22 +52,6 @@ public class Board implements Serializable {
     @Column
     private String regdate;
 
-<<<<<<< HEAD
-    @Column
-    private int user_uid;
-
-    // @JsonIgnore
-    // @OneToMany
-    // @JoinColumn(name = "cmid")
-    // private List<Comments> commentsArray = new ArrayList<>();
-
-    // @ManyToOne
-    // @JoinColumn(name = "user_uid", referencedColumnName = "uid")
-    // private User user_uid;
-    // @ManyToOne(targetEntity = Comments.class, fetch = FetchType.EAGER)
-    // @JoinColumn(name = "cmid")
-    // private Comments comments;
-=======
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "user_uid", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
@@ -82,5 +60,4 @@ public class Board implements Serializable {
 
     // @Column
     // private int user_uid;
->>>>>>> de12b65f665c41e0fe401238133f0a059f13b483
 }
