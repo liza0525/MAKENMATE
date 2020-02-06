@@ -11,7 +11,7 @@
             :key="filter.name"
             cols="12"
             md="2"
-            v-on:click="clickFilter(filter.name)"
+            @click="clickFilter(filter.name)"
           >
             <img :src="filter.image" :alt="filter.name" style="height:120px;" />
             <div style="font-size:30px;color:#797979">{{ filter.name }}</div>
@@ -22,11 +22,7 @@
 
     <v-container fluid ma-0 pa-0 style="width:65%;">
       <v-row dense>
-        <v-col
-          v-for="cocktail in cocktailArray"
-          v-bind:key="cocktail.cid"
-          cols="3"
-        >
+        <v-col v-for="cocktail in cocktailArray" v-bind:key="cocktail.cid" cols="3">
           <v-card v-on:click="goToDetail(cocktail.cid)">
             <v-img
               :src="cocktail.image"
@@ -59,20 +55,11 @@
       </v-row>
     </v-container>
     <div>
-      <input
-        type="text"
-        @input="autocomplete"
-        v-model="searchData"
-        @keypress.enter="paginate(0)"
-      />
+      <input type="text" @input="autocomplete" v-model="searchData" @keypress.enter="paginate(0)" />
     </div>
     <v-container v-if="searchedData.length > 0">
       <div style="text-align:center;">
-        <v-card
-          class="mx-auto"
-          max-width="500"
-          style="overflow-y:auto; float:center;"
-        >
+        <v-card class="mx-auto" max-width="500" style="overflow-y:auto; float:center;">
           <v-list style=" float:center;">
             <v-list-item-group v-model="searchedData">
               <v-list-item v-for="(item, i) in searchedData" :key="i">
@@ -88,38 +75,30 @@
     <router-link
       :to="{ name: 'CocktailList', params: { pageNm: 1 } }"
       style="margin-right:10px;margin-top:100px; color:white;"
-      >{{ fistBt }}
-    </router-link>
+    >{{ fistBt }}</router-link>
     <router-link :to="{ name: 'CocktailList', params: { pageNm: min - 5 } }">
-      <span style="margin-right:10px;margin-top:100px; color:white;">
-        {{ prevBt }}
-      </span>
+      <span style="margin-right:10px;margin-top:100px; color:white;">{{ prevBt }}</span>
     </router-link>
     <router-link
       :to="{ name: 'CocktailList', params: { pageNm: pageNm } }"
       v-for="pageNm in pageNms"
       :key="pageNm"
       style="color:white;"
-      ><span style="margin-right:10px;">{{ pageNm }}</span></router-link
     >
+      <span style="margin-right:10px;">{{ pageNm }}</span>
+    </router-link>
     <!-- <button
       v-on:click="paginate(pageNm)"
       v-for="pageNm in pageNms"
       :key="pageNm"
     >
       <span style="margin-right:10px;">{{ pageNm }}</span>
-    </button> -->
+    </button>-->
     <router-link :to="{ name: 'CocktailList', params: { pageNm: min + 5 } }">
-      <span style="margin-right:10px;margin-top:100px; color:white;">
-        {{ nextBt }}
-      </span>
+      <span style="margin-right:10px;margin-top:100px; color:white;">{{ nextBt }}</span>
     </router-link>
-    <router-link
-      :to="{ name: 'CocktailList', params: { pageNm: filteredData } }"
-    >
-      <span style="margin-right:10px;margin-top:100px; color:white;">
-        {{ lastBt }}
-      </span>
+    <router-link :to="{ name: 'CocktailList', params: { pageNm: filteredData } }">
+      <span style="margin-right:10px;margin-top:100px; color:white;">{{ lastBt }}</span>
     </router-link>
   </div>
 </template>
@@ -189,6 +168,7 @@ export default {
         .then(() => {
           this.cocktailArray = { ...this.$store.state.cocktailList };
           this.filteredData = this.$store.state.totalPages;
+          console.log(this.cocktailArray);
         });
       if (this.searchData === "h") {
         this.searchData = "";
@@ -200,7 +180,7 @@ export default {
     },
     clickFilter(filter) {
       this.filtered = filter;
-      this.paginate(this.pageNms[0]);
+      this.paginate(1);
     },
     getCocktailName() {
       http.get("/cocktail/name").then(res => {
