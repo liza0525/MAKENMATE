@@ -18,6 +18,7 @@ import BoardDetail from "./components/board/BoardDetail.vue";
 import BoardAdd from "./components/board/BoardAdd.vue";
 import BoardUpdate from "./components/board/BoardUpdate.vue";
 import UserScrap from "./views/user/UserScrap.vue";
+import BoardRecipeDetailTemp from "./views/BoardRecipeDetailTemp.vue";
 
 export default [
   {
@@ -124,5 +125,10 @@ export default [
     path: "/user/scrap/:uid",
     name: "UserScrap",
     component: UserScrap
+  },
+  {
+    path: "/boardrecipe/detail/:rid",
+    name: "BoardRecipeDetail",
+    component: BoardRecipeDetailTemp
   }
 ];

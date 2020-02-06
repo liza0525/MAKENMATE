@@ -181,9 +181,15 @@ export default {
   [Constant.ADD_SCRAP]: (store, payload) => {
     return new Promise((resolve, reject) => {
       // recipe 공유 게시판만 추가
+      console.log("payload.uid payload.rid", payload.uid, payload.rid)
       http
-        .post("/user/scrap/" + payload.bid)
+        .post("/user/scrap/" + payload.uid, null, {
+          params: {
+            rid: payload.rid
+          }
+        })
         .then(res => {
+          console.log("success")
           // 추가하고 다시 게시판 목록으로
           store.dispatch(Constant.GET_BOARDLIST);
           resolve();

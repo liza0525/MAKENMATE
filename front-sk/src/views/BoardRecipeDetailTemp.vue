@@ -6,19 +6,24 @@
 </template>
 
 <script>
+import Constant from "../Constant"
 export default {
   data() {
     return {
       rid: 0,
-      uid: 3,
+      uid: 4,
     }
   },
   created() {
-    this.rid = this.$route.params.rid
+    this.rid = Number(this.$route.params.rid)
   },
   methods: {
     addToScrapList() {
       console.log("gazua", this.uid, this.rid)
+      this.$store.dispatch(Constant.ADD_SCRAP, {
+        uid: this.uid,
+        rid: this.rid,
+      })
     },
   },
 }
