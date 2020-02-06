@@ -27,7 +27,7 @@
               <v-col cols="2">
                 <b style>재료</b>
               </v-col>
-              <v-col cols="10">
+              <v-col cols="10" v-if="materials[0] != ''">
                 <v-row no-gutters>
                   <v-col v-for="(m, i) in materials" :key="i" cols="6">
                     <v-card outlined tile>{{ materials[i] }}</v-card>
@@ -100,6 +100,10 @@ export default {
           .replace("]", "")
           .split(",");
       });
+    console.log(this.materials.length);
+    if (this.materials === [""]) {
+      this.materials = [];
+    }
     this.$store
       .dispatch(Constant.GET_REPLY, { cid: this.$route.params.cid })
       .then(() => {
@@ -109,7 +113,6 @@ export default {
   },
   computed: {
     reply() {
-      // console.log(this.$store.state.reply);
       return this.$store.state.reply;
     },
     users() {
@@ -118,7 +121,6 @@ export default {
   },
   methods: {
     submitComment() {
-      // console.log(this.cocktail);
       this.$store.dispatch(Constant.ADD_REPLY, {
         cid: this.cocktail.cid,
         email: this.email,
