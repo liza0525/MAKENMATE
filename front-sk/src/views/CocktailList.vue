@@ -33,7 +33,11 @@
 
     <v-container fluid ma-0 pa-0 style="width:65%;">
       <v-row dense>
-        <v-col v-for="cocktail in cocktailArray" v-bind:key="cocktail.cid" cols="3">
+        <v-col
+          v-for="cocktail in cocktailArray"
+          v-bind:key="cocktail.cid"
+          cols="3"
+        >
           <v-card v-on:click="goToDetail(cocktail.cid)">
             <v-img
               :src="cocktail.image"
@@ -75,7 +79,11 @@
     </div>
     <v-container v-if="searchedData.length > 0">
       <div style="text-align:center;">
-        <v-card class="mx-auto" max-width="500" style="overflow-y:auto; float:center;">
+        <v-card
+          class="mx-auto"
+          max-width="500"
+          style="overflow-y:auto; float:center;"
+        >
           <v-list style=" float:center;">
             <v-list-item-group v-model="searchedData">
               <v-list-item v-for="(item, i) in searchedData" :key="i">
@@ -127,6 +135,10 @@
       :key="pageNm"
       style="color:white;"
     >
+      <span style="margin-right:10px;margin-top:100px; color:white;">{{
+        pageNm
+      }}</span>
+    </router-link>
     <router-link
       :to="{
         name: 'CocktailList',
