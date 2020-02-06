@@ -225,6 +225,7 @@ export default {
     });
   },
   [Constant.GET_COCKTAILLIST]: (store, payload) => {
+    console.log(payload);
     return new Promise((resolve, reject) => {
       http
         .get("/cocktail/list", {

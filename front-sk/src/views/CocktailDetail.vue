@@ -25,9 +25,15 @@
           <div class="subheading pt-4">
             <v-row justify="space-around">
               <v-col cols="2">
-                <b>재료</b>
+                <b style>재료</b>
               </v-col>
-              <v-col cols="10">{{ cocktail.material }}</v-col>
+              <v-col cols="10" v-if="materials[0] != ''">
+                <v-row no-gutters>
+                  <v-col v-for="(m, i) in materials" :key="i" cols="6">
+                    <v-card outlined tile>{{ materials[i] }}</v-card>
+                  </v-col>
+                </v-row>
+              </v-col>
             </v-row>
           </div>
           <div class="subheading pt-4">
@@ -47,9 +53,7 @@
         v-for="(re, i) in reply"
         :key="i"
         style="margin-top: 5px; display:block;"
-      >
-        {{ users[i] }} : {{ re.content }}
-      </v-text>
+      >{{ users[i] }} : {{ re.content }}</v-text>
       <input type="text" v-model="comment" />
       <button @click="submitComment" type="submit">button</button>
     </v-container>
@@ -75,6 +79,7 @@ export default {
         bar: "",
         method: ""
       },
+      materials: [],
       email: "test@test.com",
       comment: ""
     };
@@ -89,7 +94,16 @@ export default {
         } else {
           this.cocktail.image = require(`../../../images/${this.cocktail.cid}.jpg`);
         }
+        this.materials = this.cocktail.material
+          .replace(/'/g, "")
+          .replace("[", "")
+          .replace("]", "")
+          .split(",");
       });
+    console.log(this.materials.length);
+    if (this.materials === [""]) {
+      this.materials = [];
+    }
     this.$store
       .dispatch(Constant.GET_REPLY, { cid: this.$route.params.cid })
       .then(() => {
@@ -99,7 +113,6 @@ export default {
   },
   computed: {
     reply() {
-      console.log(this.$store.state.reply);
       return this.$store.state.reply;
     },
     users() {
@@ -108,7 +121,6 @@ export default {
   },
   methods: {
     submitComment() {
-      console.log(this.cocktail);
       this.$store.dispatch(Constant.ADD_REPLY, {
         cid: this.cocktail.cid,
         email: this.email,
