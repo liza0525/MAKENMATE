@@ -240,7 +240,7 @@ export default {
             cocktailList: res.data.content,
             totalPages: res.data.totalPages
           });
-          resolve();
+          resolve(res);
         })
         .catch(exp => {
           console.log(exp);
