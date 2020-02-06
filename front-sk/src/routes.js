@@ -70,7 +70,7 @@ export default [
     component: CocktailList
   },
   {
-    path: "/cocktail/detail",
+    path: "/cocktail/detail/:cid",
     name: "CocktailDetail",
     component: CocktailDetail
   },

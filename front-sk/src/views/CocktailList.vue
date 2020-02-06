@@ -239,12 +239,7 @@ export default {
       this.paginate(this.filteredData - 4);
     },
     goToDetail(sendCid) {
-      this.$router.push({
-        name: "CocktailDetail",
-        params: {
-          cid: sendCid
-        }
-      });
+      this.$router.push("/cocktail/detail/" + sendCid);
     },
     clickFilter(filter) {
       this.filtered = filter;

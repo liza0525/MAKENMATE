@@ -31,7 +31,7 @@ public class BoardServiceImpl implements BoardService {
     @Override
     public Bdetail findById(int bid) {
         Board board = boardDao.findById(bid);
-        User u = userDao.findByUid(board.getUser_uid()).orElseThrow(CocktailException::new);
+        User u = userDao.getUserByUid(board.getUser_uid()).orElseThrow(CocktailException::new);
         Bdetail b = new Bdetail();
         b.setBid(board.getBid());
         b.setFile(board.getFile());

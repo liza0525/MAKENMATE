@@ -6,6 +6,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.Setter;
+import lombok.ToString;
+
+import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,6 +19,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -28,10 +33,10 @@ import lombok.Setter;
 @Getter
 @Setter
 @Table(name = "comments")
-public class Comments {
+@ToString
+public class Comments implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-
     @Column(name = "cmid")
     private int cmid;
 
@@ -42,12 +47,10 @@ public class Comments {
     private int user_uid;
     // private int cocktail_cid;
     @ManyToOne
-    @JoinColumn(name = "cocktail_cid", insertable = false, updatable = false)
+    @JoinColumn(name = "cocktail_cid")
+    @JsonBackReference
     private Cocktail cocktail;
 
-    public void setCocktail(Cocktail ccocktail) {
-        this.cocktail = ccocktail;
-    }
     // @ManyToOne
     // @JoinColumn(name = "user_uid", insertable = false, updatable = false)
     // private User user;

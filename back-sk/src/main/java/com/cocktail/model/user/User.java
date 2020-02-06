@@ -21,6 +21,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import com.cocktail.model.Comments;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.AllArgsConstructor;
@@ -98,7 +99,7 @@ public class User implements UserDetails {
 		this.uid = uid;
 	}
 
-	@JsonIgnore
+	@JsonManagedReference
 	@OneToMany
 	@Builder.Default
 	@JoinColumn(name = "cmid")
