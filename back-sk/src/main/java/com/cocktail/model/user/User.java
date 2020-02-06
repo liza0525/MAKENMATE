@@ -20,7 +20,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import com.cocktail.model.Comments;
-import com.cocktail.model.boardRecipe.BoardRecipe;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -53,12 +52,12 @@ public class User implements UserDetails {
 	// private String intro;
 	private String nickname;
 
-    // @OneToMany(mappedBy = "boardrecipe")
-    // private List<BoardRecipe> boardRecipeList = new ArrayList<>();
+	// @OneToMany(mappedBy = "boardrecipe")
+	// private List<BoardRecipe> boardRecipeList = new ArrayList<>();
 
 	// @OneToMany(mappedBy = "user")
 	// @JsonManagedReference
-    // private List<UserScrap> userScrapList = new ArrayList<>();
+	// private List<UserScrap> userScrapList = new ArrayList<>();
 
 	@ElementCollection(fetch = FetchType.EAGER)
 	@Builder.Default
@@ -107,11 +106,11 @@ public class User implements UserDetails {
 		this.uid = uid;
 	}
 
-	@Override
-	public String toString() {
-		return "User [email=" + email + ", nickname=" + nickname + ", password=" + password + ", roles=" + roles
-				+ ", uid=" + uid + "]";
-	}
+	@JsonManagedReference
+	@OneToMany
+	@Builder.Default
+	@JoinColumn(name = "cmid")
+	private List<Comments> commentsArray = new ArrayList<>();
 
 	// @Column(insertable = false, updatable = false)
 	// private LocalDateTime createDate;

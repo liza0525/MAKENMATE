@@ -19,7 +19,8 @@ import BoardAdd from "./components/board/BoardAdd.vue";
 import BoardUpdate from "./components/board/BoardUpdate.vue";
 import UserScrap from "./views/user/UserScrap.vue";
 
-export default [{
+export default [
+  {
     path: "/",
     name: "Main",
     component: Main
@@ -70,7 +71,7 @@ export default [{
     component: CocktailList
   },
   {
-    path: "/cocktail/detail",
+    path: "/cocktail/detail/:cid",
     name: "CocktailDetail",
     component: CocktailDetail
   },
@@ -123,5 +124,5 @@ export default [{
     path: "/user/scrap/:uid",
     name: "UserScrap",
     component: UserScrap
-  },
+  }
 ];

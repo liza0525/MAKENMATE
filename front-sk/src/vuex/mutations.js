@@ -3,7 +3,9 @@ export default {
   // 댓글
   [Constant.GET_REPLY]: (state, payload) => {
     state.reply = payload.reply;
+    state.users = payload.users;
   },
+  [Constant.ADD_REPLY]: (state, payload) => {},
   // 게시판
   [Constant.GET_BOARDLIST]: (state, payload) => {
     state.boardList = payload.boardList;

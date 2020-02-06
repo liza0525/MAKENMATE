@@ -113,7 +113,7 @@ export default {
     return {
       searchData: "",
       cocktailArray: [],
-      pageNms: [],
+      pageNms: [1, 2, 3, 4, 5],
       cocktailNameArray: [],
       filteredData: 25,
       prevBt: "<",
@@ -166,8 +166,6 @@ export default {
             for (var i = 1; i <= this.filteredData; i++) {
               this.pageNms.push(i);
             }
-          } else {
-            this.pageNms = [1, 2, 3, 4, 5];
           }
         });
       if (this.searchData === "h") {
@@ -195,9 +193,8 @@ export default {
           });
         }
       }
-      console.log(this.pageNms[0]);
-      this.$router.push("/cocktail/list/" + this.pageNms[0]);
-      // this.paginate(this.pageNms[0]);
+      this.paginate(this.pageNms[0]);
+      console.log(this.pageNms);
     },
     prevPg() {
       var flag = false;
@@ -242,12 +239,7 @@ export default {
       this.paginate(this.filteredData - 4);
     },
     goToDetail(sendCid) {
-      this.$router.push({
-        name: "CocktailDetail",
-        params: {
-          cid: sendCid
-        }
-      });
+      this.$router.push("/cocktail/detail/" + sendCid);
     },
     clickFilter(filter) {
       this.filtered = filter;
