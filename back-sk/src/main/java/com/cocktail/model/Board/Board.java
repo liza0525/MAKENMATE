@@ -52,21 +52,6 @@ public class Board implements Serializable {
     @Column
     private String regdate;
 
-    @Column
-    private int user_uid;
-
-    // @JsonIgnore
-    // @OneToMany
-    // @JoinColumn(name = "cmid")
-    // private List<Comments> commentsArray = new ArrayList<>();
-
-    // @ManyToOne
-    // @JoinColumn(name = "user_uid", referencedColumnName = "uid")
-    // private User user_uid;
-    // @ManyToOne(targetEntity = Comments.class, fetch = FetchType.EAGER)
-    // @JoinColumn(name = "cmid")
-    // private Comments comments;
-
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "user_uid", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
@@ -75,4 +60,6 @@ public class Board implements Serializable {
 
     // @Column
     // private int user_uid;
-}
+    }
+
+     

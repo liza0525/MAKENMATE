@@ -60,7 +60,7 @@ public class BoardRecipe {
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonIgnore
     private User user;
-    
+
     // @Column
     // private int user_uid;
     // @JsonManagedReference
