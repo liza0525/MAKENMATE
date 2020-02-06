@@ -66,7 +66,7 @@ export default [
     component: Mypage
   },
   {
-    path: "/cocktail/list/:pageNm",
+    path: "/cocktail/list",
     name: "CocktailList",
     component: CocktailList
   },

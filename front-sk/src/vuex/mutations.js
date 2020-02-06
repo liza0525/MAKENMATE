@@ -41,8 +41,8 @@ export default {
       } else {
         element.image = require(`../../../images/default.png`);
       }
-      state.cocktailList = payload.cocktailList;
     });
+    state.cocktailList = payload.cocktailList;
     state.totalPages = payload.totalPages;
   },
   [Constant.GET_COCKTAIL]: (state, payload) => {

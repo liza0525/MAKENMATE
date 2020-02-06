@@ -167,7 +167,7 @@ export default {
       http
         .get("/user/scrap/" + payload.uid)
         .then(res => {
-          console.log('res : ', res.data.object)
+          console.log("res : ", res.data.object);
           store.commit(Constant.GET_SCRAPLIST, { scrapList: res.data.object });
 
           resolve();
@@ -239,7 +239,7 @@ export default {
             cocktailList: res.data.content,
             totalPages: res.data.totalPages
           });
-          resolve();
+          resolve(res);
         })
         .catch(exp => {
           console.log(exp);
