@@ -106,11 +106,11 @@ public class User implements UserDetails {
 		this.uid = uid;
 	}
 
-	@Override
-	public String toString() {
-		return "User [email=" + email + ", nickname=" + nickname + ", password=" + password + ", roles=" + roles
-				+ ", uid=" + uid + "]";
-	}
+	@JsonManagedReference
+	@OneToMany
+	@Builder.Default
+	@JoinColumn(name = "cmid")
+	private List<Comments> commentsArray = new ArrayList<>();
 
 	// @Column(insertable = false, updatable = false)
 	// private LocalDateTime createDate;

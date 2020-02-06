@@ -15,8 +15,10 @@ const state = {
   boardList: [],
   scrapList: [],
   user: "",
+  users: [],
   reply: [],
-  totalPages: 0
+  comment: "",
+  email: ""
 };
 
 export default new Vuex.Store({

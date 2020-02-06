@@ -196,12 +196,7 @@ export default {
       return this.cocktailArray;
     },
     goToDetail(sendCid) {
-      this.$router.push({
-        name: "CocktailDetail",
-        params: {
-          cid: sendCid
-        }
-      });
+      this.$router.push("/cocktail/detail/" + sendCid);
     },
     clickFilter(filter) {
       this.filtered = filter;

@@ -1,56 +1,67 @@
 import Constant from "../Constant";
 import http from "../http-common";
 export default {
-  // 댓글 id를 어떻게 백엔드로 보낼지 고민 필요~~
-  //   [Constant.GET_REPLY]: (store, payload) => {
-  //     http
-  //       .get("/reply", {
-  //         params: {
-  //           id: payload.id
-  //           // 유저인지 칵테일인지 게시판인지
-  //           // 구분 필요함
-  //         }
-  //       })
-  //       .then(res => {
-  //         store.commit(Constant.GET_REPLY, {
-  //           reply: res.data.object
-  //         });
-  //       })
-  //       .catch(exp => {
-  //     console.log(exp);
-  //     reject();
-  // });
-  //   },
-  //   [Constant.ADD_REPLY]: (store, payload) => {
-  //     http
-  //       .post("/reply", payload.reply, {
-  //         params: {
-  //           username
-  //         }
-  //       })
-  //       .then(res => {
-  //         store.dispatch(Constant.GET_REPLY, {});
-  //       }).catch(exp => {
-  //     console.log(exp);
-  //     reject();
-  // });;
-  //   },
-  //   [Constant.MODIFY_REPLY]: (store, payload) => {
-  //     http.put("/reply", payload.reply).then(res => {
+  [Constant.GET_REPLY]: (store, payload) => {
+    return new Promise((resolve, reject) => {
+      http
+        .get("/comments/" + payload.cid)
+        .then(res => {
+          store.commit(Constant.GET_REPLY, {
+            reply: res.data.comments,
+            users: res.data.UserArray
+          });
+          resolve();
+        })
+        .catch(exp => {
+          console.log(exp);
+          reject();
+        });
+    });
+  },
+  [Constant.ADD_REPLY]: (store, payload) => {
+    console.log(payload);
+    return new Promise((resolve, reject) => {
+      http
+        .post("/comments/" + payload.cid, null, {
+          params: {
+            email: payload.email,
+            content: payload.comment
+          }
+        })
+        .then(() => {
+          store.dispatch(Constant.GET_REPLY, {
+            cid: payload.cid
+          });
+          resolve();
+        })
+        .catch(exp => {
+          console.log(exp);
+          reject();
+        });
+    });
+  },
+  // [Constant.MODIFY_REPLY]: (store, payload) => {
+  //   http
+  //     .put("/reply", payload.reply)
+  //     .then(res => {
   //       store.commit(Constant.GET_REPLY);
-  //     }).catch(exp => {
-  //     console.log(exp);
-  //     reject();
-  // });;
-  //   },
-  //   [Constant.REMOVE_REPLY]: (store, payload) => {
-  //     http.delete("/reply", payload.reply).then(res => {
+  //     })
+  //     .catch(exp => {
+  //       console.log(exp);
+  //       reject();
+  //     });
+  // },
+  // [Constant.REMOVE_REPLY]: (store, payload) => {
+  //   http
+  //     .delete("/reply", payload.reply)
+  //     .then(res => {
   //       store.commit(Constant.GET_REPLY);
-  //     }).catch(exp => {
-  //     console.log(exp);
-  //     reject();
-  // });
-  //   },
+  //     })
+  //     .catch(exp => {
+  //       console.log(exp);
+  //       reject();
+  //     });
+  // },
   // Board CRUD
   [Constant.GET_BOARDLIST]: store => {
     return new Promise((resolve, reject) => {

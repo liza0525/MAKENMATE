@@ -61,14 +61,18 @@ public class CommentsController {
     public Object load(@PathVariable final int cid) {
         // final Cocktail cocktail = cocktailDao.getCocktailByCid(cid);
         final List<Comments> comments = commentsDao.findAllByCocktail_cid(cid);
-        final BasicResponse result = new BasicResponse();
-        result.status = true;
-        result.data = "success";
-        result.object = comments;
+        final List<String> UserArray = new ArrayList<>();
+        for (int idex = 0; idex < comments.size(); ++idex) {
+            User user = userDao.getUserByUid(comments.get(idex).getUser_uid()).orElseThrow(CocktailException::new);
+            UserArray.add(user.getNickname());
+        }
+        Map<String, Object> result = new HashMap();
+        result.put("comments", comments);
+        result.put("UserArray", UserArray);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    @GetMapping("/comments/{cid}/create")
+    @PostMapping("/comments/{cid}")
     @ApiOperation(value = "댓글 생성")
     public Object create(@PathVariable final int cid, @RequestParam(required = true) final String email,
             @RequestParam(required = true) final String content) {
@@ -78,8 +82,9 @@ public class CommentsController {
         newComment.setUser_uid(user.getUid());
         newComment.setContent(content);
         newComment.setCocktail(cocktail);
-        System.out.println(newComment.getCocktail().toString());
-        cocktail.getCommentsArray().add(newComment);
+        System.out.println(cocktail.getCid());
+        // cocktail.getCommentsArray().add(newComment);
+        System.out.println(newComment.toString());
         commentsDao.save(newComment);
         final BasicResponse result = new BasicResponse();
         result.status = true;

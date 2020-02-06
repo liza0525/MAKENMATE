@@ -42,6 +42,16 @@
           </div>
         </v-col>
       </v-row>
+      <v-text
+        :v-if="reply"
+        v-for="(re, i) in reply"
+        :key="i"
+        style="margin-top: 5px; display:block;"
+      >
+        {{ users[i] }} : {{ re.content }}
+      </v-text>
+      <input type="text" v-model="comment" />
+      <button @click="submitComment" type="submit">button</button>
     </v-container>
   </div>
 </template>
@@ -64,7 +74,9 @@ export default {
         image: "",
         bar: "",
         method: ""
-      }
+      },
+      email: "test@test.com",
+      comment: ""
     };
   },
   mounted() {
@@ -78,6 +90,32 @@ export default {
           this.cocktail.image = require(`../../../images/${this.cocktail.cid}.jpg`);
         }
       });
+    this.$store
+      .dispatch(Constant.GET_REPLY, { cid: this.$route.params.cid })
+      .then(() => {
+        this.reply = { ...this.$store.state.reply };
+        this.users = { ...this.$store.state.users };
+      });
+  },
+  computed: {
+    reply() {
+      console.log(this.$store.state.reply);
+      return this.$store.state.reply;
+    },
+    users() {
+      return this.$store.state.users;
+    }
+  },
+  methods: {
+    submitComment() {
+      console.log(this.cocktail);
+      this.$store.dispatch(Constant.ADD_REPLY, {
+        cid: this.cocktail.cid,
+        email: this.email,
+        comment: this.comment
+      });
+      this.comment = "";
+    }
   }
 };
 </script>
