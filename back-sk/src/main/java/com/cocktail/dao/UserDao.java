@@ -8,7 +8,7 @@ import com.cocktail.model.user.User;
 
 // import com.cocktail.model.user.User;
 
-public interface UserDao extends JpaRepository<User, String> {
+public interface UserDao extends JpaRepository<User, Integer> {
 	Optional<User> getUserByEmail(String email);
 
 	// User findUserByEmailAndPassword(String email, String password);

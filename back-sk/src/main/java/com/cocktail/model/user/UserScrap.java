@@ -24,7 +24,7 @@ import lombok.ToString;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@IdClass(UserScrap.class)
+@IdClass(UserScrapId.class)
 public class UserScrap implements Serializable {
     @Id
     @ManyToOne

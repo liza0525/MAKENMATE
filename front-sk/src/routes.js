@@ -18,7 +18,7 @@ import BoardDetail from "./components/board/BoardDetail.vue";
 import BoardAdd from "./components/board/BoardAdd.vue";
 import BoardUpdate from "./components/board/BoardUpdate.vue";
 import UserScrap from "./views/user/UserScrap.vue";
-import BoardRecipeDetailTemp from "./views/BoardRecipeDetailTemp.vue";
+import BoardRecipeDetail from "./views/boardrecipe/BoardRecipeDetail.vue";
 
 export default [
   {
@@ -129,6 +129,6 @@ export default [
   {
     path: "/boardrecipe/detail/:rid",
     name: "BoardRecipeDetail",
-    component: BoardRecipeDetailTemp
+    component: BoardRecipeDetail
   }
 ];
