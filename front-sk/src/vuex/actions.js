@@ -236,7 +236,8 @@ export default {
         })
         .then(res => {
           store.commit(Constant.GET_COCKTAILLIST, {
-            cocktailList: res.data.object
+            cocktailList: res.data.content,
+            totalPages: res.data.totalPages
           });
           resolve();
         })

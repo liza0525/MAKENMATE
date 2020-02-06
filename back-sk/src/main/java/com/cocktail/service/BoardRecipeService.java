@@ -2,8 +2,8 @@ package com.cocktail.service;
 
 import java.util.List;
 
-import com.cocktail.model.BoardRecipe.BRdetail;
-import com.cocktail.model.BoardRecipe.BoardRecipe;
+import com.cocktail.model.boardRecipe.BRdetail;
+import com.cocktail.model.boardRecipe.BoardRecipe;
 
 public interface BoardRecipeService {
 

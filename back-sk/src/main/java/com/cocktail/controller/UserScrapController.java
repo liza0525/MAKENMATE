@@ -8,7 +8,7 @@ import com.cocktail.dao.UserDao;
 import com.cocktail.dao.UserScrapDao;
 import com.cocktail.exception.CocktailException;
 import com.cocktail.model.BasicResponse;
-import com.cocktail.model.BoardRecipe.BoardRecipe;
+import com.cocktail.model.boardRecipe.BoardRecipe;
 import com.cocktail.model.user.User;
 import com.cocktail.model.user.UserScrap;
 

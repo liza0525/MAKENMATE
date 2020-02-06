@@ -1,4 +1,15 @@
 import Constant from "../Constant";
+
+async function loopArray(array) {
+  array.forEach(element => {
+    if (element.image != "") {
+      element.image = require(`../../../images/${element.cid}.jpg`);
+    } else {
+      element.image = require(`../../../images/default.png`);
+    }
+  });
+}
+
 export default {
   // 댓글
   [Constant.GET_REPLY]: (state, payload) => {
@@ -24,7 +35,15 @@ export default {
   },
   // 칵테일
   [Constant.GET_COCKTAILLIST]: (state, payload) => {
-    state.cocktailList = payload.cocktailList;
+    payload.cocktailList.forEach(element => {
+      if (element.image != "") {
+        element.image = require(`../../../images/${element.cid}.jpg`);
+      } else {
+        element.image = require(`../../../images/default.png`);
+      }
+      state.cocktailList = payload.cocktailList;
+    });
+    state.totalPages = payload.totalPages;
   },
   [Constant.GET_COCKTAIL]: (state, payload) => {
     state.cocktail = payload.cocktail;

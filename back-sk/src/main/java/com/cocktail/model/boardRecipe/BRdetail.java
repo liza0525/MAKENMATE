@@ -1,4 +1,4 @@
-package com.cocktail.model.BoardRecipe;
+package com.cocktail.model.boardRecipe;
 
 import java.io.Serializable;
 

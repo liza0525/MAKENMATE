@@ -60,4 +60,6 @@ public class Board implements Serializable {
 
     // @Column
     // private int user_uid;
-}
+    }
+
+     

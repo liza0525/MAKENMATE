@@ -85,35 +85,53 @@
         </v-card>
       </div>
     </v-container>
-    <button v-on:click="fistPg()" style="margin-right:10px;margin-top:100px;">
-      {{ fistBt }}
-    </button>
-    <button v-on:click="prevPg()" style="margin-right:10px;">
-      {{ prevBt }}
-    </button>
-    <button
+    <router-link
+      :to="{ name: 'CocktailList', params: { pageNm: 1 } }"
+      style="margin-right:10px;margin-top:100px; color:white;"
+      >{{ fistBt }}
+    </router-link>
+    <router-link :to="{ name: 'CocktailList', params: { pageNm: min - 5 } }">
+      <span style="margin-right:10px;margin-top:100px; color:white;">
+        {{ prevBt }}
+      </span>
+    </router-link>
+    <router-link
+      :to="{ name: 'CocktailList', params: { pageNm: pageNm } }"
+      v-for="pageNm in pageNms"
+      :key="pageNm"
+      style="color:white;"
+      ><span style="margin-right:10px;">{{ pageNm }}</span></router-link
+    >
+    <!-- <button
       v-on:click="paginate(pageNm)"
       v-for="pageNm in pageNms"
       :key="pageNm"
     >
       <span style="margin-right:10px;">{{ pageNm }}</span>
-    </button>
-    <button v-on:click="nextPg(filteredData)" style="margin-right:10px;">
-      {{ nextBt }}
-    </button>
-    <button v-on:click="lastPg()">{{ lastBt }}</button>
+    </button> -->
+    <router-link :to="{ name: 'CocktailList', params: { pageNm: min + 5 } }">
+      <span style="margin-right:10px;margin-top:100px; color:white;">
+        {{ nextBt }}
+      </span>
+    </router-link>
+    <router-link
+      :to="{ name: 'CocktailList', params: { pageNm: filteredData } }"
+    >
+      <span style="margin-right:10px;margin-top:100px; color:white;">
+        {{ lastBt }}
+      </span>
+    </router-link>
   </div>
 </template>
 
 <script>
-const axios = require("axios");
 import http from "../http-common";
+import Constant from "../Constant";
 export default {
   data: () => {
     return {
       searchData: "",
       cocktailArray: [],
-      pageNms: [1, 2, 3, 4, 5],
       cocktailNameArray: [],
       filteredData: 25,
       prevBt: "<",
@@ -122,6 +140,7 @@ export default {
       lastBt: ">>",
       filtered: "all",
       searchedData: [],
+      pageNms: [],
       filters: [
         { name: "레몬", image: require("../assets/images/lemon.png") },
         { name: "럼", image: require("../assets/images/lemon.png") },
@@ -131,112 +150,50 @@ export default {
         { name: "오렌지", image: require("../assets/images/lemon.png") },
         { name: "보드카", image: require("../assets/images/lemon.png") },
         { name: "맥주", image: require("../assets/images/lemon.png") }
-      ]
+      ],
+      min: 1
     };
   },
-  created() {
-    this.paginate(1, this.filtered);
-    this.cocktailName();
+  mounted() {
+    this.paginate(this.$route.params.pageNm);
+    this.pageNm = this.$route.params.pageNm;
+    this.getCocktailName();
+  },
+  computed: {
+    pageNm: {
+      set: function(val) {
+        let arr = [];
+        this.min = parseInt((val - 1) / 5) * 5 + 1;
+        for (let index = 0; index < 5; index++) {
+          arr.push(Number(this.min + index));
+          if (Number(this.min + index) > this.$store.state.totalPages) break;
+        }
+        this.pageNms = arr;
+      },
+      get: function() {
+        return this.$route.params.pageNm;
+      }
+    }
   },
   methods: {
     paginate(pageNm) {
-      let data = {
-        pageNm
-      };
       if (this.searchData === "") {
         this.searchData = "h";
       }
-      http
-        .get("/cocktail/list?page=" + (pageNm - 1), {
-          params: { filtered: this.filtered, searchedFiltered: this.searchData }
+      this.$store
+        .dispatch(Constant.GET_COCKTAILLIST, {
+          pageNm: pageNm - 1,
+          filtered: this.filtered,
+          searchedFiltered: this.searchData
         })
-        .then(res => {
-          this.cocktailArray = res.data.content;
-          console.log(res);
-          this.cocktailArray.forEach(element => {
-            if (element.image != "") {
-              element.image = require(`../../../images/${element.cid}.jpg`);
-            } else {
-              element.image = require(`../../../images/default.png`);
-            }
-          });
-          this.filteredData = res.data.totalPages;
-          if (this.filteredData < 5) {
-            this.pageNms = [];
-            for (var i = 1; i <= this.filteredData; i++) {
-              this.pageNms.push(i);
-            }
-          }
+        .then(() => {
+          this.cocktailArray = { ...this.$store.state.cocktailList };
+          this.filteredData = this.$store.state.totalPages;
         });
       if (this.searchData === "h") {
         this.searchData = "";
       }
-    },
-    nextPg(filteredData) {
-      if (this.filteredData < 5) {
-        this.pageNms = [];
-        for (var i = 1; i <= this.filteredData; i++) {
-          this.pageNms.push(i);
-        }
-      } else {
-        if (this.pageNms[4] + 5 >= filteredData) {
-          this.pageNms = [
-            this.filteredData - 4,
-            this.filteredData - 3,
-            this.filteredData - 2,
-            this.filteredData - 1,
-            this.filteredData
-          ];
-        } else {
-          this.pageNms = this.pageNms.map(pageNm => {
-            return pageNm + 5;
-          });
-        }
-      }
-      this.paginate(this.pageNms[0]);
-      console.log(this.pageNms);
-    },
-    prevPg() {
-      var flag = false;
-      this.pageNms.forEach(function(pageNm) {
-        if (pageNm < 5) flag = true;
-      });
-      if (flag) {
-        if (this.filteredData < 5) {
-          this.pageNms = [];
-          for (var i = 1; i <= this.filteredData; i++) {
-            this.pageNms.push(i);
-          }
-        } else {
-          this.pageNms = [1, 2, 3, 4, 5];
-        }
-      } else {
-        this.pageNms = this.pageNms.map(pageNm => {
-          return pageNm - 5;
-        });
-      }
-      this.paginate(this.pageNms[0]);
-    },
-    fistPg() {
-      if (this.filteredData < 5) {
-        this.pageNms = [];
-        for (var i = 1; i <= this.filteredData; i++) {
-          this.pageNms.push(i);
-        }
-      } else {
-        this.pageNms = [1, 2, 3, 4, 5];
-      }
-      this.paginate(1);
-    },
-    lastPg() {
-      this.pageNms = [
-        this.filteredData - 4,
-        this.filteredData - 3,
-        this.filteredData - 2,
-        this.filteredData - 1,
-        this.filteredData
-      ];
-      this.paginate(this.filteredData - 4);
+      return this.cocktailArray;
     },
     goToDetail(sendCid) {
       this.$router.push("/cocktail/detail/" + sendCid);
@@ -245,7 +202,7 @@ export default {
       this.filtered = filter;
       this.paginate(this.pageNms[0]);
     },
-    cocktailName() {
+    getCocktailName() {
       http.get("/cocktail/name").then(res => {
         this.cocktailNameArray = res.data.object;
       });
