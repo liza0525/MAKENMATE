@@ -1,4 +1,4 @@
-package com.cocktail.model.board;
+package com.cocktail.model.boardRecipe;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -13,20 +13,17 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-<<<<<<< HEAD
-import com.cocktail.model.Comments;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-=======
 import com.cocktail.model.user.User;
+import com.cocktail.model.user.UserScrap;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
->>>>>>> de12b65f665c41e0fe401238133f0a059f13b483
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -34,26 +31,26 @@ import lombok.Setter;
 import lombok.ToString;
 
 @Entity
-@Table(name = "board")
+@Table(name = "boardrecipe")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class Board implements Serializable {
+public class BoardRecipe {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int bid;
+    private int rid;
 
     @Column
     private String title;
 
-    @Lob
-    private byte[] file;
-
     @Column
     private String contents;
+
+    @Column
+    private String image;
 
     @Column
     private String regdate;
@@ -63,7 +60,10 @@ public class Board implements Serializable {
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonIgnore
     private User user;
-
+    
     // @Column
     // private int user_uid;
+    // @JsonManagedReference
+    // @OneToMany(mappedBy = "boardrecipe")
+    // private List<UserScrap> userScrapList = new ArrayList<>();
 }

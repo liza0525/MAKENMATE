@@ -31,7 +31,7 @@ public class BoardServiceImpl implements BoardService {
     @Override
     public Bdetail findById(int bid) {
         Board board = boardDao.findById(bid);
-        User u = userDao.findByUid(board.getUser_uid()).orElseThrow(CocktailException::new);
+        User u = userDao.findByUid(board.getUser().getUid()).orElseThrow(CocktailException::new);
         Bdetail b = new Bdetail();
         b.setBid(board.getBid());
         b.setFile(board.getFile());
@@ -41,17 +41,6 @@ public class BoardServiceImpl implements BoardService {
         b.setUser_name(u.getNickname());
         System.out.println(u.getNickname());
         return b;
-    }
-
-    // 글 작성 안씀 xxxxx
-    @Override
-    public Board save(Board board, String username) {
-        // nicknamed으로 유저 pk 검색
-        User u = userDao.findByNickname(username);
-        // board.setUser_uid(u);
-        board.setUser_uid(u.getUid());
-        boardDao.save(board);
-        return board;
     }
 
     // 글 수정
@@ -76,13 +65,16 @@ public class BoardServiceImpl implements BoardService {
     public int save(Bdetail bdetail) {
         Board b = new Board();
         System.out.println(bdetail);
+        String username = bdetail.getUser_name();
+        User u = userDao.findByNickname(username);
+        System.out.println(username);
         b.setContents(bdetail.getContents());
         // b.setFile(bdetail.getFile());
         b.setRegdate(bdetail.getRegdate());
         b.setTitle(bdetail.getTitle());
-        b.setUser_uid(1);
+        System.out.println(u);
+        b.setUser(u);
         b = boardDao.save(b);
         return b.getBid();
     }
-
 }

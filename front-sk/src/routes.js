@@ -16,7 +16,8 @@ import Logout from "./views/user/Logout";
 import BoardList from "./components/board/BoardList.vue";
 import BoardDetail from "./components/board/BoardDetail.vue";
 import BoardAdd from "./components/board/BoardAdd.vue";
-// import BoardUpdate from "./components/board/BoardUpdate.vue";
+import BoardUpdate from "./components/board/BoardUpdate.vue";
+import UserScrap from "./views/user/UserScrap.vue";
 
 export default [
   {
@@ -104,19 +105,24 @@ export default [
     component: BoardList
   },
   {
-    path: "/boarddetail",
+    path: "/boarddetail/:bid",
     name: "BoardDetail",
     component: BoardDetail
   },
   {
-    path: "/boardadd",
+    path: "/boardadd/",
     name: "BoardAdd",
     component: BoardAdd
+  },
+  {
+    path: "/boardupdate/:bid",
+    name: "BoardUpdate",
+    component: BoardUpdate,
+    props: true
+  },
+  {
+    path: "/user/scrap/:uid",
+    name: "UserScrap",
+    component: UserScrap
   }
-  // {
-  //   path:"/boardupdate",
-  //   name:"BoardUpdate",
-  //   component:BoardUpdate,
-  //   props:true
-  // }
 ];

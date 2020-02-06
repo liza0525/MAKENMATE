@@ -21,6 +21,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import com.cocktail.model.Comments;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.AllArgsConstructor;
@@ -50,6 +51,13 @@ public class User implements UserDetails {
 	// private String image;
 	// private String intro;
 	private String nickname;
+
+	// @OneToMany(mappedBy = "boardrecipe")
+	// private List<BoardRecipe> boardRecipeList = new ArrayList<>();
+
+	// @OneToMany(mappedBy = "user")
+	// @JsonManagedReference
+	// private List<UserScrap> userScrapList = new ArrayList<>();
 
 	@ElementCollection(fetch = FetchType.EAGER)
 	@Builder.Default
@@ -98,11 +106,11 @@ public class User implements UserDetails {
 		this.uid = uid;
 	}
 
-	@JsonIgnore
-	@OneToMany
-	@Builder.Default
-	@JoinColumn(name = "cmid")
-	private List<Comments> commentsArray = new ArrayList<>();
+	@Override
+	public String toString() {
+		return "User [email=" + email + ", nickname=" + nickname + ", password=" + password + ", roles=" + roles
+				+ ", uid=" + uid + "]";
+	}
 
 	// @Column(insertable = false, updatable = false)
 	// private LocalDateTime createDate;

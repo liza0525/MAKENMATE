@@ -47,7 +47,7 @@
                                         }
                                     };
                                 },
-                                created() {
+                                mounted() {
                                     this.getData();
                                 },
                                 methods: {
@@ -56,8 +56,8 @@
                                         http
                                             .get("/board/" + this.bid)
                                             .then(res => {
+                                                console.log('asd:', res.data)
                                                 this.board = res.data;
-                                                console.log(this.board);
                                             });
 
                                     },
@@ -65,12 +65,7 @@
                                         http
                                             .delete('/board/' + boardid)
                                             .then(response => {
-                                                if (response.data.data == "Success") {
-                                                    alert("삭제하였습니다.");
-                                                    this.$router.push("BoardList");
-                                                } else {
-                                                    alert("삭제 땡 ~!!");
-                                                }
+                                                this.$router.push({name: "BoardList"});
                                             })
                                             .catch(error => {
                                                 this.errored = true
