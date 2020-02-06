@@ -165,9 +165,11 @@ export default {
   [Constant.GET_SCRAPLIST]: (store, payload) => {
     return new Promise((resolve, reject) => {
       http
-        .get("/scrap/" + payload.username)
+        .get("/user/scrap/" + payload.uid)
         .then(res => {
-          store.commit(Constant.GET_SCRAPLIST, { scrap: res.data.object });
+          console.log('res : ', res.data.object)
+          store.commit(Constant.GET_SCRAPLIST, { scrapList: res.data.object });
+
           resolve();
         })
         .catch(exp => {
@@ -180,7 +182,7 @@ export default {
     return new Promise((resolve, reject) => {
       // recipe 공유 게시판만 추가
       http
-        .post("/scrap/" + payload.bid)
+        .post("/user/scrap/" + payload.bid)
         .then(res => {
           // 추가하고 다시 게시판 목록으로
           store.dispatch(Constant.GET_BOARDLIST);
@@ -196,7 +198,7 @@ export default {
     return new Promise((resolve, reject) => {
       // 스크랩 TABLE의 id
       http
-        .delete("/scrap/" + payload.sid)
+        .delete("/user/scrap/" + payload.sid)
         .then(res => {
           store.dispatch(Constant.GET_SCRAPLIST);
           resolve();

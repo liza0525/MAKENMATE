@@ -52,6 +52,13 @@ public class User implements UserDetails {
 	// private String intro;
 	private String nickname;
 
+	// @OneToMany(mappedBy = "boardrecipe")
+	// private List<BoardRecipe> boardRecipeList = new ArrayList<>();
+
+	// @OneToMany(mappedBy = "user")
+	// @JsonManagedReference
+	// private List<UserScrap> userScrapList = new ArrayList<>();
+
 	@ElementCollection(fetch = FetchType.EAGER)
 	@Builder.Default
 	private List<String> roles = new ArrayList<>();
