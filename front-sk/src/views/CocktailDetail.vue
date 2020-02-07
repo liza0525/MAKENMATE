@@ -48,12 +48,24 @@
           </div>
         </v-col>
       </v-row>
-      <v-text
-        :v-if="reply"
-        v-for="(re, i) in reply"
-        :key="i"
-        style="margin-top: 5px; display:block;"
-      >{{ users[i] }} : {{ re.content }}</v-text>
+      <div :v-if="reply" v-for="(re, i) in reply" :key="i" style="margin-top: 5px; display:block;">
+        <!-- <v-text v-if="isInput[i]"> -->
+        <div v-if="isInput[i] === 0">
+          <span>{{ users[i] }} : {{ re.content }}</span>
+          <button @click="click(i)">수정</button>
+          <button @click="deleteComment(i, re.cmid)">삭제</button>
+        </div>
+        <div v-else>
+          <span>
+            {{ users[i] }} :
+            <input v-model="re.content" />
+          </span>
+          <p v-if="username === users[i]" style="display:inline-block;">
+            <button @click="updateComment(i, re.cmid, re.content)">수정</button>
+          </p>
+        </div>
+      </div>
+      <!-- </v-text> -->
       <input type="text" v-model="comment" />
       <button @click="submitComment" type="submit">button</button>
     </v-container>
@@ -81,7 +93,10 @@ export default {
       },
       materials: [],
       email: "test@test.com",
-      comment: ""
+      comment: "",
+      isInput: [],
+      username: "",
+      updatedComment: ""
     };
   },
   mounted() {
@@ -100,7 +115,6 @@ export default {
           .replace("]", "")
           .split(",");
       });
-    console.log(this.materials.length);
     if (this.materials === [""]) {
       this.materials = [];
     }
@@ -109,14 +123,36 @@ export default {
       .then(() => {
         this.reply = { ...this.$store.state.reply };
         this.users = { ...this.$store.state.users };
+        for (let i = 0; i < this.reply.length; ++i) {
+          this.isInput.push(0);
+        }
+        console.log(this.isInput);
       });
+    this.username = this.$store.state.username;
+    if (this.username === undefined) {
+      this.username = "h";
+    }
   },
   computed: {
-    reply() {
-      return this.$store.state.reply;
+    users: {
+      set(val) {},
+      get() {
+        return this.$store.state.users;
+      }
     },
-    users() {
-      return this.$store.state.users;
+    reply: {
+      set(val) {},
+      get() {
+        return this.$store.state.reply;
+      }
+    },
+    clicked: {
+      set(val) {
+        this.isInput[val] = 1;
+      },
+      get() {
+        return true;
+      }
     }
   },
   methods: {
@@ -126,7 +162,36 @@ export default {
         email: this.email,
         comment: this.comment
       });
+      this.isInput.push(0);
+      this.users.push(this.username);
       this.comment = "";
+    },
+    updateComment(i, cmid, content) {
+      this.$store
+        .dispatch(Constant.MODIFY_REPLY, {
+          cmid: cmid,
+          content: content,
+          cid: this.cocktail.cid
+        })
+        .then(() => {
+          let list = [...this.isInput];
+          list.splice(i, 1, 0);
+          this.isInput = list;
+        });
+    },
+    deleteComment(i, cmid) {
+      this.users.splice(i, 1);
+      this.isInput.splice(i, 1);
+      this.$store.dispatch(Constant.REMOVE_REPLY, {
+        cmid: cmid,
+        cid: this.cocktail.cid
+      });
+    },
+    click(i) {
+      let list = [...this.isInput];
+      list.splice(i, 1, 1);
+      this.isInput = list;
+      console.log(this.isInput[i]);
     }
   }
 };

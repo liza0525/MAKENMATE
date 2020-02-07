@@ -39,28 +39,43 @@ export default {
         });
     });
   },
-  // [Constant.MODIFY_REPLY]: (store, payload) => {
-  //   http
-  //     .put("/reply", payload.reply)
-  //     .then(res => {
-  //       store.commit(Constant.GET_REPLY);
-  //     })
-  //     .catch(exp => {
-  //       console.log(exp);
-  //       reject();
-  //     });
-  // },
-  // [Constant.REMOVE_REPLY]: (store, payload) => {
-  //   http
-  //     .delete("/reply", payload.reply)
-  //     .then(res => {
-  //       store.commit(Constant.GET_REPLY);
-  //     })
-  //     .catch(exp => {
-  //       console.log(exp);
-  //       reject();
-  //     });
-  // },
+  [Constant.MODIFY_REPLY]: (store, payload) => {
+    return new Promise((resolve, reject) => {
+      console.log(payload.content);
+      http
+        .put("/comments/" + payload.cmid, null, {
+          params: {
+            content: payload.content
+          }
+        })
+        .then(() => {
+          store.dispatch(Constant.GET_REPLY, {
+            cid: payload.cid
+          });
+          resolve();
+        })
+        .catch(exp => {
+          console.log(exp);
+          reject();
+        });
+    });
+  },
+  [Constant.REMOVE_REPLY]: (store, payload) => {
+    return new Promise((resolve, reject) => {
+      http
+        .delete("/comments/" + payload.cmid)
+        .then(() => {
+          store.dispatch(Constant.GET_REPLY, {
+            cid: payload.cid
+          });
+          resolve();
+        })
+        .catch(exp => {
+          console.log(exp);
+          reject();
+        });
+    });
+  },
   // Board CRUD
   [Constant.GET_BOARDLIST]: store => {
     return new Promise((resolve, reject) => {

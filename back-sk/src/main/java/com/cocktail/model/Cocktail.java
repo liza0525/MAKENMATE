@@ -56,10 +56,8 @@ public class Cocktail {
     // @JoinColumn(name = "comments_cmid")
     // private Comments comments;
 
-    
     @OneToMany(mappedBy = "cocktail")
     @JsonManagedReference
     private List<CocktailLike> cocktails = new ArrayList<>();
-    
 
 }

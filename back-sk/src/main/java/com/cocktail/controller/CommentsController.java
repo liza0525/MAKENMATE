@@ -21,9 +21,11 @@ import com.cocktail.exception.CocktailException;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -92,4 +94,26 @@ public class CommentsController {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
+    @DeleteMapping("/comments/{cmid}")
+    @ApiOperation(value = "댓글 삭제")
+    public Object delete(@PathVariable final int cmid) {
+        final Comments comment = commentsDao.getCommentsByCmid(cmid);
+        commentsDao.delete(comment);
+        final BasicResponse result = new BasicResponse();
+        result.status = true;
+        result.data = "success";
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    @PutMapping("/comments/{cmid}")
+    @ApiOperation(value = "댓글 수정")
+    public Object update(@PathVariable final int cmid, @RequestParam(required = true) final String content) {
+        final Comments comment = commentsDao.getCommentsByCmid(cmid);
+        comment.setContent(content);
+        commentsDao.save(comment);
+        final BasicResponse result = new BasicResponse();
+        result.status = true;
+        result.data = "success";
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
 }

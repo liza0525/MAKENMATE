@@ -43,7 +43,6 @@ public class Comments implements Serializable {
     private String content;
     private String regdate;
 
-    @NonNull
     private int user_uid;
     // private int cocktail_cid;
     @ManyToOne
