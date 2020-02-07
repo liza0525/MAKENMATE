@@ -19,7 +19,6 @@ export default {
     });
   },
   [Constant.ADD_REPLY]: (store, payload) => {
-    console.log(payload);
     return new Promise((resolve, reject) => {
       http
         .post("/comments/" + payload.cid, null, {
@@ -238,7 +237,6 @@ export default {
     });
   },
   [Constant.GET_COCKTAILLIST]: (store, payload) => {
-    console.log(payload);
     return new Promise((resolve, reject) => {
       http
         .get("/cocktail/list", {
@@ -249,6 +247,7 @@ export default {
           }
         })
         .then(res => {
+          console.log(res);
           store.commit(Constant.GET_COCKTAILLIST, {
             cocktailList: res.data.content,
             totalPages: res.data.totalPages
