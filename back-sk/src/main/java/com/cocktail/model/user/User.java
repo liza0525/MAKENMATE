@@ -13,6 +13,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -20,6 +21,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import com.cocktail.model.Comments;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.AllArgsConstructor;
@@ -49,6 +51,13 @@ public class User implements UserDetails {
 	// private String image;
 	// private String intro;
 	private String nickname;
+
+	// @OneToMany(mappedBy = "boardrecipe")
+	// private List<BoardRecipe> boardRecipeList = new ArrayList<>();
+
+	// @OneToMany(mappedBy = "user")
+	// @JsonManagedReference
+	// private List<UserScrap> userScrapList = new ArrayList<>();
 
 	@ElementCollection(fetch = FetchType.EAGER)
 	@Builder.Default
@@ -96,6 +105,12 @@ public class User implements UserDetails {
 	public void setUid(int uid) {
 		this.uid = uid;
 	}
+
+	@JsonManagedReference
+	@OneToMany
+	@Builder.Default
+	@JoinColumn(name = "cmid")
+	private List<Comments> commentsArray = new ArrayList<>();
 
 	// @Column(insertable = false, updatable = false)
 	// private LocalDateTime createDate;

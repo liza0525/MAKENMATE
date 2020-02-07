@@ -1,5 +1,7 @@
 package com.cocktail.service;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import com.cocktail.dao.BoardDao;
@@ -31,12 +33,15 @@ public class BoardServiceImpl implements BoardService {
     @Override
     public Bdetail findById(int bid) {
         Board board = boardDao.findById(bid);
-        User u = userDao.findByUid(board.getUser().getUid()).orElseThrow(CocktailException::new);
+        User u = userDao.getUserByUid(board.getUser().getUid()).orElseThrow(CocktailException::new);
         Bdetail b = new Bdetail();
         b.setBid(board.getBid());
         b.setFile(board.getFile());
         b.setContents(board.getContents());
-        b.setRegdate(board.getRegdate());
+        SimpleDateFormat format1 = new SimpleDateFormat ( "yyyy-MM-dd HH:mm:ss");
+        Date time = new Date();
+        String time1 = format1.format(time);
+        b.setRegdate(time1);
         b.setTitle(board.getTitle());
         b.setUser_name(u.getNickname());
         System.out.println(u.getNickname());
@@ -46,20 +51,21 @@ public class BoardServiceImpl implements BoardService {
     // 글 수정
     @Override
     public void updateById(Bdetail bdetail) {
+        System.out.println("service" + bdetail);
         Board b = boardDao.findById(bdetail.getBid());
         b.setContents(bdetail.getContents());
-        //b.setFile(board.getFile()); //파일 수정
+        // b.setFile(board.getFile()); //파일 수정
         b.setTitle(bdetail.getTitle());
         boardDao.save(b);
     }
 
-    //글 삭제
-	@Override
-	public void deleteById(int bid) {
+    // 글 삭제
+    @Override
+    public void deleteById(int bid) {
         boardDao.deleteById(bid);
-	}
+    }
 
-    //글작성
+    // 글작성
     @Override
     public int save(Bdetail bdetail) {
         Board b = new Board();
@@ -67,7 +73,7 @@ public class BoardServiceImpl implements BoardService {
         User u = userDao.findByNickname(username);
         System.out.println(username);
         b.setContents(bdetail.getContents());
-        //b.setFile(bdetail.getFile());
+        // b.setFile(bdetail.getFile());
         b.setRegdate(bdetail.getRegdate());
         b.setTitle(bdetail.getTitle());
         System.out.println(u);

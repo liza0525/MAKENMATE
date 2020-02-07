@@ -1,6 +1,8 @@
 package com.cocktail.model.board;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -59,3 +61,5 @@ public class Board implements Serializable {
     // @Column
     // private int user_uid;
 }
+
+
