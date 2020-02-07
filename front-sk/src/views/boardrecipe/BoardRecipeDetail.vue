@@ -12,7 +12,6 @@ export default {
   data() {
     return {
       rid: 0,
-      uid: 4,
       isScrapped : false,
     }
   },
@@ -21,18 +20,16 @@ export default {
   },
   methods: {
     addToScrapList() {
-      console.log("gazua", this.uid, this.rid)
       this.isScrapped = true
       this.$store.dispatch(Constant.ADD_SCRAP, {
-        uid: this.uid,
+        username: this.$store.state.username,
         rid: this.rid,
       })
     },
     removeFromScrapList() {
       this.isScrapped = false
-      console.log("스크랩 취소", this.uid, this.rid)
       this.$store.dispatch(Constant.REMOVE_SCRAP, {
-        uid: this.uid,
+        username: this.$store.state.username,
         rid: this.rid,
       })
     }

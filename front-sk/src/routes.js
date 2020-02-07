@@ -122,7 +122,7 @@ export default [
     props: true
   },
   {
-    path: "/user/scrap/:uid",
+    path: "/user/scrap/",
     name: "UserScrap",
     component: UserScrap
   },

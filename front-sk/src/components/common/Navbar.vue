@@ -66,7 +66,9 @@
           </v-list-item>
           <v-list-item>
             <a href="/#">
-              <v-list-item-title>스크랩 목록</v-list-item-title>
+              <v-list-item-title>
+                <a href="/#/user/scrap">스크랩 목록</a>
+              </v-list-item-title>
             </a>
           </v-list-item>
           <v-list-item>

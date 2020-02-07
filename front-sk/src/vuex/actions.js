@@ -164,11 +164,13 @@ export default {
   [Constant.GET_SCRAPLIST]: (store, payload) => {
     return new Promise((resolve, reject) => {
       http
-        .get("/user/scrap/" + payload.uid)
+        .get("/user/scrap/", {
+          params: {
+            username : payload.username
+          }
+        })
         .then(res => {
-          console.log("res : ", res.data.object);
           store.commit(Constant.GET_SCRAPLIST, { scrapList: res.data.object });
-
           resolve();
         })
         .catch(exp => {
@@ -179,11 +181,11 @@ export default {
   },
   [Constant.ADD_SCRAP]: (store, payload) => {
     return new Promise((resolve, reject) => {
-      console.log("추가 payroad.uid payroad.rid ", payload.uid, payload.rid)
       // recipe 공유 게시판만 추가
       http
-        .post("/user/scrap/" + payload.uid, null, {
+        .post("/user/scrap/", null, {
           params: {
+            username: payload.username,
             rid: payload.rid
           }
         })
@@ -201,19 +203,21 @@ export default {
   },
   [Constant.REMOVE_SCRAP]: (store, payload) => {
     return new Promise((resolve, reject) => {
-      console.log("취소 payroad.uid payroad.rid ", payload.uid, payload.rid)
       // 스크랩 TABLE의 id
       http
-        .delete("/user/scrap/" + payload.uid, {
+        .delete("/user/scrap/", {
           params: {
+            username: payload.username,
             rid: payload.rid
           }
         })
         .then(res => {
-          console.log("remove success")
-          store.dispatch(Constant.GET_SCRAPLIST);
+          let list = [...res.data.object]
+          store.scrapList = list;
+          store.commit(Constant.GET_SCRAPLIST,{
+            scrapList: res.data.object 
+          })
           resolve();
-          console.log("payload.uid after ", payload.uid)
         })
         .catch(exp => {
           console.log(exp);
