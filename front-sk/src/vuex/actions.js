@@ -180,8 +180,8 @@ export default {
   },
   [Constant.ADD_SCRAP]: (store, payload) => {
     return new Promise((resolve, reject) => {
+      console.log("추가 payroad.uid payroad.rid ", payload.uid, payload.rid)
       // recipe 공유 게시판만 추가
-      console.log("payload.uid payload.rid", payload.uid, payload.rid)
       http
         .post("/user/scrap/" + payload.uid, null, {
           params: {
@@ -189,7 +189,7 @@ export default {
           }
         })
         .then(res => {
-          console.log("success")
+          console.log("add success")
           // 추가하고 다시 게시판 목록으로
           store.dispatch(Constant.GET_BOARDLIST);
           resolve();
@@ -202,12 +202,19 @@ export default {
   },
   [Constant.REMOVE_SCRAP]: (store, payload) => {
     return new Promise((resolve, reject) => {
+      console.log("취소 payroad.uid payroad.rid ", payload.uid, payload.rid)
       // 스크랩 TABLE의 id
       http
-        .delete("/user/scrap/" + payload.sid)
+        .delete("/user/scrap/" + payload.uid, {
+          params: {
+            rid: payload.rid
+          }
+        })
         .then(res => {
+          console.log("remove success")
           store.dispatch(Constant.GET_SCRAPLIST);
           resolve();
+          console.log("payload.uid after ", payload.uid)
         })
         .catch(exp => {
           console.log(exp);

@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -58,8 +59,7 @@ public class UserScrapController {
     @PostMapping("/user/scrap/{uid}")
     @ApiOperation(value = "스크랩 저장")
     public Object userScrapCreate(@PathVariable final int uid, @RequestParam final int rid) {
-        System.out.println("데이터가 넘어는 오나? " + uid + " " + rid);
-
+        System.out.println("스크랩 성공  " + uid + " " + rid);
         final BasicResponse result = new BasicResponse();
         final UserScrap addScrap = new UserScrap();
         final User user = userDao.getOne(uid);
@@ -67,6 +67,22 @@ public class UserScrapController {
         addScrap.setUser(user);
         addScrap.setBoardrecipe(boardRecipe);
         userScrapDao.save(addScrap);
+        result.status = true;
+        result.data = "success";
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/user/scrap/{uid}")
+    @ApiOperation(value = "스크랩 취소")
+    public Object userScrapRemove(@PathVariable final int uid, @RequestParam final int rid) {
+        System.out.println("스크랩 취소  " + uid + " " + rid);
+        final BasicResponse result = new BasicResponse();
+        final UserScrap deleteScrap = new UserScrap();
+        final User user = userDao.getOne(uid);
+        final BoardRecipe boardRecipe = boardRecipeDao.getOne(rid);
+        deleteScrap.setUser(user);
+        deleteScrap.setBoardrecipe(boardRecipe);
+        userScrapDao.delete(deleteScrap);
         result.status = true;
         result.data = "success";
         return new ResponseEntity<>(result, HttpStatus.OK);
