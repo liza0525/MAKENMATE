@@ -170,9 +170,7 @@ export default {
           }
         })
         .then(res => {
-          console.log(2)
           store.commit(Constant.GET_SCRAPLIST, { scrapList: res.data.object });
-          console.log(3)
           resolve();
         })
         .catch(exp => {
@@ -213,9 +211,11 @@ export default {
           }
         })
         .then(res => {
-          console.log(1)
-          store.dispatch(Constant.GET_SCRAPLIST);
-          console.log(4)
+          let list = [...res.data.object]
+          store.scrapList = list;
+          store.commit(Constant.GET_SCRAPLIST,{
+            scrapList: res.data.object 
+          })
           resolve();
         })
         .catch(exp => {

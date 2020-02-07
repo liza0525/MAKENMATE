@@ -19,10 +19,11 @@
 
 <script>
 import Constant from "../../Constant";
+
 export default {
   data() {
     return {
-      username: ""
+      username: "",
     }
   },
   created() {
@@ -35,28 +36,22 @@ export default {
         this.scrapList = { ...this.$store.state.scrapList };
       });
   },
+  computed: {
+    scrapList() {
+      return this.$store.state.scrapList 
+    }
+  },
   methods: {
     removeFromScrapList(scrappedRid) {
-      this.isScrapped = false;
       this.$store.dispatch(Constant.REMOVE_SCRAP, {
         username: this.$store.state.username,
         rid: scrappedRid
-      });
-    }
-  },
-  computed: {
-    scrapList: {
-      get() {
-        console.log(this.$store.state.scrapList);
-        return this.$store.state.scrapList;
-      },
-      set() {
-        console.log("setter");
-      }
+      }).then(
+        this.scrapList = { ...this.$store.state.scrapList }
+      );
     }
   },
 };
 </script>
-
 <style>
 </style>

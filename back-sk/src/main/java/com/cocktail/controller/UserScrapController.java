@@ -81,8 +81,15 @@ public class UserScrapController {
         deleteScrap.setUser(user);
         deleteScrap.setBoardrecipe(boardRecipe);
         userScrapDao.delete(deleteScrap);
+        
+        final List<UserScrap> userScrapList = userScrapDao.findAllByUser_uid(user.getUid());
+        final List<BoardRecipe> boardRecipeList = new ArrayList<>();
+        for (int i = 0; i < userScrapList.size(); i++)
+            boardRecipeList.add(userScrapList.get(i).getBoardrecipe());
+
         result.status = true;
         result.data = "success";
+        result.object = boardRecipeList;
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 }
