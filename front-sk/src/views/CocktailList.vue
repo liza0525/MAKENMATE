@@ -1,6 +1,6 @@
 <template>
   <div style="text-align:center;" class="test">
-    <v-item-group active-class="primary">
+    <v-item-group active-class="primary" @click="clicked = !clicked">
       <v-container fluid ma-0 pa-0 style="width:65%;">
         <div>
           <h1>Material</h1>
@@ -12,7 +12,7 @@
               query: {
                 pageNm: 1,
                 filtered: filter.name,
-                searchedFiltered: searchData
+                searchedFiltered: $route.query.searchedFiltered
               }
             }"
             v-for="filter in filters"
@@ -74,7 +74,7 @@
         type="text"
         @input="autocomplete"
         v-model="searchData"
-        @keypress.enter="search()"
+        @keypress.enter="search(1)"
       />
     </div>
     <v-container v-if="searchedData.length > 0">
@@ -96,77 +96,34 @@
         </v-card>
       </div>
     </v-container>
-    <router-link
-      :to="{
-        name: 'CocktailList',
-        query: {
-          pageNm: pageNm,
-          filtered: filter.filtered,
-          searchedFiltered: searchData
-        }
-      }"
-      style="margin-right:10px;margin-top:100px; color:white;"
-      >{{ fistBt }}
-    </router-link>
-    <router-link
-      :to="{
-        name: 'CocktailList',
-        query: {
-          pageNm: min - 5 < 0 ? 1 : min - 5,
-          filtered: filter.filtered,
-          searchedFiltered: searchData
-        }
-      }"
+
+    <button
+      v-if="pageNm > 5"
+      v-on:click="search(1)"
+      style="margin-right:10px;margin-top:100px;"
     >
-      <span style="margin-right:10px;margin-top:100px; color:white;">
-        {{ prevBt }}
-      </span>
-    </router-link>
-    <router-link
-      :to="{
-        name: 'CocktailList',
-        query: {
-          pageNm: pageNm,
-          filtered: filter.filtered,
-          searchedFiltered: searchData
-        }
-      }"
-      v-for="pageNm in pageNms"
-      :key="pageNm"
-      style="color:white;"
+      {{ fistBt }}
+    </button>
+    <button
+      v-if="pageNm > 5"
+      v-on:click="search(min - 5 < 0 ? 1 : min - 5)"
+      style="margin-right:10px;"
     >
-      <span style="margin-right:10px;margin-top:100px; color:white;">{{
-        pageNm
-      }}</span>
-    </router-link>
-    <router-link
-      :to="{
-        name: 'CocktailList',
-        query: {
-          pageNm: min + 5,
-          filtered: filter.filtered,
-          searchedFiltered: searchData
-        }
-      }"
+      {{ prevBt }}
+    </button>
+    <button v-for="pageNm in pageNms" :key="pageNm" @click="search(pageNm)">
+      <span style="margin-right:10px;">{{ pageNm }}</span>
+    </button>
+    <button
+      v-if="min + 5 <= totalPages"
+      v-on:click="search(min + 5)"
+      style="margin-right:10px;"
     >
-      <span style="margin-right:10px;margin-top:100px; color:white;">
-        {{ nextBt }}
-      </span>
-    </router-link>
-    <router-link
-      :to="{
-        name: 'CocktailList',
-        query: {
-          pageNm: min + 5,
-          filtered: filter.filtered,
-          searchedFiltered: searchData
-        }
-      }"
-    >
-      <span style="margin-right:10px;margin-top:100px; color:white;">
-        {{ lastBt }}
-      </span>
-    </router-link>
+      {{ nextBt }}
+    </button>
+    <button v-if="min + 5 <= totalPages" v-on:click="search(totalPages)">
+      {{ lastBt }}
+    </button>
   </div>
 </template>
 
@@ -185,10 +142,12 @@ export default {
       lastBt: ">>",
       searchedData: [],
       pageNms: [],
+      totalPages: 0,
       filter: {
         filtered: "",
         searchData: ""
       },
+      clicked: false,
       filters: [
         { name: "레몬", image: require("../assets/images/lemon.png") },
         { name: "럼", image: require("../assets/images/lemon.png") },
@@ -243,10 +202,11 @@ export default {
         .dispatch(Constant.GET_COCKTAILLIST, {
           pageNm: pageNm - 1,
           filtered: this.filter.filtered,
-          searchedFiltered: this.searchData
+          searchedFiltered: this.$route.query.searchedFiltered
         })
         .then(() => {
           this.cocktailArray = { ...this.$store.state.cocktailList };
+          this.totalPages = this.$store.state.totalPages;
           this.pageNm = pageNm;
         });
       if (this.searchData === "h") {
@@ -254,14 +214,13 @@ export default {
       }
       return this.cocktailArray;
     },
-    goToDetail(sendCid) {
-      this.$router.push("/cocktail/detail/" + sendCid);
-    },
-    search() {
+
+    search(pageNm) {
+      console.log(this.searchData);
       this.$router.push({
         name: "CocktailList",
         query: {
-          pageNm: 1,
+          pageNm: pageNm,
           filtered: this.filter.filtered,
           searchedFiltered: this.searchData
         }
@@ -286,6 +245,9 @@ export default {
           }
         }
       }
+    },
+    goToDetail(sendCid) {
+      this.$router.push("/cocktail/detail/" + sendCid);
     },
     searchDetailPage(item) {
       let id = this.cocktailNameArray.indexOf(item) + 1;

@@ -2,30 +2,22 @@ package com.cocktail.model.user;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
-import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import com.cocktail.model.Cocktail;
-import com.cocktail.model.Comments;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -48,6 +40,7 @@ public class User implements UserDetails {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@JsonIgnore
+	@Column(name = "uid")
 	private int uid;
 
 	@JsonIgnore
@@ -124,14 +117,8 @@ public class User implements UserDetails {
 	// @JoinColumn(name = "cmid")
 	// private Comments comments;
 
-	// @ManyToMany(cascade = { CascadeType.ALL })
-	// @JoinTable(name = "cocktaillike", joinColumns = { @JoinColumn(name =
-	// "user_uid") }, inverseJoinColumns = {
-	// @JoinColumn(name = "cocktail_cid") })
-	// Set<Cocktail> cocktailList = new HashSet<>();
+	@OneToMany(mappedBy = "user")
+	@JsonManagedReference
+	private List<CocktailLike> users = new ArrayList<>();
 
-	// public User(int uid, Set<Cocktail> cocktailList) {
-	// this.uid = uid;
-	// this.cocktailList = cocktailList;
-	// }
 }

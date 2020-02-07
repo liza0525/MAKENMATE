@@ -6,8 +6,8 @@ import com.cocktail.model.user.CocktailLike;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface CocktailLikeDao extends JpaRepository<CocktailLike, String> {
-    List<CocktailLike> findAllByUser_uid(int user_uid);
-
-    List<CocktailLike> findAllByCocktail_cid(int cocktail_cid);
+public interface CocktailLikeDao extends JpaRepository<CocktailLike, Long> {
+    List<CocktailLike> findAllByUser_uid(int uid);
+    CocktailLike findByUser_uidAndCocktail_cid(int uid, int cid);
+    Long countByCocktail_cid(int cid);
 }

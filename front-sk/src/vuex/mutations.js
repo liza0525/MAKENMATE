@@ -65,5 +65,8 @@ export default {
     state.user.nickname = payload.user.nickname;
     state.user.image = payload.user.image;
     state.user.intro = payload.user.intro;
+  },
+  [Constant.USERNAME]: (state, payload) => {
+    state.username = payload.username;
   }
 };

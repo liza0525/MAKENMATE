@@ -111,8 +111,13 @@ export default {
     this.username = this.$store.state.username;
   },
   computed: {
-    username() {
-      return this.$store.state.username;
+    username: {
+      get() {
+        return this.$store.state.username;
+      },
+      set(val) {
+        this.$store.commit("Username", { username: val });
+      }
     }
   },
   methods: {

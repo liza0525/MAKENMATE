@@ -1,17 +1,17 @@
 package com.cocktail.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.HashSet;
-import java.util.List;
 
 import com.cocktail.dao.CocktailDao;
 import com.cocktail.dao.CocktailLikeDao;
@@ -49,33 +49,49 @@ public class CocktailLikeController {
             @RequestParam(required = true) final int cid) {
         User user = userDao.getUserByEmail(email).orElseThrow(CocktailException::new);
         Cocktail cocktail = cocktailDao.getCocktailByCid(cid);
-        System.out.println(user.getUid());
+        CocktailLike cl = new CocktailLike((long) 0, user, cocktail);
+        cocktailLikeDao.save(cl);
         final BasicResponse result = new BasicResponse();
         result.status = true;
         result.data = "success";
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
+    
+    @DeleteMapping("/cocktail/like")
+    @ApiOperation(value = "좋아요 삭제")
+    public Object deleteLike(@RequestParam(required = true) final String email,
+    		@RequestParam(required = true) final int cid) {
+    	User user = userDao.getUserByEmail(email).orElseThrow(CocktailException::new);
+    	Cocktail cocktail = cocktailDao.getCocktailByCid(cid);
+    	CocktailLike cl = cocktailLikeDao.findByUser_uidAndCocktail_cid(user.getUid(), cid);
+    	cocktailLikeDao.deleteById(cl.getId());
+    	
+    	final BasicResponse result = new BasicResponse();
+    	result.status = true;
+    	result.data = "success";
+    	return new ResponseEntity<>(result, HttpStatus.OK);
+    }
 
-    @PostMapping("/cocktail/getlikebyuser")
+    @GetMapping("/cocktail/getlikebyuser")
     @ApiOperation(value = "좋아요한 칵테일 가져오기")
     public Object getLikebyuser(@RequestParam(required = true) final String email) {
         User user = userDao.getUserByEmail(email).orElseThrow(CocktailException::new);
-        List<CocktailLike> cocktailLikeCidArray = cocktailLikeDao.findAllByUser_uid(user.getUid());
-        for (int i = 0; i < cocktailLikeCidArray.size(); ++i) {
-
-        }
+        List<CocktailLike> cls = user.getUsers();
+        List<Cocktail> cocktails = new ArrayList<>();
+        for (CocktailLike cl : cls) {
+			cocktails.add(cl.getCocktail());
+		}
         final BasicResponse result = new BasicResponse();
         result.status = true;
         result.data = "success";
-        result.object = cocktailLikeCidArray;
+        result.object = cocktails;
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    @PostMapping("/cocktail/getlikebycocktail")
+    @GetMapping("/cocktail/getlikebycocktail")
     @ApiOperation(value = "칵테일의 좋아요 수")
     public Object getLikebycocktail(@RequestParam(required = true) final int cid) {
-        Cocktail cocktail = cocktailDao.getCocktailByCid(cid);
-        int cocktailLikes = cocktailLikeDao.findAllByCocktail_cid(cocktail.getCid()).size();
+        Long cocktailLikes = cocktailLikeDao.countByCocktail_cid(cid);
         final BasicResponse result = new BasicResponse();
         result.status = true;
         result.data = "success";
