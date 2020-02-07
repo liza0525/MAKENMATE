@@ -12,7 +12,7 @@
               query: {
                 pageNm: 1,
                 filtered: filter.name,
-                searchedFiltered: searchData
+                searchedFiltered: $route.query.searchedFiltered
               }
             }"
             v-for="filter in filters"
@@ -74,7 +74,7 @@
         type="text"
         @input="autocomplete"
         v-model="searchData"
-        @keypress.enter="search(1, filter.filtered, searchData)"
+        @keypress.enter="search(1)"
       />
     </div>
     <v-container v-if="searchedData.length > 0">
@@ -202,7 +202,7 @@ export default {
         .dispatch(Constant.GET_COCKTAILLIST, {
           pageNm: pageNm - 1,
           filtered: this.filter.filtered,
-          searchedFiltered: this.searchData
+          searchedFiltered: this.$route.query.searchedFiltered
         })
         .then(() => {
           this.cocktailArray = { ...this.$store.state.cocktailList };
@@ -216,12 +216,13 @@ export default {
     },
 
     search(pageNm) {
+      console.log(this.searchData);
       this.$router.push({
         name: "CocktailList",
         query: {
           pageNm: pageNm,
           filtered: this.filter.filtered,
-          searchedFiltered: this.searchedFiltered
+          searchedFiltered: this.searchData
         }
       });
     },
@@ -247,6 +248,15 @@ export default {
     },
     goToDetail(sendCid) {
       this.$router.push("/cocktail/detail/" + sendCid);
+    },
+    searchDetailPage(item) {
+      let id = this.cocktailNameArray.indexOf(item) + 1;
+      this.$router.push({
+        name: "CocktailDetail",
+        params: {
+          cid: id
+        }
+      });
     }
   }
 };
