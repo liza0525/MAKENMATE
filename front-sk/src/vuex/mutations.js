@@ -33,6 +33,7 @@ export default {
   [Constant.GET_SCRAPLIST]: (state, payload) => {
     state.scrapList = payload.scrapList;
   },
+  [Constant.ADD_SCRAP]: (state, payload) => {},
   // 칵테일
   [Constant.GET_COCKTAILLIST]: (state, payload) => {
     payload.cocktailList.forEach(element => {
@@ -41,8 +42,8 @@ export default {
       } else {
         element.image = require(`../../../images/default.png`);
       }
-      state.cocktailList = payload.cocktailList;
     });
+    state.cocktailList = payload.cocktailList;
     state.totalPages = payload.totalPages;
   },
   [Constant.GET_COCKTAIL]: (state, payload) => {
