@@ -43,7 +43,7 @@ export default {
     return new Promise((resolve, reject) => {
       console.log(payload.content);
       http
-        .put("/comments/" + payload.cmid, {
+        .put("/comments/" + payload.cmid, null, {
           params: {
             content: payload.content
           }

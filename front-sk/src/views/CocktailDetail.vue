@@ -50,16 +50,19 @@
       </v-row>
       <div :v-if="reply" v-for="(re, i) in reply" :key="i" style="margin-top: 5px; display:block;">
         <!-- <v-text v-if="isInput[i]"> -->
-        <div :v-model="isInput[i]">
-          {{ users[i] }} : {{ re.content }}
-          <p v-if="username === users[i]" style="display:inline-block;">
-            <button @click="clicked = !clicked">수정</button>
-            <button @click="deleteComment(i, re.cmid)">삭제</button>
-          </p>
+        <div v-if="isInput[i] === 0">
+          <span>{{ users[i] }} : {{ re.content }}</span>
+          <button @click="click(i)">수정</button>
+          <button @click="deleteComment(i, re.cmid)">삭제</button>
         </div>
-        <div v-if="clicked">
-          <input v-model="re.content" />
-          <button @click="updateComment(i, re.cmid)">수정</button>
+        <div v-else>
+          <span>
+            {{ users[i] }} :
+            <input v-model="re.content" />
+          </span>
+          <p v-if="username === users[i]" style="display:inline-block;">
+            <button @click="updateComment(i, re.cmid, re.content)">수정</button>
+          </p>
         </div>
       </div>
       <!-- </v-text> -->
@@ -120,11 +123,11 @@ export default {
       .then(() => {
         this.reply = { ...this.$store.state.reply };
         this.users = { ...this.$store.state.users };
+        for (let i = 0; i < this.reply.length; ++i) {
+          this.isInput.push(0);
+        }
+        console.log(this.isInput);
       });
-    for (let i = 0; i < this.reply.length; ++i) {
-      this.isInput.push(0);
-    }
-    console.log("-----------" + this.isInput);
     this.username = this.$store.state.username;
     if (this.username === undefined) {
       this.username = "h";
@@ -132,19 +135,23 @@ export default {
   },
   computed: {
     users: {
-      set(val) {
-        console.log(val);
-      },
+      set(val) {},
       get() {
         return this.$store.state.users;
       }
     },
     reply: {
-      set(val) {
-        console.log(val);
-      },
+      set(val) {},
       get() {
         return this.$store.state.reply;
+      }
+    },
+    clicked: {
+      set(val) {
+        this.isInput[val] = 1;
+      },
+      get() {
+        return true;
       }
     }
   },
@@ -155,27 +162,36 @@ export default {
         email: this.email,
         comment: this.comment
       });
+      this.isInput.push(0);
+      this.users.push(this.username);
       this.comment = "";
     },
     updateComment(i, cmid, content) {
-      console.log(this.isInput[i]);
-      if (!this.isInput[i]) {
-        this.isInput[i] = 1;
-        console.log(this.isInput[i]);
-      } else {
-        this.$store.dispatch(Constant.MODIFY_REPLY, {
+      this.$store
+        .dispatch(Constant.MODIFY_REPLY, {
           cmid: cmid,
-          content: this.updatedComment
+          content: content,
+          cid: this.cocktail.cid
+        })
+        .then(() => {
+          let list = [...this.isInput];
+          list.splice(i, 1, 0);
+          this.isInput = list;
         });
-        this.isInput[i] = 0;
-      }
     },
     deleteComment(i, cmid) {
       this.users.splice(i, 1);
+      this.isInput.splice(i, 1);
       this.$store.dispatch(Constant.REMOVE_REPLY, {
         cmid: cmid,
         cid: this.cocktail.cid
       });
+    },
+    click(i) {
+      let list = [...this.isInput];
+      list.splice(i, 1, 1);
+      this.isInput = list;
+      console.log(this.isInput[i]);
     }
   }
 };
