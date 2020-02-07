@@ -22,8 +22,8 @@ public class BoardRecipeServiceImpl implements BoardRecipeService {
     //글번호로 공유게시판 상세조회
     @Override
     public BRdetail findById(int bid) {
-        //BRdetail br = boardRecipeDao.
-        return null;
+        BRdetail br = boardRecipeDao.findBRdetailById(bid);
+        return br;
     }
 
     @Override
