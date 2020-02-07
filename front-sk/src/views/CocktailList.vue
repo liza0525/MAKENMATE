@@ -196,18 +196,20 @@ export default {
     paginate(pageNm) {
       this.pageNm = pageNm;
       if (this.searchData === "") {
-        this.searchData = "h";
+        if (this.$route.query.searchedFiltered === "") this.searchData = "h";
+        else this.searchData = this.$route.query.searchedFiltered;
       }
       this.$store
         .dispatch(Constant.GET_COCKTAILLIST, {
           pageNm: pageNm - 1,
           filtered: this.filter.filtered,
-          searchedFiltered: this.$route.query.searchedFiltered
+          searchedFiltered: this.searchData
         })
         .then(() => {
           this.cocktailArray = { ...this.$store.state.cocktailList };
           this.totalPages = this.$store.state.totalPages;
           this.pageNm = pageNm;
+          console.log(this.cocktailArray);
         });
       if (this.searchData === "h") {
         this.searchData = "";
@@ -216,7 +218,8 @@ export default {
     },
 
     search(pageNm) {
-      console.log(this.searchData);
+      if (this.searchData == "")
+        this.searchData = this.$route.query.searchedFiltered;
       this.$router.push({
         name: "CocktailList",
         query: {

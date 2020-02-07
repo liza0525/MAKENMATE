@@ -240,6 +240,7 @@ export default {
           }
         })
         .then(res => {
+          console.log(res);
           store.commit(Constant.GET_COCKTAILLIST, {
             cocktailList: res.data.content,
             totalPages: res.data.totalPages
