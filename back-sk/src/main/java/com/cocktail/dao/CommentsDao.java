@@ -10,6 +10,8 @@ import com.cocktail.model.Material;;
 
 public interface CommentsDao extends JpaRepository<Comments, String> {
     List<Comments> findAllByCocktail_cid(int cocktail_cid);
+
+    Comments getCommentsByCmid(int cmid);
     // List<Comments> findByCocktail(Cocktail cocktail);
 
 }

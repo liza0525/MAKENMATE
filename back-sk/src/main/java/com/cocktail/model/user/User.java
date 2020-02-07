@@ -124,13 +124,14 @@ public class User implements UserDetails {
 	// @JoinColumn(name = "cmid")
 	// private Comments comments;
 
-	@ManyToMany(cascade = { CascadeType.ALL })
-	@JoinTable(name = "cocktaillike", joinColumns = { @JoinColumn(name = "user_uid") }, inverseJoinColumns = {
-			@JoinColumn(name = "cocktail_cid") })
-	Set<Cocktail> cocktailList = new HashSet<>();
+	// @ManyToMany(cascade = { CascadeType.ALL })
+	// @JoinTable(name = "cocktaillike", joinColumns = { @JoinColumn(name =
+	// "user_uid") }, inverseJoinColumns = {
+	// @JoinColumn(name = "cocktail_cid") })
+	// Set<Cocktail> cocktailList = new HashSet<>();
 
-	public User(int uid, Set<Cocktail> cocktailList) {
-		this.uid = uid;
-		this.cocktailList = cocktailList;
-	}
+	// public User(int uid, Set<Cocktail> cocktailList) {
+	// this.uid = uid;
+	// this.cocktailList = cocktailList;
+	// }
 }

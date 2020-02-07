@@ -57,7 +57,7 @@ public class Cocktail {
     // @JoinColumn(name = "comments_cmid")
     // private Comments comments;
 
-    @ManyToMany(mappedBy = "cocktailList")
-    private Set<User> users = new HashSet<>();
+    // @ManyToMany(mappedBy = "cocktailList")
+    // private Set<User> users = new HashSet<>();
 
 }

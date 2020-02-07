@@ -48,12 +48,21 @@
           </div>
         </v-col>
       </v-row>
-      <v-text
-        :v-if="reply"
-        v-for="(re, i) in reply"
-        :key="i"
-        style="margin-top: 5px; display:block;"
-      >{{ users[i] }} : {{ re.content }}</v-text>
+      <div :v-if="reply" v-for="(re, i) in reply" :key="i" style="margin-top: 5px; display:block;">
+        <!-- <v-text v-if="isInput[i]"> -->
+        <div :v-model="isInput[i]">
+          {{ users[i] }} : {{ re.content }}
+          <p v-if="username === users[i]" style="display:inline-block;">
+            <button @click="clicked = !clicked">수정</button>
+            <button @click="deleteComment(i, re.cmid)">삭제</button>
+          </p>
+        </div>
+        <div v-if="clicked">
+          <input v-model="re.content" />
+          <button @click="updateComment(i, re.cmid)">수정</button>
+        </div>
+      </div>
+      <!-- </v-text> -->
       <input type="text" v-model="comment" />
       <button @click="submitComment" type="submit">button</button>
     </v-container>
@@ -81,7 +90,10 @@ export default {
       },
       materials: [],
       email: "test@test.com",
-      comment: ""
+      comment: "",
+      isInput: [],
+      username: "",
+      updatedComment: ""
     };
   },
   mounted() {
@@ -100,7 +112,6 @@ export default {
           .replace("]", "")
           .split(",");
       });
-    console.log(this.materials.length);
     if (this.materials === [""]) {
       this.materials = [];
     }
@@ -110,13 +121,31 @@ export default {
         this.reply = { ...this.$store.state.reply };
         this.users = { ...this.$store.state.users };
       });
+    for (let i = 0; i < this.reply.length; ++i) {
+      this.isInput.push(0);
+    }
+    console.log("-----------" + this.isInput);
+    this.username = this.$store.state.username;
+    if (this.username === undefined) {
+      this.username = "h";
+    }
   },
   computed: {
-    reply() {
-      return this.$store.state.reply;
+    users: {
+      set(val) {
+        console.log(val);
+      },
+      get() {
+        return this.$store.state.users;
+      }
     },
-    users() {
-      return this.$store.state.users;
+    reply: {
+      set(val) {
+        console.log(val);
+      },
+      get() {
+        return this.$store.state.reply;
+      }
     }
   },
   methods: {
@@ -127,6 +156,26 @@ export default {
         comment: this.comment
       });
       this.comment = "";
+    },
+    updateComment(i, cmid, content) {
+      console.log(this.isInput[i]);
+      if (!this.isInput[i]) {
+        this.isInput[i] = 1;
+        console.log(this.isInput[i]);
+      } else {
+        this.$store.dispatch(Constant.MODIFY_REPLY, {
+          cmid: cmid,
+          content: this.updatedComment
+        });
+        this.isInput[i] = 0;
+      }
+    },
+    deleteComment(i, cmid) {
+      this.users.splice(i, 1);
+      this.$store.dispatch(Constant.REMOVE_REPLY, {
+        cmid: cmid,
+        cid: this.cocktail.cid
+      });
     }
   }
 };

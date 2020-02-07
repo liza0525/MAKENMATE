@@ -40,28 +40,43 @@ export default {
         });
     });
   },
-  // [Constant.MODIFY_REPLY]: (store, payload) => {
-  //   http
-  //     .put("/reply", payload.reply)
-  //     .then(res => {
-  //       store.commit(Constant.GET_REPLY);
-  //     })
-  //     .catch(exp => {
-  //       console.log(exp);
-  //       reject();
-  //     });
-  // },
-  // [Constant.REMOVE_REPLY]: (store, payload) => {
-  //   http
-  //     .delete("/reply", payload.reply)
-  //     .then(res => {
-  //       store.commit(Constant.GET_REPLY);
-  //     })
-  //     .catch(exp => {
-  //       console.log(exp);
-  //       reject();
-  //     });
-  // },
+  [Constant.MODIFY_REPLY]: (store, payload) => {
+    return new Promise((resolve, reject) => {
+      console.log(payload.content);
+      http
+        .put("/comments/" + payload.cmid, {
+          params: {
+            content: payload.content
+          }
+        })
+        .then(() => {
+          store.dispatch(Constant.GET_REPLY, {
+            cid: payload.cid
+          });
+          resolve();
+        })
+        .catch(exp => {
+          console.log(exp);
+          reject();
+        });
+    });
+  },
+  [Constant.REMOVE_REPLY]: (store, payload) => {
+    return new Promise((resolve, reject) => {
+      http
+        .delete("/comments/" + payload.cmid)
+        .then(() => {
+          store.dispatch(Constant.GET_REPLY, {
+            cid: payload.cid
+          });
+          resolve();
+        })
+        .catch(exp => {
+          console.log(exp);
+          reject();
+        });
+    });
+  },
   // Board CRUD
   [Constant.GET_BOARDLIST]: store => {
     return new Promise((resolve, reject) => {
@@ -181,7 +196,7 @@ export default {
   [Constant.ADD_SCRAP]: (store, payload) => {
     return new Promise((resolve, reject) => {
       // recipe 공유 게시판만 추가
-      console.log("payload.uid payload.rid", payload.uid, payload.rid)
+      console.log("payload.uid payload.rid", payload.uid, payload.rid);
       http
         .post("/user/scrap/" + payload.uid, null, {
           params: {
@@ -189,7 +204,7 @@ export default {
           }
         })
         .then(res => {
-          console.log("success")
+          console.log("success");
           // 추가하고 다시 게시판 목록으로
           store.dispatch(Constant.GET_BOARDLIST);
           resolve();
