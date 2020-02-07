@@ -19,7 +19,6 @@ export default {
     });
   },
   [Constant.ADD_REPLY]: (store, payload) => {
-    console.log(payload);
     return new Promise((resolve, reject) => {
       http
         .post("/comments/" + payload.cid, null, {
@@ -181,7 +180,7 @@ export default {
   [Constant.ADD_SCRAP]: (store, payload) => {
     return new Promise((resolve, reject) => {
       // recipe 공유 게시판만 추가
-      console.log("payload.uid payload.rid", payload.uid, payload.rid)
+      console.log("payload.uid payload.rid", payload.uid, payload.rid);
       http
         .post("/user/scrap/" + payload.uid, null, {
           params: {
@@ -189,7 +188,7 @@ export default {
           }
         })
         .then(res => {
-          console.log("success")
+          console.log("success");
           // 추가하고 다시 게시판 목록으로
           store.dispatch(Constant.GET_BOARDLIST);
           resolve();
@@ -231,7 +230,6 @@ export default {
     });
   },
   [Constant.GET_COCKTAILLIST]: (store, payload) => {
-    console.log(payload);
     return new Promise((resolve, reject) => {
       http
         .get("/cocktail/list", {
