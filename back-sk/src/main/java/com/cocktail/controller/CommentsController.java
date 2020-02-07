@@ -84,7 +84,6 @@ public class CommentsController {
         newComment.setCocktail(cocktail);
         System.out.println(cocktail.getCid());
         // cocktail.getCommentsArray().add(newComment);
-        System.out.println(newComment.toString());
         commentsDao.save(newComment);
         final BasicResponse result = new BasicResponse();
         result.status = true;

@@ -13,15 +13,19 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.cocktail.model.user.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @NoArgsConstructor
@@ -52,5 +56,8 @@ public class Cocktail {
     // @ManyToOne(targetEntity = Comments.class, fetch = FetchType.EAGER)
     // @JoinColumn(name = "comments_cmid")
     // private Comments comments;
+
+    @ManyToMany(mappedBy = "cocktailList")
+    private Set<User> users = new HashSet<>();
 
 }
