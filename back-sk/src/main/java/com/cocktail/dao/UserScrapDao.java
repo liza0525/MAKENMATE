@@ -11,4 +11,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface UserScrapDao extends JpaRepository<UserScrap, UserScrapId> {
     List<UserScrap> findAllByUser_uid(int user_uid);
+    List<UserScrap> findAllByBoardrecipe_rid(int boardRecipe_rid);
 }
