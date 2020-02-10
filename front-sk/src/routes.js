@@ -20,6 +20,8 @@ import BoardUpdate from "./components/board/BoardUpdate.vue";
 import UserScrap from "./views/user/UserScrap.vue";
 import BoardRecipeDetail from "./views/boardrecipe/BoardRecipeDetail.vue";
 
+
+
 export default [
   {
     path: "/",
