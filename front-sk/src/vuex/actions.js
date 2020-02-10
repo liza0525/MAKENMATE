@@ -1,5 +1,6 @@
 import Constant from "../Constant";
 import http from "../http-common";
+import { Store } from "vuex";
 export default {
   [Constant.GET_REPLY]: (store, payload) => {
     return new Promise((resolve, reject) => {
@@ -296,16 +297,57 @@ export default {
         });
     });
   },
-  [Constant.ADD_COCKTAILLIKE]: (store, payload) => {
+  [Constant.GET_LIKEBYCOCKTAIL]: (store, payload) => {
     return new Promise((resolve, reject) => {
       http
-        .post("/cocktail/like", payload.cname, {
+        .get("/cocktail/getlikebycocktail", {
+          params: { cid: payload.cid }
+        })
+        .then(res => {
+          store.commit(Constant.GET_LIKEBYCOCKTAIL, {
+            likebycocktail: res.data.object
+          });
+          resolve();
+        })
+        .catch(exp => {
+          console.log(exp);
+          reject();
+        });
+    });
+  },
+  [Constant.GET_LIKEBYUSERANDCOCKTAIL]: (store, payload) => {
+    return new Promise((resolve, reject) => {
+      http
+        .get("/cocktail/getlikebyuserandcocktail", {
           params: {
-            username: payload.username
+            username: payload.username,
+            cid: payload.cid
           }
         })
         .then(res => {
-          store.dispatch(Constant.GET_COCKTAILLIKE);
+          console.log(res.data);
+          store.commit(Constant.GET_LIKEBYUSERANDCOCKTAIL, {
+            isLike: res.data.object
+          });
+          resolve();
+        })
+        .catch(exp => {
+          console.log(exp);
+          reject();
+        });
+    });
+  },
+  [Constant.ADD_COCKTAILLIKE]: (store, payload) => {
+    return new Promise((resolve, reject) => {
+      http
+        .post("/cocktail/like", null, {
+          params: {
+            username: payload.username,
+            cid: payload.cid
+          }
+        })
+        .then(() => {
+          store.commit(Constant.ADD_COCKTAILLIKE);
           resolve();
         })
         .catch(exp => {
@@ -317,9 +359,14 @@ export default {
   [Constant.REMOVE_COCKTAILLIKE]: (store, payload) => {
     return new Promise((resolve, reject) => {
       http
-        .delete("/cocktail/like", payload.username)
-        .then(res => {
-          store.dispatch(Constant.GET_COCKTAILLIKE);
+        .delete("/cocktail/like", {
+          params: {
+            username: payload.username,
+            cid: payload.cid
+          }
+        })
+        .then(() => {
+          store.commit(Constant.REMOVE_COCKTAILLIKE);
           resolve();
         })
         .catch(exp => {

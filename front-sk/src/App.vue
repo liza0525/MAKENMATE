@@ -9,6 +9,7 @@
 import "@/assets/css/style.scss";
 import Navbar from "@/components/common/Navbar.vue";
 import Footer from "@/components/common/Footer.vue";
+
 export default {
   name: "app",
   components: {

@@ -40,7 +40,7 @@
                         </td>
                     </tr>
                 </table>
-            </form>z
+            </form>
         </div>
     </div>
 </template>
