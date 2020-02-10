@@ -5,21 +5,21 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import com.cocktail.model.Comments;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.AllArgsConstructor;
@@ -27,6 +27,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 @Builder // builder를 사용할수 있게 합니다.
 @Entity // jpa entity임을 알립니다.
@@ -34,10 +35,12 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
+@ToString
 public class User implements UserDetails {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@JsonIgnore
+	@Column(name = "uid")
 	private int uid;
 
 	@JsonIgnore
@@ -47,6 +50,13 @@ public class User implements UserDetails {
 	// private String image;
 	// private String intro;
 	private String nickname;
+
+	// @OneToMany(mappedBy = "boardrecipe")
+	// private List<BoardRecipe> boardRecipeList = new ArrayList<>();
+
+	// @OneToMany(mappedBy = "user")
+	// @JsonManagedReference
+	// private List<UserScrap> userScrapList = new ArrayList<>();
 
 	@ElementCollection(fetch = FetchType.EAGER)
 	@Builder.Default
@@ -95,9 +105,20 @@ public class User implements UserDetails {
 		this.uid = uid;
 	}
 
+	// @JsonManagedReference
+	// @OneToMany
+	// @Builder.Default
+	// @JoinColumn(name = "cmid")
+	// private List<Comments> commentsArray = new ArrayList<>();
+
 	// @Column(insertable = false, updatable = false)
 	// private LocalDateTime createDate;
 	// @ManyToOne(targetEntity = Comments.class, fetch = FetchType.EAGER)
 	// @JoinColumn(name = "cmid")
 	// private Comments comments;
+
+	@OneToMany(mappedBy = "user")
+	@JsonManagedReference
+	private List<CocktailLike> users = new ArrayList<>();
+
 }

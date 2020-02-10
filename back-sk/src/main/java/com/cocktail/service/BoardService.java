@@ -13,11 +13,10 @@ public interface BoardService {
     // 글 번호로 게시판 상세 보기
     Bdetail findById(int bid);
 
-    //게시글 작성
-    board save(board board, String username);
+    // 게시글 작성
     int save(Bdetail bdetail);
 
-    //게시글 수정
+    // 게시글 수정
     void updateById(Bdetail bdetail);
 
     // 게시글 삭제

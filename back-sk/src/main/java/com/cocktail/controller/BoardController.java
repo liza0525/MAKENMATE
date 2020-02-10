@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.cocktail.model.BasicResponse;
-import com.cocktail.model.Board.Bdetail;
+import com.cocktail.model.board.Bdetail;
 import com.cocktail.service.BoardService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,30 +37,32 @@ public class BoardController {
         result.object = this.boardservice.getAllBoard();
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
-    
-    //게시판 번호로 상세조회
+
+    // 게시판 번호로 상세조회
     @GetMapping(value = "/{boardno}", produces = { MediaType.APPLICATION_JSON_VALUE })
     public ResponseEntity<Bdetail> getBoard(@PathVariable("boardno") int boardno) {
         return new ResponseEntity<Bdetail>(boardservice.findById(boardno), HttpStatus.OK);
     }
-    
+
     // @PostMapping
-    // public ResponseEntity<board> save(@RequestBody board board, @RequestParam(required = true) String username){
-    //     return new ResponseEntity<board>(boardservice.save(board,username), HttpStatus.OK);
+    // public ResponseEntity<board> save(@RequestBody board board,
+    // @RequestParam(required = true) String username){
+    // return new ResponseEntity<board>(boardservice.save(board,username),
+    // HttpStatus.OK);
     // }
 
     @PostMapping
-    public ResponseEntity<Integer> save(@RequestBody Bdetail bdetail){
+    public ResponseEntity<Integer> save(@RequestBody Bdetail bdetail) {
+        System.out.println(bdetail);
         return new ResponseEntity<Integer>(boardservice.save(bdetail), HttpStatus.OK);
     }
 
-
-    @PutMapping(value="/{boardno}", produces = { MediaType.APPLICATION_JSON_VALUE })
-    public ResponseEntity<Map<String, String>> updateBoard(@RequestBody Bdetail bdetail){
+    @PutMapping(value = "/{boardno}", produces = { MediaType.APPLICATION_JSON_VALUE })
+    public ResponseEntity<Map<String, String>> updateBoard(@RequestBody Bdetail bdetail) {
         System.out.println(bdetail);
         boardservice.updateById(bdetail);
-        Map<String,String> resultMap = new HashMap<>();
-        resultMap.put("data","success");
+        Map<String, String> resultMap = new HashMap<>();
+        resultMap.put("data", "success");
         return new ResponseEntity<>(resultMap, HttpStatus.OK);
     }
 

@@ -17,6 +17,10 @@ import BoardList from "./components/board/BoardList.vue";
 import BoardDetail from "./components/board/BoardDetail.vue";
 import BoardAdd from "./components/board/BoardAdd.vue";
 import BoardUpdate from "./components/board/BoardUpdate.vue";
+import UserScrap from "./views/user/UserScrap.vue";
+import BoardRecipeDetail from "./views/boardrecipe/BoardRecipeDetail.vue";
+
+
 
 export default [
   {
@@ -65,12 +69,12 @@ export default [
     component: Mypage
   },
   {
-    path: "/cocktail/list/:pageNm",
+    path: "/cocktail/list",
     name: "CocktailList",
     component: CocktailList
   },
   {
-    path: "/cocktail/detail",
+    path: "/cocktail/detail/:cid",
     name: "CocktailDetail",
     component: CocktailDetail
   },
@@ -104,19 +108,29 @@ export default [
     component: BoardList
   },
   {
-    path:"/boarddetail",
-    name:"BoardDetail",
-    component:BoardDetail
+    path: "/boarddetail/:bid",
+    name: "BoardDetail",
+    component: BoardDetail
   },
   {
-    path:"/boardadd",
-    name:"BoardAdd",
-    component:BoardAdd  
+    path: "/boardadd/",
+    name: "BoardAdd",
+    component: BoardAdd
   },
   {
-    path:"/boardupdate",
-    name:"BoardUpdate",
-    component:BoardUpdate,
-    props:true
+    path: "/boardupdate/:bid",
+    name: "BoardUpdate",
+    component: BoardUpdate,
+    props: true
+  },
+  {
+    path: "/user/scrap/",
+    name: "UserScrap",
+    component: UserScrap
+  },
+  {
+    path: "/boardrecipe/detail/:rid",
+    name: "BoardRecipeDetail",
+    component: BoardRecipeDetail
   }
 ];

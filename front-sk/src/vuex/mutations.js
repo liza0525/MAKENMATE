@@ -1,9 +1,24 @@
 import Constant from "../Constant";
+
+async function loopArray(array) {
+  array.forEach(element => {
+    if (element.image != "") {
+      element.image = require(`../../../images/${element.cid}.jpg`);
+    } else {
+      element.image = require(`../../../images/default.png`);
+    }
+  });
+}
+
 export default {
   // 댓글
   [Constant.GET_REPLY]: (state, payload) => {
     state.reply = payload.reply;
+    state.users = payload.users;
   },
+  [Constant.ADD_REPLY]: (state, payload) => {},
+  [Constant.MODIFY_REPLY]: (state, payload) => {},
+  [Constant.DELETE_REPLY]: (state, payload) => {},
   // 게시판
   [Constant.GET_BOARDLIST]: (state, payload) => {
     state.boardList = payload.boardList;
@@ -20,9 +35,18 @@ export default {
   [Constant.GET_SCRAPLIST]: (state, payload) => {
     state.scrapList = payload.scrapList;
   },
+  [Constant.ADD_SCRAP]: (state, payload) => {},
   // 칵테일
   [Constant.GET_COCKTAILLIST]: (state, payload) => {
+    payload.cocktailList.forEach(element => {
+      if (element.image != "") {
+        element.image = require(`../../../images/${element.cid}.jpg`);
+      } else {
+        element.image = require(`../../../images/default.png`);
+      }
+    });
     state.cocktailList = payload.cocktailList;
+    state.totalPages = payload.totalPages;
   },
   [Constant.GET_COCKTAIL]: (state, payload) => {
     state.cocktail = payload.cocktail;
@@ -41,5 +65,8 @@ export default {
     state.user.nickname = payload.user.nickname;
     state.user.image = payload.user.image;
     state.user.intro = payload.user.intro;
+  },
+  [Constant.USERNAME]: (state, payload) => {
+    state.username = payload.username;
   }
 };

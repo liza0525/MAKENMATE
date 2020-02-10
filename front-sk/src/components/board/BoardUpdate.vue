@@ -6,7 +6,7 @@
                 method="post"
                 id="_boardForm"
                 name="boaradForm"
-                @submit.prevent="addBoard">
+                @submit.prevent="updateBoard">
                 <table>
                     <colgroup>
                         <col style="width:30%;"/>
@@ -17,10 +17,10 @@
                         <td><input
                             data-msg="제목"
                             type="text"
-                            name="titleid"
-                            id="_titleid"
+                            name="title"
+                            id="_title"
                             size="50"
-                            v-model="btitleid"
+                            v-model="board.title"
                             style="width:40%"/></td>
                     </tr>
                     <tr>
@@ -28,19 +28,19 @@
                         <td><input
                             data-msg="내용"
                             type="text"
-                            name="contentsid"
-                            id="_contentsid"
+                            name="contents"
+                            id="_contents"
                             size="50"
-                            v-model="bcontentsid"
+                            v-model="board.contents"
                             style="width:40%"/></td>
                     </tr>
                     <tr>
                         <td colspan="2" style="height:50px; text-align:center;">
-                            <button type="submit" name="button">글 등록</button>
+                            <button type="submit" name="button">글 수정</button>
                         </td>
                     </tr>
                 </table>
-            </form>z
+            </form>
         </div>
     </div>
 </template>
@@ -48,36 +48,47 @@
 <script>
     import http from "../../http-common";
 
+
     export default {
-        name: "add-board",
-        data() {
+        data: () => {
             return {
-                info: null,
-                loading: true,
-                errored: false,
-                btitleid: "",
-                bcontentsid: "",
-                submitted: false,
-                bid: 0
+                bid: 0,
+                board: {
+                    title: "",
+                    file: "",
+                    contents: "",
+                    regdate: "",
+                    user_name: ""
+                },
+                submitted: false
             };
         },
+        created() {
+            this.getData();
+        },
         methods: {
-            addBoard() {
+            getData() {
+                this.bid = this.$route.params.bid;
                 http
-                    .post("/board/", {
-                        title: this.btitleid,
-                        contents: this.bcontentsid,
-                        user_name: window.sessionStorage.getItem("login_username") ///window.sessionStorage.getItem("login_username") ??? 모르거응ㅇ
-                    })
+                    .get("/board/" + this.bid)
                     .then(res => {
-                        this.bid = res.data;
-                        this.$router.push({
+                        this.board = res.data;
+                        console.log(this.board);
+                    });
+            },
+            updateBoard() {
+                http.put('/board/'+this.bid,{
+                    bid: this.bid,
+                    title: this.board.title,
+                    contents: this.board.contents
+                }).then((res) => {
+                    this.$router.push({
                             name: "BoardDetail",
                             params: {
                                 bid: this.bid
                             }
-                        });
-                    });
+                        })
+                });
                 this.submitted = true;
             }
         }

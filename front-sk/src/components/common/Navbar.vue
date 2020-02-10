@@ -5,7 +5,13 @@
     </router-link>
     <v-spacer></v-spacer>
     <div id="nav-contents">
-      <v-btn text color="#fff" href="/#/cocktail/list/1">칵테일 정보</v-btn>
+      <router-link
+        :to="{
+          name: 'CocktailList',
+          query: { pageNm: 1, filtered: 'all', searchedFiltered: '' }
+        }"
+        ><v-btn text color="#fff">칵테일 정보</v-btn></router-link
+      >
       <!-- board dropdown -->
       <v-menu offset-y bottom>
         <template v-slot:activator="{ on }">
@@ -27,7 +33,10 @@
         <v-list>
           <v-row style="margin: 0 0.5rem 0 0.5rem;">
             <v-col cols="9">
-              <v-text-field label="칵테일에 관한 모든 검색" placeholder="검색어 입력"></v-text-field>
+              <v-text-field
+                label="칵테일에 관한 모든 검색"
+                placeholder="검색어 입력"
+              ></v-text-field>
             </v-col>
             <v-col cols="2">
               <v-btn icon>
@@ -57,7 +66,9 @@
           </v-list-item>
           <v-list-item>
             <a href="/#">
-              <v-list-item-title>스크랩 목록</v-list-item-title>
+              <v-list-item-title>
+                <a href="/#/user/scrap">스크랩 목록</a>
+              </v-list-item-title>
             </a>
           </v-list-item>
           <v-list-item>
@@ -102,8 +113,13 @@ export default {
     this.username = this.$store.state.username;
   },
   computed: {
-    username() {
-      return this.$store.state.username;
+    username: {
+      get() {
+        return this.$store.state.username;
+      },
+      set(val) {
+        this.$store.commit("Username", { username: val });
+      }
     }
   },
   methods: {
