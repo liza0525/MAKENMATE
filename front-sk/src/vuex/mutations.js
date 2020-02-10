@@ -1,15 +1,5 @@
 import Constant from "../Constant";
 
-async function loopArray(array) {
-  array.forEach(element => {
-    if (element.image != "") {
-      element.image = require(`../../../images/${element.cid}.jpg`);
-    } else {
-      element.image = require(`../../../images/default.png`);
-    }
-  });
-}
-
 export default {
   // 댓글
   [Constant.GET_REPLY]: (state, payload) => {
