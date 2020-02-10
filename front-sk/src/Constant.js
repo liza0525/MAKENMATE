@@ -24,6 +24,7 @@ export default {
   ADD_COCKTAILLIKE: "addCocktailLike", // 내가 좋아하는 술 추가
   REMOVE_COCKTAILLIKE: "removeCocktailLike", // 내가 좋아하는 술 삭제
   // 유저 관리
+  USERNAME: "Username",
   LOGIN: "Login",
   SIGNUP: "SignUp",
   GET_USERINFO: "getUserInfo", // 유저 프로필 불러오기

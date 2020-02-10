@@ -18,7 +18,9 @@ const state = {
   users: [],
   reply: [],
   comment: "",
-  email: ""
+  email: "",
+  cmid: "",
+  content: ""
 };
 
 export default new Vuex.Store({

@@ -66,7 +66,9 @@
           </v-list-item>
           <v-list-item>
             <a href="/#">
-              <v-list-item-title>스크랩 목록</v-list-item-title>
+              <v-list-item-title>
+                <a href="/#/user/scrap">스크랩 목록</a>
+              </v-list-item-title>
             </a>
           </v-list-item>
           <v-list-item>
@@ -111,8 +113,13 @@ export default {
     this.username = this.$store.state.username;
   },
   computed: {
-    username() {
-      return this.$store.state.username;
+    username: {
+      get() {
+        return this.$store.state.username;
+      },
+      set(val) {
+        this.$store.commit("Username", { username: val });
+      }
     }
   },
   methods: {

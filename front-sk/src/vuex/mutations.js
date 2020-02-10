@@ -17,6 +17,8 @@ export default {
     state.users = payload.users;
   },
   [Constant.ADD_REPLY]: (state, payload) => {},
+  [Constant.MODIFY_REPLY]: (state, payload) => {},
+  [Constant.DELETE_REPLY]: (state, payload) => {},
   // 게시판
   [Constant.GET_BOARDLIST]: (state, payload) => {
     state.boardList = payload.boardList;
@@ -63,5 +65,8 @@ export default {
     state.user.nickname = payload.user.nickname;
     state.user.image = payload.user.image;
     state.user.intro = payload.user.intro;
+  },
+  [Constant.USERNAME]: (state, payload) => {
+    state.username = payload.username;
   }
 };

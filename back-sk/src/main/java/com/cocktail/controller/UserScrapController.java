@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -38,11 +39,11 @@ public class UserScrapController {
     @Autowired
     BoardRecipeDao boardRecipeDao;
 
-    @GetMapping("/user/scrap/{uid}")
+    @GetMapping("/user/scrap/")
     @ApiOperation(value = "스크랩 목록")
-    public Object userScrapList(@PathVariable final int uid) {
-
-        final List<UserScrap> userScrapList = userScrapDao.findAllByUser_uid(uid);
+    public Object userScrapList(@RequestParam final String username) {
+        final User user = userDao.getUserByNickname(username).orElseThrow(CocktailException::new);
+        final List<UserScrap> userScrapList = userScrapDao.findAllByUser_uid(user.getUid());
 
         final BasicResponse result = new BasicResponse();
         final List<BoardRecipe> boardRecipeList = new ArrayList<>();
@@ -55,20 +56,40 @@ public class UserScrapController {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    @PostMapping("/user/scrap/{uid}")
+    @PostMapping("/user/scrap/")
     @ApiOperation(value = "스크랩 저장")
-    public Object userScrapCreate(@PathVariable final int uid, @RequestParam final int rid) {
-        System.out.println("데이터가 넘어는 오나? " + uid + " " + rid);
-
+    public Object userScrapCreate(@RequestParam final String username, @RequestParam final int rid) {
         final BasicResponse result = new BasicResponse();
         final UserScrap addScrap = new UserScrap();
-        final User user = userDao.getOne(uid);
+        final User user = userDao.getUserByNickname(username).orElseThrow(CocktailException::new);
         final BoardRecipe boardRecipe = boardRecipeDao.getOne(rid);
         addScrap.setUser(user);
         addScrap.setBoardrecipe(boardRecipe);
         userScrapDao.save(addScrap);
         result.status = true;
         result.data = "success";
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/user/scrap/")
+    @ApiOperation(value = "스크랩 취소")
+    public Object userScrapRemove(@RequestParam final String username, @RequestParam final int rid) {
+        final BasicResponse result = new BasicResponse();
+        final UserScrap deleteScrap = new UserScrap();
+        final User user = userDao.getUserByNickname(username).orElseThrow(CocktailException::new);
+        final BoardRecipe boardRecipe = boardRecipeDao.getOne(rid);
+        deleteScrap.setUser(user);
+        deleteScrap.setBoardrecipe(boardRecipe);
+        userScrapDao.delete(deleteScrap);
+        
+        final List<UserScrap> userScrapList = userScrapDao.findAllByUser_uid(user.getUid());
+        final List<BoardRecipe> boardRecipeList = new ArrayList<>();
+        for (int i = 0; i < userScrapList.size(); i++)
+            boardRecipeList.add(userScrapList.get(i).getBoardrecipe());
+
+        result.status = true;
+        result.data = "success";
+        result.object = boardRecipeList;
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 }
