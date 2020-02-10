@@ -104,7 +104,7 @@ export default {
         method: ""
       },
       materials: [],
-      email: "test@test.com",
+      email: "",
       comment: "",
       isInput: [],
       username: "",

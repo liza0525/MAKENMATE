@@ -9,6 +9,8 @@ import lombok.Setter;
 import lombok.ToString;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -20,7 +22,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.cocktail.model.user.CocktailLike;
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -65,4 +69,10 @@ public class Comments implements Serializable {
     // private List<board> boardArray = new ArrayList<>();
     // @OneToMany
     // private List<BoardRecipe> BoardRecipeArray = new ArrayList();
+    
+    @OneToMany(mappedBy = "comments")
+    @JsonManagedReference
+    private List<CommentsLike> comments = new ArrayList<>();
+    
+    private int count;
 }

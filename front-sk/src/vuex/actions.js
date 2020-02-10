@@ -24,7 +24,7 @@ export default {
       http
         .post("/comments/" + payload.cid, null, {
           params: {
-            email: payload.email,
+            username: payload.username,
             content: payload.comment
           }
         })

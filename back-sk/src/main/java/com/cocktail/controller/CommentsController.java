@@ -65,6 +65,7 @@ public class CommentsController {
         final List<Comments> comments = commentsDao.findAllByCocktail_cid(cid);
         final List<String> UserArray = new ArrayList<>();
         for (int idex = 0; idex < comments.size(); ++idex) {
+        	comments.get(idex).setCount(comments.get(idex).getComments().size());
             User user = userDao.getUserByUid(comments.get(idex).getUser_uid()).orElseThrow(CocktailException::new);
             UserArray.add(user.getNickname());
         }

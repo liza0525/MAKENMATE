@@ -18,6 +18,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.cocktail.model.CommentsLike;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -119,6 +120,10 @@ public class User implements UserDetails {
 
 	@OneToMany(mappedBy = "user")
 	@JsonManagedReference
-	private List<CocktailLike> users = new ArrayList<>();
+	private List<CocktailLike> cocktailLike = new ArrayList<>();
+
+	@OneToMany(mappedBy = "user")
+	@JsonManagedReference
+	private List<CommentsLike> commentsLike = new ArrayList<>();
 
 }
