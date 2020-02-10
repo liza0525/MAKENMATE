@@ -1,5 +1,7 @@
 package com.cocktail.service;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import com.cocktail.dao.BoardDao;
@@ -36,7 +38,10 @@ public class BoardServiceImpl implements BoardService {
         b.setBid(board.getBid());
         b.setFile(board.getFile());
         b.setContents(board.getContents());
-        b.setRegdate(board.getRegdate());
+        SimpleDateFormat format1 = new SimpleDateFormat ( "yyyy-MM-dd HH:mm:ss");
+        Date time = new Date();
+        String time1 = format1.format(time);
+        b.setRegdate(time1);
         b.setTitle(board.getTitle());
         b.setUser_name(u.getNickname());
         System.out.println(u.getNickname());
@@ -64,7 +69,6 @@ public class BoardServiceImpl implements BoardService {
     @Override
     public int save(Bdetail bdetail) {
         Board b = new Board();
-        System.out.println(bdetail);
         String username = bdetail.getUser_name();
         User u = userDao.findByNickname(username);
         System.out.println(username);

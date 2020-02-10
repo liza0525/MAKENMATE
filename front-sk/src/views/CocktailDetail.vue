@@ -198,7 +198,7 @@ export default {
 </script>
 <style scoped>
 .test {
-  background: linear-gradient(rgba(0, 0, 0, 0.7)),
-    url(../assets/images/image.png) no-repeat;
+  /* background: linear-gradient(rgba(0, 0, 0, 0.7)),
+    url(../assets/images/image.png) no-repeat; */
 }
 </style>

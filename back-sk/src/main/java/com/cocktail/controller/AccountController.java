@@ -121,29 +121,22 @@ public class AccountController {
 		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
 
-	@PutMapping("/user/changePw")
+	@PutMapping("/user/changePW")
 	@ApiOperation(value = "비밀번호 변경")
-	public Object changePw(@RequestParam(required = true) final String email,
+	public Object changePw(@RequestParam(required = true) final String nickname,
 			@RequestParam(required = true) final String befPassword,
 			@RequestParam(required = true) final String password) {
 
-		User find = userDao.getUserByEmail(email).orElseThrow(CocktailException::new);
+		User find = userDao.getUserByNickname(nickname).orElseThrow(CocktailException::new);
 
 		final BasicResponse result = new BasicResponse();
 		result.status = true;
-
-		if (befPassword.equals(find.getPassword())) {
-			find.setPassword(password);
-			result.data = "success";
-		} else
-			result.data = "wrongPw";
-
-		// if (befPassword.equals(find.getPassword())) {
-		// find.setPassword(password);
-		// userDao.save(find);
-		// result.data = "success";
-		// } else
-		// result.data = "wrongPw";
+		 if (passwordEncoder.matches(befPassword, find.getPassword())) {
+			 find.setPassword(passwordEncoder.encode(password));
+			 userDao.save(find);
+			 result.data = "success";
+		 } else
+			 result.data = "wrongPw";
 
 		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
@@ -151,17 +144,16 @@ public class AccountController {
 	@DeleteMapping("/user/withdraw")
 	@ApiOperation(value = "회원탈퇴")
 
-	public Object withdraw(@RequestParam(required = true) final String email,
+	public Object withdraw(@RequestParam(required = true) final String nickname,
 			@RequestParam(required = true) final String password) {
-		// final User user = userDao.getUserByEmail(email);
+		 User find = userDao.getUserByNickname(nickname).orElseThrow(CocktailException::new);
 
 		final BasicResponse result = new BasicResponse();
-		// if (password.equals(user.getPassword())) {
-		// userDao.delete(user);
-		// result.data = "success";
-		// } else {
-		// result.data = "wrongPW";
-		// }
+		if (passwordEncoder.matches(password, find.getPassword())) {
+			 userDao.delete(find);
+			 result.data = "success";
+		 } else
+			 result.data = "wrongPw";
 		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
 

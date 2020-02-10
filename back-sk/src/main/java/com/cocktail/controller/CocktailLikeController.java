@@ -74,8 +74,8 @@ public class CocktailLikeController {
 
     @GetMapping("/cocktail/getlikebyuser")
     @ApiOperation(value = "좋아요한 칵테일 가져오기")
-    public Object getLikebyuser(@RequestParam(required = true) final String email) {
-        User user = userDao.getUserByEmail(email).orElseThrow(CocktailException::new);
+    public Object getLikebyuser(@RequestParam(required = true) final String username) {
+        User user = userDao.getUserByNickname(username).orElseThrow(CocktailException::new);
         List<CocktailLike> cls = user.getUsers();
         List<Cocktail> cocktails = new ArrayList<>();
         for (CocktailLike cl : cls) {

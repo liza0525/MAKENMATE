@@ -179,11 +179,13 @@ export default {
   [Constant.GET_SCRAPLIST]: (store, payload) => {
     return new Promise((resolve, reject) => {
       http
-        .get("/user/scrap/" + payload.uid)
+        .get("/user/scrap/", {
+          params: {
+            username: payload.username
+          }
+        })
         .then(res => {
-          console.log("res : ", res.data.object);
           store.commit(Constant.GET_SCRAPLIST, { scrapList: res.data.object });
-
           resolve();
         })
         .catch(exp => {
@@ -195,15 +197,15 @@ export default {
   [Constant.ADD_SCRAP]: (store, payload) => {
     return new Promise((resolve, reject) => {
       // recipe 공유 게시판만 추가
-      console.log("payload.uid payload.rid", payload.uid, payload.rid);
       http
-        .post("/user/scrap/" + payload.uid, null, {
+        .post("/user/scrap/", null, {
           params: {
+            username: payload.username,
             rid: payload.rid
           }
         })
         .then(res => {
-          console.log("success");
+          console.log("add success");
           // 추가하고 다시 게시판 목록으로
           store.dispatch(Constant.GET_BOARDLIST);
           resolve();
@@ -218,9 +220,18 @@ export default {
     return new Promise((resolve, reject) => {
       // 스크랩 TABLE의 id
       http
-        .delete("/user/scrap/" + payload.sid)
+        .delete("/user/scrap/", {
+          params: {
+            username: payload.username,
+            rid: payload.rid
+          }
+        })
         .then(res => {
-          store.dispatch(Constant.GET_SCRAPLIST);
+          let list = [...res.data.object];
+          store.scrapList = list;
+          store.commit(Constant.GET_SCRAPLIST, {
+            scrapList: res.data.object
+          });
           resolve();
         })
         .catch(exp => {
@@ -272,7 +283,7 @@ export default {
   [Constant.GET_COCKTAILLIKE]: (store, payload) => {
     return new Promise((resolve, reject) => {
       http
-        .get("/user/like", payload.username)
+        .get("/cocktail/getlikebyuser", payload.username)
         .then(res => {
           store.commit(Constant.GET_COCKTAILLIKE, {
             cocktailList: res.data.object
@@ -288,7 +299,7 @@ export default {
   [Constant.ADD_COCKTAILLIKE]: (store, payload) => {
     return new Promise((resolve, reject) => {
       http
-        .post("/user/like", payload.cname, {
+        .post("/cocktail/like", payload.cname, {
           params: {
             username: payload.username
           }
@@ -306,7 +317,7 @@ export default {
   [Constant.REMOVE_COCKTAILLIKE]: (store, payload) => {
     return new Promise((resolve, reject) => {
       http
-        .delete("/user/like", payload.username)
+        .delete("/cocktail/like", payload.username)
         .then(res => {
           store.dispatch(Constant.GET_COCKTAILLIKE);
           resolve();
