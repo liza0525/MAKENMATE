@@ -6,10 +6,10 @@
           <b>
             {{ cocktail.cname }}
             <button @click="clickLike">
-              <div v-if="islike" class="far fa-heart"></div>
-              <div v-else class="fas fa-heart"></div>
+              <span v-show="!islike"><i class="far fa-heart"></i></span>
+              <span v-show="islike"><i class="fas fa-heart"></i></span>
             </button>
-            {{likebycocktail}}
+            {{ likebycocktail }}
           </b>
         </h1>
       </div>
@@ -55,7 +55,12 @@
           </div>
         </v-col>
       </v-row>
-      <div :v-if="reply" v-for="(re, i) in reply" :key="i" style="margin-top: 5px; display:block;">
+      <div
+        :v-if="reply"
+        v-for="(re, i) in reply"
+        :key="i"
+        style="margin-top: 5px; display:block;"
+      >
         <!-- <v-text v-if="isInput[i]"> -->
         <div v-if="isInput[i] === 0">
           <span>{{ users[i] }} : {{ re.content }}</span>
@@ -103,8 +108,7 @@ export default {
       comment: "",
       isInput: [],
       username: "",
-      updatedComment: "",
-      islike: false
+      updatedComment: ""
     };
   },
   mounted() {
@@ -122,23 +126,30 @@ export default {
           .replace("[", "")
           .replace("]", "")
           .split(",");
-      });
-    if (this.materials === [""]) {
-      this.materials = [];
-    }
-    this.$store
-      .dispatch(Constant.GET_REPLY, { cid: this.$route.params.cid })
-      .then(() => {
-        this.reply = { ...this.$store.state.reply };
-        this.users = { ...this.$store.state.users };
-        for (let i = 0; i < this.reply.length; ++i) {
-          this.isInput.push(0);
+        if (this.materials === [""]) {
+          this.materials = [];
         }
-        console.log(this.isInput);
+        this.$store
+          .dispatch(Constant.GET_REPLY, { cid: this.$route.params.cid })
+          .then(() => {
+            this.reply = { ...this.$store.state.reply };
+            this.users = { ...this.$store.state.users };
+            for (let i = 0; i < this.reply.length; ++i) {
+              this.isInput.push(0);
+            }
+            this.$store
+              .dispatch(Constant.GET_LIKEBYCOCKTAIL, {
+                cid: this.$route.params.cid
+              })
+              .then(() => {
+                this.$store.dispatch(Constant.GET_LIKEBYUSERANDCOCKTAIL, {
+                  cid: this.cocktail.cid,
+                  username: this.$store.state.username
+                });
+              });
+            console.log(this.isInput);
+          });
       });
-    this.$store.dispatch(Constant.GET_LIKEBYCOCKTAIL, {
-      cid: this.$route.params.cid
-    });
     this.username = this.$store.state.username;
     if (this.username === undefined) {
       this.username = "h";
@@ -167,6 +178,15 @@ export default {
     },
     likebycocktail() {
       return this.$store.state.likebycocktail;
+    },
+    islike: {
+      set(val) {
+        this.$store.state.isLike = val;
+      },
+      get() {
+        console.log("test " + this.$store.state.isLike);
+        return this.$store.state.isLike;
+      }
     }
   },
   methods: {
@@ -209,17 +229,20 @@ export default {
     },
     clickLike() {
       if (this.islike == false) {
-        this.$store.dispatch(Constant.ADD_COCKTAILLIKE, {
-          cid: this.cocktail.cid,
-          username: this.$store.state.username
-        });
+        this.$store
+          .dispatch(Constant.ADD_COCKTAILLIKE, {
+            cid: this.cocktail.cid,
+            username: this.$store.state.username
+          })
+          .then(() => (this.islike = this.$store.state.isLike));
       } else {
-        this.$store.dispatch(Constant.REMOVE_COCKTAILLIKE, {
-          cid: this.cocktail.cid,
-          username: this.$store.state.username
-        });
+        this.$store
+          .dispatch(Constant.REMOVE_COCKTAILLIKE, {
+            cid: this.cocktail.cid,
+            username: this.$store.state.username
+          })
+          .then(() => (this.islike = this.$store.state.isLike));
       }
-      this.islike = !this.islike;
     }
   }
 };
