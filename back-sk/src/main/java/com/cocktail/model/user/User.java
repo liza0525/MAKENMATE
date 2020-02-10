@@ -47,8 +47,8 @@ public class User implements UserDetails {
 	private String password;
 	private String email;
 
-	// private String image;
-	// private String intro;
+	private String image;
+	private String intro;
 	private String nickname;
 
 	// @OneToMany(mappedBy = "boardrecipe")

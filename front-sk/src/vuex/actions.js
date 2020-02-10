@@ -321,7 +321,7 @@ export default {
   [Constant.GET_USERINFO]: (store, payload) => {
     return new Promise((resolve, reject) => {
       http
-        .get("/user/info", payload.username)
+        .get("/user/info/" + payload.username)
         .then(res => {
           store.commit(Constant.GET_USERINFO, { user: res.data.object });
           resolve();

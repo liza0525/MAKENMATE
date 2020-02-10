@@ -10,8 +10,9 @@
           name: 'CocktailList',
           query: { pageNm: 1, filtered: 'all', searchedFiltered: '' }
         }"
-        ><v-btn text color="#fff">칵테일 정보</v-btn></router-link
       >
+        <v-btn text color="#fff">칵테일 정보</v-btn>
+      </router-link>
       <!-- board dropdown -->
       <v-menu offset-y bottom>
         <template v-slot:activator="{ on }">
@@ -33,10 +34,7 @@
         <v-list>
           <v-row style="margin: 0 0.5rem 0 0.5rem;">
             <v-col cols="9">
-              <v-text-field
-                label="칵테일에 관한 모든 검색"
-                placeholder="검색어 입력"
-              ></v-text-field>
+              <v-text-field label="칵테일에 관한 모든 검색" placeholder="검색어 입력"></v-text-field>
             </v-col>
             <v-col cols="2">
               <v-btn icon>
@@ -60,9 +58,9 @@
         </template>
         <v-list v-if="this.username" stlye="width:400px;">
           <v-list-item>
-            <a href="/#/user/mypage">
-              <v-list-item-title>마이페이지</v-list-item-title>
-            </a>
+            <v-list-item-title>
+              <router-link :to="{name: 'Mypage'}">마이페이지</router-link>
+            </v-list-item-title>
           </v-list-item>
           <v-list-item>
             <a href="/#">
