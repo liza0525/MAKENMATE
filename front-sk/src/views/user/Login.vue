@@ -126,12 +126,12 @@ export default {
           res => {
             //통신을 통해 전달받은 값 콘솔에 출력
             if (res.data.status) {
-              console.log(res);
-              storage.setItem("jwt-auth-token", res.headers["jwt-auth-token"]);
+              storage.setItem("Authorization", res.headers["authorization"]);
               storage.setItem("login_username", res.data.object.nickname);
               storage.setItem("login_useremail", res.data.object.email);
-
-              this.$router.push("/user/completeJoin");
+              this.$store.state.username = res.data.object.nickname;
+              this.$store.state.useremail = res.data.object.email;
+              this.$router.push("/");
             }
             //요청이 끝나면 버튼 활성화
             this.isSubmit = true;

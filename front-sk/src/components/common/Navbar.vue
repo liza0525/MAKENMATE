@@ -5,7 +5,14 @@
     </router-link>
     <v-spacer></v-spacer>
     <div id="nav-contents">
-      <v-btn text color="#fff">칵테일 정보</v-btn>
+      <router-link
+        :to="{
+          name: 'CocktailList',
+          query: { pageNm: 1, filtered: 'all', searchedFiltered: '' }
+        }"
+      >
+        <v-btn text color="#fff">칵테일 정보</v-btn>
+      </router-link>
       <!-- board dropdown -->
       <v-menu offset-y bottom>
         <template v-slot:activator="{ on }">
@@ -13,7 +20,7 @@
         </template>
         <v-list>
           <v-list-item v-for="(board, index) in boards" :key="index">
-            <v-list-item-title>{{ board.title }}</v-list-item-title>
+            <v-list-item-title><a :href=board.link>{{ board.title }}</a></v-list-item-title>
           </v-list-item>
         </v-list>
       </v-menu>
@@ -25,7 +32,7 @@
           </v-btn>
         </template>
         <v-list>
-          <v-row style="margin: 0 0.5rem 0 0.5rem;">  
+          <v-row style="margin: 0 0.5rem 0 0.5rem;">
             <v-col cols="9">
               <v-text-field label="칵테일에 관한 모든 검색" placeholder="검색어 입력"></v-text-field>
             </v-col>
@@ -45,13 +52,39 @@
       <!-- account dropdown -->
       <v-menu offset-y bottom>
         <template v-slot:activator="{ on }">
-          <v-btn icon color="#fff" v-on="on">
+          <v-btn icon color="#fff" v-on="on" @click="check()">
             <v-icon>mdi-account-circle</v-icon>
           </v-btn>
         </template>
-        <v-list stlye="width:400px;">
-          <v-list-item v-for="(acc_menu, index) in acc_menus" :key="index">
-            <v-list-item-title>{{ acc_menu.title }}</v-list-item-title>
+        <v-list v-if="this.username" stlye="width:400px;">
+          <v-list-item>
+            <a href="/#/user/mypage">
+              <v-list-item-title>마이페이지</v-list-item-title>
+            </a>
+          </v-list-item>
+          <v-list-item>
+            <a href="/#">
+              <v-list-item-title>
+                <a href="/#/user/scrap">스크랩 목록</a>
+              </v-list-item-title>
+            </a>
+          </v-list-item>
+          <v-list-item>
+            <a href="/#/logout">
+              <v-list-item-title>로그아웃</v-list-item-title>
+            </a>
+          </v-list-item>
+        </v-list>
+        <v-list v-else>
+          <v-list-item>
+            <a href="/#/login">
+              <v-list-item-title>로그인</v-list-item-title>
+            </a>
+          </v-list-item>
+          <v-list-item>
+            <a href="/#/user/join">
+              <v-list-item-title>회원가입</v-list-item-title>
+            </a>
           </v-list-item>
         </v-list>
       </v-menu>
@@ -59,25 +92,48 @@
   </v-app-bar>
 </template>
 <script>
+const storage = window.sessionStorage;
 export default {
   data() {
     return {
       boards: [
-        { title: "레시피 공유" },
-        { title: "칵테일 파티" },
-        { title: "자유 게시판" }
+        {
+          title: "레시피 공유",
+          link: "/#/boardrecipe/list"
+        },
+        { 
+          title: "칵테일 파티", 
+          link: "/#/"
+        },
+        { 
+          title: "자유 게시판", 
+          link: "/#/board/list"
+        }
       ],
-      acc_menus: [
-        { title: "마이 페이지" },
-        { title: "스크랩 목록" },
-        { title: "로그아웃" }
-      ],
-
+      acc_menus: [],
       drawer: true,
       mini: true
     };
   },
-  methods: {}
+  created() {
+    this.$store.state.username = storage.getItem("login_username");
+    this.username = this.$store.state.username;
+  },
+  computed: {
+    username: {
+      get() {
+        return this.$store.state.username;
+      },
+      set(val) {
+        this.$store.commit("Username", { username: val });
+      }
+    }
+  },
+  methods: {
+    check() {
+      console.log(storage.getItem("Authorization"));
+    }
+  }
 };
 </script>
 <style>

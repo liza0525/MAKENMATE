@@ -1,5 +1,36 @@
 <template>
   <div style="text-align:center;" class="test">
+    <v-item-group active-class="primary" @click="clicked = !clicked">
+      <v-container fluid ma-0 pa-0 style="width:65%;">
+        <div>
+          <h1>Material</h1>
+        </div>
+        <v-row>
+          <router-link
+            :to="{
+              name: 'CocktailList',
+              query: {
+                pageNm: 1,
+                filtered: filter.name,
+                searchedFiltered: $route.query.searchedFiltered
+              }
+            }"
+            v-for="filter in filters"
+            :key="filter.name"
+          >
+            <v-col cols="12" md="2">
+              <img
+                :src="filter.image"
+                :alt="filter.name"
+                style="height:120px;"
+              />
+              <div style="font-size:30px;color:#797979">{{ filter.name }}</div>
+            </v-col>
+          </router-link>
+        </v-row>
+      </v-container>
+    </v-item-group>
+
     <v-container fluid ma-0 pa-0 style="width:65%;">
       <v-row dense>
         <v-col
@@ -38,115 +69,195 @@
         </v-col>
       </v-row>
     </v-container>
-    <button v-on:click="fistPg()" style="margin-right:10px;">
+    <div>
+      <input
+        type="text"
+        @input="autocomplete"
+        v-model="searchData"
+        @keypress.enter="search(1)"
+      />
+    </div>
+    <v-container v-if="searchedData.length > 0">
+      <div style="text-align:center;">
+        <v-card
+          class="mx-auto"
+          max-width="500"
+          style="overflow-y:auto; float:center;"
+        >
+          <v-list style=" float:center;">
+            <v-list-item-group v-model="searchedData">
+              <v-list-item v-for="(item, i) in searchedData" :key="i">
+                <v-list-item-content @click="searchDetailPage(item)">
+                  <v-list-item-title v-text="item"></v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>
+            </v-list-item-group>
+          </v-list>
+        </v-card>
+      </div>
+    </v-container>
+
+    <button
+      v-if="pageNm > 5"
+      v-on:click="search(1)"
+      style="margin-right:10px;margin-top:100px;"
+    >
       {{ fistBt }}
     </button>
-    <button v-on:click="prevPg()" style="margin-right:10px;">
+    <button
+      v-if="pageNm > 5"
+      v-on:click="search(min - 5 < 0 ? 1 : min - 5)"
+      style="margin-right:10px;"
+    >
       {{ prevBt }}
     </button>
-    <button
-      v-on:click="paginate(pageNm)"
-      v-for="pageNm in pageNms"
-      :key="pageNm"
-    >
+    <button v-for="pageNm in pageNms" :key="pageNm" @click="search(pageNm)">
       <span style="margin-right:10px;">{{ pageNm }}</span>
     </button>
-    <button v-on:click="nextPg(filteredData)" style="margin-right:10px;">
+    <button
+      v-if="min + 5 <= totalPages"
+      v-on:click="search(min + 5)"
+      style="margin-right:10px;"
+    >
       {{ nextBt }}
     </button>
-    <button v-on:click="lastPg()">{{ lastBt }}</button>
+    <button v-if="min + 5 <= totalPages" v-on:click="search(totalPages)">
+      {{ lastBt }}
+    </button>
   </div>
 </template>
 
 <script>
-const axios = require("axios");
 import http from "../http-common";
+import Constant from "../Constant";
 export default {
   data: () => {
     return {
+      searchData: "",
       cocktailArray: [],
-      pageNms: [1, 2, 3, 4, 5],
-      filteredData: 25,
+      cocktailNameArray: [],
       prevBt: "<",
       nextBt: ">",
       fistBt: "<<",
       lastBt: ">>",
-      filtered: "레몬"
+      searchedData: [],
+      pageNms: [],
+      totalPages: 0,
+      filter: {
+        filtered: "",
+        searchData: ""
+      },
+      clicked: false,
+      filters: [
+        { name: "레몬", image: require("../assets/images/lemon.png") },
+        { name: "럼", image: require("../assets/images/lemon.png") },
+        { name: "위스키", image: require("../assets/images/lemon.png") },
+        { name: "진", image: require("../assets/images/lemon.png") },
+        { name: "와인", image: require("../assets/images/lemon.png") },
+        { name: "오렌지", image: require("../assets/images/lemon.png") },
+        { name: "보드카", image: require("../assets/images/lemon.png") },
+        { name: "맥주", image: require("../assets/images/lemon.png") }
+      ],
+      min: 1
     };
   },
-  created() {
-    this.paginate(1, this.filtered);
+  mounted() {
+    this.pageNm = this.$route.query.pageNm;
+    this.filtered = this.$route.query.filtered;
+    this.getCocktailName();
+    this.paginate(this.$route.query.pageNm);
+  },
+  computed: {
+    pageNm: {
+      set: function(val) {
+        if (val < 0) val = 1;
+        let arr = [];
+        this.min = parseInt((val - 1) / 5) * 5 + 1;
+        for (let index = 0; index < 5; index++) {
+          if (Number(this.min + index) > this.$store.state.totalPages) break;
+          arr.push(Number(this.min + index));
+        }
+        this.pageNms = arr;
+      },
+      get: function() {
+        return this.$route.query.pageNm;
+      }
+    },
+    filtered: {
+      set: function(val) {
+        this.filter.filtered = val;
+      },
+      get: function() {
+        return this.$route.query.filtered;
+      }
+    }
   },
   methods: {
     paginate(pageNm) {
-      let data = {
-        pageNm
-      };
-      http
-        .get("/posts?page=" + (pageNm - 1), {
-          params: { filtered: this.filtered }
+      this.pageNm = pageNm;
+      if (this.searchData === "") {
+        if (this.$route.query.searchedFiltered === "") this.searchData = "h";
+        else this.searchData = this.$route.query.searchedFiltered;
+      }
+      this.$store
+        .dispatch(Constant.GET_COCKTAILLIST, {
+          pageNm: pageNm - 1,
+          filtered: this.filter.filtered,
+          searchedFiltered: this.searchData
         })
-        .then(res => {
-          this.cocktailArray = res.data.content;
-          this.cocktailArray.forEach(element => {
-            if (element.image != "") {
-              element.image = require(`../../../images/${element.cid}.jpg`);
-            } else {
-              element.image = require(`../../../images/default.png`);
-            }
-          });
-          this.filteredData = res.data.totalPages;
+        .then(() => {
+          this.cocktailArray = { ...this.$store.state.cocktailList };
+          this.totalPages = this.$store.state.totalPages;
+          this.pageNm = pageNm;
+          console.log(this.cocktailArray);
         });
-    },
-    nextPg(filteredData) {
-      if (this.pageNms[4] + 5 >= filteredData) {
-        this.pageNms = [
-          this.filteredData - 4,
-          this.filteredData - 3,
-          this.filteredData - 2,
-          this.filteredData - 1,
-          this.filteredData
-        ];
-      } else {
-        this.pageNms = this.pageNms.map(pageNm => {
-          return pageNm + 5;
-        });
+      if (this.searchData === "h") {
+        this.searchData = "";
       }
-      this.paginate(this.pageNms[0]);
+      return this.cocktailArray;
     },
-    prevPg() {
-      var flag = false;
-      this.pageNms.forEach(function(pageNm) {
-        if (pageNm < 5) flag = true;
+
+    search(pageNm) {
+      if (this.searchData == "")
+        this.searchData = this.$route.query.searchedFiltered;
+      this.$router.push({
+        name: "CocktailList",
+        query: {
+          pageNm: pageNm,
+          filtered: this.filter.filtered,
+          searchedFiltered: this.searchData
+        }
       });
-      if (flag) {
-        this.pageNms = [1, 2, 3, 4, 5];
+    },
+    getCocktailName() {
+      http.get("/cocktail/name").then(res => {
+        this.cocktailNameArray = res.data.object;
+      });
+    },
+    autocomplete() {
+      this.searchedData = [];
+      if (this.searchData === "") {
+        this.searchedData = [];
       } else {
-        this.pageNms = this.pageNms.map(pageNm => {
-          return pageNm - 5;
-        });
+        for (let i = 0; i < this.cocktailNameArray.length; ++i) {
+          if (
+            this.cocktailNameArray[i].indexOf(this.searchData) != -1 &&
+            this.searchedData.indexOf(this.cocktailNameArray[i]) === -1
+          ) {
+            this.searchedData.push(this.cocktailNameArray[i]);
+          }
+        }
       }
-      this.paginate(this.pageNms[0]);
-    },
-    fistPg() {
-      this.pageNms = [1, 2, 3, 4, 5];
-      this.paginate(1);
-    },
-    lastPg() {
-      this.pageNms = [
-        this.filteredData - 4,
-        this.filteredData - 3,
-        this.filteredData - 2,
-        this.filteredData - 1,
-        this.filteredData
-      ];
-      this.paginate(this.filteredData - 4);
     },
     goToDetail(sendCid) {
+      this.$router.push("/cocktail/detail/" + sendCid);
+    },
+    searchDetailPage(item) {
+      let id = this.cocktailNameArray.indexOf(item) + 1;
       this.$router.push({
         name: "CocktailDetail",
         params: {
-          cid: sendCid
+          cid: id
         }
       });
     }
