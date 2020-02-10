@@ -56,6 +56,9 @@ export default {
     // 좋아요한 칵테일 가져오기
     state.cocktailList = payload.cocktailList;
   },
+  [Constant.GET_LIKEBYCOCKTAIL]: (state, payload) => {
+    state.likebycocktail = payload.likebycocktail;
+  },
   //유저
   [Constant.GET_USERINFO]: (state, payload) => {
     state.user = payload.user;

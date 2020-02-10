@@ -3,7 +3,14 @@
     <v-container fluid style="width:60%">
       <div class="title mb-1" style="text-align:center;">
         <h1>
-          <b>{{ cocktail.cname }}</b>
+          <b>
+            {{ cocktail.cname }}
+            <button @click="clickLike">
+              <div v-if="islike" class="far fa-heart"></div>
+              <div v-else class="fas fa-heart"></div>
+            </button>
+            {{likebycocktail}}
+          </b>
         </h1>
       </div>
       <v-row justify="space-around">
@@ -96,7 +103,8 @@ export default {
       comment: "",
       isInput: [],
       username: "",
-      updatedComment: ""
+      updatedComment: "",
+      islike: false
     };
   },
   mounted() {
@@ -128,6 +136,9 @@ export default {
         }
         console.log(this.isInput);
       });
+    this.$store.dispatch(Constant.GET_LIKEBYCOCKTAIL, {
+      cid: this.$route.params.cid
+    });
     this.username = this.$store.state.username;
     if (this.username === undefined) {
       this.username = "h";
@@ -153,6 +164,9 @@ export default {
       get() {
         return true;
       }
+    },
+    likebycocktail() {
+      return this.$store.state.likebycocktail;
     }
   },
   methods: {
@@ -192,13 +206,27 @@ export default {
       list.splice(i, 1, 1);
       this.isInput = list;
       console.log(this.isInput[i]);
+    },
+    clickLike() {
+      if (this.islike == false) {
+        this.$store.dispatch(Constant.ADD_COCKTAILLIKE, {
+          cid: this.cocktail.cid,
+          username: this.$store.state.username
+        });
+      } else {
+        this.$store.dispatch(Constant.REMOVE_COCKTAILLIKE, {
+          cid: this.cocktail.cid,
+          username: this.$store.state.username
+        });
+      }
+      this.islike = !this.islike;
     }
   }
 };
 </script>
 <style scoped>
 .test {
-  background: linear-gradient(rgba(0, 0, 0, 0.7)),
-    url(../assets/images/image.png) no-repeat;
+  /* background: linear-gradient(rgba(0, 0, 0, 0.7)),
+    url(../assets/images/image.png) no-repeat; */
 }
 </style>

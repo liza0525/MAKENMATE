@@ -45,9 +45,9 @@ public class CocktailLikeController {
 
     @PostMapping("/cocktail/like")
     @ApiOperation(value = "좋아요 누르기")
-    public Object clickLike(@RequestParam(required = true) final String email,
+    public Object clickLike(@RequestParam(required = true) final String username,
             @RequestParam(required = true) final int cid) {
-        User user = userDao.getUserByEmail(email).orElseThrow(CocktailException::new);
+        User user = userDao.findByNickname(username);
         Cocktail cocktail = cocktailDao.getCocktailByCid(cid);
         CocktailLike cl = new CocktailLike((long) 0, user, cocktail);
         cocktailLikeDao.save(cl);
@@ -56,20 +56,20 @@ public class CocktailLikeController {
         result.data = "success";
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
-    
+
     @DeleteMapping("/cocktail/like")
     @ApiOperation(value = "좋아요 삭제")
-    public Object deleteLike(@RequestParam(required = true) final String email,
-    		@RequestParam(required = true) final int cid) {
-    	User user = userDao.getUserByEmail(email).orElseThrow(CocktailException::new);
-    	Cocktail cocktail = cocktailDao.getCocktailByCid(cid);
-    	CocktailLike cl = cocktailLikeDao.findByUser_uidAndCocktail_cid(user.getUid(), cid);
-    	cocktailLikeDao.deleteById(cl.getId());
-    	
-    	final BasicResponse result = new BasicResponse();
-    	result.status = true;
-    	result.data = "success";
-    	return new ResponseEntity<>(result, HttpStatus.OK);
+    public Object deleteLike(@RequestParam(required = true) final String username,
+            @RequestParam(required = true) final int cid) {
+        User user = userDao.findByNickname(username);
+        Cocktail cocktail = cocktailDao.getCocktailByCid(cid);
+        CocktailLike cl = cocktailLikeDao.findByUser_uidAndCocktail_cid(user.getUid(), cid);
+        cocktailLikeDao.deleteById(cl.getId());
+
+        final BasicResponse result = new BasicResponse();
+        result.status = true;
+        result.data = "success";
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @GetMapping("/cocktail/getlikebyuser")
@@ -79,8 +79,8 @@ public class CocktailLikeController {
         List<CocktailLike> cls = user.getUsers();
         List<Cocktail> cocktails = new ArrayList<>();
         for (CocktailLike cl : cls) {
-			cocktails.add(cl.getCocktail());
-		}
+            cocktails.add(cl.getCocktail());
+        }
         final BasicResponse result = new BasicResponse();
         result.status = true;
         result.data = "success";
@@ -98,5 +98,4 @@ public class CocktailLikeController {
         result.object = cocktailLikes;
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
-
 }

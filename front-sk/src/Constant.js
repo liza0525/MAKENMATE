@@ -23,6 +23,7 @@ export default {
   GET_COCKTAILLIKE: "getCocktailLike", // 좋아요한 칵테일 가져오기
   ADD_COCKTAILLIKE: "addCocktailLike", // 내가 좋아하는 술 추가
   REMOVE_COCKTAILLIKE: "removeCocktailLike", // 내가 좋아하는 술 삭제
+  GET_LIKEBYCOCKTAIL: "getlikebycocktail", // 칵테일 좋아요 수 가져오기
   // 유저 관리
   USERNAME: "Username",
   LOGIN: "Login",

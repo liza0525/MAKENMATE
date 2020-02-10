@@ -272,7 +272,7 @@ export default {
   [Constant.GET_COCKTAILLIKE]: (store, payload) => {
     return new Promise((resolve, reject) => {
       http
-        .get("/user/like", payload.username)
+        .get("/cocktail/like", payload.username)
         .then(res => {
           store.commit(Constant.GET_COCKTAILLIKE, {
             cocktailList: res.data.object
@@ -285,16 +285,36 @@ export default {
         });
     });
   },
+  [Constant.GET_LIKEBYCOCKTAIL]: (store, payload) => {
+    console.log(payload.cid);
+    return new Promise((resolve, reject) => {
+      http
+        .get("/cocktail/getlikebycocktail", {
+          params: { cid: payload.cid }
+        })
+        .then(res => {
+          store.commit(Constant.GET_LIKEBYCOCKTAIL, {
+            likebycocktail: res.data.object
+          });
+          resolve();
+        })
+        .catch(exp => {
+          console.log(exp);
+          reject();
+        });
+    });
+  },
   [Constant.ADD_COCKTAILLIKE]: (store, payload) => {
     return new Promise((resolve, reject) => {
       http
-        .post("/user/like", payload.cname, {
+        .post("/cocktail/like", {
           params: {
+            cid: payload.cid,
             username: payload.username
           }
         })
-        .then(res => {
-          store.dispatch(Constant.GET_COCKTAILLIKE);
+        .then(() => {
+          store.dispatch(Constant.GET_LIKEBYCOCKTAIL);
           resolve();
         })
         .catch(exp => {
@@ -306,8 +326,13 @@ export default {
   [Constant.REMOVE_COCKTAILLIKE]: (store, payload) => {
     return new Promise((resolve, reject) => {
       http
-        .delete("/user/like", payload.username)
-        .then(res => {
+        .delete("/cocktail/like", {
+          params: {
+            username: payload.username,
+            cid: payload.cid
+          }
+        })
+        .then(() => {
           store.dispatch(Constant.GET_COCKTAILLIKE);
           resolve();
         })
