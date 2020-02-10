@@ -8,13 +8,16 @@ import com.cocktail.model.boardRecipe.BoardRecipe;
 public interface BoardRecipeService {
 
     // 칵테일레시피공유게시판 전체 리스트 조회
-    List<BoardRecipe> getAllBoard();
+    List<BoardRecipe> getAllBoardRecipe();
 
     // 글 번호로 게시판 상세 보기
-    BRdetail findById(int bid);
+    BoardRecipe findById(int rid);
+
+    // 해당 유저가 스크랩을 했는지 안했는지
+    Boolean getUserIdScrappingList(int boardrecipeno, String username);
 
     // 공유게시글 작성
-    int save(BRdetail brdetail);
+    int save(BRdetail bRdetail);
 
     // 공유게시글 수정
     void updateById(BRdetail brdetail);

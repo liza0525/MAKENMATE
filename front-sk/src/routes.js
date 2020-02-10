@@ -18,7 +18,10 @@ import BoardDetail from "./components/board/BoardDetail.vue";
 import BoardAdd from "./components/board/BoardAdd.vue";
 import BoardUpdate from "./components/board/BoardUpdate.vue";
 import UserScrap from "./views/user/UserScrap.vue";
+import BoardRecipeList from "./views/boardrecipe/BoardRecipeList.vue";
 import BoardRecipeDetail from "./views/boardrecipe/BoardRecipeDetail.vue";
+import BoardRecipeAdd from "./views/boardrecipe/BoardRecipeAdd.vue";
+import BoardRecipeUpdate from "./views/boardrecipe/BoardRecipeUpdate.vue";
 
 export default [
   {
@@ -101,34 +104,50 @@ export default [
     component: PageNotFound
   },
   {
-    path: "/boardlist",
+    path: "/board/list",
     name: "BoardList",
     component: BoardList
   },
   {
-    path: "/boarddetail/:bid",
+    path: "/board/detail/:bid",
     name: "BoardDetail",
     component: BoardDetail
   },
   {
-    path: "/boardadd/",
+    path: "/board/add/",
     name: "BoardAdd",
     component: BoardAdd
   },
   {
-    path: "/boardupdate/:bid",
+    path: "/board/update/:bid",
     name: "BoardUpdate",
     component: BoardUpdate,
     props: true
   },
   {
-    path: "/user/scrap/:uid",
+    path: "/user/scrap",
     name: "UserScrap",
     component: UserScrap
+  },
+  {
+    path: "/boardrecipe/list",
+    name: "BoardRecipeList",
+    component: BoardRecipeList
   },
   {
     path: "/boardrecipe/detail/:rid",
     name: "BoardRecipeDetail",
     component: BoardRecipeDetail
-  }
+  },
+  {
+    path: "/boardrecipe/add/",
+    name: "BoardRecipeAdd",
+    component: BoardRecipeAdd
+  },
+  {
+    path: "/boardrecipe/update/:rid",
+    name: "BoardRecipeUpdate",
+    component: BoardRecipeUpdate,
+    props: true
+  },
 ];
