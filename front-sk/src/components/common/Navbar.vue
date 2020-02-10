@@ -10,8 +10,9 @@
           name: 'CocktailList',
           query: { pageNm: 1, filtered: 'all', searchedFiltered: '' }
         }"
-        ><v-btn text color="#fff">칵테일 정보</v-btn></router-link
       >
+        <v-btn text color="#fff">칵테일 정보</v-btn>
+      </router-link>
       <!-- board dropdown -->
       <v-menu offset-y bottom>
         <template v-slot:activator="{ on }">
@@ -19,7 +20,7 @@
         </template>
         <v-list>
           <v-list-item v-for="(board, index) in boards" :key="index">
-            <v-list-item-title>{{ board.title }}</v-list-item-title>
+            <v-list-item-title><a :href=board.link>{{ board.title }}</a></v-list-item-title>
           </v-list-item>
         </v-list>
       </v-menu>
@@ -33,10 +34,7 @@
         <v-list>
           <v-row style="margin: 0 0.5rem 0 0.5rem;">
             <v-col cols="9">
-              <v-text-field
-                label="칵테일에 관한 모든 검색"
-                placeholder="검색어 입력"
-              ></v-text-field>
+              <v-text-field label="칵테일에 관한 모든 검색" placeholder="검색어 입력"></v-text-field>
             </v-col>
             <v-col cols="2">
               <v-btn icon>
@@ -99,9 +97,18 @@ export default {
   data() {
     return {
       boards: [
-        { title: "레시피 공유" },
-        { title: "칵테일 파티" },
-        { title: "자유 게시판" }
+        {
+          title: "레시피 공유",
+          link: "/#/boardrecipe/list"
+        },
+        { 
+          title: "칵테일 파티", 
+          link: "/#/"
+        },
+        { 
+          title: "자유 게시판", 
+          link: "/#/board/list"
+        }
       ],
       acc_menus: [],
       drawer: true,

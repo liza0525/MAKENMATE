@@ -1,6 +1,7 @@
 package com.cocktail.controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.cocktail.model.BasicResponse;
@@ -15,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -47,6 +49,12 @@ public class BoardRecipeController{
         return new ResponseEntity<BoardRecipe>(boardrecipeservice.findById(boardrecipeno), HttpStatus.OK);
     }
     
+    //공유게시판 스크랩한 유저 목록
+    @GetMapping(value="/scrapped/{boardrecipeno}", produces = {MediaType.APPLICATION_JSON_VALUE})
+    public ResponseEntity<Boolean> getUserIdScrappingList(@PathVariable("boardrecipeno") int boardrecipeno, @RequestParam("username") String username){
+        return new ResponseEntity<Boolean>(boardrecipeservice.getUserIdScrappingList(boardrecipeno, username), HttpStatus.OK);
+    }
+
     //공유게시판 입력
     @PostMapping
     public ResponseEntity<Integer> save(@RequestBody BRdetail brdetail){
