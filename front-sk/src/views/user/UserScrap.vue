@@ -2,12 +2,13 @@
   <div style="padding: 100px; color: blue;">
     <h1>스크랩 페이지</h1>
     <p>
-      <strong style="font-size:20px">uid</strong>
+      <strong style="font-size:20px">username</strong>
       : {{ username }}
     </p>
     <p style="font-size:20px; font-weight:bold;">scrap list</p>
     <li v-for="scrap in scrapList" :key="scrap.id">
-      title : {{ scrap.title }}
+      {{ scrap.rid }}
+      title : <span @click="goRecipeDetail(scrap.rid)">{{ scrap.title }}</span>
       <br />
       content : {{ scrap.contents }}
       <br />
@@ -19,12 +20,17 @@
 
 <script>
 import Constant from "../../Constant";
+import BoardRecipeDetailVue from '../boardrecipe/BoardRecipeDetail.vue';
 
 export default {
   data() {
     return {
       username: "",
-    }
+      prevBt: "<",
+      nextBt: ">",
+      fistBt: "<<",
+      lastBt: ">>"
+    };
   },
   created() {
     this.username = this.$store.state.username;
@@ -38,19 +44,28 @@ export default {
   },
   computed: {
     scrapList() {
-      return this.$store.state.scrapList 
+      return this.$store.state.scrapList;
     }
   },
   methods: {
     removeFromScrapList(scrappedRid) {
-      this.$store.dispatch(Constant.REMOVE_SCRAP, {
-        username: this.$store.state.username,
-        rid: scrappedRid
-      }).then(
-        this.scrapList = { ...this.$store.state.scrapList }
-      );
+      this.$store
+        .dispatch(Constant.REMOVE_SCRAP, {
+          username: this.$store.state.username,
+          rid: scrappedRid
+        })
+        .then((this.scrapList = { ...this.$store.state.scrapList }));
+    },
+    goRecipeDetail(selectedRid) {
+      console.log(selectedRid)
+      this.$router.push({
+        name: 'BoardRecipeDetail',
+        params: {
+          rid: selectedRid
+        }
+      })
     }
-  },
+  }
 };
 </script>
 <style>
