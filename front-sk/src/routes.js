@@ -13,14 +13,13 @@ import UserChangePW from "./views/user/mypage/UserChangePW";
 import UserWithdraw from "./views/user/mypage/UserWithdraw";
 import Main from "./views/main/Main";
 import Logout from "./views/user/Logout";
-import BoardList from "./components/board/BoardList.vue";
-import BoardDetail from "./components/board/BoardDetail.vue";
-import BoardAdd from "./components/board/BoardAdd.vue";
-import BoardUpdate from "./components/board/BoardUpdate.vue";
+import BoardList from "./views/board/BoardList.vue";
+import BoardDetail from "./views/board/BoardDetail.vue";
+import BoardAdd from "./views/board/BoardAdd.vue";
+import BoardUpdate from "./views/board/BoardUpdate.vue";
 import UserScrap from "./views/user/UserScrap.vue";
 import BoardRecipeDetail from "./views/boardrecipe/BoardRecipeDetail.vue";
-
-
+//import FileUpload from "./components/FileUpload.vue";
 
 export default [
   {
@@ -133,4 +132,10 @@ export default [
     name: "BoardRecipeDetail",
     component: BoardRecipeDetail
   }
+  // ,
+  // {
+  //   path: "/board/fileupload",
+  //   name: FileUpload,
+  //   component: FileUpload
+  // }
 ];
