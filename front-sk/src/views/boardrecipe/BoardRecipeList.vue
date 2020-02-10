@@ -13,8 +13,8 @@
         </tr>
 
         <tr v-for="board in info.object" v-bind:key="board.rid">
-          <td v-html="board.rid" @click="detail_id(board.rid)"></td>
-          <td v-html="board.title"></td>
+          <td v-html="board.rid"></td>
+          <td v-html="board.title" @click="detail_id(board.rid)" style="cursor: pointer;"></td>
           <td v-html="board.regdate"></td>
         </tr>
       </table>

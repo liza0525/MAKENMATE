@@ -1,16 +1,12 @@
 <template>
   <div style="padding: 100px; color: blue;">
     <h1>스크랩 페이지</h1>
-    <p>
-      <strong style="font-size:20px">username</strong>
-      : {{ username }}
+    <p style="font-size:25px; font-weight:bold;">
+      username : {{ username }}
     </p>
-    <p style="font-size:20px; font-weight:bold;">scrap list</p>
+    <p style="font-size:25px; font-weight:bold;">scrap list</p>
     <li v-for="scrap in scrapList" :key="scrap.id">
-      {{ scrap.rid }}
-      title : <span @click="goRecipeDetail(scrap.rid)">{{ scrap.title }}</span>
-      <br />
-      content : {{ scrap.contents }}
+      <span @click="goRecipeDetail(scrap.rid)" style="font-size:20px; font-weight:bold; cursor:pointer;">{{ scrap.title }}</span>
       <br />
       <button @click="removeFromScrapList(scrap.rid)" style="color: red">스크랩 취소</button>
       <hr />

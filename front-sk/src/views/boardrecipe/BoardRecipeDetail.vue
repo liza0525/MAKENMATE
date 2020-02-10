@@ -1,5 +1,6 @@
 <template>
   <div style="padding: 100px; color: blue;">
+    <p><a href="/#/boardrecipe/list">레시피 공유 게시판 리스트로</a></p>
     <h1>{{ rid }}번 레시피 디테일</h1>
     <p>제목 : {{ boardRecipe.title }}</p>
     <p>내용 : {{ boardRecipe.contents }}</p>
