@@ -20,7 +20,7 @@ import com.cocktail.exception.CocktailException;
 // import com.cocktail.dao.UserDao;
 import com.cocktail.model.BasicResponse;
 import com.cocktail.model.Cocktail;
-import com.cocktail.model.user.CocktailLike;
+import com.cocktail.model.like.CocktailLike;
 import com.cocktail.model.user.User;
 
 import io.swagger.annotations.ApiOperation;

@@ -22,7 +22,8 @@ const state = {
   cmid: "",
   content: "",
   likebycocktail: 0,
-  isLike: false
+  isLike: false,
+  likebycomments: 0
 };
 
 export default new Vuex.Store({

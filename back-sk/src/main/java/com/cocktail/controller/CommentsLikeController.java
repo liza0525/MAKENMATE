@@ -13,13 +13,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.cocktail.dao.CommentsDao;
+import com.cocktail.dao.CocktailCommentsDao;
 import com.cocktail.dao.CommentsLikeDao;
 import com.cocktail.dao.UserDao;
 import com.cocktail.exception.CocktailException;
 import com.cocktail.model.BasicResponse;
-import com.cocktail.model.Comments;
-import com.cocktail.model.CommentsLike;
+import com.cocktail.model.comments.CocktailComments;
+import com.cocktail.model.like.CommentsLike;
 import com.cocktail.model.user.User;
 
 import io.swagger.annotations.ApiOperation;
@@ -38,7 +38,7 @@ public class CommentsLikeController {
     @Autowired
     UserDao userDao;
     @Autowired
-    CommentsDao commentsDao;
+    CocktailCommentsDao commentsDao;
     @Autowired
     CommentsLikeDao commentsLikeDao;
 
@@ -47,7 +47,7 @@ public class CommentsLikeController {
     public Object clickLike(@RequestParam(required = true) final String username,
             @RequestParam(required = true) final int cmid) {
         User user = userDao.findByNickname(username);
-        Comments comments = commentsDao.getCommentsByCmid(cmid);
+        CocktailComments comments = commentsDao.getCommentsByCmid(cmid);
         comments.setCount(comments.getCount()+1);
         commentsDao.save(comments);
         CommentsLike cl = new CommentsLike((long) 0, user, comments);
@@ -64,7 +64,7 @@ public class CommentsLikeController {
     public Object deleteLike(@RequestParam(required = true) final String username,
             @RequestParam(required = true) final int cmid) {
         User user = userDao.findByNickname(username);
-        Comments comments = commentsDao.getCommentsByCmid(cmid);
+        CocktailComments comments = commentsDao.getCommentsByCmid(cmid);
         CommentsLike cl = commentsLikeDao.findByUser_uidAndComments_cmid(user.getUid(), cmid);
         comments.setCount(comments.getCount()-1);
         commentsDao.save(comments);
@@ -81,7 +81,7 @@ public class CommentsLikeController {
     public Object getLikebyuser(@RequestParam(required = true) final String username) {
         User user = userDao.getUserByNickname(username).orElseThrow(CocktailException::new);
         List<CommentsLike> cls = user.getCommentsLike();
-        List<Comments> comments = new ArrayList<>();
+        List<CocktailComments> comments = new ArrayList<>();
         for (CommentsLike cl : cls) {
             comments.add(cl.getComments());
         }
@@ -98,8 +98,8 @@ public class CommentsLikeController {
             @RequestParam(required = true) final int cmid) {
         User user = userDao.getUserByNickname(username).orElseThrow(CocktailException::new);
         List<CommentsLike> cls = user.getCommentsLike();
-        Comments comments= commentsDao.getCommentsByCmid(cmid);
-        Comments res = null;
+        CocktailComments comments= commentsDao.getCommentsByCmid(cmid);
+        CocktailComments res = null;
         for (CommentsLike cl : cls) {
             if (comments.getCmid() == cl.getComments().getCmid())
                 res = cl.getComments();
@@ -118,6 +118,7 @@ public class CommentsLikeController {
     @ApiOperation(value = "댓글의 좋아요 수")
     public Object getLikebycocktail(@RequestParam(required = true) final int cmid) {
         Long commentsLike = commentsLikeDao.countByComments_cmid(cmid);
+        System.out.println(commentsLike);
         final BasicResponse result = new BasicResponse();
         result.status = true;
         result.data = "success";

@@ -1,4 +1,4 @@
-package com.cocktail.model.user;
+package com.cocktail.model.like;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,23 +9,22 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import com.cocktail.model.Cocktail;
+import com.cocktail.model.comments.CocktailComments;
+import com.cocktail.model.user.User;
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 
 @Entity
-@Table(name = "cocktaillike")
+@Table(name = "commentslike")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class CocktailLike {
+public class CommentsLike {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -36,7 +35,7 @@ public class CocktailLike {
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "cocktail_cid")
+    @JoinColumn(name = "comments_cmid")
     @JsonBackReference
-    private Cocktail cocktail;
+    private CocktailComments comments;
 }

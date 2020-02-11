@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.cocktail.model.CommentsLike;
+import com.cocktail.model.like.CommentsLike;
 
 public interface CommentsLikeDao extends JpaRepository<CommentsLike, Long> {
     List<CommentsLike> findAllByUser_uid(int uid);

@@ -6,8 +6,12 @@
           <b>
             {{ cocktail.cname }}
             <button @click="clickLike">
-              <span v-show="!islike"><i class="far fa-heart"></i></span>
-              <span v-show="islike"><i class="fas fa-heart"></i></span>
+              <span v-show="!islike">
+                <i class="far fa-heart"></i>
+              </span>
+              <span v-show="islike">
+                <i class="fas fa-heart"></i>
+              </span>
             </button>
             {{ likebycocktail }}
           </b>
@@ -55,12 +59,7 @@
           </div>
         </v-col>
       </v-row>
-      <div
-        :v-if="reply"
-        v-for="(re, i) in reply"
-        :key="i"
-        style="margin-top: 5px; display:block;"
-      >
+      <div :v-if="reply" v-for="(re, i) in reply" :key="i" style="margin-top: 5px; display:block;">
         <!-- <v-text v-if="isInput[i]"> -->
         <div v-if="isInput[i] === 0">
           <span>{{ users[i] }} : {{ re.content }}</span>
@@ -76,16 +75,28 @@
             <button @click="updateComment(i, re.cmid, re.content)">수정</button>
           </p>
         </div>
+        <button @click="clickLikeComments(i)">
+          <span v-show="!isLike[i]">
+            <i class="far fa-heart"></i>
+          </span>
+          <span v-show="isLike[i]">
+            <i class="fas fa-heart"></i>
+          </span>
+        </button>
+        {{ likebycomments[i] }}
       </div>
       <!-- </v-text> -->
       <input type="text" v-model="comment" />
       <button @click="submitComment" type="submit">button</button>
+      <div>
+        <button v-for="pageNm in pageNms" :key="pageNm" @click="search(pageNm)">
+          <span style="margin-right:10px;">{{ pageNm }}</span>
+        </button>
+      </div>
     </v-container>
   </div>
 </template>
 <script>
-// const axios = require("axios");
-// import http from "../http-common";
 import Constant from "../Constant";
 export default {
   data: () => {
@@ -108,7 +119,11 @@ export default {
       comment: "",
       isInput: [],
       username: "",
-      updatedComment: ""
+      updatedComment: "",
+      pageNm: 1,
+      pageNms: [],
+      isLike: [],
+      likebycomments: []
     };
   },
   mounted() {
@@ -130,13 +145,45 @@ export default {
           this.materials = [];
         }
         this.$store
-          .dispatch(Constant.GET_REPLY, { cid: this.$route.params.cid })
+          .dispatch(Constant.GET_REPLY, {
+            cid: this.$route.params.cid,
+            pageNm: 1
+          })
           .then(() => {
             this.reply = { ...this.$store.state.reply };
             this.users = { ...this.$store.state.users };
             for (let i = 0; i < this.reply.length; ++i) {
               this.isInput.push(0);
+              this.likebycomments.push(0);
+              this.$store
+                .dispatch(Constant.GET_LIKEBYUSERANDCOCKTAILCOMMENTS, {
+                  username: this.$store.state.username,
+                  cmid: this.reply[i].cmid
+                })
+                .then(res => {
+                  let list = [...this.isLike];
+                  if (res.data.object == null) list.splice(i, 1, false);
+                  else list.splice(i, 1, true);
+                  this.isLike = list;
+                });
+              this.$store
+                .dispatch(Constant.GET_LIKEBYCOCKTAILCOMMENTS, {
+                  cmid: this.reply[i].cmid
+                })
+                .then(res => {
+                  let list = [...this.likebycomments];
+                  list.splice(i, 1, this.$store.state.likebycomments);
+                  this.likebycomments = list;
+                });
             }
+            let arr = [];
+
+            let min = 1;
+            for (let index = 0; index < 5; index++) {
+              if (Number(min + index) > this.$store.state.totalPages) break;
+              arr.push(Number(min + index));
+            }
+            this.pageNms = arr;
             this.$store
               .dispatch(Constant.GET_LIKEBYCOCKTAIL, {
                 cid: this.$route.params.cid
@@ -147,7 +194,6 @@ export default {
                   username: this.$store.state.username
                 });
               });
-            console.log(this.isInput);
           });
       });
     this.username = this.$store.state.username;
@@ -184,7 +230,6 @@ export default {
         this.$store.state.isLike = val;
       },
       get() {
-        console.log("test " + this.$store.state.isLike);
         return this.$store.state.isLike;
       }
     }
@@ -193,7 +238,7 @@ export default {
     submitComment() {
       this.$store.dispatch(Constant.ADD_REPLY, {
         cid: this.cocktail.cid,
-        email: this.email,
+        username: this.$store.state.username,
         comment: this.comment
       });
       this.isInput.push(0);
@@ -225,7 +270,6 @@ export default {
       let list = [...this.isInput];
       list.splice(i, 1, 1);
       this.isInput = list;
-      console.log(this.isInput[i]);
     },
     clickLike() {
       if (this.islike == false) {
@@ -243,6 +287,63 @@ export default {
           })
           .then(() => (this.islike = this.$store.state.isLike));
       }
+    },
+    clickLikeComments(i) {
+      console.log(this.reply[i]);
+
+      if (this.isLike[i] == false) {
+        this.$store
+          .dispatch(Constant.ADD_COCKTAILCOMMENTSLIKE, {
+            cmid: this.reply[i].cmid,
+            username: this.$store.state.username
+          })
+          .then(() => {
+            let list = [...this.isLike];
+            list.splice(i, 1, true);
+            this.isLike = list;
+            let list2 = [...this.likebycomments];
+            list2.splice(i, 1, this.likebycomments[i] + 1);
+            this.likebycomments = list2;
+          });
+      } else {
+        this.$store
+          .dispatch(Constant.REMOVE_COCKTAILCOMMENTSLIKE, {
+            cmid: this.reply[i].cmid,
+            username: this.$store.state.username
+          })
+          .then(() => {
+            let list = [...this.isLike];
+            0;
+            list.splice(i, 1, false);
+            this.isLike = list;
+
+            let list2 = [...this.likebycomments];
+            list2.splice(i, 1, this.likebycomments[i] - 1);
+            this.likebycomments = list2;
+          });
+      }
+    },
+    search(pageNm) {
+      this.$store
+        .dispatch(Constant.GET_REPLY, {
+          cid: this.$route.params.cid,
+          pageNm: pageNm
+        })
+        .then(() => {
+          this.reply = { ...this.$store.state.reply };
+          this.users = { ...this.$store.state.users };
+          for (let i = 0; i < this.reply.length; ++i) {
+            this.isInput.push(0);
+          }
+          let arr = [];
+
+          let min = parseInt((pageNm - 1) / 5) * 5 + 1;
+          for (let index = 0; index < 5; index++) {
+            if (Number(min + index) > this.$store.state.totalPages) break;
+            arr.push(Number(min + index));
+          }
+          this.pageNms = arr;
+        });
     }
   }
 };
