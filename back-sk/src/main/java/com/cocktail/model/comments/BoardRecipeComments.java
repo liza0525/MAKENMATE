@@ -1,4 +1,4 @@
-package com.cocktail.model;
+package com.cocktail.model.comments;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,6 +9,8 @@ import lombok.Setter;
 import lombok.ToString;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -20,7 +22,12 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.cocktail.model.Cocktail;
+import com.cocktail.model.boardRecipe.BoardRecipe;
+import com.cocktail.model.like.CocktailLike;
+import com.cocktail.model.like.CommentsLike;
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -32,9 +39,9 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
-@Table(name = "comments")
+@Table(name = "boardrecipecomments")
 @ToString
-public class Comments implements Serializable {
+public class BoardRecipeComments implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "cmid")
@@ -46,9 +53,9 @@ public class Comments implements Serializable {
     private int user_uid;
     // private int cocktail_cid;
     @ManyToOne
-    @JoinColumn(name = "cocktail_cid")
+    @JoinColumn(name = "boardrecipe_rid")
     @JsonBackReference
-    private Cocktail cocktail;
+    private BoardRecipe boardRecipe;
 
     // @ManyToOne
     // @JoinColumn(name = "user_uid", insertable = false, updatable = false)
@@ -65,4 +72,10 @@ public class Comments implements Serializable {
     // private List<board> boardArray = new ArrayList<>();
     // @OneToMany
     // private List<BoardRecipe> BoardRecipeArray = new ArrayList();
+    
+    @OneToMany(mappedBy = "comments")
+    @JsonManagedReference
+    private List<CommentsLike> comments = new ArrayList<>();
+    
+    private int count;
 }

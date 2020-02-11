@@ -1,33 +1,26 @@
 <template>
   <v-container>
     <v-row no-gutters>
-      <v-col class="col-12 col-sm-4">
-        <v-card style="text-align:center">
-          <v-row style="display:inline-block;">
-            <img
-              :src="user.image"
-              style="background: linear-gradient(rgba(0, 0, 0, 0.7))"
-            />
-          </v-row>
-          <h1 style="margin-top:50px;text-align:center">
-            {{ user.nickname }}
-          </h1>
-          <p style="text-align:center;margin-:50px;">(ID : {{ user.email }})</p>
-        </v-card>
-      </v-col>
+      <v-col class="col-1"></v-col>
+      <div class="col-12 col-md-6 col-lg-4 col-sm-6" style="text-align:center;">
+        <div
+          style="margin-top:4%;display:inline-block;border-radius:100px; overflow: hidden;  height:62.5%; width: 80%; border-radius:100%;"
+        >
+          <img :src="user.image" style="width: 100%;" />
+        </div>
+        <h1 style="margin-top:1%;text-align:center">
+          {{ user.nickname }}
+        </h1>
+        <p style="text-align:center;">(ID : {{ user.email }})</p>
+      </div>
+      <v-col class="col-1"></v-col>
       <v-col>
-        <v-card class="pa-2" outlined tile>
-          <v-row>
-            <router-link v-bind:to="{ name: 'UserChangePW' }" class="btn--text"
-              >비밀번호 변경</router-link
-            >
-          </v-row>
-          <v-row>
-            <router-link v-bind:to="{ name: 'UserWithdraw' }" class="btn--text"
-              >회원 탈퇴</router-link
-            >
-          </v-row>
-        </v-card>
+        <div style="margin-top:4%; font-size:300%; display:inline-block;">
+          {{ user.nickname }}
+        </div>
+        <span style="margin-left:3%;font-size:150%;"
+          >(ID : {{ user.email }})</span
+        >
       </v-col>
     </v-row>
     <v-row> </v-row>

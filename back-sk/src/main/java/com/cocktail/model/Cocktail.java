@@ -14,7 +14,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import com.cocktail.model.user.CocktailLike;
+import com.cocktail.model.like.CocktailLike;
 import com.cocktail.model.user.User;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
