@@ -21,9 +21,8 @@
         <v-list stlye="width:400px;">
           <v-list-item>
             <v-list-item-title>
-              <router-link :to="{ name: 'BoardRecipe' }"
-                >레시피 공유</router-link
-              >
+              <router-link :to="{ name: 'BoardRecipeList' }"
+                >레시피 공유</router-link>
             </v-list-item-title>
           </v-list-item>
           <v-list-item>
