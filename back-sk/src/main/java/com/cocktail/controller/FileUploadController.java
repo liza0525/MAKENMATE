@@ -45,7 +45,6 @@ public class FileUploadController {
     @PostMapping("/uploadFile")
     public UploadFile uploadFile(@RequestParam("file") MultipartFile file) {
         UploadFile uploadFile = service.storeFile(file);
-        
         return uploadFile;
     }
     
