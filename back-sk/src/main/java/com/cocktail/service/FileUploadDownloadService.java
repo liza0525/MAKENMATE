@@ -95,4 +95,9 @@ public class FileUploadDownloadService{
         }
     }
 
+	public boolean deleteFile(int id) {
+        fileDAO.deleteById(id);
+        return true;
+	}
+
 }

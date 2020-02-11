@@ -18,6 +18,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -43,13 +44,14 @@ public class FileUploadController {
         return service.getUploadFile(id);
     }
     @PostMapping("/uploadFile")
-    public UploadFile uploadFile(@RequestParam("file") MultipartFile file) {
-        UploadFile uploadFile = service.storeFile(file);
+    public UploadFile uploadFile(@RequestParam("test") MultipartFile test) {
+        UploadFile uploadFile = service.storeFile(test);
         return uploadFile;
     }
     
     @PostMapping("/uploadMultipleFiles")
     public List<UploadFile> uploadMultipleFiles(@RequestParam("files") MultipartFile[] files){
+        System.out.println(" aaaaa aaaaaa aaaaaa" + files);
         return Arrays.asList(files)
                 .stream()
                 .map(file -> uploadFile(file))
@@ -78,5 +80,12 @@ public class FileUploadController {
                 .contentType(MediaType.parseMediaType(contentType))
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
                 .body(resource);
+    }
+
+    @DeleteMapping(value = "/uploadFileDelete/{id}", produces = { MediaType.APPLICATION_JSON_VALUE })
+    public void deleteBoard(@PathVariable("id") int id) {
+        System.out.println("ffffffffffffffffffffffffff");
+        System.out.println("sadsadasdasdasdasd"+ id);
+        boolean check = service.deleteFile(id);
     }
 }

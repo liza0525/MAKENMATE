@@ -1,21 +1,12 @@
 package com.cocktail.service;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
-import java.util.Optional;
 
 import com.cocktail.dao.DBFileRepository;
 import com.cocktail.exception.FileStorageException;
 import com.cocktail.model.DBFile;
-import com.cocktail.property.FileUploadProperties;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
