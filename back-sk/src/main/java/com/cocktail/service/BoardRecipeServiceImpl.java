@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.cocktail.dao.BoardRecipeDao;
 import com.cocktail.dao.UserDao;
+import com.cocktail.exception.CocktailException;
 import com.cocktail.model.boardRecipe.BRdetail;
 import com.cocktail.model.boardRecipe.BoardRecipe;
 import com.cocktail.model.user.User;
@@ -21,6 +22,7 @@ public class BoardRecipeServiceImpl implements BoardRecipeService {
 
     @Autowired
     private UserDao userdao;
+
     // 공유게시판 전체 리스트 조회
     @Override
     public List<BoardRecipe> getAllBoardRecipe() {
@@ -31,8 +33,8 @@ public class BoardRecipeServiceImpl implements BoardRecipeService {
     @Override
     public BoardRecipe findById(int rid) {
         // BRdetail br = boardRecipeDao.findBRdetailById(bid);
-        //BoardRecipe boardrecipe = boardRecipeDao.findByRid(bid).orElseThrow();
-        BoardRecipe boardrecipe = boardRecipeDao.findById(rid).orElseThrow();
+        // BoardRecipe boardrecipe = boardRecipeDao.findByRid(bid).orElseThrow();
+        BoardRecipe boardrecipe = boardRecipeDao.findById(rid).orElseThrow(CocktailException::new);
         System.out.println(boardrecipe);
         return boardrecipe;
     }
@@ -41,8 +43,8 @@ public class BoardRecipeServiceImpl implements BoardRecipeService {
     public int save(BRdetail brdetail) {
         BoardRecipe br = new BoardRecipe();
         br.setContents(brdetail.getContents());
-        //r.setImage();
-        SimpleDateFormat format1 = new SimpleDateFormat ( "yyyy-MM-dd HH:mm:ss");
+        // r.setImage();
+        SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date time = new Date();
         String time1 = format1.format(time);
         br.setRegdate(time1);
@@ -57,8 +59,8 @@ public class BoardRecipeServiceImpl implements BoardRecipeService {
     public void updateById(BRdetail brdetail) {
         BoardRecipe br = boardRecipeDao.getBoardRecipeByRid(brdetail.getRid());
         br.setContents(brdetail.getContents());
-        //br.setImage(image);
-        SimpleDateFormat format1 = new SimpleDateFormat ( "yyyy-MM-dd HH:mm:ss");
+        // br.setImage(image);
+        SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date time = new Date();
         String time1 = format1.format(time);
         br.setRegdate(time1);
