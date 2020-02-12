@@ -1,6 +1,7 @@
 package com.cocktail.service;
 
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import com.cocktail.model.boardRecipe.BRdetail;
 import com.cocktail.model.boardRecipe.BoardRecipe;
@@ -8,7 +9,7 @@ import com.cocktail.model.boardRecipe.BoardRecipe;
 public interface BoardRecipeService {
 
     // 칵테일레시피공유게시판 전체 리스트 조회
-    List<BoardRecipe> getAllBoardRecipe();
+    Page<BoardRecipe> getAllBoardRecipe(Pageable pageable);
 
     // 글 번호로 게시판 상세 보기
     BoardRecipe findById(int rid);

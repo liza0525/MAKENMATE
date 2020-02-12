@@ -5,6 +5,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+
 import com.cocktail.dao.BoardRecipeDao;
 import com.cocktail.dao.UserDao;
 import com.cocktail.dao.UserScrapDao;
@@ -13,9 +18,6 @@ import com.cocktail.model.boardRecipe.BRdetail;
 import com.cocktail.model.boardRecipe.BoardRecipe;
 import com.cocktail.model.user.User;
 import com.cocktail.model.user.UserScrap;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 @Service
 public class BoardRecipeServiceImpl implements BoardRecipeService {
@@ -31,8 +33,8 @@ public class BoardRecipeServiceImpl implements BoardRecipeService {
 
     // 공유게시판 전체 리스트 조회
     @Override
-    public List<BoardRecipe> getAllBoardRecipe() {
-        return boardRecipeDao.findAll();
+    public Page<BoardRecipe> getAllBoardRecipe(Pageable pageable) {
+        return boardRecipeDao.findAll(pageable);
     }
 
     // 글번호로 공유게시판 상세조회
@@ -87,7 +89,6 @@ public class BoardRecipeServiceImpl implements BoardRecipeService {
         String time1 = format1.format(time);
         br.setRegdate(time1);
         br.setTitle(brdetail.getTitle());
-        System.out.println(br);
         boardRecipeDao.save(br);
     }
 

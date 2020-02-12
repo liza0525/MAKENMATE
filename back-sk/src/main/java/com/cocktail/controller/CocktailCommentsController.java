@@ -1,25 +1,17 @@
 package com.cocktail.controller;
 
-import com.cocktail.model.BasicResponse;
-import com.cocktail.model.Cocktail;
-import com.cocktail.model.Material;
-import com.cocktail.model.comments.CocktailComments;
-import com.cocktail.model.user.User;
-
-import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.cocktail.dao.CocktailDao;
-import com.cocktail.dao.CocktailCommentsDao;
-import com.cocktail.dao.MaterialDao;
-import com.cocktail.dao.UserDao;
-import com.cocktail.exception.CocktailException;
-
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,15 +22,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import aj.org.objectweb.asm.Type;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort.Direction;
-import org.springframework.data.web.PageableDefault;
-import org.springframework.http.ResponseEntity;
+import com.cocktail.dao.CocktailCommentsDao;
+import com.cocktail.dao.CocktailDao;
+import com.cocktail.dao.UserDao;
+import com.cocktail.exception.CocktailException;
+import com.cocktail.model.BasicResponse;
+import com.cocktail.model.Cocktail;
+import com.cocktail.model.comments.CocktailComments;
+import com.cocktail.model.user.User;
 
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -62,7 +53,7 @@ public class CocktailCommentsController {
 
     @GetMapping("/cocktail/{cid}")
     @ApiOperation(value = "댓글")
-    public Object load(@PageableDefault(size = 5, sort = { "count" }, direction = Direction.DESC) final Pageable pageable, @PathVariable final int cid) {
+    public Object load(@PageableDefault(size = 5, sort = { "cmid" }, direction = Direction.DESC) final Pageable pageable, @PathVariable final int cid) {
         // final Cocktail cocktail = cocktailDao.getCocktailByCid(cid);
         final Page<CocktailComments> comments = commentsDao.findAllByCocktail_cid(cid,pageable);
         final List<String> UserArray = new ArrayList<>();

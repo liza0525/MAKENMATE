@@ -1,13 +1,5 @@
 package com.cocktail.model.comments;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
-import lombok.Setter;
-import lombok.ToString;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,10 +14,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import com.cocktail.model.Cocktail;
 import com.cocktail.model.boardRecipe.BoardRecipe;
-import com.cocktail.model.like.CocktailLike;
-import com.cocktail.model.like.CommentsLike;
+import com.cocktail.model.like.BoardRecipeCommentsLike;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
@@ -33,6 +23,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 @Entity
 @NoArgsConstructor
@@ -75,7 +66,7 @@ public class BoardRecipeComments implements Serializable {
     
     @OneToMany(mappedBy = "comments")
     @JsonManagedReference
-    private List<CommentsLike> comments = new ArrayList<>();
+    private List<BoardRecipeCommentsLike> comments = new ArrayList<>();
     
     private int count;
 }

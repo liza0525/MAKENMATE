@@ -10,6 +10,7 @@ import com.cocktail.model.board.Bdetail;
 import com.cocktail.service.BoardService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -34,11 +35,11 @@ public class BoardController {
     private BoardService boardservice;
 
     @GetMapping(produces = { MediaType.APPLICATION_JSON_VALUE })
-    public Object boardlist() {
+    public Object boardlist(Pageable pageable) {
         final BasicResponse result = new BasicResponse();
         result.status = true;
         result.data = "success";
-        result.object = this.boardservice.getAllBoard();
+        result.object = this.boardservice.getAllBoard(pageable);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
