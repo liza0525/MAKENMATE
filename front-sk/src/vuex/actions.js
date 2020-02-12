@@ -681,5 +681,27 @@ export default {
           reject();
         });
     });
+  },
+  // 내가 쓴 글 가져오기
+  [Constant.GET_BOARDLIKEBYUSER]: (store, payload) => {
+    return new Promise((resolve, reject) => {
+      http
+        .get("/board/user/" + payload.uid, {
+          params: {
+            page: payload.pageNm - 1
+          }
+        })
+        .then(res => {
+          store.commit(Constant.GET_BOARDLIKEBYUSER, {
+            boards: res.data.boards.content,
+            totalPages: res.data.boards.totalPages
+          });
+          resolve();
+        })
+        .catch(exp => {
+          console.log(exp);
+          reject();
+        });
+    });
   }
 };

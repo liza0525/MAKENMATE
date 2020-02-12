@@ -24,7 +24,8 @@ const state = {
   intro: "",
   likebycocktail: 0,
   isLike: false,
-  likebycomments: 0
+  likebycomments: 0,
+  totalPages: 0
 };
 
 export default new Vuex.Store({

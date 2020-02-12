@@ -105,7 +105,6 @@
         style="opacity:100 !important; visibility:visible;height:500px !important;background-color:#ffffff;"
         ><v-card style="height:400px">
           <v-img :src="slide.image" alt="ll" style="height:100%;"> </v-img>
-          <!-- <v-card-actions> -->
           <h1
             class="sansfont"
             style="margin-left:30px; margin-top:10px;font-weight:bolder;"
@@ -113,16 +112,15 @@
             {{ slide.cname }}
           </h1>
           <v-text style="margin-left:30px;margin-top:10px;display:inline-block">
-            <i class="fas fa-lg fa-heart"></i>
-            <button
-              @click="goToDetail(slide.cid)"
-              class="sansfont"
-              style="color:blue;"
-            >
-              ...더보기
-            </button>
+            <i class="fas fa-lg fa-heart"></i> {{ getLikesByCocktail[i] }}
           </v-text>
-          <!-- </v-card-actions> -->
+          <button
+            @click="goToDetail(slide.cid)"
+            class="sansfont"
+            style="color:blue;margin-left:230px"
+          >
+            ...더보기
+          </button>
         </v-card>
       </slide>
     </carousel-3d>
@@ -130,8 +128,10 @@
       class="sansfont"
       style=" margin-top:5%;font-size:200%; text-align:center; font-weight:bolder;"
     >
-      {{ user.nickname }}님이 쓴 댓글
+      {{ user.nickname }}님이 쓴 글
     </h1>
+
+
   </v-container>
 </template>
 
@@ -150,7 +150,12 @@ export default {
       },
       updateIntro: false,
       cocktailList: [],
-      count: []
+      count: [],
+      getLikesByCocktail: [],
+      pageNms: [],
+      pageNm: 1,
+      boardArray: []
+
     };
   },
   mounted() {
@@ -175,8 +180,19 @@ export default {
           } else {
             element.image = require(`../../../../images/default.png`);
           }
+
+          this.$store
+            .dispatch(Constant.GET_LIKEBYCOCKTAIL, {
+              cid: element.cid
+            })
+            .then(() => {
+              this.getLikesByCocktail.push(this.$store.state.likebycocktail);
+              console.log(this.getLikesByCocktail);
+            });
         });
       });
+    
+
   },
   components: {
     Carousel3d,
