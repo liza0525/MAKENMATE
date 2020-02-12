@@ -4,6 +4,7 @@
       <h1 id="board-category">자유게시판</h1>
     </div>
     <div id="board-context">
+      <!-- {{ info.content }} -->
       <v-simple-table>
         <template>
           <thead>
@@ -28,7 +29,7 @@
     </div>
     <div id="board-list-footer">
       <button class="board-button" @click="add_move()">글쓰기</button>
-      <div>
+      <div id="pagination">
         <button v-for="pageNm in pageNms" :key="pageNm" @click="retrieveBoard(pageNm)">
           <span style="margin-right:10px;">{{ pageNm }}</span>
         </button>
@@ -120,5 +121,9 @@ export default {
   height: 3rem;
   border: 1px solid #ccc;
   border-radius: 3rem;
+}
+#pagination {
+  display: inline;
+  margin: 30rem;
 }
 </style>
