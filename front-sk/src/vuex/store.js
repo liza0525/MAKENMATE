@@ -20,7 +20,8 @@ const state = {
   comment: "",
   email: "",
   cmid: "",
-  content: ""
+  content: "",
+  intro: ""
 };
 
 export default new Vuex.Store({

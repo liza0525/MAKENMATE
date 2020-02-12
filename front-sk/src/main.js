@@ -8,11 +8,13 @@ import "roboto-fontface/css/roboto/roboto-fontface.css";
 import "@mdi/font/css/materialdesignicons.css";
 import "fullpage.js/vendors/scrolloverflow"; // Optional. When using scrollOverflow:true
 import VueFullPage from "vue-fullpage.js";
+import Carousel3d from "vue-carousel-3d";
 
 Vue.config.productionTip = false;
 
 Vue.use(Router);
 Vue.use(VueFullPage);
+Vue.use(Carousel3d);
 
 const router = new Router({
   routes

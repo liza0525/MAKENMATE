@@ -87,7 +87,7 @@ export default [
     component: UserChangePW
   },
   {
-    path: "/user/userprofile",
+    path: "/user/userprofile/:username",
     name: "UserProfile",
     component: UserProfile
   },

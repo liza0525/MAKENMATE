@@ -83,14 +83,26 @@
           </v-list-item>
           <v-list-item>
             <v-list-item-title>
-              <router-link :to="{ name: 'UserProfile' }">
+              <router-link
+                :to="{
+                  name: 'UserProfile',
+                  params: {
+                    username: this.$store.state.username
+                  }
+                }"
+              >
                 유저프로필
               </router-link>
             </v-list-item-title>
           </v-list-item>
           <v-list-item>
             <v-list-item-title>
-              <router-link :to="{ name: 'UserScrap' }">유저스크랩</router-link>
+              <router-link
+                :to="{
+                  name: 'UserScrap'
+                }"
+                >유저스크랩</router-link
+              >
             </v-list-item-title>
           </v-list-item>
           <v-list-item>

@@ -3,34 +3,40 @@
     <v-container fluid style="width:60%">
       <div class="title mb-1" style="text-align:center;">
         <h1>
-          <b>{{ cocktail.cname }}</b>
+          <b class="titlefont">{{ cocktail.cname }}</b>
         </h1>
       </div>
       <v-row justify="space-around">
         <v-col cols="4">
           <v-img v-bind:src="cocktail.image"></v-img>
-          <div class="subheading pt-4">#고독을 즐기는</div>
+          <div class="subheading pt-4 sansfont">#고독을 즐기는</div>
         </v-col>
         <v-col cols="6">
           <div class="subheading">
             <v-row justify="space-around">
               <v-col cols="2">
-                <b>유래</b>
+                <b class="titlefont">유래</b>
               </v-col>
               <v-col cols="10">
-                <div v-html="cocktail.description"></div>
+                <div
+                  class="sansfont"
+                  style="font-size:18px;"
+                  v-html="cocktail.description"
+                ></div>
               </v-col>
             </v-row>
           </div>
           <div class="subheading pt-4">
             <v-row justify="space-around">
               <v-col cols="2">
-                <b style>재료</b>
+                <b class="titlefont">재료</b>
               </v-col>
               <v-col cols="10" v-if="materials[0] != ''">
                 <v-row no-gutters>
                   <v-col v-for="(m, i) in materials" :key="i" cols="6">
-                    <v-card outlined tile>{{ materials[i] }}</v-card>
+                    <v-card outlined tile class="sansfont">{{
+                      materials[i]
+                    }}</v-card>
                   </v-col>
                 </v-row>
               </v-col>
@@ -39,29 +45,46 @@
           <div class="subheading pt-4">
             <v-row justify="space-around">
               <v-col cols="2">
-                <b>만드는 법</b>
+                <b class="titlefont">만드는 법</b>
               </v-col>
               <v-col cols="10">
-                <div v-html="cocktail.method"></div>
+                <div class="sansfont" v-html="cocktail.method"></div>
               </v-col>
             </v-row>
           </div>
         </v-col>
       </v-row>
-      <div :v-if="reply" v-for="(re, i) in reply" :key="i" style="margin-top: 5px; display:block;">
+      <div
+        :v-if="reply"
+        v-for="(re, i) in reply"
+        :key="i"
+        style="margin-top: 5px; display:block;"
+        class="sansfont"
+      >
         <!-- <v-text v-if="isInput[i]"> -->
         <div v-if="isInput[i] === 0">
-          <span>{{ users[i] }} : {{ re.content }}</span>
-          <button @click="click(i)">수정</button>
-          <button @click="deleteComment(i, re.cmid)">삭제</button>
+          <span class="sansfont">{{ users[i] }} : {{ re.content }}</span>
+          <button @click="click(i)" class="sansfont">수정</button>
+          <button @click="deleteComment(i, re.cmid)" class="sansfont">
+            삭제
+          </button>
         </div>
         <div v-else>
-          <span>
+          <span class="sansfont">
             {{ users[i] }} :
             <input v-model="re.content" />
           </span>
-          <p v-if="username === users[i]" style="display:inline-block;">
-            <button @click="updateComment(i, re.cmid, re.content)">수정</button>
+          <p
+            v-if="username === users[i]"
+            class="sansfont"
+            style="display:inline-block;"
+          >
+            <button
+              @click="updateComment(i, re.cmid, re.content)"
+              class="sansfont"
+            >
+              수정
+            </button>
           </p>
         </div>
       </div>
@@ -197,8 +220,59 @@ export default {
 };
 </script>
 <style scoped>
+@import url("https://fonts.googleapis.com/css?family=Song+Myung|Stylish&display=swap");
+@font-face {
+  font-family: "MapoFlowerIsland";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/MapoFlowerIslandA.woff")
+    format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: "MapoGoldenPier";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/MapoGoldenPierA.woff")
+    format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: "GyeonggiBatang";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_one@1.0/GyeonggiBatang.woff")
+    format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: "국립박물관문화재단클래식B";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_twelve@1.0/국립박물관문화재단클래식B.woff")
+    format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+@import url("https://fonts.googleapis.com/css?family=Jua&display=swap");
+
 .test {
-  /* background: linear-gradient(rgba(0, 0, 0, 0.7)),
-    url(../assets/images/image.png) no-repeat; */
+  background: linear-gradient(rgba(0, 0, 0, 0.7)),
+    url(../assets/images/image.png) no-repeat;
+}
+
+.sansfont {
+  color: #ffffff;
+  /* font-family: "MapoFlowerIsland"; */
+  /* font-family: "MapoGoldenPier"; */
+  font-family: "GyeonggiBatang";
+  line-height: 130%;
+  /* font-family: "Jua", sans-serif; */
+  /* font-family: "Malgun Gothic"; */
+}
+.titlefont {
+  color: #ffffff;
+  /* font-family: "MapoFlowerIsland"; */
+  /* font-family: "MapoGoldenPier"; */
+  /* font-family: "GyeonggiBatang"; */
+  line-height: 130%;
+  font-family: "국립박물관문화재단클래식B";
+  /* font-family: "Jua", sans-serif; */
+  /* font-family: "Malgun Gothic"; */
 }
 </style>

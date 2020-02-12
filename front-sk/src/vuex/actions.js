@@ -281,10 +281,14 @@ export default {
   },
   // Cocktail 좋아요
   [Constant.GET_COCKTAILLIKE]: (store, payload) => {
+    console.log(payload);
     return new Promise((resolve, reject) => {
       http
-        .get("/cocktail/getlikebyuser", payload.username)
+        .get("/cocktail/getlikebyuser", {
+          params: { username: payload.username }
+        })
         .then(res => {
+          console.log(res.data.object);
           store.commit(Constant.GET_COCKTAILLIKE, {
             cocktailList: res.data.object
           });
@@ -367,6 +371,29 @@ export default {
           }
         })
         .then(res => {
+          console.log(res.data.data);
+          resolve();
+        })
+        .catch(exp => {
+          console.log(exp);
+          reject();
+        });
+    });
+  },
+  [Constant.MODIFY_USERINTRO]: (store, payload) => {
+    return new Promise((resolve, reject) => {
+      console.log(payload);
+      http
+        .put("/user/updateProfile", null, {
+          params: {
+            username: payload.username,
+            intro: payload.intro
+          }
+        })
+        .then(res => {
+          store.commit(Constant.MODIFY_USERINTRO, {
+            intro: res.data.object.intro
+          });
           console.log(res.data.data);
           resolve();
         })
