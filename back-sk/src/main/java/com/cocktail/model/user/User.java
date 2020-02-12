@@ -18,6 +18,12 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.cocktail.model.like.BoardCommentsLike;
+import com.cocktail.model.like.BoardLike;
+import com.cocktail.model.like.BoardRecipeCommentsLike;
+import com.cocktail.model.like.BoardRecipeLike;
+import com.cocktail.model.like.CocktailLike;
+import com.cocktail.model.like.CommentsLike;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -47,8 +53,8 @@ public class User implements UserDetails {
 	private String password;
 	private String email;
 
-	// private String image;
-	// private String intro;
+	private String image;
+	private String intro;
 	private String nickname;
 
 	// @OneToMany(mappedBy = "boardrecipe")
@@ -119,6 +125,22 @@ public class User implements UserDetails {
 
 	@OneToMany(mappedBy = "user")
 	@JsonManagedReference
-	private List<CocktailLike> users = new ArrayList<>();
+	private final List<CocktailLike> cocktailLike = new ArrayList<>();
+	@OneToMany(mappedBy = "user")
+	@JsonManagedReference
+	private final List<BoardLike> boardLike = new ArrayList<>();
+	@OneToMany(mappedBy = "user")
+	@JsonManagedReference
+	private final List<BoardRecipeLike> boardRecipeLike = new ArrayList<>();
+
+	@OneToMany(mappedBy = "user")
+	@JsonManagedReference
+	private final List<CommentsLike> commentsLike = new ArrayList<>();
+	@OneToMany(mappedBy = "user")
+	@JsonManagedReference
+	private final List<BoardCommentsLike> boardcommentsLike = new ArrayList<>();
+	@OneToMany(mappedBy = "user")
+	@JsonManagedReference
+	private final List<BoardRecipeCommentsLike> boardrecipecommentsLike = new ArrayList<>();
 
 }

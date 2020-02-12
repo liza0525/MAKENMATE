@@ -13,18 +13,17 @@ import UserChangePW from "./views/user/mypage/UserChangePW";
 import UserWithdraw from "./views/user/mypage/UserWithdraw";
 import Main from "./views/main/Main";
 import Logout from "./views/user/Logout";
-import BoardList from "./components/board/BoardList.vue";
-import BoardDetail from "./components/board/BoardDetail.vue";
-import BoardAdd from "./components/board/BoardAdd.vue";
-import BoardUpdate from "./components/board/BoardUpdate.vue";
+import BoardList from "./views/board/BoardList.vue";
+import BoardDetail from "./views/board/BoardDetail.vue";
+import BoardAdd from "./views/board/BoardAdd.vue";
+import BoardUpdate from "./views/board/BoardUpdate.vue";
 import UserScrap from "./views/user/UserScrap.vue";
 import BoardRecipeList from "./views/boardrecipe/BoardRecipeList.vue";
 import BoardRecipeDetail from "./views/boardrecipe/BoardRecipeDetail.vue";
+import FileUpload from "./components/FileUpload.vue";
 import BoardRecipeAdd from "./views/boardrecipe/BoardRecipeAdd.vue";
 import BoardRecipeUpdate from "./views/boardrecipe/BoardRecipeUpdate.vue";
-
-
-
+ 
 export default [
   {
     path: "/",
@@ -127,7 +126,7 @@ export default [
     props: true
   },
   {
-    path: "/user/scrap/",
+    path: "/user/scrap",
     name: "UserScrap",
     component: UserScrap
   },
@@ -140,6 +139,11 @@ export default [
     path: "/boardrecipe/detail/:rid",
     name: "BoardRecipeDetail",
     component: BoardRecipeDetail
+  },
+  {
+    path: "/board/fileupload",
+    name: FileUpload,
+    component: FileUpload
   },
   {
     path: "/boardrecipe/add/",

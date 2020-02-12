@@ -25,7 +25,7 @@
                     </tr>
                     <tr>
                         <th>내용</th>
-                        <td><input
+                        <td><textarea
                             data-msg="내용"
                             type="text"
                             name="contentsid"
@@ -40,16 +40,22 @@
                         </td>
                     </tr>
                 </table>
+                 <file-upload/>
             </form>
         </div>
+       
     </div>
 </template>
 
 <script>
     import http from "../../http-common";
-
+    
+    import FileUpload from '@/components/FileUpload';
+    
     export default {
+        components: { FileUpload },
         name: "add-board",
+        
         data() {
             return {
                 info: null,

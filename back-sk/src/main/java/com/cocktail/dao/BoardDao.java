@@ -8,5 +8,4 @@ import com.cocktail.model.board.Board;
 public interface BoardDao extends JpaRepository<Board, Integer> {
     Board findById(int bid);
    
-    // List<board> findByComments(int bid);
 }

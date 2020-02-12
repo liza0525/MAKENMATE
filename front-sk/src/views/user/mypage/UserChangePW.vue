@@ -49,12 +49,11 @@
 
 <script>
 import PasswordValidator from "password-validator";
-const axios = require("axios");
-
+import http from "../../../http-common";
 export default {
   data: () => {
     return {
-      email: "aa@aa.com",
+      email: "",
       password: "",
       passwordConfirm: "",
       newPasswordSchema: new PasswordValidator(),
@@ -116,16 +115,16 @@ export default {
     },
     updatePW() {
       if (this.isSubmit) {
-        axios
-          .put("http://localhost:8080/user/changePW", null, {
+        http
+          .put("/user/changePW", null, {
             params: {
-              email: this.email,
+              nickname: this.$store.state.username,
               befPassword: this.password,
               password: this.newPassword
             }
           })
           .then(res => {
-            if (res.data == "success") {
+            if (res.data.data == "success") {
               this.$router.push({
                 name: "SuccessPage",
                 params: {
