@@ -15,7 +15,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.cocktail.model.board.Board;
-import com.cocktail.model.like.CommentsLike;
+import com.cocktail.model.like.BoardCommentsLike;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
@@ -66,7 +66,7 @@ public class BoardComments implements Serializable {
     
     @OneToMany(mappedBy = "comments")
     @JsonManagedReference
-    private List<CommentsLike> comments = new ArrayList<>();
+    private List<BoardCommentsLike> comments = new ArrayList<>();
     
     private int count;
 }

@@ -2,8 +2,19 @@
   <div id="board-detail">
     <div id="board-header">
         <h1 id="board-title">{{ board.title }}</h1>
+        
         <h3 id="board-username">by. {{ board.user_name }}</h3>
+        
     </div>
+    <button @click="clickLike">
+      <span v-show="!islike">
+        <i class="far fa-heart"></i>
+      </span>
+      <span v-show="islike">
+        <i class="fas fa-heart"></i>
+      </span>
+    </button>
+    {{ likebyboard }}
     <div id="board-context" v-html="board.contents"></div>
     <div id="board-footer"> 
       <button class="board-button"  @click="go_to_list()">목록</button>
@@ -16,6 +27,7 @@
 
 <script>
 import http from "../../http-common";
+import Constant from "../../Constant"
 export default {
   data: () => {
     return {
@@ -26,18 +38,61 @@ export default {
         contents: "",
         regdate: "",
         user_name: ""
-      }
+      },
+      username: "",
+      comment: "",
+      isInput: [],
+      updatedComment: "",
+      pageNm: 1,
+      pageNms: [],
+      isLike: [],
+      likebycomments: []
     };
   },
   mounted() {
     this.getData();
   },
+  computed: {
+    users: {
+      set(val) {},
+      get() {
+        return this.$store.state.users;
+      }
+    },
+    reply: {
+      set(val) {},
+      get() {
+        return this.$store.state.reply;
+      }
+    },
+    clicked: {
+      set(val) {
+        this.isInput[val] = 1;
+      },
+      get() {
+        return true;
+      }
+    },
+    likebyboard() {
+      return this.$store.state.likebyboard;
+    },
+    islike: {
+      set(val) {
+        this.$store.state.isLike = val;
+      },
+      get() {
+        return this.$store.state.isLike;
+      }
+    }
+  },
   methods: {
     getData() {
       this.bid = this.$route.params.bid;
+      this.username = this.$store.state.username;
       http.get("/board/" + this.bid).then(res => {
         this.board = res.data;
-        this.board.contents = this.board.contents
+
+        this.search(0);
       });
     },
     delete_board(boardid) {
@@ -56,6 +111,146 @@ export default {
     },
     go_to_list(){
       this.$router.push({ name: "BoardList" });
+    },
+    submitComment() {
+      this.$store.dispatch(Constant.ADD_REPLYBOARD, {
+        bid: this.bid,
+        username: this.$store.state.username,
+        comment: this.comment
+      });
+      this.search(0);
+      this.users.push(this.username);
+      this.comment = "";
+    },
+    updateComment(i, cmid, content) {
+      this.$store
+        .dispatch(Constant.MODIFY_REPLYBOARD, {
+          cmid: cmid,
+          content: content,
+          bid: this.bid
+        })
+        .then(() => {
+          let list = [...this.isInput];
+          list.splice(i, 1, 0);
+          this.isInput = list;
+        });
+    },
+    deleteComment(i, cmid) {
+      this.users.splice(i, 1);
+      this.isInput.splice(i, 1);
+      this.$store.dispatch(Constant.REMOVE_REPLYBOARD, {
+        cmid: cmid,
+        bid: this.bid
+      });
+    },
+    click(i) {
+      let list = [...this.isInput];
+      list.splice(i, 1, 1);
+      this.isInput = list;
+    },
+    clickLike() {
+      if (this.islike == false) {
+        this.$store
+          .dispatch(Constant.ADD_BOARDLIKE, {
+            bid: this.bid,
+            username: this.$store.state.username
+          })
+          .then(() => (this.islike = this.$store.state.isLike));
+      } else {
+        this.$store
+          .dispatch(Constant.REMOVE_BOARDLIKE, {
+            bid: this.bid,
+            username: this.$store.state.username
+          })
+          .then(() => (this.islike = this.$store.state.isLike));
+      }
+    },
+    // clickLikeComments(i) {
+    //   if (this.isLike[i] == false) {
+    //     this.$store
+    //       .dispatch(Constant.ADD_BOARDCOMMENTSLIKE, {
+    //         cmid: this.reply[i].cmid,
+    //         username: this.$store.state.username
+    //       })
+    //       .then(() => {
+    //         let list = [...this.isLike];
+    //         list.splice(i, 1, true);
+    //         this.isLike = list;
+    //         let list2 = [...this.likebycomments];
+    //         list2.splice(i, 1, this.likebycomments[i] + 1);
+    //         this.likebycomments = list2;
+    //       });
+    //   } else {
+    //     this.$store
+    //       .dispatch(Constant.REMOVE_BOARDCOMMENTSLIKE, {
+    //         cmid: this.reply[i].cmid,
+    //         username: this.$store.state.username
+    //       })
+    //       .then(() => {
+    //         let list = [...this.isLike];
+    //         list.splice(i, 1, false);
+    //         this.isLike = list;
+
+    //         let list2 = [...this.likebycomments];
+    //         list2.splice(i, 1, this.likebycomments[i] - 1);
+    //         this.likebycomments = list2;
+    //       });
+    //   }
+    // },
+    search(pageNm) {
+      this.$store
+        .dispatch(Constant.GET_REPLYBOARD, {
+          bid: this.$route.params.bid,
+          pageNm: pageNm
+        })
+        .then(() => {
+          this.reply = { ...this.$store.state.reply };
+          this.users = { ...this.$store.state.users };
+          this.isInput = [];
+          this.likebycomments = [];
+          for (let i = 0; i < this.reply.length; ++i) {
+            this.isInput.push(0);
+            // this.$store
+            //   .dispatch(Constant.GET_LIKEBYUSERANDBOARDCOMMENTS, {
+            //     username: this.$store.state.username,
+            //     cmid: this.reply[i].cmid
+            //   })
+            //   .then(res => {
+            //     let list = [...this.isLike];
+            //     if (res.data.object == null) list.splice(i, 1, false);
+            //     else list.splice(i, 1, true);
+            //     this.isLike = list;
+            //   });
+            // this.$store
+            //   .dispatch(Constant.GET_LIKEBYBOARDCOMMENTS, {
+            //     cmid: this.reply[i].cmid
+            //   })
+            //   .then(res => {
+            //     console.log(res);
+            //     let list = [...this.likebycomments];
+            //     list.splice(i, 1, res);
+            //     this.likebycomments = list;
+            //   });
+          }
+          let arr = [];
+
+          let min = 1;
+          for (let index = 0; index < 5; index++) {
+            if (Number(min + index) > this.$store.state.totalPages) break;
+            arr.push(Number(min + index));
+          }
+          this.pageNms = arr;
+          this.$store
+            .dispatch(Constant.GET_LIKEBYBOARD, {
+              bid: this.$route.params.bid
+            })
+            .then(() => {
+              this.$store.dispatch(Constant.GET_LIKEBYUSERANDBOARD, {
+                bid: this.bid,
+                username: this.$store.state.username
+              });
+            });
+        });
     }
   }
 };

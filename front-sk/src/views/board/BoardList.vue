@@ -15,7 +15,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="board in info.object" v-bind:key="board.bid">
+            <tr v-for="board in info.content" v-bind:key="board.bid">
               <td v-html="board.bid"></td>
               <td v-html="board.title" @click="detail_id(board.bid)" style="cursor: pointer;"></td>
               <td v-html="board.user_name"></td>
@@ -28,22 +28,42 @@
     </div>
     <div id="board-list-footer">
       <button class="board-button" @click="add_move()">글쓰기</button>
+      <div>
+        <button v-for="pageNm in pageNms" :key="pageNm" @click="retrieveBoard(pageNm)">
+          <span style="margin-right:10px;">{{ pageNm }}</span>
+        </button>
+      </div>
     </div>
   </div>
 </template>
 
-                    <script>
+<script>
 import http from "../../http-common";
 export default {
   name: "board-list",
   data: () => {
-    return { info: [], loading: true, errored: false };
+    return { info: [], loading: true, errored: false, totalPages: 0, pageNms: [] };
   },
   methods: {
-    retrieveBoard() {
+    retrieveBoard(pageNm) {
       http
-        .get("/board")
-        .then(response => (this.info = response.data))
+        .get("/board",{
+          params:{
+            page: pageNm -1
+          }
+        })
+        .then(response => {
+          this.info = response.data.object
+          this.totalPages = response.data.object.totalPages
+          let arr = [];
+
+          let min = parseInt((pageNm - 1) / 5) * 5 + 1;
+          for (let index = 0; index < 5; index++) {
+            if (Number(min + index) > this.totalPages) break;
+            arr.push(Number(min + index));
+          }
+          this.pageNms = arr;
+        })
         .catch(error => {
           this.errored = true;
         })
@@ -62,7 +82,7 @@ export default {
     }
   },
   mounted() {
-    this.retrieveBoard();
+    this.retrieveBoard(1);
   }
 };
 </script>

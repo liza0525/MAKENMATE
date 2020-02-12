@@ -13,13 +13,16 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.cocktail.dao.CocktailCommentsDao;
-import com.cocktail.dao.CommentsLikeDao;
+import com.cocktail.dao.BoardRecipeDao;
+import com.cocktail.dao.BoardRecipeLikeDao;
 import com.cocktail.dao.UserDao;
 import com.cocktail.exception.CocktailException;
+// import com.cocktail.dao.UserDao;
 import com.cocktail.model.BasicResponse;
-import com.cocktail.model.comments.CocktailComments;
-import com.cocktail.model.like.CommentsLike;
+import com.cocktail.model.Cocktail;
+import com.cocktail.model.boardRecipe.BoardRecipe;
+import com.cocktail.model.like.BoardRecipeLike;
+import com.cocktail.model.like.CocktailLike;
 import com.cocktail.model.user.User;
 
 import io.swagger.annotations.ApiOperation;
@@ -33,42 +36,37 @@ import io.swagger.annotations.ApiResponses;
         @ApiResponse(code = 500, message = "Failure", response = BasicResponse.class) })
 
 @RestController
-public class CommentsLikeController {
+public class BoardRecipeLikeController {
 
     @Autowired
     UserDao userDao;
     @Autowired
-    CocktailCommentsDao commentsDao;
+    BoardRecipeDao boardRecipeDao;
     @Autowired
-    CommentsLikeDao commentsLikeDao;
+    BoardRecipeLikeDao boardRecipeLikeDao;
 
-    @PostMapping("/comments/like")
+    @PostMapping("/boardrecipe/like")
     @ApiOperation(value = "좋아요 누르기")
     public Object clickLike(@RequestParam(required = true) final String username,
-            @RequestParam(required = true) final int cmid) {
+            @RequestParam(required = true) final int rid) {
         User user = userDao.findByNickname(username);
-        CocktailComments comments = commentsDao.getCommentsByCmid(cmid);
-        comments.setCount(comments.getCount()+1);
-        commentsDao.save(comments);
-        CommentsLike cl = new CommentsLike((long) 0, user, comments);
-        commentsLikeDao.save(cl);
+        BoardRecipe boardRecipe = boardRecipeDao.findByRid(rid).orElseThrow(CocktailException::new);
         final BasicResponse result = new BasicResponse();
-        
+        BoardRecipeLike rl = new BoardRecipeLike((long) 0, user, boardRecipe);
+        boardRecipeLikeDao.save(rl);
         result.status = true;
         result.data = "success";
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    @DeleteMapping("/comments/like")
+    @DeleteMapping("/boardrecipe/like")
     @ApiOperation(value = "좋아요 삭제")
     public Object deleteLike(@RequestParam(required = true) final String username,
-            @RequestParam(required = true) final int cmid) {
+            @RequestParam(required = true) final int rid) {
         User user = userDao.findByNickname(username);
-        CocktailComments comments = commentsDao.getCommentsByCmid(cmid);
-        CommentsLike cl = commentsLikeDao.findByUser_uidAndComments_cmid(user.getUid(), cmid);
-        comments.setCount(comments.getCount()-1);
-        commentsDao.save(comments);
-        commentsLikeDao.deleteById(cl.getId());
+        BoardRecipe boardRecipe = boardRecipeDao.findByRid(rid).orElseThrow(CocktailException::new);
+        BoardRecipeLike rl = boardRecipeLikeDao.findByUser_uidAndBoardRecipe_rid(user.getUid(), rid);
+        boardRecipeLikeDao.deleteById(rl.getId());
 
         final BasicResponse result = new BasicResponse();
         result.status = true;
@@ -76,33 +74,33 @@ public class CommentsLikeController {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    @GetMapping("/comments/getlikebyuser")
-    @ApiOperation(value = "좋아요한  댓글 가져오기")
+    @GetMapping("/boardrecipe/getlikebyuser")
+    @ApiOperation(value = "좋아요한 칵테일 가져오기")
     public Object getLikebyuser(@RequestParam(required = true) final String username) {
         User user = userDao.getUserByNickname(username).orElseThrow(CocktailException::new);
-        List<CommentsLike> cls = user.getCommentsLike();
-        List<CocktailComments> comments = new ArrayList<>();
-        for (CommentsLike cl : cls) {
-            comments.add(cl.getComments());
+        List<BoardRecipeLike> rls = user.getBoardRecipeLike();
+        List<BoardRecipe> boardRecipe = new ArrayList<>();
+        for (BoardRecipeLike cl : rls) {
+            boardRecipe.add(cl.getBoardRecipe());
         }
         final BasicResponse result = new BasicResponse();
         result.status = true;
         result.data = "success";
-        result.object = comments;
+        result.object = boardRecipe;
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    @GetMapping("/comments/getlikebyuserandcomments")
-    @ApiOperation(value = "댓글 좋아요 여부 확인")
-    public Object getLikeByUserAndComments(@RequestParam(required = true) final String username,
-            @RequestParam(required = true) final int cmid) {
+    @GetMapping("/boardrecipe/getlikebyuserandcocktail")
+    @ApiOperation(value = "칵테일 좋아요 여부 확인")
+    public Object getLikeByUserAndCocktail(@RequestParam(required = true) final String username,
+            @RequestParam(required = true) final int rid) {
         User user = userDao.getUserByNickname(username).orElseThrow(CocktailException::new);
-        List<CommentsLike> cls = user.getCommentsLike();
-        CocktailComments comments= commentsDao.getCommentsByCmid(cmid);
-        CocktailComments res = null;
-        for (CommentsLike cl : cls) {
-            if (comments.getCmid() == cl.getComments().getCmid())
-                res = cl.getComments();
+        List<BoardRecipeLike> rls = user.getBoardRecipeLike();
+        BoardRecipe boardRecipe = boardRecipeDao.getBoardRecipeByRid(rid);
+        BoardRecipe res = null;
+        for (BoardRecipeLike rl : rls) {
+            if (boardRecipe.getRid() == rl.getBoardRecipe().getRid())
+                res = rl.getBoardRecipe();
         }
         final BasicResponse result = new BasicResponse();
         if (res == null)
@@ -114,14 +112,14 @@ public class CommentsLikeController {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    @GetMapping("/comments/getlikebycomments")
-    @ApiOperation(value = "댓글의 좋아요 수")
-    public Object getLikebycocktail(@RequestParam(required = true) final int cmid) {
-        Long commentsLike = commentsLikeDao.countByComments_cmid(cmid);
+    @GetMapping("/boardrecipe/getlikebycocktail")
+    @ApiOperation(value = "칵테일의 좋아요 수")
+    public Object getLikebycocktail(@RequestParam(required = true) final int rid) {
+        Long boardRecipeLikes = boardRecipeLikeDao.countByBoardRecipe_rid(rid);
         final BasicResponse result = new BasicResponse();
         result.status = true;
         result.data = "success";
-        result.object = commentsLike;
+        result.object = boardRecipeLikes;
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 }

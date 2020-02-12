@@ -17,6 +17,5 @@ footer {
   width: 100%;
   text-align: center;
   line-height: 4rem;
-  bottom: 0;
 }
 </style>

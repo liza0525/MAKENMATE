@@ -8,7 +8,7 @@ import com.cocktail.model.boardRecipe.BoardRecipe;
 public interface BoardRecipeDao extends JpaRepository<BoardRecipe, Integer> {
     //@Query(value = "Select * From boardrecipe br RIGHT JOIN user u ON br.user_uid = u.uid Where rid = :rid", nativeQuery = true)
     //oardRecipe find@Param("rid") int rid);
-
+	
 	BoardRecipe getBoardRecipeByRid(int rid);
     Optional<BoardRecipe> findByRid(int rid);
     // List<board> findByComments(int bid);
