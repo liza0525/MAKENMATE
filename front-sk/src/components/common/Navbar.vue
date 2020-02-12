@@ -134,11 +134,6 @@ const storage = window.sessionStorage;
 export default {
   data() {
     return {
-      boards: [
-        { title: "레시피 공유" },
-        { title: "칵테일 파티" },
-        { title: "자유 게시판" }
-      ],
       acc_menus: [],
       drawer: true,
       mini: true

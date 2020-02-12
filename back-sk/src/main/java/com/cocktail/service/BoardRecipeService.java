@@ -13,6 +13,9 @@ public interface BoardRecipeService {
     // 글 번호로 게시판 상세 보기
     BoardRecipe findById(int rid);
 
+    // 해당 유저가 스크랩을 했는지 안했는지
+    Boolean getUserIdScrappingList(int boardrecipeno, String username);
+
     // 공유게시글 작성
     int save(BRdetail bRdetail);
 

@@ -5,10 +5,21 @@ export default {
   [Constant.GET_REPLY]: (state, payload) => {
     state.reply = payload.reply;
     state.users = payload.users;
+    state.totalPages = payload.totalPages;
   },
   [Constant.ADD_REPLY]: (state, payload) => {},
   [Constant.MODIFY_REPLY]: (state, payload) => {},
   [Constant.DELETE_REPLY]: (state, payload) => {},
+  [Constant.GET_REPLYBOARDRECIPE]: (state, payload) => {
+    state.reply = payload.reply;
+    state.users = payload.users;
+    state.totalPages = payload.totalPages;
+  },
+  [Constant.GET_REPLYBOARD]: (state, payload) => {
+    state.reply = payload.reply;
+    state.users = payload.users;
+    state.totalPages = payload.totalPages;
+  },
   // 게시판
   [Constant.GET_BOARDLIST]: (state, payload) => {
     state.boardList = payload.boardList;
@@ -45,6 +56,30 @@ export default {
   [Constant.GET_COCKTAILLIKE]: (state, payload) => {
     // 좋아요한 칵테일 가져오기
     state.cocktailList = payload.cocktailList;
+  },
+  [Constant.GET_LIKEBYCOCKTAIL]: (state, payload) => {
+    state.likebycocktail = payload.likebycocktail;
+  },
+  [Constant.GET_LIKEBYUSERANDCOCKTAIL]: (state, payload) => {
+    if (payload.isLike != null) state.isLike = true;
+    else state.isLike = false;
+  },
+  [Constant.ADD_COCKTAILLIKE]: (state, payload) => {
+    state.likebycocktail = state.likebycocktail + 1;
+    state.isLike = true;
+  },
+  [Constant.REMOVE_COCKTAILLIKE]: (state, payload) => {
+    state.likebycocktail = state.likebycocktail - 1;
+    state.isLike = false;
+  },
+  [Constant.GET_LIKEBYCOCKTAILCOMMENTS]: (state, payload) => {
+    state.likebycomments = payload.likebycomments;
+  },
+  [Constant.ADD_COCKTAILCOMMENTSLIKE]: (state, payload) => {
+    state.likebycomments = state.likebycomments + 1;
+  },
+  [Constant.REMOVE_COCKTAILCOMMENTSLIKE]: (state, payload) => {
+    state.likebycomments = state.likebycomments - 1;
   },
   //유저
   [Constant.GET_USERINFO]: (state, payload) => {

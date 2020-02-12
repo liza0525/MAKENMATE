@@ -3,6 +3,8 @@ package com.cocktail.controller;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.mail.Multipart;
+
 import com.cocktail.model.BasicResponse;
 import com.cocktail.model.board.Bdetail;
 import com.cocktail.service.BoardService;
@@ -16,7 +18,9 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -44,15 +48,9 @@ public class BoardController {
         return new ResponseEntity<Bdetail>(boardservice.findById(boardno), HttpStatus.OK);
     }
 
-    // @PostMapping
-    // public ResponseEntity<board> save(@RequestBody board board,
-    // @RequestParam(required = true) String username){
-    // return new ResponseEntity<board>(boardservice.save(board,username),
-    // HttpStatus.OK);
-    // }
-
     @PostMapping
     public ResponseEntity<Integer> save(@RequestBody Bdetail bdetail) {
+        
         System.out.println(bdetail);
         return new ResponseEntity<Integer>(boardservice.save(bdetail), HttpStatus.OK);
     }

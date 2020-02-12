@@ -2,9 +2,9 @@ package com.cocktail.dao;
 
 import java.util.List;
 
-import com.cocktail.model.user.CocktailLike;
-
 import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.cocktail.model.like.CocktailLike;
 
 public interface CocktailLikeDao extends JpaRepository<CocktailLike, Long> {
     List<CocktailLike> findAllByUser_uid(int uid);

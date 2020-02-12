@@ -21,7 +21,10 @@ const state = {
   email: "",
   cmid: "",
   content: "",
-  intro: ""
+  intro: "",
+  likebycocktail: 0,
+  isLike: false,
+  likebycomments: 0
 };
 
 export default new Vuex.Store({

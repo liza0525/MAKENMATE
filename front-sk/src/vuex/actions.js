@@ -4,11 +4,16 @@ export default {
   [Constant.GET_REPLY]: (store, payload) => {
     return new Promise((resolve, reject) => {
       http
-        .get("/comments/" + payload.cid)
+        .get("/comments/cocktail/" + payload.cid, {
+          params: {
+            page: payload.pageNm - 1
+          }
+        })
         .then(res => {
           store.commit(Constant.GET_REPLY, {
-            reply: res.data.comments,
-            users: res.data.UserArray
+            reply: res.data.comments.content,
+            users: res.data.UserArray,
+            totalPages: res.data.comments.totalPages
           });
           resolve();
         })
@@ -21,9 +26,9 @@ export default {
   [Constant.ADD_REPLY]: (store, payload) => {
     return new Promise((resolve, reject) => {
       http
-        .post("/comments/" + payload.cid, null, {
+        .post("/comments/cocktail/" + payload.cid, null, {
           params: {
-            email: payload.email,
+            username: payload.username,
             content: payload.comment
           }
         })
@@ -43,7 +48,7 @@ export default {
     return new Promise((resolve, reject) => {
       console.log(payload.content);
       http
-        .put("/comments/" + payload.cmid, null, {
+        .put("/comments/cocktail/" + payload.cmid, null, {
           params: {
             content: payload.content
           }
@@ -63,9 +68,169 @@ export default {
   [Constant.REMOVE_REPLY]: (store, payload) => {
     return new Promise((resolve, reject) => {
       http
-        .delete("/comments/" + payload.cmid)
+        .delete("/comments/cocktail/" + payload.cmid)
         .then(() => {
           store.dispatch(Constant.GET_REPLY, {
+            cid: payload.cid
+          });
+          resolve();
+        })
+        .catch(exp => {
+          console.log(exp);
+          reject();
+        });
+    });
+  },
+  [Constant.GET_REPLYBOARDRECIPE]: (store, payload) => {
+    return new Promise((resolve, reject) => {
+      http
+        .get("/comments/boardRecipe/" + payload.cid, {
+          params: {
+            page: payload.pageNm - 1
+          }
+        })
+        .then(res => {
+          store.commit(Constant.GET_REPLYBOARDRECIPE, {
+            reply: res.data.comments.content,
+            users: res.data.UserArray,
+            totalPages: res.data.comments.totalPages
+          });
+          resolve();
+        })
+        .catch(exp => {
+          console.log(exp);
+          reject();
+        });
+    });
+  },
+  [Constant.ADD_REPLYBOARDRECIPE]: (store, payload) => {
+    return new Promise((resolve, reject) => {
+      http
+        .post("/comments/boardRecipe/" + payload.cid, null, {
+          params: {
+            username: payload.username,
+            content: payload.comment
+          }
+        })
+        .then(() => {
+          store.dispatch(Constant.GET_REPLYBOARDRECIPE, {
+            cid: payload.cid
+          });
+          resolve();
+        })
+        .catch(exp => {
+          console.log(exp);
+          reject();
+        });
+    });
+  },
+  [Constant.MODIFY_REPLYBOARDRECIPE]: (store, payload) => {
+    return new Promise((resolve, reject) => {
+      console.log(payload.content);
+      http
+        .put("/comments/boardRecipe/" + payload.cmid, null, {
+          params: {
+            content: payload.content
+          }
+        })
+        .then(() => {
+          store.dispatch(Constant.GET_REPLYBOARDRECIPE, {
+            cid: payload.cid
+          });
+          resolve();
+        })
+        .catch(exp => {
+          console.log(exp);
+          reject();
+        });
+    });
+  },
+  [Constant.REMOVE_REPLYBOARDRECIPE]: (store, payload) => {
+    return new Promise((resolve, reject) => {
+      http
+        .delete("/comments/boardRecipe/" + payload.cmid)
+        .then(() => {
+          store.dispatch(Constant.GET_REPLYBOARDRECIPE, {
+            cid: payload.cid
+          });
+          resolve();
+        })
+        .catch(exp => {
+          console.log(exp);
+          reject();
+        });
+    });
+  },
+  [Constant.GET_REPLYBOARD]: (store, payload) => {
+    return new Promise((resolve, reject) => {
+      http
+        .get("/comments/board/" + payload.cid, {
+          params: {
+            page: payload.pageNm - 1
+          }
+        })
+        .then(res => {
+          store.commit(Constant.GET_REPLYBOARD, {
+            reply: res.data.comments.content,
+            users: res.data.UserArray,
+            totalPages: res.data.comments.totalPages
+          });
+          resolve();
+        })
+        .catch(exp => {
+          console.log(exp);
+          reject();
+        });
+    });
+  },
+  [Constant.ADD_REPLYBOARD]: (store, payload) => {
+    return new Promise((resolve, reject) => {
+      http
+        .post("/comments/board/" + payload.cid, null, {
+          params: {
+            username: payload.username,
+            content: payload.comment
+          }
+        })
+        .then(() => {
+          store.dispatch(Constant.GET_REPLYBOARD, {
+            cid: payload.cid
+          });
+          resolve();
+        })
+        .catch(exp => {
+          console.log(exp);
+          reject();
+        });
+    });
+  },
+  [Constant.MODIFY_REPLYBOARD]: (store, payload) => {
+    return new Promise((resolve, reject) => {
+      console.log(payload.content);
+      http
+        .put("/comments/board/" + payload.cmid, null, {
+          params: {
+            content: payload.content
+          }
+        })
+        .then(() => {
+          store.dispatch(Constant.GET_REPLYBOARD, {
+            cid: payload.cid
+          });
+          resolve();
+        })
+        .catch(exp => {
+          console.log(exp);
+          reject();
+        });
+    });
+  },
+  [Constant.REMOVE_REPLYBOARD]: (store, payload) => {
+    return new Promise((resolve, reject) => {
+      http
+        .delete("/comments/board/" + payload.cmid)
+        .then(() => {
+          store.dispatch(Constant.GET_REPLYBOARD, {
             cid: payload.cid
           });
           resolve();
@@ -300,16 +465,56 @@ export default {
         });
     });
   },
-  [Constant.ADD_COCKTAILLIKE]: (store, payload) => {
+  [Constant.GET_LIKEBYCOCKTAIL]: (store, payload) => {
     return new Promise((resolve, reject) => {
       http
-        .post("/cocktail/like", payload.cname, {
+        .get("/cocktail/getlikebycocktail", {
+          params: { cid: payload.cid }
+        })
+        .then(res => {
+          store.commit(Constant.GET_LIKEBYCOCKTAIL, {
+            likebycocktail: res.data.object
+          });
+          resolve();
+        })
+        .catch(exp => {
+          console.log(exp);
+          reject();
+        });
+    });
+  },
+  [Constant.GET_LIKEBYUSERANDCOCKTAIL]: (store, payload) => {
+    return new Promise((resolve, reject) => {
+      http
+        .get("/cocktail/getlikebyuserandcocktail", {
           params: {
-            username: payload.username
+            username: payload.username,
+            cid: payload.cid
           }
         })
         .then(res => {
-          store.dispatch(Constant.GET_COCKTAILLIKE);
+          store.commit(Constant.GET_LIKEBYUSERANDCOCKTAIL, {
+            isLike: res.data.object
+          });
+          resolve();
+        })
+        .catch(exp => {
+          console.log(exp);
+          reject();
+        });
+    });
+  },
+  [Constant.ADD_COCKTAILLIKE]: (store, payload) => {
+    return new Promise((resolve, reject) => {
+      http
+        .post("/cocktail/like", null, {
+          params: {
+            username: payload.username,
+            cid: payload.cid
+          }
+        })
+        .then(() => {
+          store.commit(Constant.ADD_COCKTAILLIKE);
           resolve();
         })
         .catch(exp => {
@@ -321,9 +526,14 @@ export default {
   [Constant.REMOVE_COCKTAILLIKE]: (store, payload) => {
     return new Promise((resolve, reject) => {
       http
-        .delete("/cocktail/like", payload.username)
-        .then(res => {
-          store.dispatch(Constant.GET_COCKTAILLIKE);
+        .delete("/cocktail/like", {
+          params: {
+            username: payload.username,
+            cid: payload.cid
+          }
+        })
+        .then(() => {
+          store.commit(Constant.REMOVE_COCKTAILLIKE);
           resolve();
         })
         .catch(exp => {
@@ -395,7 +605,76 @@ export default {
             intro: res.data.object.intro
           });
           console.log(res.data.data);
+        });
+    });
+  },
+  [Constant.ADD_COCKTAILCOMMENTSLIKE]: (store, payload) => {
+    return new Promise((resolve, reject) => {
+      http
+        .post("/comments/like", null, {
+          params: {
+            username: payload.username,
+            cmid: payload.cmid
+          }
+        })
+        .then(() => {
+          store.commit(Constant.ADD_COCKTAILCOMMENTSLIKE);
           resolve();
+        })
+        .catch(exp => {
+          console.log(exp);
+          reject();
+        });
+    });
+  },
+  [Constant.REMOVE_COCKTAILCOMMENTSLIKE]: (store, payload) => {
+    return new Promise((resolve, reject) => {
+      http
+        .delete("/comments/like", {
+          params: {
+            username: payload.username,
+            cmid: payload.cmid
+          }
+        })
+        .then(() => {
+          store.commit(Constant.REMOVE_COCKTAILCOMMENTSLIKE);
+          resolve();
+        })
+        .catch(exp => {
+          console.log(exp);
+          reject();
+        });
+    });
+  },
+  [Constant.GET_LIKEBYCOCKTAILCOMMENTS]: (store, payload) => {
+    return new Promise((resolve, reject) => {
+      http
+        .get("/comments/getlikebycomments", {
+          params: { cmid: payload.cmid }
+        })
+        .then(res => {
+          store.commit(Constant.GET_LIKEBYCOCKTAILCOMMENTS, {
+            likebycomments: res.data.object
+          });
+          resolve();
+        })
+        .catch(exp => {
+          console.log(exp);
+          reject();
+        });
+    });
+  },
+  [Constant.GET_LIKEBYUSERANDCOCKTAILCOMMENTS]: (store, payload) => {
+    return new Promise((resolve, reject) => {
+      http
+        .get("/comments/getlikebyuserandcomments", {
+          params: {
+            username: payload.username,
+            cmid: payload.cmid
+          }
+        })
+        .then(res => {
+          resolve(res);
         })
         .catch(exp => {
           console.log(exp);
