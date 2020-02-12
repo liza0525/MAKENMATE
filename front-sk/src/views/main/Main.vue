@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="animated infinite pulse" id="scroll-down">▼ scroll down ▼</div>
+    <div class="animated infinite pulse" id="scroll-down">scroll down ↓</div>
     <full-page ref="fullpage" :options="options" id="fullpage">
       <div class="section main-img" id="page1">
         <div class="stars"></div>
@@ -47,7 +47,7 @@
                   />
                 </div>
                 <br />
-                <p class="info-members-name">{{ person.familyName }}{{ person.firstName }}</p>
+                <!-- <p class="info-members-name">{{ person.familyName }}{{ person.firstName }}</p> -->
               </v-col>
             </v-row>
           </div>
@@ -57,16 +57,22 @@
           <div class="modal-content">
             <p class="close">&times;</p>
             <v-row>
-              <v-col md="6" sm="12">
-                <img :src="person.profileUrl" style="width:30%" />
-              </v-col>
-              <v-col md="6" sm="12">
+              <v-col cols="6">
+                <img :src="person.profileUrl" />
+                <div style="display:flex; justfy-content:space-around;font-size: 2rem;">
+                  <i class="fab fa-instagram"></i>
+                  <i class="fab fa-github"></i>
+                  <i class="far fa-envelope"></i>
+                </div>
+                </v-col>
+                <v-col cols="6">  
+                <h1 class="info-member-name">
+                  {{ person.name }}
+                </h1>
                 <p>
-                  {{ person.firstName }}의 자기소개
-                  <br />
                   {{ person.biography }}
                 </p>
-              </v-col>
+                </v-col>
             </v-row>
           </div>
         </div>
@@ -83,28 +89,24 @@ export default {
       options: {},
       people: [
         {
-          familyName: "김",
-          firstName: "우재",
+          name: "김우재",
           biography:
             "므재는 소주를 좋아해요. 사실 소주를 맥주에 말아먹는 걸 좋아한다 봐야지요ㅎㅎ",
           profileUrl: require("../../assets/images/kwj.jpg")
         },
         {
-          familyName: "손",
-          firstName: "현희",
+          name: "손현희",
           biography: "혀니는 칵테일 덕후예요. 마스터 하는 것이 취미지요.★",
           profileUrl: require("../../assets/images/shh.jpg")
         },
         {
-          familyName: "이",
-          firstName: "근성",
+          name: "이근성",
           biography:
             "근성쓰는 보드카를 마셔요. 매일 현희를 코칭하고 있어욬ㅋㅋ",
           profileUrl: require("../../assets/images/lgs.jpg")
         },
         {
-          familyName: "정",
-          firstName: "윤영",
+          name: "정윤영",
           biography:
             "쩡뉴는 맥주를 먹어요. 운동은 많이 먹기 위해 하는 거죠...!",
           profileUrl: require("../../assets/images/cyy.jpg")
@@ -126,7 +128,7 @@ export default {
           modal[i].style.display = "none";
         };
       }
-    }
+    },
   },
   created() {
     window.addEventListener("scroll", this.pageMove);
@@ -141,15 +143,12 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 @import url("https://fonts.googleapis.com/css?family=Playfair+Display:700i&display=swap");
 @import url("https://fonts.googleapis.com/css?family=Indie+Flower&display=swap");
 @import url("https://fonts.googleapis.com/css?family=Song+Myung&display=swap");
-body {
-  background: none !important;
-}
-#fullpage {
-  background-color: black;
+.section{
+  background: black;
   color: white;
 }
 #scroll-down {
@@ -198,10 +197,6 @@ body {
   text-align: center;
   font-family: "Playfair Display", serif;
   font-size: 550%;
-  /* background-image: -webkit-linear-gradient(rgb(112, 233, 128), #e28080, rgb(128, 103, 219));
-	-webkit-background-clip: text;
-	-webkit-text-fill-color: transparent;
-	-webkit-animation: hue 10s infinite linear; */
 }
 #main-subtitle {
   position: relative;
@@ -235,6 +230,9 @@ body {
   border-radius: 50%;
   cursor: pointer;
 }
+.info-members-profile:hover {
+  animation: hover-profile 0.3s;
+}
 .info-members-name {
   margin: 10px 0;
   letter-spacing: 5px;
@@ -254,15 +252,16 @@ body {
 .modal-content {
   color: black;
   background-color: #fefefe;
-  margin: 15% auto;
-  padding: 20px;
+  margin: 5% auto;
+  padding: 2%;
   width: 50%;
 }
 ::-webkit-scrollbar {
   display: none;
 }
 .close {
-  display: inline;
+  /* display: inline; */
+  float: right;
   font-size: 25px;
   cursor: pointer;
 }
@@ -303,14 +302,22 @@ body {
     opacity: 1;
   }
 }
+/* Profile hovering */
+@keyframes hover-profile {
+  0% {
+    width: 13rem;
+    height: 13rem;
+    animation-timing-function: ease-out;
 
-/* title color varience */
-@-webkit-keyframes hue {
-  from {
-    -webkit-filter: hue-rotate(0deg);
   }
-  to {
-    -webkit-filter: hue-rotate(-360deg);
+  50% {
+    width: 13.5rem;
+    height: 13.5rem;
+    animation-timing-function: linear;
+  }
+  100% {
+    width: 13rem;
+    height: 13rem;
   }
 }
 

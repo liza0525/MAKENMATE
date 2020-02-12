@@ -1,29 +1,33 @@
 <template>
-  <div style="padding-top: 100px; color: red;">
-    <div>
-      <table class="list_table">
-        <col width="10%" />
-        <col width="20%" />
-        <col width="20%" />
-        <col width="10%" />
-        <tr>
-          <th>글 번호</th>
-          <th>제 목</th>
-          <th>날 짜</th>
-        </tr>
-
-        <tr v-for="board in info.object" v-bind:key="board.bid">
-          <td v-html="board.bid" @click="detail_id(board.bid)"></td>
-          <td v-html="board.title"></td>
-          <td v-html="board.regdate"></td>
-        </tr>
-      </table>
+  <div>
+    <div id="board-list-header">
+      <h1 id="board-category">자유게시판</h1>
     </div>
-    <div>
-      <!-- <input type="button" @click=" add_move()" value="글쓰기"></div> -->
-      <a href="/#/board/add">
-        <input type="button" value="글쓰기" />
-      </a>
+    <div id="board-context">
+      <v-simple-table>
+        <template>
+          <thead>
+            <tr>
+              <th>No.</th>
+              <th>제목</th>
+              <th>글쓴이</th>
+              <th>날짜</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="board in info.object" v-bind:key="board.bid">
+              <td v-html="board.bid"></td>
+              <td v-html="board.title" @click="detail_id(board.bid)" style="cursor: pointer;"></td>
+              <td v-html="board.user_name"></td>
+              <td v-html="board.regdate"></td>
+            </tr>
+          </tbody>
+        </template>
+      </v-simple-table>
+      
+    </div>
+    <div id="board-list-footer">
+      <button class="board-button" @click="add_move()">글쓰기</button>
     </div>
   </div>
 </template>
@@ -46,7 +50,7 @@ export default {
         .finally(() => (this.loading = false));
     },
     add_move() {
-      this.$router.push("BoardAdd");
+      this.$router.push({name: "BoardAdd"});
     },
     detail_id(sendbid) {
       this.$router.push({
@@ -62,5 +66,39 @@ export default {
   }
 };
 </script>
-
-                    <style></style>
+<style>
+#board-list-header {
+  background: linear-gradient(rgba(0, 0, 0, 0.3)),
+    url("../../assets/images/image.png") no-repeat;
+  background-size: 100%;
+  height: 20rem;
+  background-position-y: 30%;
+  color: white;
+}
+#board-category {
+  margin: 0 0 0 15rem;
+  display: inline;
+  position: relative;
+  float: left;
+  top: 12rem;
+  font-size: 4rem;
+}
+#board-list-footer {
+  color: #777;
+  margin: 0 10rem;
+  padding: 2rem 1rem;
+  border-top: 1px solid #ccc;
+}
+#board-context {
+  color: #777;
+  padding: 2rem 15rem;
+  margin: 1rem 0;
+}
+.board-button {
+  margin: 0 0.5rem;
+  width: 5rem;
+  height: 3rem;
+  border: 1px solid #ccc;
+  border-radius: 3rem;
+}
+</style>
