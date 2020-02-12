@@ -24,6 +24,7 @@
     "email-validator": "^2.0.4",
     "filepond": "^4.10.0",
     "filepond-plugin-file-validate-type": "^1.2.4",
+    "filepond-plugin-image-preview": "^4.6.1",
     "local-lib": "^0.1.0",
     "node-sass": "^4.13.1",
     "password-validator": "^5.0.3",
