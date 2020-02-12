@@ -84,7 +84,7 @@ export default {
   [Constant.GET_REPLYBOARDRECIPE]: (store, payload) => {
     return new Promise((resolve, reject) => {
       http
-        .get("/comments/boardRecipe/" + payload.cid, {
+        .get("/comments/boardrecipe/" + payload.rid, {
           params: {
             page: payload.pageNm - 1
           }
@@ -106,7 +106,7 @@ export default {
   [Constant.ADD_REPLYBOARDRECIPE]: (store, payload) => {
     return new Promise((resolve, reject) => {
       http
-        .post("/comments/boardRecipe/" + payload.cid, null, {
+        .post("/comments/boardrecipe/" + payload.rid, null, {
           params: {
             username: payload.username,
             content: payload.comment
@@ -114,7 +114,7 @@ export default {
         })
         .then(() => {
           store.dispatch(Constant.GET_REPLYBOARDRECIPE, {
-            cid: payload.cid
+            rid: payload.rid
           });
           resolve();
         })
@@ -128,14 +128,14 @@ export default {
     return new Promise((resolve, reject) => {
       console.log(payload.content);
       http
-        .put("/comments/boardRecipe/" + payload.cmid, null, {
+        .put("/comments/boardrecipe/" + payload.cmid, null, {
           params: {
             content: payload.content
           }
         })
         .then(() => {
           store.dispatch(Constant.GET_REPLYBOARDRECIPE, {
-            cid: payload.cid
+            rid: payload.rid
           });
           resolve();
         })
@@ -148,10 +148,10 @@ export default {
   [Constant.REMOVE_REPLYBOARDRECIPE]: (store, payload) => {
     return new Promise((resolve, reject) => {
       http
-        .delete("/comments/boardRecipe/" + payload.cmid)
+        .delete("/comments/boardrecipe/" + payload.cmid)
         .then(() => {
           store.dispatch(Constant.GET_REPLYBOARDRECIPE, {
-            cid: payload.cid
+            rid: payload.rid
           });
           resolve();
         })
@@ -164,7 +164,7 @@ export default {
   [Constant.GET_REPLYBOARD]: (store, payload) => {
     return new Promise((resolve, reject) => {
       http
-        .get("/comments/board/" + payload.cid, {
+        .get("/comments/board/" + payload.bid, {
           params: {
             page: payload.pageNm - 1
           }
@@ -186,7 +186,7 @@ export default {
   [Constant.ADD_REPLYBOARD]: (store, payload) => {
     return new Promise((resolve, reject) => {
       http
-        .post("/comments/board/" + payload.cid, null, {
+        .post("/comments/board/" + payload.bid, null, {
           params: {
             username: payload.username,
             content: payload.comment
@@ -194,7 +194,7 @@ export default {
         })
         .then(() => {
           store.dispatch(Constant.GET_REPLYBOARD, {
-            cid: payload.cid
+            bid: payload.bid
           });
           resolve();
         })
@@ -215,7 +215,7 @@ export default {
         })
         .then(() => {
           store.dispatch(Constant.GET_REPLYBOARD, {
-            cid: payload.cid
+            bid: payload.bid
           });
           resolve();
         })
@@ -231,7 +231,7 @@ export default {
         .delete("/comments/board/" + payload.cmid)
         .then(() => {
           store.dispatch(Constant.GET_REPLYBOARD, {
-            cid: payload.cid
+            bid: payload.bid
           });
           resolve();
         })
@@ -346,11 +346,15 @@ export default {
       http
         .get("/user/scrap/", {
           params: {
-            username: payload.username
+            username: payload.username,
+            page: payload.pageNm - 1
           }
         })
         .then(res => {
-          store.commit(Constant.GET_SCRAPLIST, { scrapList: res.data.object });
+          store.commit(Constant.GET_SCRAPLIST, {
+            scrapList: res.data.object.content,
+            totalPages: res.data.object.totalPages
+          });
           resolve();
         })
         .catch(exp => {
@@ -542,6 +546,192 @@ export default {
         });
     });
   },
+  [Constant.GET_BOARDRECIPELIKE]: (store, payload) => {
+    return new Promise((resolve, reject) => {
+      http
+        .get("/boardrecipe/getlikebyuser", payload.username)
+        .then(res => {
+          store.commit(Constant.GET_BOARDRECIPELIKE, {
+            boardRecipeList: res.data.object
+          });
+          resolve();
+        })
+        .catch(exp => {
+          console.log(exp);
+          reject();
+        });
+    });
+  },
+  [Constant.GET_LIKEBYBOARDRECIPE]: (store, payload) => {
+    return new Promise((resolve, reject) => {
+      http
+        .get("/boardrecipe/getlikebycocktail", {
+          params: { rid: payload.rid }
+        })
+        .then(res => {
+          store.commit(Constant.GET_LIKEBYBOARDRECIPE, {
+            likebyboardrecipe: res.data.object
+          });
+          resolve();
+        })
+        .catch(exp => {
+          console.log(exp);
+          reject();
+        });
+    });
+  },
+  [Constant.GET_LIKEBYUSERANDBOARDRECIPE]: (store, payload) => {
+    return new Promise((resolve, reject) => {
+      http
+        .get("/boardrecipe/getlikebyuserandcocktail", {
+          params: {
+            username: payload.username,
+            rid: payload.rid
+          }
+        })
+        .then(res => {
+          store.commit(Constant.GET_LIKEBYUSERANDBOARDRECIPE, {
+            isLike: res.data.object
+          });
+          resolve();
+        })
+        .catch(exp => {
+          console.log(exp);
+          reject();
+        });
+    });
+  },
+  [Constant.ADD_BOARDRECIPELIKE]: (store, payload) => {
+    return new Promise((resolve, reject) => {
+      http
+        .post("/boardrecipe/like", null, {
+          params: {
+            username: payload.username,
+            rid: payload.rid
+          }
+        })
+        .then(() => {
+          store.commit(Constant.ADD_BOARDRECIPELIKE);
+          resolve();
+        })
+        .catch(exp => {
+          console.log(exp);
+          reject();
+        });
+    });
+  },
+  [Constant.REMOVE_BOARDRECIPELIKE]: (store, payload) => {
+    return new Promise((resolve, reject) => {
+      http
+        .delete("/boardrecipe/like", {
+          params: {
+            username: payload.username,
+            rid: payload.rid
+          }
+        })
+        .then(() => {
+          store.commit(Constant.REMOVE_BOARDRECIPELIKE);
+          resolve();
+        })
+        .catch(exp => {
+          console.log(exp);
+          reject();
+        });
+    });
+  },
+  [Constant.GET_BOARDLIKE]: (store, payload) => {
+    return new Promise((resolve, reject) => {
+      http
+        .get("/board/getlikebyuser", payload.username)
+        .then(res => {
+          store.commit(Constant.GET_BOARDLIKE, {
+            boardList: res.data.object
+          });
+          resolve();
+        })
+        .catch(exp => {
+          console.log(exp);
+          reject();
+        });
+    });
+  },
+  [Constant.GET_LIKEBYBOARD]: (store, payload) => {
+    return new Promise((resolve, reject) => {
+      http
+        .get("/board/getlikebycocktail", {
+          params: { bid: payload.bid }
+        })
+        .then(res => {
+          store.commit(Constant.GET_LIKEBYBOARD, {
+            likebyboard: res.data.object
+          });
+          resolve();
+        })
+        .catch(exp => {
+          console.log(exp);
+          reject();
+        });
+    });
+  },
+  [Constant.GET_LIKEBYUSERANDBOARD]: (store, payload) => {
+    return new Promise((resolve, reject) => {
+      http
+        .get("/board/getlikebyuserandcocktail", {
+          params: {
+            username: payload.username,
+            bid: payload.bid
+          }
+        })
+        .then(res => {
+          store.commit(Constant.GET_LIKEBYUSERANDBOARD, {
+            isLike: res.data.object
+          });
+          resolve();
+        })
+        .catch(exp => {
+          console.log(exp);
+          reject();
+        });
+    });
+  },
+  [Constant.ADD_BOARDLIKE]: (store, payload) => {
+    return new Promise((resolve, reject) => {
+      http
+        .post("/board/like", null, {
+          params: {
+            username: payload.username,
+            bid: payload.bid
+          }
+        })
+        .then(() => {
+          store.commit(Constant.ADD_BOARDLIKE);
+          resolve();
+        })
+        .catch(exp => {
+          console.log(exp);
+          reject();
+        });
+    });
+  },
+  [Constant.REMOVE_BOARDLIKE]: (store, payload) => {
+    return new Promise((resolve, reject) => {
+      http
+        .delete("/board/like", {
+          params: {
+            username: payload.username,
+            bid: payload.bid
+          }
+        })
+        .then(() => {
+          store.commit(Constant.REMOVE_BOARDLIKE);
+          resolve();
+        })
+        .catch(exp => {
+          console.log(exp);
+          reject();
+        });
+    });
+  },
   // User CRUD
   [Constant.GET_USERINFO]: (store, payload) => {
     return new Promise((resolve, reject) => {
@@ -696,7 +886,150 @@ export default {
             boards: res.data.boards.content,
             totalPages: res.data.boards.totalPages
           });
+        });
+    });
+  },
+  [Constant.ADD_BOARDRECIPECOMMENTSLIKE]: (store, payload) => {
+    return new Promise((resolve, reject) => {
+      http
+        .post("/boardrecipe/comments/like", null, {
+          params: {
+            username: payload.username,
+            cmid: payload.cmid
+          }
+        })
+        .then(() => {
+          store.commit(Constant.ADD_BOARDRECIPECOMMENTSLIKE);
           resolve();
+        })
+        .catch(exp => {
+          console.log(exp);
+          reject();
+        });
+    });
+  },
+  [Constant.REMOVE_BOARDRECIPECOMMENTSLIKE]: (store, payload) => {
+    return new Promise((resolve, reject) => {
+      http
+        .delete("/boardrecipe/comments/like", {
+          params: {
+            username: payload.username,
+            cmid: payload.cmid
+          }
+        })
+        .then(() => {
+          store.commit(Constant.REMOVE_BOARDRECIPECOMMENTSLIKE);
+          resolve();
+        })
+        .catch(exp => {
+          console.log(exp);
+          reject();
+        });
+    });
+  },
+  [Constant.GET_LIKEBYBOARDRECIPECOMMENTS]: (store, payload) => {
+    return new Promise((resolve, reject) => {
+      http
+        .get("/boardrecipe/comments/getlikebycomments", {
+          params: { cmid: payload.cmid }
+        })
+        .then(res => {
+          store.commit(Constant.GET_LIKEBYBOARDRECIPECOMMENTS, {
+            likebycomments: res.data.object
+          });
+          resolve();
+        })
+        .catch(exp => {
+          console.log(exp);
+          reject();
+        });
+    });
+  },
+  [Constant.GET_LIKEBYUSERANDBOARDRECIPECOMMENTS]: (store, payload) => {
+    return new Promise((resolve, reject) => {
+      http
+        .get("/boardrecipe/comments/getlikebyuserandcomments", {
+          params: {
+            username: payload.username,
+            cmid: payload.cmid
+          }
+        })
+        .then(res => {
+          resolve(res);
+        })
+        .catch(exp => {
+          console.log(exp);
+          reject();
+        });
+    });
+  },
+  [Constant.ADD_BOARDCOMMENTSLIKE]: (store, payload) => {
+    return new Promise((resolve, reject) => {
+      http
+        .post("/board/comments/like", null, {
+          params: {
+            username: payload.username,
+            cmid: payload.cmid
+          }
+        })
+        .then(() => {
+          store.commit(Constant.ADD_BOARDCOMMENTSLIKE);
+          resolve();
+        })
+        .catch(exp => {
+          console.log(exp);
+          reject();
+        });
+    });
+  },
+  [Constant.REMOVE_BOARDCOMMENTSLIKE]: (store, payload) => {
+    return new Promise((resolve, reject) => {
+      http
+        .delete("/board/comments/like", {
+          params: {
+            username: payload.username,
+            cmid: payload.cmid
+          }
+        })
+        .then(() => {
+          store.commit(Constant.REMOVE_BOARDCOMMENTSLIKE);
+          resolve();
+        })
+        .catch(exp => {
+          console.log(exp);
+          reject();
+        });
+    });
+  },
+  [Constant.GET_LIKEBYBOARDCOMMENTS]: (store, payload) => {
+    return new Promise((resolve, reject) => {
+      http
+        .get("/board/comments/getlikebycomments", {
+          params: { cmid: payload.cmid }
+        })
+        .then(res => {
+          store.commit(Constant.GET_LIKEBYBOARDCOMMENTS, {
+            likebycomments: res.data.object
+          });
+          resolve(res.data.object);
+        })
+        .catch(exp => {
+          console.log(exp);
+          reject();
+        });
+    });
+  },
+  [Constant.GET_LIKEBYUSERANDBOARDCOMMENTS]: (store, payload) => {
+    return new Promise((resolve, reject) => {
+      http
+        .get("/board/comments/getlikebyuserandcomments", {
+          params: {
+            username: payload.username,
+            cmid: payload.cmid
+          }
+        })
+        .then(res => {
+          resolve(res);
         })
         .catch(exp => {
           console.log(exp);

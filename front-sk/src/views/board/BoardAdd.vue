@@ -25,7 +25,7 @@
                     </tr>
                     <tr>
                         <th>내용</th>
-                        <td><input
+                        <td><textarea
                             data-msg="내용"
                             type="text"
                             name="contentsid"

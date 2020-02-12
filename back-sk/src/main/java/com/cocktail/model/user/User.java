@@ -5,7 +5,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
@@ -13,13 +12,16 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.cocktail.model.like.BoardCommentsLike;
+import com.cocktail.model.like.BoardLike;
+import com.cocktail.model.like.BoardRecipeCommentsLike;
+import com.cocktail.model.like.BoardRecipeLike;
 import com.cocktail.model.like.CocktailLike;
 import com.cocktail.model.like.CommentsLike;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -123,10 +125,22 @@ public class User implements UserDetails {
 
 	@OneToMany(mappedBy = "user")
 	@JsonManagedReference
-	private List<CocktailLike> cocktailLike = new ArrayList<>();
+	private final List<CocktailLike> cocktailLike = new ArrayList<>();
+	@OneToMany(mappedBy = "user")
+	@JsonManagedReference
+	private final List<BoardLike> boardLike = new ArrayList<>();
+	@OneToMany(mappedBy = "user")
+	@JsonManagedReference
+	private final List<BoardRecipeLike> boardRecipeLike = new ArrayList<>();
 
 	@OneToMany(mappedBy = "user")
 	@JsonManagedReference
-	private List<CommentsLike> commentsLike = new ArrayList<>();
+	private final List<CommentsLike> commentsLike = new ArrayList<>();
+	@OneToMany(mappedBy = "user")
+	@JsonManagedReference
+	private final List<BoardCommentsLike> boardcommentsLike = new ArrayList<>();
+	@OneToMany(mappedBy = "user")
+	@JsonManagedReference
+	private final List<BoardRecipeCommentsLike> boardrecipecommentsLike = new ArrayList<>();
 
 }

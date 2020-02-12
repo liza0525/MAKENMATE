@@ -10,16 +10,19 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.cocktail.dao.CocktailCommentsDao;
-import com.cocktail.dao.CommentsLikeDao;
+import com.cocktail.dao.BoardRecipeCommentsDao;
+import com.cocktail.dao.BoardRecipeCommentsLikeDao;
 import com.cocktail.dao.UserDao;
 import com.cocktail.exception.CocktailException;
 import com.cocktail.model.BasicResponse;
-import com.cocktail.model.comments.CocktailComments;
-import com.cocktail.model.like.CommentsLike;
+import com.cocktail.model.comments.BoardComments;
+import com.cocktail.model.comments.BoardRecipeComments;
+import com.cocktail.model.like.BoardCommentsLike;
+import com.cocktail.model.like.BoardRecipeCommentsLike;
 import com.cocktail.model.user.User;
 
 import io.swagger.annotations.ApiOperation;
@@ -33,24 +36,25 @@ import io.swagger.annotations.ApiResponses;
         @ApiResponse(code = 500, message = "Failure", response = BasicResponse.class) })
 
 @RestController
-public class CommentsLikeController {
+@RequestMapping(value = "/boardrecipe")
+public class BoardRecipeCommentsLikeController {
 
     @Autowired
     UserDao userDao;
     @Autowired
-    CocktailCommentsDao commentsDao;
+    BoardRecipeCommentsDao commentsDao;
     @Autowired
-    CommentsLikeDao commentsLikeDao;
+    BoardRecipeCommentsLikeDao commentsLikeDao;
 
     @PostMapping("/comments/like")
     @ApiOperation(value = "좋아요 누르기")
     public Object clickLike(@RequestParam(required = true) final String username,
             @RequestParam(required = true) final int cmid) {
         User user = userDao.findByNickname(username);
-        CocktailComments comments = commentsDao.getCommentsByCmid(cmid);
+        BoardRecipeComments comments = commentsDao.getCommentsByCmid(cmid);
         comments.setCount(comments.getCount()+1);
         commentsDao.save(comments);
-        CommentsLike cl = new CommentsLike((long) 0, user, comments);
+        BoardRecipeCommentsLike cl = new BoardRecipeCommentsLike((long) 0, user, comments);
         commentsLikeDao.save(cl);
         final BasicResponse result = new BasicResponse();
         
@@ -64,8 +68,8 @@ public class CommentsLikeController {
     public Object deleteLike(@RequestParam(required = true) final String username,
             @RequestParam(required = true) final int cmid) {
         User user = userDao.findByNickname(username);
-        CocktailComments comments = commentsDao.getCommentsByCmid(cmid);
-        CommentsLike cl = commentsLikeDao.findByUser_uidAndComments_cmid(user.getUid(), cmid);
+        BoardRecipeComments comments = commentsDao.getCommentsByCmid(cmid);
+        BoardRecipeCommentsLike cl = commentsLikeDao.findByUser_uidAndComments_cmid(user.getUid(), cmid);
         comments.setCount(comments.getCount()-1);
         commentsDao.save(comments);
         commentsLikeDao.deleteById(cl.getId());
@@ -80,9 +84,9 @@ public class CommentsLikeController {
     @ApiOperation(value = "좋아요한  댓글 가져오기")
     public Object getLikebyuser(@RequestParam(required = true) final String username) {
         User user = userDao.getUserByNickname(username).orElseThrow(CocktailException::new);
-        List<CommentsLike> cls = user.getCommentsLike();
-        List<CocktailComments> comments = new ArrayList<>();
-        for (CommentsLike cl : cls) {
+        List<BoardRecipeCommentsLike> cls = user.getBoardrecipecommentsLike();
+        List<BoardRecipeComments> comments = new ArrayList<>();
+        for (BoardRecipeCommentsLike cl : cls) {
             comments.add(cl.getComments());
         }
         final BasicResponse result = new BasicResponse();
@@ -97,10 +101,10 @@ public class CommentsLikeController {
     public Object getLikeByUserAndComments(@RequestParam(required = true) final String username,
             @RequestParam(required = true) final int cmid) {
         User user = userDao.getUserByNickname(username).orElseThrow(CocktailException::new);
-        List<CommentsLike> cls = user.getCommentsLike();
-        CocktailComments comments= commentsDao.getCommentsByCmid(cmid);
-        CocktailComments res = null;
-        for (CommentsLike cl : cls) {
+        List<BoardRecipeCommentsLike> cls = user.getBoardrecipecommentsLike();
+        BoardRecipeComments comments= commentsDao.getCommentsByCmid(cmid);
+        BoardRecipeComments res = null;
+        for (BoardRecipeCommentsLike cl : cls) {
             if (comments.getCmid() == cl.getComments().getCmid())
                 res = cl.getComments();
         }

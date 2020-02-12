@@ -73,12 +73,13 @@
         class="sansfont"
       >
         <!-- <v-text v-if="isInput[i]"> -->
+
         <div v-if="isInput[i] === 0">
-          <span class="sansfont">{{ users[i] }} : {{ re.content }}</span>
-          <button @click="click(i)" class="sansfont">수정</button>
-          <button @click="deleteComment(i, re.cmid)" class="sansfont">
-            삭제
-          </button>
+          <span>{{ users[i] }} : {{ re.content }}</span>
+          <p v-if="username === users[i]" style="display:inline-block;">
+            <button @click="click(i)">수정</button>
+            <button @click="deleteComment(i, re.cmid)">삭제</button>
+          </p>
         </div>
         <div v-else>
           <span class="sansfont">
@@ -98,15 +99,6 @@
             </button>
           </p>
         </div>
-        <button @click="clickLikeComments(i)">
-          <span v-show="!isLike[i]">
-            <i class="far fa-heart"></i>
-          </span>
-          <span v-show="isLike[i]">
-            <i class="fas fa-heart"></i>
-          </span>
-        </button>
-        {{ likebycomments[i] }}
       </div>
       <!-- </v-text> -->
       <input type="text" v-model="comment" />
@@ -139,14 +131,12 @@ export default {
       },
       materials: [],
       email: "",
+      username: "",
       comment: "",
       isInput: [],
-      username: "",
       updatedComment: "",
       pageNm: 1,
-      pageNms: [],
-      isLike: [],
-      likebycomments: []
+      pageNms: []
     };
   },
   mounted() {
@@ -177,27 +167,27 @@ export default {
             this.users = { ...this.$store.state.users };
             for (let i = 0; i < this.reply.length; ++i) {
               this.isInput.push(0);
-              this.likebycomments.push(0);
-              this.$store
-                .dispatch(Constant.GET_LIKEBYUSERANDCOCKTAILCOMMENTS, {
-                  username: this.$store.state.username,
-                  cmid: this.reply[i].cmid
-                })
-                .then(res => {
-                  let list = [...this.isLike];
-                  if (res.data.object == null) list.splice(i, 1, false);
-                  else list.splice(i, 1, true);
-                  this.isLike = list;
-                });
-              this.$store
-                .dispatch(Constant.GET_LIKEBYCOCKTAILCOMMENTS, {
-                  cmid: this.reply[i].cmid
-                })
-                .then(res => {
-                  let list = [...this.likebycomments];
-                  list.splice(i, 1, this.$store.state.likebycomments);
-                  this.likebycomments = list;
-                });
+              // this.likebycomments.push(0);
+              // this.$store
+              //   .dispatch(Constant.GET_LIKEBYUSERANDCOCKTAILCOMMENTS, {
+              //     username: this.$store.state.username,
+              //     cmid: this.reply[i].cmid
+              //   })
+              //   .then(res => {
+              //     let list = [...this.isLike];
+              //     if (res.data.object == null) list.splice(i, 1, false);
+              //     else list.splice(i, 1, true);
+              //     this.isLike = list;
+              //   });
+              // this.$store
+              //   .dispatch(Constant.GET_LIKEBYCOCKTAILCOMMENTS, {
+              //     cmid: this.reply[i].cmid
+              //   })
+              //   .then(res => {
+              //     let list = [...this.likebycomments];
+              //     list.splice(i, 1, this.$store.state.likebycomments);
+              //     this.likebycomments = list;
+              //   });
             }
             let arr = [];
 
@@ -311,41 +301,41 @@ export default {
           .then(() => (this.islike = this.$store.state.isLike));
       }
     },
-    clickLikeComments(i) {
-      console.log(this.reply[i]);
+    // clickLikeComments(i) {
+    //   console.log(this.reply[i]);
 
-      if (this.isLike[i] == false) {
-        this.$store
-          .dispatch(Constant.ADD_COCKTAILCOMMENTSLIKE, {
-            cmid: this.reply[i].cmid,
-            username: this.$store.state.username
-          })
-          .then(() => {
-            let list = [...this.isLike];
-            list.splice(i, 1, true);
-            this.isLike = list;
-            let list2 = [...this.likebycomments];
-            list2.splice(i, 1, this.likebycomments[i] + 1);
-            this.likebycomments = list2;
-          });
-      } else {
-        this.$store
-          .dispatch(Constant.REMOVE_COCKTAILCOMMENTSLIKE, {
-            cmid: this.reply[i].cmid,
-            username: this.$store.state.username
-          })
-          .then(() => {
-            let list = [...this.isLike];
-            0;
-            list.splice(i, 1, false);
-            this.isLike = list;
+    //   if (this.isLike[i] == false) {
+    //     this.$store
+    //       .dispatch(Constant.ADD_COCKTAILCOMMENTSLIKE, {
+    //         cmid: this.reply[i].cmid,
+    //         username: this.$store.state.username
+    //       })
+    //       .then(() => {
+    //         let list = [...this.isLike];
+    //         list.splice(i, 1, true);
+    //         this.isLike = list;
+    //         let list2 = [...this.likebycomments];
+    //         list2.splice(i, 1, this.likebycomments[i] + 1);
+    //         this.likebycomments = list2;
+    //       });
+    //   } else {
+    //     this.$store
+    //       .dispatch(Constant.REMOVE_COCKTAILCOMMENTSLIKE, {
+    //         cmid: this.reply[i].cmid,
+    //         username: this.$store.state.username
+    //       })
+    //       .then(() => {
+    //         let list = [...this.isLike];
+    //         0;
+    //         list.splice(i, 1, false);
+    //         this.isLike = list;
 
-            let list2 = [...this.likebycomments];
-            list2.splice(i, 1, this.likebycomments[i] - 1);
-            this.likebycomments = list2;
-          });
-      }
-    },
+    //         let list2 = [...this.likebycomments];
+    //         list2.splice(i, 1, this.likebycomments[i] - 1);
+    //         this.likebycomments = list2;
+    //       });
+    //   }
+    // },
     search(pageNm) {
       this.$store
         .dispatch(Constant.GET_REPLY, {
