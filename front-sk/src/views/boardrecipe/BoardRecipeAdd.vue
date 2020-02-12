@@ -41,6 +41,7 @@
             </td>
           </tr>
         </table>
+        <FileUpload/>
       </form>
     </div>
   </div>
@@ -48,8 +49,10 @@
 
 <script>
 import http from "../../http-common";
+import FileUpload from '@/components/FileUpload';
 
 export default {
+  components: { FileUpload },
   name: "add-boardrecipe",
   data() {
     return {

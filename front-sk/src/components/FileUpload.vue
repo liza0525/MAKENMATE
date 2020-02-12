@@ -12,7 +12,6 @@
             :server="server"
             v-bind:files="myFiles"
             v-on:init="handleFilePondInit"/>
-
     </div>
 </template>
 
@@ -74,16 +73,20 @@
                         // client
                         request.onload = function () {
                             if (request.status >= 200 && request.status < 300) {
-                                // the load method accepts either a string (id) or an object
+                                // the  method accepts either a string (id) or an object
+                                console.log(request.responseText)
                                 load(request.responseText);
+                
+                               
                             } else {
                                 // Can call the error method if something is wrong, should exit after
                                 error('oh no');
                             }
                         };
-
-                        request.send(formData);
-
+                        console.log('check', request.response)
+                        request.send(formData)
+                        
+                    
                         // Should expose an abort method so the request can be cancelled
                         return {
                             abort: () => {

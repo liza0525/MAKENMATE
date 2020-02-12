@@ -23,7 +23,8 @@ const state = {
   content: "",
   likebycocktail: 0,
   isLike: false,
-  likebycomments: 0
+  likebycomments: 0,
+  filelist: []
 };
 
 export default new Vuex.Store({
