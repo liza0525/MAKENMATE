@@ -35,6 +35,7 @@ export default {
   // 스크랩
   [Constant.GET_SCRAPLIST]: (state, payload) => {
     state.scrapList = payload.scrapList;
+    state.totalPages = payload.totalPages;
   },
   [Constant.ADD_SCRAP]: (state, payload) => {},
   // 칵테일
@@ -72,6 +73,44 @@ export default {
     state.likebycocktail = state.likebycocktail - 1;
     state.isLike = false;
   },
+  [Constant.GET_BOARDRECIPELIKE]: (state, payload) => {
+    // 좋아요한 레시피 가져오기
+    state.boardRecipeList = payload.boardRecipeList;
+  },
+  [Constant.GET_LIKEBYBOARDRECIPE]: (state, payload) => {
+    state.likebyboardrecipe = payload.likebyboardrecipe;
+  },
+  [Constant.GET_LIKEBYUSERANDBOARDRECIPE]: (state, payload) => {
+    if (payload.isLike != null) state.isLike = true;
+    else state.isLike = false;
+  },
+  [Constant.ADD_BOARDRECIPELIKE]: (state, payload) => {
+    state.likebyboardrecipe = state.likebyboardrecipe + 1;
+    state.isLike = true;
+  },
+  [Constant.REMOVE_BOARDRECIPELIKE]: (state, payload) => {
+    state.likebyboardrecipe = state.likebyboardrecipe - 1;
+    state.isLike = false;
+  },
+  [Constant.GET_BOARDLIKE]: (state, payload) => {
+    // 좋아요한 게시글 가져오기
+    state.boardList = payload.boardList;
+  },
+  [Constant.GET_LIKEBYBOARD]: (state, payload) => {
+    state.likebyboard = payload.likebyboard;
+  },
+  [Constant.GET_LIKEBYUSERANDBOARD]: (state, payload) => {
+    if (payload.isLike != null) state.isLike = true;
+    else state.isLike = false;
+  },
+  [Constant.ADD_BOARDLIKE]: (state, payload) => {
+    state.likebyboard = state.likebyboard + 1;
+    state.isLike = true;
+  },
+  [Constant.REMOVE_BOARDLIKE]: (state, payload) => {
+    state.likebyboard = state.likebyboard - 1;
+    state.isLike = false;
+  },
   [Constant.GET_LIKEBYCOCKTAILCOMMENTS]: (state, payload) => {
     state.likebycomments = payload.likebycomments;
   },
@@ -79,6 +118,26 @@ export default {
     state.likebycomments = state.likebycomments + 1;
   },
   [Constant.REMOVE_COCKTAILCOMMENTSLIKE]: (state, payload) => {
+    state.likebycomments = state.likebycomments - 1;
+  },
+
+  [Constant.GET_LIKEBYBOARDRECIPECOMMENTS]: (state, payload) => {
+    state.likebycomments = payload.likebycomments;
+  },
+  [Constant.ADD_BOARDRECIPECOMMENTSLIKE]: (state, payload) => {
+    state.likebycomments = state.likebycomments + 1;
+  },
+  [Constant.REMOVE_BOARDRECIPECOMMENTSLIKE]: (state, payload) => {
+    state.likebycomments = state.likebycomments - 1;
+  },
+
+  [Constant.GET_LIKEBYBOARDCOMMENTS]: (state, payload) => {
+    state.likebycomments = payload.likebycomments;
+  },
+  [Constant.ADD_BOARDCOMMENTSLIKE]: (state, payload) => {
+    state.likebycomments = state.likebycomments + 1;
+  },
+  [Constant.REMOVE_BOARDCOMMENTSLIKE]: (state, payload) => {
     state.likebycomments = state.likebycomments - 1;
   },
   //유저

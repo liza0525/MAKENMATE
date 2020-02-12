@@ -1,9 +1,20 @@
 package com.cocktail.controller;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.cocktail.dao.BoardRecipeDao;
 import com.cocktail.dao.UserDao;
@@ -13,17 +24,6 @@ import com.cocktail.model.BasicResponse;
 import com.cocktail.model.boardRecipe.BoardRecipe;
 import com.cocktail.model.user.User;
 import com.cocktail.model.user.UserScrap;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.annotations.ApiOperation;
 
@@ -41,18 +41,19 @@ public class UserScrapController {
 
     @GetMapping("/user/scrap/")
     @ApiOperation(value = "스크랩 목록")
-    public Object userScrapList(@RequestParam final String username) {
+    public Object userScrapList(final Pageable pageable, @RequestParam final String username) {
         final User user = userDao.getUserByNickname(username).orElseThrow(CocktailException::new);
-        final List<UserScrap> userScrapList = userScrapDao.findAllByUser_uid(user.getUid());
-
+        final Page<UserScrap> userScrapList = userScrapDao.findAllByUser_uid(user.getUid(),pageable);
+        System.out.println(userScrapList.getContent());
         final BasicResponse result = new BasicResponse();
         final List<BoardRecipe> boardRecipeList = new ArrayList<>();
-        for (int i = 0; i < userScrapList.size(); i++)
-            boardRecipeList.add(userScrapList.get(i).getBoardrecipe());
+        for (int i = 0; i < userScrapList.toList().size(); i++)
+            boardRecipeList.add(userScrapList.toList().get(i).getBoardrecipe());
 
+        Page<BoardRecipe> page = new PageImpl<>(boardRecipeList,pageable,boardRecipeList.size());
         result.status = true;
         result.data = "success";
-        result.object = boardRecipeList;
+        result.object = page;
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
@@ -73,7 +74,7 @@ public class UserScrapController {
 
     @DeleteMapping("/user/scrap/")
     @ApiOperation(value = "스크랩 취소")
-    public Object userScrapRemove(@RequestParam final String username, @RequestParam final int rid) {
+    public Object userScrapRemove(final Pageable pageable, @RequestParam final String username, @RequestParam final int rid) {
         final BasicResponse result = new BasicResponse();
         final UserScrap deleteScrap = new UserScrap();
         final User user = userDao.getUserByNickname(username).orElseThrow(CocktailException::new);
@@ -81,15 +82,16 @@ public class UserScrapController {
         deleteScrap.setUser(user);
         deleteScrap.setBoardrecipe(boardRecipe);
         userScrapDao.delete(deleteScrap);
+        final Page<UserScrap> userScrapList = userScrapDao.findAllByUser_uid(user.getUid(),pageable);
         
-        final List<UserScrap> userScrapList = userScrapDao.findAllByUser_uid(user.getUid());
         final List<BoardRecipe> boardRecipeList = new ArrayList<>();
-        for (int i = 0; i < userScrapList.size(); i++)
-            boardRecipeList.add(userScrapList.get(i).getBoardrecipe());
-
+        for (int i = 0; i < userScrapList.toList().size(); i++)
+            boardRecipeList.add(userScrapList.toList().get(i).getBoardrecipe());
+        
+        Page<BoardRecipe> page = new PageImpl<>(boardRecipeList,pageable,boardRecipeList.size());
         result.status = true;
         result.data = "success";
-        result.object = boardRecipeList;
+        result.object = page;
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 }

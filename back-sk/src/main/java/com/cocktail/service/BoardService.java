@@ -1,6 +1,7 @@
 package com.cocktail.service;
 
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import com.cocktail.model.board.Bdetail;
 import com.cocktail.model.board.Board;
@@ -8,7 +9,7 @@ import com.cocktail.model.board.Board;
 public interface BoardService {
 
     // 게시판 전체 리스트 조회
-    List<Board> getAllBoard();
+    Page<Board> getAllBoard(Pageable pageable);
 
     // 글 번호로 게시판 상세 보기
     Bdetail findById(int bid);

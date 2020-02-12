@@ -12,7 +12,7 @@
           <th>날 짜</th>
         </tr>
 
-        <tr v-for="board in info.object" v-bind:key="board.rid">
+        <tr v-for="board in info.content" v-bind:key="board.rid">
           <td v-html="board.rid"></td>
           <td v-html="board.title" @click="detail_id(board.rid)" style="cursor: pointer;"></td>
           <td v-html="board.regdate"></td>
@@ -24,6 +24,11 @@
         <input type="button" value="글쓰기" />
       </a>
     </div>
+    <div>
+        <button v-for="pageNm in pageNms" :key="pageNm" @click="retrieveBoard(pageNm)">
+          <span style="margin-right:10px;">{{ pageNm }}</span>
+        </button>
+    </div>
   </div>
 </template>
 
@@ -32,13 +37,29 @@ import http from "../../http-common";
 export default {
   name: "boardrecipe-list",
   data: () => {
-    return { info: [], loading: true, errored: false };
+    return { info: [], loading: true, errored: false, totalPages: 0, pageNms: [] };
   },
   methods: {
-    retrieveBoard() {
+    retrieveBoard(pageNm) {
       http
-        .get("/boardrecipe")
-        .then(response => (this.info = response.data))
+        .get("/boardrecipe",{
+          params:{
+            page: pageNm -1
+          }
+        })
+        .then(response => {
+          this.info = response.data.object
+          this.totalPages = response.data.object.totalPages
+          console.log(this.info)
+          let arr = [];
+
+          let min = parseInt((pageNm - 1) / 5) * 5 + 1;
+          for (let index = 0; index < 5; index++) {
+            if (Number(min + index) > this.totalPages) break;
+            arr.push(Number(min + index));
+          }
+          this.pageNms = arr;
+        })
         .catch(error => {
           this.errored = true;
         })
@@ -57,7 +78,7 @@ export default {
     }
   },
   mounted() {
-    this.retrieveBoard();
+    this.retrieveBoard(1);
   }
 };
 </script>

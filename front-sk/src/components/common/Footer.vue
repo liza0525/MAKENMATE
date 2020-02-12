@@ -15,5 +15,8 @@ export default {};
   height: 4rem;
   text-align: center;
   line-height: 4rem;
+  bottom: 0px;
+  position: absolute;
+  width: 100%;
 }
 </style>

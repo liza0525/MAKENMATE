@@ -13,10 +13,14 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.cocktail.model.like.BoardLike;
+import com.cocktail.model.like.CocktailLike;
 import com.cocktail.model.user.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -60,6 +64,9 @@ public class Board implements Serializable {
 
     // @Column
     // private int user_uid;
+    @OneToMany(mappedBy = "board")
+    @JsonManagedReference
+    private List<BoardLike> boardLike = new ArrayList<>();
 }
 
 
