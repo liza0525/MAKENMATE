@@ -1,5 +1,11 @@
 <template>
-  <div style="padding-top: 100px; color: red;">
+  <div id="board-detail">
+    <div id="board-header">
+        <h1 id="board-title">{{ board.title }}</h1>
+        
+        <h3 id="board-username">by. {{ board.user_name }}</h3>
+        
+    </div>
     <button @click="clickLike">
       <span v-show="!islike">
         <i class="far fa-heart"></i>
@@ -9,68 +15,19 @@
       </span>
     </button>
     {{ likebyboard }}
-    <table class="list_table">
-      <tr>
-        <th style="width:10%">번호</th>
-        <th style="width:20%">제 목</th>
-        <th style="width:20%">내 용</th>
-        <th style="width:20%">날 짜</th>
-        <th style="width:10%">작성자</th>
-        <th>삭 제</th>
-        <th>수 정</th>
-      </tr>
-      <tr>
-        <td v-html="board.bid"></td>
-        <td v-html="board.title"></td>
-        <td v-html="board.contents"></td>
-        <td v-html="board.regdate"></td>
-        <td v-html="board.user_name"></td>
-        <td class="button" @click="delete_board(board.bid)">
-          <input type="button" class="blue" value="삭제" />
-        </td>
-        <td class="button" @click="update_board(board.bid)">
-          <input type="button" class="blue" value="수정" />
-        </td>
-      </tr>
-    </table>
-
-    <div
-      :v-if="reply"
-      v-for="(re, i) in reply"
-      :key="i"
-      style="margin-top: 5px; display:block;"
-    >
-      <div v-if="isInput[i] === 0">
-        <span>{{ users[i] }} : {{ re.content }}</span>
-        <p v-if="username === users[i]" style="display:inline-block;">
-          <button @click="click(i)">수정</button>
-          <button @click="deleteComment(i, re.cmid)">삭제</button>
-        </p>
-      </div>
-      <div v-else>
-        <span>
-          {{ users[i] }} :
-          <input v-model="re.content" />
-        </span>
-        <p v-if="username === users[i]" style="display:inline-block;">
-          <button @click="updateComment(i, re.cmid, re.content)">수정</button>
-        </p>
-      </div>
-    </div>
-    <!-- </v-text> -->
-    <input type="text" v-model="comment" />
-    <button @click="submitComment" type="submit">button</button>
-    <div>
-      <button v-for="pageNm in pageNms" :key="pageNm" @click="search(pageNm)">
-        <span style="margin-right:10px;">{{ pageNm }}</span>
-      </button>
+    <div id="board-context" v-html="board.contents"></div>
+    <div id="board-footer"> 
+      <button class="board-button"  @click="go_to_list()">목록</button>
+      <button class="board-button" @click="update_board(board.bid)">수정</button>
+      <button class="board-button" @click="delete_board(board.bid)">삭제</button>
+      <div id="board-date">{{ board.regdate }}</div>
     </div>
   </div>
 </template>
 
 <script>
 import http from "../../http-common";
-import Constant from "../../Constant";
+import Constant from "../../Constant"
 export default {
   data: () => {
     return {
@@ -151,6 +108,9 @@ export default {
     },
     update_board(boardid) {
       this.$router.push({ name: "BoardUpdate", params: { bid: boardid } });
+    },
+    go_to_list(){
+      this.$router.push({ name: "BoardList" });
     },
     submitComment() {
       this.$store.dispatch(Constant.ADD_REPLYBOARD, {
@@ -295,5 +255,52 @@ export default {
   }
 };
 </script>
-
-<style></style>
+<style scoped>
+#board-header {
+  background: linear-gradient(rgba(0, 0, 0, 0.3)),
+    url("../../assets/images/image.png") no-repeat;
+  background-size: 100%;
+  height: 20rem;
+  background-position-y: 30%;
+  color: white;
+}
+#board-title {
+  margin: 0 0 0 15rem;
+  display: inline;
+  position: relative;
+  float: left;
+  top: 12rem;
+  font-size: 4rem;
+  /* text-align: center; */
+}
+#board-username{
+  margin: 0 0 0 2rem;
+  display: inline;
+  position: relative;
+  float: left;
+  top: 15rem;
+}
+#board-date {
+  display: inline;
+  bottom: 0;
+  float: right;
+}
+#board-context {
+  color: #777;
+  padding: 2rem 15rem;
+  margin: 1rem 0;
+}
+#board-footer {
+  color: #777;
+  margin: 0 10rem;
+  padding: 2rem 1rem;
+  border-top: 1px solid #ccc;
+}
+.board-button {
+  margin: 0 0.5rem;
+  width: 5rem;
+  height: 3rem;
+  border: 1px solid #ccc;
+  border-radius: 3rem;
+}
+</style>

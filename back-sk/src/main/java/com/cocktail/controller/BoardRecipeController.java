@@ -24,7 +24,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.web.PageableDefault;
 
 @CrossOrigin(origins = { "*" }, maxAge = 3600) // "*" => http://localhost:3000
 @RestController
@@ -36,7 +37,7 @@ public class BoardRecipeController{
 
     //공유게시판 게시글 전체 조회
     @GetMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
-    public Object boardRecipeList(Pageable pageable) {
+    public Object boardRecipeList(@PageableDefault(size = 20, sort = { "rid" }, direction = Direction.DESC) Pageable pageable) {
         final BasicResponse result = new BasicResponse();
         result.status = true;
         result.data = "success"; 
