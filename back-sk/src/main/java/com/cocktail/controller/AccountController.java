@@ -23,6 +23,7 @@ import com.cocktail.model.BasicResponse;
 import com.cocktail.model.SingleResponse;
 import com.cocktail.model.user.User;
 import com.cocktail.service.EmailService;
+import com.cocktail.service.KakaoAPI;
 import com.cocktail.service.ResponseService;
 
 import io.swagger.annotations.ApiOperation;
@@ -46,6 +47,9 @@ public class AccountController {
 	EmailService emailService;
 	@Autowired
 	private final ResponseService responseService;
+	@Autowired
+    KakaoAPI kakao;
+	
 	private final JwtTokenProvider jwtTokenProvider;
 	private final PasswordEncoder passwordEncoder;
 
@@ -156,5 +160,18 @@ public class AccountController {
 			 result.data = "wrongPw";
 		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
+	
+	@PostMapping("/user/auth")
+    @ApiOperation(value = "토큰 인증")
+    public Object auth(@RequestParam(required = true) String token) {
+		String userInfo = kakao.getUserInfo(token);
+		System.out.println(userInfo);
+		final BasicResponse result = new BasicResponse();
+		result.status=true;
+		result.data="success";
+		result.object=userInfo;
+		
+		return new ResponseEntity<>(result,HttpStatus.OK);
+    }
 
 }

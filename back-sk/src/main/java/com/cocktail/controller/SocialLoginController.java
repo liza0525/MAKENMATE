@@ -86,7 +86,7 @@ public class SocialLoginController {
             System.out.println(e);
         }
 
-        return "redirect:http://localhost:3000/" + access_token;
+        return "redirect:http://localhost:3000/auth" + access_token;
     }
 
     @GetMapping("/user/kakaoLogin")
@@ -96,8 +96,10 @@ public class SocialLoginController {
         System.out.println(access_token);
         System.out.println("controller access_token : " + access_token);
 
-        String userInfo = kakao.getUserInfo(access_token);
+        
 
-        return "redirect:http://localhost:3000/" + access_token;
+        return "redirect:http://localhost:3000/auth" + access_token;
     }
+    
+    
 }
