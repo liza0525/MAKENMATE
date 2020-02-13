@@ -24,7 +24,8 @@ const state = {
   likebycocktail: 0,
   isLike: false,
   likebycomments: 0,
-  filelist: []
+  filelist: [],
+  filedelete: 0
 };
 
 export default new Vuex.Store({

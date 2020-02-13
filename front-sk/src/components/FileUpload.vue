@@ -18,7 +18,7 @@
 <script>
     // Import FilePond
     import vueFilePond from 'vue-filepond';
-
+    import Constant from '../Constant';
     // Import plugins
     import FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type/dist/filepond-plugin-file-validate-type.esm.js';
     import FilePondPluginImagePreview from 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.esm.js';
@@ -27,6 +27,7 @@
     import 'filepond/dist/filepond.min.css';
     import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.css';
 
+    import store from '../vuex/store';
     // Create component
     const FilePond = vueFilePond(
         FilePondPluginFileValidateType,
@@ -39,6 +40,7 @@
         data: function () {
             return {
                 myFiles: '',
+                store,
                 server: {
                     process: (
                         fieldName,
@@ -55,6 +57,7 @@
                         // fieldName is the name of the input field file is the actual file object to
                         // send
                         const formData = new FormData();
+                        var self = this;
                         formData.append(fieldName, file, file.name);
 
                         const request = new XMLHttpRequest();
@@ -74,19 +77,17 @@
                         request.onload = function () {
                             if (request.status >= 200 && request.status < 300) {
                                 // the  method accepts either a string (id) or an object
-                                console.log(request.responseText)
                                 load(request.responseText);
-                
-                               
+                                //this.filenumber = JSON.parse(request.responseText).id
+                                self.$store.commit(Constant.ADD_FILELIST, {filelist: JSON.parse(request.responseText).id})
+                                //console.log(this.$store.state.filelist)
+                                
                             } else {
                                 // Can call the error method if something is wrong, should exit after
                                 error('oh no');
                             }
                         };
-                        console.log('check', request.response)
                         request.send(formData)
-                        
-                    
                         // Should expose an abort method so the request can be cancelled
                         return {
                             abort: () => {
@@ -98,18 +99,23 @@
                         };
                     },
                     revert: (uniqueFileId, load, error) => {
+                         var self = this;
                         const request = new XMLHttpRequest();
-                        const id =JSON.parse(uniqueFileId).id;
-                        request.open('DELETE', 'http://localhost:8080/uploadFileDelete/'+id, true);
-                        console.log(JSON.parse(uniqueFileId).id);
+                        const id = JSON
+                            .parse(uniqueFileId)
+                            .id;
+                        request.open('DELETE', 'http://localhost:8080/uploadFileDelete/' + id, true);
                         request.send();
-                        
                         // Should remove the earlier created temp file here ... Can call the error
                         // method if something is wrong, should exit after
                         error('oh my goodness');
 
                         // Should call the load method when done, no parameters required
                         load();
+                        request.onload = function(){
+                            self.$store.commit(Constant.DELETE_FILELIST, {filedelete: JSON.parse(uniqueFileId).id})
+                            console.log("commit 후")
+                        }
                     }
                 }
             };
@@ -117,7 +123,6 @@
         methods: {
             handleFilePondInit: function () {
                 console.log('FilePond has initialized');
-                // FilePond instance methods are available on `this.$refs.pond`
             }
         },
         components: {

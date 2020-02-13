@@ -8,7 +8,7 @@ import com.cocktail.model.board.Board;
 public interface BoardService {
 
     // 게시판 전체 리스트 조회
-    List<Board> getAllBoard();
+    List<Bdetail> getAllBoard();
 
     // 글 번호로 게시판 상세 보기
     Bdetail findById(int bid);

@@ -1,6 +1,7 @@
 package com.cocktail.service;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -25,8 +26,21 @@ public class BoardServiceImpl implements BoardService {
 
     // 전체조회
     @Override
-    public List<Board> getAllBoard() {
-        return boardDao.findAll();
+    public List<Bdetail> getAllBoard() {
+        List<Board> b = boardDao.findAll();
+        List<Bdetail> bdlist = new ArrayList<>();
+        for (int i = 0; i < b.size(); i++){
+            String name = b.get(i).getUser().getNickname();
+            Bdetail bd = new Bdetail();
+            bd.setBid(b.get(i).getBid());
+            bd.setContents(b.get(i).getContents());
+            bd.setFile(b.get(i).getFile());
+            bd.setRegdate(b.get(i).getRegdate());
+            bd.setTitle(b.get(i).getTitle());
+            bd.setUser_name(name);
+            bdlist.set(i, bd);
+        }
+        return bdlist;
     }
 
     // 글번호로 상세조회

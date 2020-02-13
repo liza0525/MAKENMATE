@@ -93,5 +93,12 @@ export default {
   },
   [Constant.USERNAME]: (state, payload) => {
     state.username = payload.username;
+  },
+  //공유게시판
+  [Constant.ADD_FILELIST]: (state, payload) => {
+    state.filelist = [...state.filelist, payload]
+  },
+  [Constant.DELETE_FILELIST]: (state, payload) => {
+    state.filedelete = payload.filedelete;
   }
 };
