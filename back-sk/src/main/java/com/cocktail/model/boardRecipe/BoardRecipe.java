@@ -48,9 +48,6 @@ public class BoardRecipe {
     @Column
     private String contents;
 
-    // @Column
-    // private String file;
-
     @Column
     private String regdate;
 

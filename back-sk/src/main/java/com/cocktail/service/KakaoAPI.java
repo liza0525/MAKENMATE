@@ -93,10 +93,13 @@ public class KakaoAPI {
             JsonObject kakao_account = element.getAsJsonObject().get("kakao_account").getAsJsonObject();
             
             String nickname = properties.getAsJsonObject().get("nickname").getAsString();
-            String email = kakao_account.getAsJsonObject().get("email").getAsString();
             
-            if(email != null)
-            	ret = "nickname=" + nickname + "&email=" + email;
+            String email = "";
+            
+            if(kakao_account.getAsJsonObject().get("email") != null) 
+            	email = kakao_account.getAsJsonObject().get("email").getAsString(); 
+            
+            ret = "nickname=" + nickname + "&email=" + email;
             
         } catch (IOException e) {
             // TODO Auto-generated catch block
