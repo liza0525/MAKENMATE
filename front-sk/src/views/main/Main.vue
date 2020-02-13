@@ -2,6 +2,7 @@
   <div>
     <div class="animated infinite pulse" id="scroll-down">scroll down ↓</div>
     <full-page ref="fullpage" :options="options" id="fullpage">
+      <!-- page 1 -->
       <div class="section main-img" id="page1">
         <div class="stars"></div>
         <div class="stars"></div>
@@ -11,16 +12,18 @@
         <div class="scroling-intro-wrap"></div>
         <h1 class="animated flipInX delay-1s" id="main-title">Daily Cocktail Party</h1>
       </div>
+      <!-- page 2 -->
       <div class="section">
-        <div>
-          <div class="main-img" id="page2"></div>
-          <h1 id="main-subtitle">
-            대충
-            <span style="background-color: rgb(245, 213, 71);">칵테일</span>을 좋아하는
-            <br />사람들을 위한 SNS라는 뜻
-          </h1>
-        </div>
+          <v-row>
+            <v-col lg="6" sm="12" id="main-subtitle">
+              대충
+              <span style="background-color: rgb(245, 213, 71);">칵테일</span>을 좋아하는
+              <br />사람들을 위한 SNS라는 뜻
+            </v-col>
+            <v-col lg="6" sm="12" class="main-img" id="page2"></v-col>
+          </v-row>
       </div>
+      <!-- page 3 -->
       <div class="section main-img" id="page3">
         <p id="main-contents">
           칵테일 맛있고
@@ -33,12 +36,13 @@
           이놈의 문장력
         </p>
       </div>
+      <!-- page 4 -->
       <div class="section">
         <div class="main-img" id="page4">
           <h1 id="info-title">Developers</h1>
           <div>
             <v-row id="info-members">
-              <v-col v-for="person in people" cols="3" :key="person.id">
+              <v-col v-for="person in people" lg="3" xs="6" :key="person.id">
                 <div>
                   <img
                     class="info-members-profile info-btn"
@@ -46,8 +50,6 @@
                     :src="person.profileUrl"
                   />
                 </div>
-                <br />
-                <!-- <p class="info-members-name">{{ person.familyName }}{{ person.firstName }}</p> -->
               </v-col>
             </v-row>
           </div>
@@ -64,15 +66,11 @@
                   <i class="fab fa-github"></i>
                   <i class="far fa-envelope"></i>
                 </div>
-                </v-col>
-                <v-col cols="6">  
-                <h1 class="info-member-name">
-                  {{ person.name }}
-                </h1>
-                <p>
-                  {{ person.biography }}
-                </p>
-                </v-col>
+              </v-col>
+              <v-col cols="6">
+                <h1 class="info-member-name">{{ person.name }}</h1>
+                <p>{{ person.biography }}</p>
+              </v-col>
             </v-row>
           </div>
         </div>
@@ -129,17 +127,21 @@ export default {
         };
       }
     },
+    temp(){
+      console.log(1)
+    }
   },
   created() {
-    window.addEventListener("scroll", this.pageMove);
+    // $(window).addEventListener("scroll", function(){
+    //   console.log(1)
+    // })
   },
   mounted() {
     this.infoPopUp();
   },
   beforeDestroy() {
-    window.removeEventListener("scroll", this.pageMove);
     window.removeEventListener("close", this.infoPopUp);
-  }
+  },
 };
 </script>
 
@@ -147,7 +149,7 @@ export default {
 @import url("https://fonts.googleapis.com/css?family=Playfair+Display:700i&display=swap");
 @import url("https://fonts.googleapis.com/css?family=Indie+Flower&display=swap");
 @import url("https://fonts.googleapis.com/css?family=Song+Myung&display=swap");
-.section{
+.section {
   background: black;
   color: white;
 }
@@ -172,31 +174,38 @@ export default {
 #page1 {
   background: url(../../assets/images/image.jpg);
   background-size: cover;
+  background-position-x: 50%;
+  width: 100%;
 }
 #page2 {
   display: flex;
   float: right;
   background: url(../../assets/images/image4.jpg) no-repeat;
   background-position-x: 30%;
+  height: 45rem;
   width: 50%;
   background-size: cover;
 }
 #page3 {
   background: url(../../assets/images/image3.jpg);
   background-size: cover;
+  background-position-x: 50%;
+  width: 100%;
 }
 #page4 {
   background: url(../../assets/images/image2.jpg);
   background-blend-mode: hue;
-  height: 80%;
-  background-position-y: 100%;
   background-size: cover;
+  background-position-x: 50%;
+  background-position-y: 100%;
+  width: 100%;
+  height: 80%;
 }
 #main-title {
   position: relative;
   text-align: center;
   font-family: "Playfair Display", serif;
-  font-size: 550%;
+  font-size: 10vmin;
 }
 #main-subtitle {
   position: relative;
@@ -205,38 +214,41 @@ export default {
   float: right;
   text-align: right;
   vertical-align: middle;
-  font-size: 2rem;
+  font-size: 5vmin;
   font-family: "Song Myung", serif;
 }
 #main-contents {
   position: relative;
-  font-size: 1.5rem;
+  font-size: 3vmin;
   font-family: "Song Myung", serif;
 }
 #info-title {
   position: relative;
-  padding: 3rem 0;
+  padding: 4vmax 0;
   font-family: "Playfair Display";
-  font-size: 3rem;
+  font-size: 7vmin;
 }
 #info-members {
   position: relative;
   text-align: center;
 }
 .info-members-profile {
-  width: 13rem;
-  height: 13rem;
+  width: 25vmin;
+  height: 25vmin;
+  margin-left: auto;
+  margin-right: auto;
   object-fit: cover;
   border-radius: 50%;
   cursor: pointer;
+  align-content: center;
 }
 .info-members-profile:hover {
-  animation: hover-profile 0.3s;
+  -webkit-filter: grayscale(100%);
 }
 .info-members-name {
   margin: 10px 0;
   letter-spacing: 5px;
-  font-size: 17px;
+  font-size: 1vw;
 }
 .modal {
   display: none;
@@ -252,9 +264,9 @@ export default {
 .modal-content {
   color: black;
   background-color: #fefefe;
-  margin: 5% auto;
-  padding: 2%;
-  width: 50%;
+  margin: 7vw auto;
+  padding: 1vw;
+  width: 50vw;
 }
 ::-webkit-scrollbar {
   display: none;
@@ -300,24 +312,6 @@ export default {
   }
   to {
     opacity: 1;
-  }
-}
-/* Profile hovering */
-@keyframes hover-profile {
-  0% {
-    width: 13rem;
-    height: 13rem;
-    animation-timing-function: ease-out;
-
-  }
-  50% {
-    width: 13.5rem;
-    height: 13.5rem;
-    animation-timing-function: linear;
-  }
-  100% {
-    width: 13rem;
-    height: 13rem;
   }
 }
 

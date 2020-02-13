@@ -48,8 +48,8 @@ public class BoardRecipe {
     @Column
     private String contents;
 
-    @Column
-    private String image;
+    // @Column
+    // private String file;
 
     @Column
     private String regdate;

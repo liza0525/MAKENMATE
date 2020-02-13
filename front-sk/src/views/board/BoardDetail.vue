@@ -18,8 +18,8 @@
     <div id="board-context" v-html="board.contents"></div>
     <div id="board-footer">
       <button class="board-button" @click="go_to_list()">목록</button>
-      <button class="board-button" @click="update_board(board.bid)">수정</button>
-      <button class="board-button" @click="delete_board(board.bid)">삭제</button>
+      <button class="board-button" v-if="this.$store.state.username" @click="update_board(board.bid)">수정</button>
+      <button class="board-button" v-if="this.$store.state.username" @click="delete_board(board.bid)">삭제</button>
       <div id="board-date">{{ board.regdate }}</div>
       
       <!-- 댓글 -->
