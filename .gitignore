@@ -125,3 +125,5 @@ npm-debug.log
 yarn-error.log
 
 *.lst
+*/target/*
+.vscode
