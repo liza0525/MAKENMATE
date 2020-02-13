@@ -91,8 +91,32 @@ input {
   &:focus {
     outline: 0;
   }
-  &:hover {
-    border: 2px solid #000;
+}
+
+textarea {
+  background: transparent;
+  font-size: 1em;
+  height: 50px;
+  line-height: 1em;
+  border: 1px solid $grey;
+  padding: 0 20px;
+  box-sizing: border-box;
+  transition: 0.2s;
+  outline: none;
+  &::placeholder {
+    color: #333;
+    opacity: 0.5;
+    font-weight: $f600;
+  }
+  &:-ms-textarea-placeholder {
+    color: #333;
+    opacity: 0.5;
+    font-weight: $f600;
+  }
+  &:-ms-textarea-placeholder {
+    color: #333;
+    opacity: 0.5;
+    font-weight: $f600;
   }
 }
 
