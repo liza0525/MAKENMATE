@@ -1,70 +1,87 @@
 <template>
-  <div style="text-align:center;" class="test">
-    <v-item-group active-class="primary" @click="clicked = !clicked">
-      <v-container fluid ma-0 pa-0 style="width:65%;">
-        <div>
-          <h1>Material</h1>
+  <div class="test">
+    <img
+      src="../assets/images/cocktail_list_copy02.jpg"
+      class="rightImage titlefont"
+      alt="cocktail_list_background"
+    />
+    <button class="neon-button" @click="openFilterBox = true">
+      F<br />I<br />L<br />T<br />E<br />R<br />>
+    </button>
+    <div v-show="openFilterBox" class="filter-box">
+      <div>
+        <p
+          type="button"
+          class="close sign"
+          style="position:absolute;right:10%;"
+          @click="openFilterBox = !openFilterBox"
+        >
+          &times;
+        </p>
+        <div class="sign" style="margin-top:4.5%;text-align:center;">
+          Material
         </div>
-        <v-row>
-          <router-link
-            :to="{
-              name: 'CocktailList',
-              query: {
-                pageNm: 1,
-                filtered: filter.name,
-                searchedFiltered: $route.query.searchedFiltered
-              }
-            }"
-            v-for="filter in filters"
-            :key="filter.name"
-          >
-            <v-col cols="12" md="2">
-              <img
-                :src="filter.image"
-                :alt="filter.name"
-                style="height:120px;"
-              />
-              <div style="font-size:30px;color:#797979">{{ filter.name }}</div>
-            </v-col>
-          </router-link>
-        </v-row>
-      </v-container>
-    </v-item-group>
-
-    <v-container fluid ma-0 pa-0 style="width:65%;">
-      <v-row dense>
+        <v-container class="ma-0 pa-0">
+          <v-row>
+            <router-link
+              :to="{
+                name: 'CocktailList',
+                query: {
+                  pageNm: 1,
+                  filtered: filter.name,
+                  searchedFiltered: $route.query.searchedFiltered
+                }
+              }"
+              v-for="filter in filters"
+              :key="filter.name"
+            >
+              <v-col>
+                <img
+                  :src="filter.image"
+                  :alt="filter.name"
+                  style="height:200px;width:200px;"
+                />
+                <div style="text-align:center;">
+                  <div class="x-sign" style="font-size:30px;text-align:center;">
+                    {{ filter.title }}
+                  </div>
+                </div>
+              </v-col>
+            </router-link>
+          </v-row>
+        </v-container>
+      </div>
+    </div>
+    <v-container ma-0 pa-0 style="width:65%;">
+      <div class="sign" style="z-index:200;margin-top:4.5%;text-align:center;">
+        Cocktails
+      </div>
+      <v-row>
         <v-col
           v-for="cocktail in cocktailArray"
           v-bind:key="cocktail.cid"
           cols="3"
         >
-          <v-card v-on:click="goToDetail(cocktail.cid)">
+          <v-card v-on:click="goToDetail(cocktail.cid)" style="height:400px">
             <v-img
               :src="cocktail.image"
               class="white--text align-end"
               gradient="to bottom, rgba(0, 0,0,.1), rgba(0,0,0,.5)"
-              alt="cocktail"
-              style="height:400px"
+              :alt="cocktail.cname"
+              style="height:75%"
             >
-              <v-card-title
-                v-text="cocktail.cname"
-                style="background-color:#1B2631;opacity:50%;color:white;"
-              ></v-card-title>
             </v-img>
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn icon>
-                <v-icon>mdi-heart</v-icon>
-              </v-btn>
-
-              <v-btn icon>
-                <v-icon>mdi-bookmark</v-icon>
-              </v-btn>
-
-              <v-btn icon>
-                <v-icon>mdi-share-variant</v-icon>
-              </v-btn>
-            </v-card-actions>
+            <h1
+              class="sansfont"
+              style="display:inline-block;font-size:120%;margin-left:15px; margin-top:10px;font-weight:bolder;"
+            >
+              {{ cocktail.cname }}
+            </h1>
+            <v-text
+              style="margin-top:12px;margin-right:20px;float:right;display:inline-block;"
+            >
+              <i class="fas fa-lg fa-heart"></i>
+            </v-text>
           </v-card>
         </v-col>
       </v-row>
@@ -147,16 +164,59 @@ export default {
         filtered: "",
         searchData: ""
       },
+      openFilterBox: false,
       clicked: false,
       filters: [
-        { name: "레몬", image: require("../assets/images/lemon.png") },
-        { name: "럼", image: require("../assets/images/lemon.png") },
-        { name: "위스키", image: require("../assets/images/lemon.png") },
-        { name: "진", image: require("../assets/images/lemon.png") },
-        { name: "와인", image: require("../assets/images/lemon.png") },
-        { name: "오렌지", image: require("../assets/images/lemon.png") },
-        { name: "보드카", image: require("../assets/images/lemon.png") },
-        { name: "맥주", image: require("../assets/images/lemon.png") }
+        {
+          name: "all",
+          image: require("../assets/images/all.png"),
+          title: "ALL"
+        },
+        {
+          name: "레몬",
+          image: require("../assets/images/lemon.png"),
+          title: "LEMON"
+        },
+        {
+          name: "오렌지",
+          image: require("../assets/images/orange.png"),
+          title: "ORANGE"
+        },
+        {
+          name: "럼",
+          image: require("../assets/images/rum.png"),
+          title: "RUM"
+        },
+        {
+          name: "위스키",
+          image: require("../assets/images/whiskey.png"),
+          title: "WHISKEY"
+        },
+        {
+          name: "진",
+          image: require("../assets/images/gin.png"),
+          title: "GIN"
+        },
+        {
+          name: "와인",
+          image: require("../assets/images/wine.png"),
+          title: "WINE"
+        },
+        {
+          name: "보드카",
+          image: require("../assets/images/vodka.png"),
+          title: "VODKA"
+        },
+        {
+          name: "테킬라",
+          image: require("../assets/images/tequila.png"),
+          title: "TEQUILA"
+        },
+        {
+          name: "맥주",
+          image: require("../assets/images/beer-removebg-preview.png"),
+          title: "BEER"
+        }
       ],
       min: 1
     };
@@ -266,8 +326,172 @@ export default {
 </script>
 
 <style scoped>
+@import url("https://fonts.googleapis.com/css?family=Song+Myung|Stylish&display=swap");
+@font-face {
+  font-family: "MapoFlowerIsland";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/MapoFlowerIslandA.woff")
+    format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: "MapoGoldenPier";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/MapoGoldenPierA.woff")
+    format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: "GyeonggiBatang";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_one@1.0/GyeonggiBatang.woff")
+    format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: "국립박물관문화재단클래식B";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_twelve@1.0/국립박물관문화재단클래식B.woff")
+    format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+@import url("https://fonts.googleapis.com/css?family=Jua&display=swap");
+
+.filter-box {
+  font-family: "Vibur", cursive;
+  font-size: 1rem;
+  background-image: url("https://www.dropbox.com/s/2ct0i6kc61vp0bh/wall.jpg?raw=1");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-color: #141414;
+  position: fixed;
+  z-index: 100;
+  width: 100% !important;
+}
 .test {
-  background: linear-gradient(rgba(0, 0, 0, 0.7)),
-    url(../assets/images/image.png) no-repeat;
+  background-color: black !important;
+  z-index: -1;
+}
+.rightImage {
+  bottom: 0px;
+  right: 1%;
+  width: auto;
+  height: 73%;
+  position: fixed;
+  background: linear-gradient(rgba(0, 0, 0, 0.7));
+  z-index: 0;
+}
+
+.sign {
+  min-height: 100%;
+  font-family: "Vibur", cursive;
+  font-size: 4rem;
+  text-align: center;
+  line-height: 1;
+  color: #c6e2ff;
+  animation: neon 0.08s ease-in-out infinite alternate;
+}
+
+.x-sign {
+  --interval: 1s;
+
+  text-shadow: 0 0 10px var(--color1), 0 0 20px var(--color2),
+    0 0 40px var(--color3), 0 0 80px var(--color4);
+  will-change: filter, color;
+  filter: saturate(60%);
+  animation: flicker steps(100) var(--interval) 1s infinite;
+  color: lightyellow;
+  --color1: yellow;
+  --color2: orange;
+  --color3: brown;
+  --color4: purple;
+  font-family: Bad Script;
+}
+.neon-button {
+  position: fixed;
+  margin-top: 18%;
+  float: left;
+  width: 3%;
+  padding-top: 1%;
+  padding-bottom: 1%;
+  font-size: 1.3rem;
+  font-weight: bolder;
+  font-family: "Jua", sans-serif;
+  animation: neon-box 0.08s ease-in-out infinite alternate;
+  color: #c6e2ff;
+  border: 2px solid;
+  border-radius: 5px;
+  background-color: transparent;
+}
+.neon-button:hover {
+  position: fixed;
+  margin-top: 18%;
+  float: left;
+  width: 3%;
+  padding-top: 1%;
+  padding-bottom: 1%;
+  font-size: 1.3rem;
+  font-weight: bolder;
+  font-family: "Jua", sans-serif;
+  animation: neon-box 0.08s ease-in-out infinite alternate;
+  color: rgba(242, 30, 178, 0.52);
+  border: 2px solid;
+  border-radius: 5px;
+  background-color: #ffffff;
+}
+.sansfont {
+  /* font-family: "MapoFlowerIsland"; */
+  /* font-family: "MapoGoldenPier"; */
+  font-family: "GyeonggiBatang";
+  /* font-family: "Jua", sans-serif; */
+  /* font-family: "Malgun Gothic"; */
+}
+.cocktailfont {
+  font-family: "국립박물관문화재단클래식B";
+}
+/*-- Animation Keyframes --*/
+
+@keyframes neon {
+  from {
+    text-shadow: 0 0 6px rgba(202, 228, 225, 0.92),
+      0 0 30px rgba(202, 228, 225, 0.34), 0 0 12px rgba(242, 30, 178, 0.52),
+      0 0 21px rgba(242, 30, 178, 0.92), 0 0 34px rgba(242, 30, 178, 0.78),
+      0 0 54px rgba(242, 30, 178, 0.92);
+  }
+  to {
+    text-shadow: 0 0 6px rgba(202, 228, 225, 0.98),
+      0 0 30px rgba(202, 228, 225, 0.42), 0 0 12px rgba(242, 30, 178, 0.58),
+      0 0 22px rgba(242, 30, 178, 0.84), 0 0 38px rgba(242, 30, 178, 0.88),
+      0 0 60px rgba(242, 30, 178, 1);
+  }
+}
+@keyframes neon-box {
+  from {
+    text-shadow: 0 0 6px rgba(202, 228, 225, 0.92),
+      0 0 30px rgba(202, 228, 225, 0.34), 0 0 12px rgba(242, 30, 178, 0.52),
+      0 0 21px rgba(242, 30, 178, 0.92), 0 0 34px rgba(242, 30, 178, 0.78),
+      0 0 54px rgba(242, 30, 178, 0.92);
+    box-shadow: 0 0 6px rgba(202, 228, 225, 0.92),
+      0 0 30px rgba(202, 228, 225, 0.34), 0 0 12px rgba(242, 30, 178, 0.52),
+      0 0 21px rgba(242, 30, 178, 0.92), 0 0 34px rgba(242, 30, 178, 0.78),
+      0 0 54px rgba(242, 30, 178, 0.92);
+  }
+  to {
+    text-shadow: 0 0 6px rgba(202, 228, 225, 0.98),
+      0 0 30px rgba(202, 228, 225, 0.42), 0 0 12px rgba(242, 30, 178, 0.58),
+      0 0 22px rgba(242, 30, 178, 0.84), 0 0 38px rgba(242, 30, 178, 0.88),
+      0 0 60px rgba(242, 30, 178, 1);
+    box-shadow: 0 0 6px rgba(202, 228, 225, 0.98),
+      0 0 30px rgba(202, 228, 225, 0.42), 0 0 12px rgba(242, 30, 178, 0.58),
+      0 0 22px rgba(242, 30, 178, 0.84), 0 0 38px rgba(242, 30, 178, 0.88),
+      0 0 60px rgba(242, 30, 178, 1);
+  }
+}
+@keyframes flicker {
+  50% {
+    color: white;
+    filter: saturate(200%) hue-rotate(20deg);
+  }
 }
 </style>

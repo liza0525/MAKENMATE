@@ -49,15 +49,12 @@ public class BoardRecipe {
     private String contents;
 
     @Column
-    private String image;
-
-    @Column
     private String regdate;
 
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "user_uid", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
-    //@JsonIgnore
+    // @JsonIgnore
     private User user;
 
     // @Column
@@ -65,9 +62,9 @@ public class BoardRecipe {
     // @JsonManagedReference
     // @OneToMany(mappedBy = "boardrecipe")
     // private List<UserScrap> userScrapList = new ArrayList<>();
-    
+
     @OneToMany(mappedBy = "boardRecipe")
     @JsonManagedReference
     private List<BoardRecipeLike> boardRecipeLike = new ArrayList<>();
-    
+
 }

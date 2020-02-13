@@ -886,6 +886,11 @@ export default {
             boards: res.data.boards.content,
             totalPages: res.data.boards.totalPages
           });
+          resolve();
+        })
+        .catch(exp => {
+          console.log(exp);
+          reject();
         });
     });
   },

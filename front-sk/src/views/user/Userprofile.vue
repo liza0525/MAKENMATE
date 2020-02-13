@@ -88,50 +88,60 @@
         </div>
       </v-col>
     </v-row>
-    <h1
-      class="sansfont"
-      style=" margin-top:5%;font-size:200%; text-align:center; font-weight:bolder;"
-    >
-      좋아하는 칵테일
-    </h1>
-    <carousel-3d
-      :count="cocktailList.length"
-      style="opacity:100 !important; height:600px !important;"
-    >
-      <slide
-        v-for="(slide, i) in cocktailList"
-        :index="i"
-        :key="i"
-        style="opacity:100 !important; visibility:visible;height:500px !important;background-color:#ffffff;"
-        ><v-card style="height:400px">
-          <v-img :src="slide.image" alt="ll" style="height:100%;"> </v-img>
-          <h1
-            class="sansfont"
-            style="margin-left:30px; margin-top:10px;font-weight:bolder;"
-          >
-            {{ slide.cname }}
-          </h1>
-          <v-text style="margin-left:30px;margin-top:10px;display:inline-block">
-            <i class="fas fa-lg fa-heart"></i> {{ getLikesByCocktail[i] }}
-          </v-text>
-          <button
-            @click="goToDetail(slide.cid)"
-            class="sansfont"
-            style="color:blue;margin-left:230px"
-          >
-            ...더보기
-          </button>
-        </v-card>
-      </slide>
-    </carousel-3d>
+    <v-row>
+      <v-col>
+        <h1
+          class="sansfont"
+          style=" margin-top:5%;font-size:200%; text-align:center; font-weight:bolder;"
+        >
+          좋아하는 칵테일
+        </h1>
+        <carousel-3d
+          :count="cocktailList.length"
+          style="opacity:100 !important; height:600px !important;"
+        >
+          <slide
+            v-for="(slide, i) in cocktailList"
+            :index="i"
+            :key="i"
+            style="opacity:100 !important; visibility:visible;height:500px !important;background-color:#ffffff;"
+            ><v-card style="height:400px">
+              <v-img :src="slide.image" alt="ll" style="height:100%;"> </v-img>
+              <h1
+                class="sansfont"
+                style="margin-left:30px; margin-top:10px;font-weight:bolder;"
+              >
+                {{ slide.cname }}
+              </h1>
+              <v-text
+                style="margin-left:30px;margin-top:10px;display:inline-block"
+              >
+                <i class="fas fa-lg fa-heart"></i> {{ getLikesByCocktail[i] }}
+              </v-text>
+              <button
+                @click="goToDetail(slide.cid)"
+                class="sansfont"
+                style="color:blue;margin-left:230px"
+              >
+                ...더보기
+              </button>
+            </v-card>
+          </slide>
+        </carousel-3d>
+      </v-col>
+    </v-row>
+
     <h1
       class="sansfont"
       style=" margin-top:5%;font-size:200%; text-align:center; font-weight:bolder;"
     >
       {{ user.nickname }}님이 쓴 글
     </h1>
+    <v-row>
+      <!-- <v-col v-for="(board, i) in boardArray" :key="i">
 
-
+      </v-col> -->
+    </v-row>
   </v-container>
 </template>
 
@@ -154,8 +164,11 @@ export default {
       getLikesByCocktail: [],
       pageNms: [],
       pageNm: 1,
-      boardArray: []
-
+      boardArray: [],
+      prevBt: "<",
+      nextBt: ">",
+      fistBt: "<<",
+      lastBt: ">>"
     };
   },
   mounted() {
@@ -191,8 +204,6 @@ export default {
             });
         });
       });
-    
-
   },
   components: {
     Carousel3d,
