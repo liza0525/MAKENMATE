@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -91,8 +92,14 @@ public class AccountController {
 		// 약관 동의 내용 포함
 		// 가입 버튼 클릭 시 가입 완료 페이지로 이동
 		// 회원가입단을 생성해 보세요.
-		userDao.save(User.builder().email(email).password(passwordEncoder.encode(password)).nickname(nickname)
-				.roles(Collections.singletonList("ROLE_USER")).build());
+		if(password == "kakao4312!@#$") {
+			User find = userDao.findByNickname(nickname);
+			find.setEmail(email);
+			userDao.save(find);
+		}else {
+			userDao.save(User.builder().email(email).password(passwordEncoder.encode(password)).nickname(nickname)
+					.roles(Collections.singletonList("ROLE_USER")).build());
+		}
 		// 메일 전송
 		// String url = "http://localhost:3000/"+email; // 인증할 url
 		// StringBuffer sb = new StringBuffer();
@@ -160,18 +167,5 @@ public class AccountController {
 			 result.data = "wrongPw";
 		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
-	
-	@PostMapping("/user/auth")
-    @ApiOperation(value = "토큰 인증")
-    public Object auth(@RequestParam(required = true) String token) {
-		String userInfo = kakao.getUserInfo(token);
-		System.out.println(userInfo);
-		final BasicResponse result = new BasicResponse();
-		result.status=true;
-		result.data="success";
-		result.object=userInfo;
-		
-		return new ResponseEntity<>(result,HttpStatus.OK);
-    }
 
 }
