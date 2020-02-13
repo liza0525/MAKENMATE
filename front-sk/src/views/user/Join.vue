@@ -13,17 +13,14 @@
           id="nickname"
           placeholder="닉네임을 입력하세요."
           type="text"
+          style="disabled:true;"
+          :readonly="isKakao"
         />
         <label for="nickname">닉네임</label>
       </div>
 
       <div class="input-with-label">
-        <input
-          v-model="email"
-          id="email"
-          placeholder="이메일을 입력하세요."
-          type="text"
-        />
+        <input v-model="email" id="email" placeholder="이메일을 입력하세요." type="text" />
         <label for="email">이메일</label>
         <!-- <button @click="checkEmail()" :disabled="!duplicateEmail">중복 체크</button> -->
         <div class="error-text" v-if="error.email">{{ error.email }}</div>
@@ -35,11 +32,10 @@
           type="password"
           id="password"
           placeholder="비밀번호를 입력하세요."
+          :readonly="isKakao"
         />
         <label for="password">비밀번호</label>
-        <div class="error-text" v-if="password != 0 && error.password">
-          {{ error.password }}
-        </div>
+        <div class="error-text" v-if="password != 0 && error.password">{{ error.password }}</div>
       </div>
 
       <div class="input-with-label">
@@ -48,24 +44,18 @@
           :type="passwordConfirmType"
           id="password-confirm"
           placeholder="비밀번호를 다시한번 입력하세요."
+          :readonly="isKakao"
         />
         <label for="password-confirm">비밀번호 확인</label>
         <div
           class="error-text"
           v-if="passwordConfirm != 0 && password != passwordConfirm"
-        >
-          {{ error.passwordConfirm }}
-        </div>
+        >{{ error.passwordConfirm }}</div>
       </div>
     </div>
     <div>
       <label>
-        <input
-          v-model="isTerm"
-          @click="isTerm = !isTerm"
-          type="checkbox"
-          id="term"
-        />
+        <input v-model="isTerm" @click="isTerm = !isTerm" type="checkbox" id="term" />
         <span>약관을 동의합니다.</span>
       </label>
 
@@ -77,9 +67,7 @@
           v-on:click="join()"
           :disabled="!isSubmit"
           :class="{ disabled: !isSubmit }"
-        >
-          회원 가입
-        </button>
+        >회원 가입</button>
       </router-link>
     </div>
   </div>
@@ -113,11 +101,25 @@ export default {
       passwordType: "password",
       passwordConfirmType: "password",
       passwordSchema: new PasswordValidator(),
-      termPopup: false
+      termPopup: false,
+      isKakao: false
     };
   },
   created() {
     this.component = this;
+    console.log(this.$route.params.nickname);
+    if (
+      !(
+        this.$route.params.nickname == "undefined" ||
+        this.$route.params.nickname == null ||
+        this.$route.params.nickname == ""
+      )
+    ) {
+      this.nickname = this.$route.params.nickname;
+      this.password = "kakao4312!@#$";
+      this.passwordConfirm = "kakao4312!@#$";
+      this.isKakao = true;
+    }
     this.passwordSchema
       .is()
       .min(8)

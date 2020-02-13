@@ -49,9 +49,6 @@ public class BoardRecipe {
     private String contents;
 
     @Column
-    private String image;
-
-    @Column
     private String regdate;
 
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
