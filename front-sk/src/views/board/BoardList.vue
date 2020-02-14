@@ -4,7 +4,6 @@
       <h1 id="board-category">자유게시판</h1>
     </div>
     <div id="board-context">
-      <!-- {{ info.content }} -->
       <v-simple-table>
         <template>
           <thead>
@@ -25,10 +24,9 @@
           </tbody>
         </template>
       </v-simple-table>
-      
     </div>
     <div id="board-list-footer">
-      <button class="board-button" @click="add_move()">글쓰기</button>
+      <button v-if="this.$store.state.username" class="board-button" @click="add_move()">글쓰기</button>
       <div id="pagination">
         <button v-for="pageNm in pageNms" :key="pageNm" @click="retrieveBoard(pageNm)">
           <span style="margin-right:10px;">{{ pageNm }}</span>
