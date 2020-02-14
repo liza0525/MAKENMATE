@@ -54,7 +54,7 @@ public class BoardRecipe {
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "user_uid", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
-    //@JsonIgnore
+    // @JsonIgnore
     private User user;
 
     // @Column
@@ -62,9 +62,9 @@ public class BoardRecipe {
     // @JsonManagedReference
     // @OneToMany(mappedBy = "boardrecipe")
     // private List<UserScrap> userScrapList = new ArrayList<>();
-    
+
     @OneToMany(mappedBy = "boardRecipe")
     @JsonManagedReference
     private List<BoardRecipeLike> boardRecipeLike = new ArrayList<>();
-    
+
 }

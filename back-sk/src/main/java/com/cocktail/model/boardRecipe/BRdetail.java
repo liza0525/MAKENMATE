@@ -20,8 +20,6 @@ public class BRdetail implements Serializable {
 
     private String contents;
 
-    private String image;
-
     private String regdate;
 
     private String user_name;
