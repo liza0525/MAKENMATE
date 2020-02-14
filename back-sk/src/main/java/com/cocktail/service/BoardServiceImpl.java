@@ -5,15 +5,17 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+
 import com.cocktail.dao.BoardDao;
 import com.cocktail.dao.UserDao;
 import com.cocktail.exception.CocktailException;
 import com.cocktail.model.board.Bdetail;
 import com.cocktail.model.board.Board;
 import com.cocktail.model.user.User;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 @Service
 public class BoardServiceImpl implements BoardService {
@@ -42,6 +44,10 @@ public class BoardServiceImpl implements BoardService {
         }
         return bdlist;
     }
+    
+    public Page<Board> getAllBoard(Pageable pageable) {
+        return boardDao.findAll(pageable);
+    }
 
     // 글번호로 상세조회
     @Override
@@ -58,14 +64,12 @@ public class BoardServiceImpl implements BoardService {
         b.setRegdate(time1);
         b.setTitle(board.getTitle());
         b.setUser_name(u.getNickname());
-        System.out.println(u.getNickname());
         return b;
     }
 
     // 글 수정
     @Override
     public void updateById(Bdetail bdetail) {
-        System.out.println("service" + bdetail);
         Board b = boardDao.findById(bdetail.getBid());
         b.setContents(bdetail.getContents());
         // b.setFile(board.getFile()); //파일 수정
@@ -85,12 +89,10 @@ public class BoardServiceImpl implements BoardService {
         Board b = new Board();
         String username = bdetail.getUser_name();
         User u = userDao.findByNickname(username);
-        System.out.println(username);
         b.setContents(bdetail.getContents());
         // b.setFile(bdetail.getFile());
         b.setRegdate(bdetail.getRegdate());
         b.setTitle(bdetail.getTitle());
-        System.out.println(u);
         b.setUser(u);
         b = boardDao.save(b);
         return b.getBid();

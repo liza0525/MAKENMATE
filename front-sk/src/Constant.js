@@ -62,7 +62,7 @@ export default {
   // 자유 게시판 댓글 좋아요
   GET_BOARDCOMMENTSLIKE: "getBoardCommentsLike", // 좋아요한 칵테일 가져오기
   ADD_BOARDCOMMENTSLIKE: "addBoardCommentsLike", // 내가 좋아하는 술 추가
-  REMOVE_BOARDLIKECOMMENTS: "removeBoardCommentsLike", // 내가 좋아하는 술 삭제
+  REMOVE_BOARDCOMMENTSLIKE: "removeBoardCommentsLike", // 내가 좋아하는 술 삭제
   GET_LIKEBYBOARDCOMMENTS: "getlikebyBoardComments", // 칵테일 좋아요 수 가져오기
   GET_LIKEBYUSERANDBOARDCOMMENTS: "getLikeByUserAndBoardComments",
   // 유저 관리
@@ -74,5 +74,6 @@ export default {
   REMOVE_USER: "removeUserInfo", // 유저 정보 삭제
   // file
   ADD_FILELIST: "AddFilelist", //파일리스트에 번호 추가
-  DELETE_FILELIST: "deleteFilelist" // 파일번호 삭제
+  DELETE_FILELIST: "deleteFilelist", // 파일번호 삭제
+  MODIFY_USERINTRO: "modifyUserIntro"
 };

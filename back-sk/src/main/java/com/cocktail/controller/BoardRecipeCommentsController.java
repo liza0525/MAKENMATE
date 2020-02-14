@@ -53,7 +53,7 @@ public class BoardRecipeCommentsController {
 
     @GetMapping("/boardrecipe/{rid}")
     @ApiOperation(value = "댓글")
-    public Object load(@PageableDefault(size = 5, sort = { "count" }, direction = Direction.ASC) final Pageable pageable, @PathVariable final int rid) {
+    public Object load(@PageableDefault(size = 5, sort = { "cmid" }, direction = Direction.DESC) final Pageable pageable, @PathVariable final int rid) {
         final Page<BoardRecipeComments> comments = commentsDao.findAllByBoardRecipe_rid(rid,pageable);
         final List<String> UserArray = new ArrayList<>();
         for (int idex = 0; idex < comments.getNumberOfElements(); ++idex) {

@@ -1,7 +1,7 @@
 <template>
-  <div id="footer">
+  <footer>
     <div>ⓒ 2020 SSAFY 2 Seoul class 3 team 9</div>
-  </div>
+  </footer>
 </template>
 
 <script>
@@ -9,10 +9,12 @@ export default {};
 </script>
 
 <style>
-#footer {
+footer {
+  position: relative;  
   color: white;
-  background: rgb(21, 15, 49);
+  background: rgb(27, 27, 27);
   height: 4rem;
+  width: 100%;
   text-align: center;
   line-height: 4rem;
 }

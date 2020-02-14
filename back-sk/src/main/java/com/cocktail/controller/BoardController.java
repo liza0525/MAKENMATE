@@ -1,15 +1,25 @@
 package com.cocktail.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.mail.Multipart;
 
+import com.cocktail.dao.BoardDao;
+import com.cocktail.dao.UserDao;
+import com.cocktail.exception.CocktailException;
 import com.cocktail.model.BasicResponse;
 import com.cocktail.model.board.Bdetail;
+import com.cocktail.model.board.Board;
+import com.cocktail.model.user.User;
 import com.cocktail.service.BoardService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +34,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.data.domain.Sort.Direction;
 
 @CrossOrigin(origins = { "*" }, maxAge = 3600) // "*" => http://localhost:3000
 @RestController
@@ -33,12 +44,20 @@ public class BoardController {
     @Autowired
     private BoardService boardservice;
 
+    @Autowired
+    private UserDao userDao;
+
+    @Autowired
+    private BoardDao boardDao;
+
     @GetMapping(produces = { MediaType.APPLICATION_JSON_VALUE })
-    public Object boardlist() {
+    public Object boardlist(
+            @PageableDefault(size = 20, sort = { "bid" }, direction = Direction.DESC) Pageable pageable) {
+
         final BasicResponse result = new BasicResponse();
         result.status = true;
         result.data = "success";
-        result.object = this.boardservice.getAllBoard();
+        result.object = this.boardservice.getAllBoard(pageable);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
@@ -50,7 +69,7 @@ public class BoardController {
 
     @PostMapping
     public ResponseEntity<Integer> save(@RequestBody Bdetail bdetail) {
-        
+        bdetail.setContents(bdetail.getContents().replace("\n", "<br/>"));
         System.out.println(bdetail);
         return new ResponseEntity<Integer>(boardservice.save(bdetail), HttpStatus.OK);
     }
@@ -69,6 +88,16 @@ public class BoardController {
         boardservice.deleteById(boardno);
         Map<String, String> resultMap = new HashMap<>();
         resultMap.put("data", "Success");
+        return new ResponseEntity<>(resultMap, HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/user/{user_uid}")
+    public Object getBoardByUser(
+            @PageableDefault(size = 5, sort = { "count" }, direction = Direction.DESC) final Pageable pageable,
+            @PathVariable final int user_uid) {
+        final Page<Board> boards = boardDao.findAllByUser_uid(user_uid, pageable);
+        Map<String, Object> resultMap = new HashMap<>();
+        resultMap.put("boards", boards);
         return new ResponseEntity<>(resultMap, HttpStatus.OK);
     }
 }

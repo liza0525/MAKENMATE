@@ -13,6 +13,7 @@ const state = {
   coctktailList: [],
   board: "",
   boardList: [],
+  boardRecipeList: [],
   scrapList: [],
   user: "",
   users: [],
@@ -21,11 +22,15 @@ const state = {
   email: "",
   cmid: "",
   content: "",
+  intro: "",
   likebycocktail: 0,
   isLike: false,
   likebycomments: 0,
   filelist: [],
-  filedelete: 0
+  filedelete: 0,
+  totalPages: 0,
+  likebyboardrecipe: 0,
+  likebyboard: 0
 };
 
 export default new Vuex.Store({

@@ -54,7 +54,7 @@ public class BoardCommentsController {
 
     @GetMapping("/board/{bid}")
     @ApiOperation(value = "댓글")
-    public Object load(@PageableDefault(size = 5, sort = { "count" }, direction = Direction.ASC) final Pageable pageable, @PathVariable final int bid) {
+    public Object load(@PageableDefault(size = 5, sort = { "cmid" }, direction = Direction.DESC) final Pageable pageable, @PathVariable final int bid) {
         // final Cocktail cocktail = cocktailDao.getCocktailByCid(cid);
         final Page<BoardComments> comments = commentsDao.findAllByBoard_bid(bid, pageable);
         final List<String> UserArray = new ArrayList<>();

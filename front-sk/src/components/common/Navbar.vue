@@ -1,6 +1,6 @@
 <template>
   <v-app-bar id="navbar" color="#000" data-app hide-on-scroll>
-    <router-link to="/">
+    <router-link :to="{ name: 'Main' }">
       <h1 id="nav-logo" color="#fff">Cocktail</h1>
     </router-link>
     <v-spacer></v-spacer>
@@ -21,7 +21,7 @@
         <v-list stlye="width:400px;">
           <v-list-item>
             <v-list-item-title>
-              <router-link :to="{ name: 'BoardRecipe' }"
+              <router-link :to="{ name: 'BoardRecipeList' }"
                 >레시피 공유</router-link
               >
             </v-list-item-title>
@@ -83,14 +83,26 @@
           </v-list-item>
           <v-list-item>
             <v-list-item-title>
-              <router-link :to="{ name: 'UserProfile' }">
+              <router-link
+                :to="{
+                  name: 'UserProfile',
+                  params: {
+                    username: this.$store.state.username
+                  }
+                }"
+              >
                 유저프로필
               </router-link>
             </v-list-item-title>
           </v-list-item>
           <v-list-item>
             <v-list-item-title>
-              <router-link :to="{ name: 'UserScrap' }">유저스크랩</router-link>
+              <router-link
+                :to="{
+                  name: 'UserScrap'
+                }"
+                >유저스크랩</router-link
+              >
             </v-list-item-title>
           </v-list-item>
           <v-list-item>

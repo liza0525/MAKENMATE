@@ -1,5 +1,5 @@
 <template>
-    <div id="app" style="margin-top : 100px;">
+    <div id="app" style="width: 100%; padding:0 15rem;">
 
         <file-pond
             name="test"

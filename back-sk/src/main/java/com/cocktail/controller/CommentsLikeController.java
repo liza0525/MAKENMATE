@@ -118,7 +118,6 @@ public class CommentsLikeController {
     @ApiOperation(value = "댓글의 좋아요 수")
     public Object getLikebycocktail(@RequestParam(required = true) final int cmid) {
         Long commentsLike = commentsLikeDao.countByComments_cmid(cmid);
-        System.out.println(commentsLike);
         final BasicResponse result = new BasicResponse();
         result.status = true;
         result.data = "success";

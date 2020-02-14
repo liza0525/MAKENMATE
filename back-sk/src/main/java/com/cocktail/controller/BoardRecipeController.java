@@ -10,6 +10,7 @@ import com.cocktail.model.boardRecipe.BoardRecipe;
 import com.cocktail.service.BoardRecipeService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +24,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.web.PageableDefault;
 
 @CrossOrigin(origins = { "*" }, maxAge = 3600) // "*" => http://localhost:3000
 @RestController
@@ -35,11 +37,12 @@ public class BoardRecipeController{
 
     //공유게시판 게시글 전체 조회
     @GetMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
-    public Object boardRecipeList() {
+    public Object boardRecipeList(@PageableDefault(size = 20, sort = { "rid" }, direction = Direction.DESC) Pageable pageable) {
         final BasicResponse result = new BasicResponse();
         result.status = true;
-        result.data = "success";
-        result.object = this.boardrecipeservice.getAllBoardRecipe();
+        result.data = "success"; 
+        result.object = this.boardrecipeservice.getAllBoardRecipe(pageable);
+        System.out.println(this.boardrecipeservice.getAllBoardRecipe(pageable).getContent());
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
