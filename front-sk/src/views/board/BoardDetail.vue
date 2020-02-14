@@ -1,33 +1,66 @@
 <template>
   <div id="board-detail">
     <div id="board-header">
-        <h1 id="board-title">{{ board.title }}</h1>
-        
-        <h3 id="board-username">by. {{ board.user_name }}</h3>
-        
+      <h1 id="board-title">{{ board.title }}</h1>
+      <h3 id="board-username">by. {{ board.user_name }}</h3>
+      <div id="like-button">
+        <button @click="clickLike">
+          <span v-show="!islike">
+            <i class="far fa-heart"></i>
+          </span>
+          <span v-show="islike" style="color: red;">
+            <i class="fas fa-heart"></i>
+          </span>
+        </button>
+        {{ likebyboard }}
+      </div>
     </div>
-    <button @click="clickLike">
-      <span v-show="!islike">
-        <i class="far fa-heart"></i>
-      </span>
-      <span v-show="islike">
-        <i class="fas fa-heart"></i>
-      </span>
-    </button>
-    {{ likebyboard }}
     <div id="board-context" v-html="board.contents"></div>
-    <div id="board-footer"> 
-      <button class="board-button"  @click="go_to_list()">목록</button>
+    <div id="board-footer">
+      <button class="board-button" @click="go_to_list()">목록</button>
       <button class="board-button" @click="update_board(board.bid)">수정</button>
       <button class="board-button" @click="delete_board(board.bid)">삭제</button>
       <div id="board-date">{{ board.regdate }}</div>
+      
+      <!-- 댓글 -->
+      <div
+      :v-if="reply"
+      v-for="(re, i) in reply"
+      :key="i"
+      style="margin-top: 5px; display:block;"
+    >
+      <div v-if="isInput[i] === 0">
+        <span>{{ users[i] }} : {{ re.content }}</span>
+        <p v-if="username === users[i]" style="display:inline-block;">
+          <button @click="click(i)">수정</button>
+          <button @click="deleteComment(i, re.cmid)">삭제</button>
+        </p>
+      </div>
+      <div v-else>
+        <span>
+          {{ users[i] }} :
+          <input v-model="re.content" />
+        </span>
+        <p v-if="username === users[i]" style="display:inline-block;">
+          <button @click="updateComment(i, re.cmid, re.content)">수정</button>
+        </p>
+      </div>
+    </div>
+    <!-- </v-text> -->
+    <input type="text" v-model="comment" />
+    <button @click="submitComment" type="submit">button</button>
+    <div>
+      <button v-for="pageNm in pageNms" :key="pageNm" @click="search(pageNm)">
+        <span style="margin-right:10px;">{{ pageNm }}</span>
+      </button>
+    </div>
     </div>
   </div>
 </template>
 
 <script>
 import http from "../../http-common";
-import Constant from "../../Constant"
+import Constant from "../../Constant";
 export default {
   data: () => {
     return {
@@ -109,7 +142,7 @@ export default {
     update_board(boardid) {
       this.$router.push({ name: "BoardUpdate", params: { bid: boardid } });
     },
-    go_to_list(){
+    go_to_list() {
       this.$router.push({ name: "BoardList" });
     },
     submitComment() {
@@ -273,7 +306,7 @@ export default {
   font-size: 4rem;
   /* text-align: center; */
 }
-#board-username{
+#board-username {
   margin: 0 0 0 2rem;
   display: inline;
   position: relative;
@@ -302,5 +335,15 @@ export default {
   height: 3rem;
   border: 1px solid #ccc;
   border-radius: 3rem;
+}
+#like-button {
+  display: inline;
+  position: relative;
+  color: white;
+  font-size: 2rem;
+  line-height: 5rem;
+  float: right;
+  top: 13.5rem;
+  margin: 0 15rem 0 0;
 }
 </style>

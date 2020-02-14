@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -23,6 +24,7 @@ import com.cocktail.model.BasicResponse;
 import com.cocktail.model.SingleResponse;
 import com.cocktail.model.user.User;
 import com.cocktail.service.EmailService;
+import com.cocktail.service.KakaoAPI;
 import com.cocktail.service.ResponseService;
 
 import io.swagger.annotations.ApiOperation;
@@ -46,6 +48,9 @@ public class AccountController {
 	EmailService emailService;
 	@Autowired
 	private final ResponseService responseService;
+	@Autowired
+    KakaoAPI kakao;
+	
 	private final JwtTokenProvider jwtTokenProvider;
 	private final PasswordEncoder passwordEncoder;
 
@@ -87,8 +92,14 @@ public class AccountController {
 		// 약관 동의 내용 포함
 		// 가입 버튼 클릭 시 가입 완료 페이지로 이동
 		// 회원가입단을 생성해 보세요.
-		userDao.save(User.builder().email(email).password(passwordEncoder.encode(password)).nickname(nickname)
-				.roles(Collections.singletonList("ROLE_USER")).build());
+		if(password == "kakao4312!@#$") {
+			User find = userDao.findByNickname(nickname);
+			find.setEmail(email);
+			userDao.save(find);
+		}else {
+			userDao.save(User.builder().email(email).password(passwordEncoder.encode(password)).nickname(nickname)
+					.roles(Collections.singletonList("ROLE_USER")).build());
+		}
 		// 메일 전송
 		// String url = "http://localhost:3000/"+email; // 인증할 url
 		// StringBuffer sb = new StringBuffer();

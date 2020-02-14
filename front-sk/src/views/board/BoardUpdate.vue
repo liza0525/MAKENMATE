@@ -1,98 +1,85 @@
 <template>
-    <div style="padding-top: 100px; color: red;">
-        <div v-if="!submitted">
-            <form
-                action=""
-                method="post"
-                id="_boardForm"
-                name="boaradForm"
-                @submit.prevent="updateBoard">
-                <table>
-                    <colgroup>
-                        <col style="width:30%;"/>
-                        <col style="width:70%;"/>
-                    </colgroup>
-                    <tr>
-                        <th>제목</th>
-                        <td><input
-                            data-msg="제목"
-                            type="text"
-                            name="title"
-                            id="_title"
-                            size="50"
-                            v-model="board.title"
-                            style="width:40%"/></td>
-                    </tr>
-                    <tr>
-                        <th>내용</th>
-                        <td><input
-                            data-msg="내용"
-                            type="text"
-                            name="contents"
-                            id="_contents"
-                            size="50"
-                            v-model="board.contents"
-                            style="width:40%"/></td>
-                    </tr>
-                    <tr>
-                        <td colspan="2" style="height:50px; text-align:center;">
-                            <button type="submit" name="button">글 수정</button>
-                        </td>
-                    </tr>
-                </table>
-            </form>
-        </div>
+  <div>
+    <div id="board-list-header">
+      <h1 id="board-category">{{ board.title }}</h1>
     </div>
+    <div v-if="!submitted">
+      <form action method="post" id="_boardForm" name="boaradForm" @submit.prevent="updateBoard">
+        <div id="board-context">
+          <h1>제목</h1>
+          <br />
+          <input
+            value="제목"
+            type="text"
+            name="titleid"
+            id="_titleid"
+            v-model="board.title"
+            style="width:100%; border-bottom:1px solid #000;"
+          />
+          <h1>내용</h1>
+          <textarea
+            value="내용"
+            type="text"
+            name="contentsid"
+            id="_contentsid"
+            v-model="board.contents"
+            style="width:100%; height: 10rem; border-bottom:1px solid #000"
+          />
+        </div>
+        <file-upload />
+        <button class="board-button" type="submit" name="button">수정</button>
+      </form>
+    </div>
+  </div>
 </template>
 
 <script>
-    import http from "../../http-common";
+import http from "../../http-common";
 
-
-    export default {
-        data: () => {
-            return {
-                bid: 0,
-                board: {
-                    title: "",
-                    file: "",
-                    contents: "",
-                    regdate: "",
-                    user_name: ""
-                },
-                submitted: false
-            };
-        },
-        created() {
-            this.getData();
-        },
-        methods: {
-            getData() {
-                this.bid = this.$route.params.bid;
-                http
-                    .get("/board/" + this.bid)
-                    .then(res => {
-                        this.board = res.data;
-                        console.log(this.board);
-                    });
-            },
-            updateBoard() {
-                http.put('/board/'+this.bid,{
-                    bid: this.bid,
-                    title: this.board.title,
-                    contents: this.board.contents
-                }).then((res) => {
-                    this.$router.push({
-                            name: "BoardDetail",
-                            params: {
-                                bid: this.bid
-                            }
-                        })
-                });
-                this.submitted = true;
-            }
-        }
+export default {
+  data: () => {
+    return {
+      bid: 0,
+      board: {
+        title: "",
+        file: "",
+        contents: "",
+        regdate: "",
+        user_name: ""
+      },
+      submitted: false
     };
+  },
+  created() {
+    this.getData();
+  },
+  methods: {
+    getData() {
+      this.bid = this.$route.params.bid;
+      http.get("/board/" + this.bid).then(res => {
+        this.board = res.data;
+        console.log(this.board);
+      });
+    },
+    updateBoard() {
+      http
+        .put("/board/" + this.bid, {
+          bid: this.bid,
+          title: this.board.title,
+          contents: this.board.contents
+        })
+        .then(res => {
+          this.$router.push({
+            name: "BoardDetail",
+            params: {
+              bid: this.bid
+            }
+          });
+        });
+      this.submitted = true;
+    }
+  }
+};
 </script>
 
 <style></style>
