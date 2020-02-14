@@ -35,6 +35,19 @@ public class UploadFile {
     @Temporal(TemporalType.TIMESTAMP)
     private Date insertDate;
  
+    @Column
+    private int boardno;
+    
+    public int getBoardno() {
+        return id;
+    }
+ 
+    public void setBoardno(int boardno) {
+        this.boardno = boardno;
+    }
+ 
+
+
     public UploadFile() {
     }
     

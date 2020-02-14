@@ -1,6 +1,7 @@
 package com.cocktail.model.board;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -18,11 +19,13 @@ public class Bdetail implements Serializable {
 
     private String title;
 
-    private byte[] file;
+    private Object file;
 
     private String contents;
 
     private String regdate;
 
     private String user_name;
+    
+    private ArrayList<String> filelist;
 }

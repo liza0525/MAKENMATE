@@ -11,7 +11,6 @@
           <th>제 목</th>
           <th>날 짜</th>
         </tr>
-
         <tr v-for="board in info.content" v-bind:key="board.rid">
           <td v-html="board.rid"></td>
           <td v-html="board.title" @click="detail_id(board.rid)" style="cursor: pointer;"></td>

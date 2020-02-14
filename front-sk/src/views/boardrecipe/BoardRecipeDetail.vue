@@ -18,9 +18,22 @@
 
     <p>제목 : {{ boardRecipe.title }}</p>
     <p>내용 : {{ boardRecipe.contents }}</p>
-    <button v-if="!isScrapped" @click="addToScrapList" style="cursor: pointer">스크랩</button>
-    <button v-if="isScrapped" @click="removeFromScrapList" style="cursor: pointer">스크랩 취소</button>
-    <div :v-if="reply" v-for="(re, i) in reply" :key="i" style="margin-top: 5px; display:block;">
+    <button v-if="!isScrapped" @click="addToScrapList" style="cursor: pointer">
+      스크랩
+    </button>
+    <button
+      v-if="isScrapped"
+      @click="removeFromScrapList"
+      style="cursor: pointer"
+    >
+      스크랩 취소
+    </button>
+    <div
+      :v-if="reply"
+      v-for="(re, i) in reply"
+      :key="i"
+      style="margin-top: 5px; display:block;"
+    >
       <div v-if="isInput[i] === 0">
         <span>{{ users[i] }} : {{ re.content }}</span>
         <p v-if="username === users[i]" style="display:inline-block;">
@@ -46,6 +59,9 @@
         <span style="margin-right:10px;">{{ pageNm }}</span>
       </button>
     </div>
+    <div v-for="images in imagepath" v-bind:key="images">
+      <img :src="images" />
+    </div>
   </div>
 </template>
 
@@ -64,7 +80,8 @@ export default {
       isInput: [],
       updatedComment: "",
       pageNm: 1,
-      pageNms: []
+      pageNms: [],
+      imagepath: []
     };
   },
   created() {
@@ -72,6 +89,14 @@ export default {
     http.get("/boardrecipe/" + this.rid).then(res => {
       // console.log(res.data)
       this.boardRecipe = res.data;
+
+      if (this.boardRecipe.filelist.length != 0) {
+        console.log(this.boardRecipe.filelist[0]);
+        for (let i = 0; i < this.boardRecipe.filelist.length; i++) {
+          this.imagepath[i] = require("C:/image/" +
+            this.boardRecipe.filelist[i]);
+        }
+      }
 
       this.$store
         .dispatch(Constant.GET_REPLYBOARDRECIPE, {
