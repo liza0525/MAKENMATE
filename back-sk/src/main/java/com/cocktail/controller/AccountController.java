@@ -10,8 +10,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -23,6 +25,7 @@ import com.cocktail.model.BasicResponse;
 import com.cocktail.model.SingleResponse;
 import com.cocktail.model.user.User;
 import com.cocktail.service.EmailService;
+import com.cocktail.service.KakaoAPI;
 import com.cocktail.service.ResponseService;
 
 import io.swagger.annotations.ApiOperation;
@@ -38,6 +41,7 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @RestController
+@RequestMapping(value = "/backend")
 public class AccountController {
 	// 디비 셋팅 후 주석을 푸세요.
 	@Autowired
@@ -46,6 +50,9 @@ public class AccountController {
 	EmailService emailService;
 	@Autowired
 	private final ResponseService responseService;
+	@Autowired
+    KakaoAPI kakao;
+	
 	private final JwtTokenProvider jwtTokenProvider;
 	private final PasswordEncoder passwordEncoder;
 
@@ -61,7 +68,11 @@ public class AccountController {
 		String token = jwtTokenProvider.createToken(user.getUsername(), user.getRoles());
 		response.setContentType("text/plain");
 		response.setCharacterEncoding("UTF-8");
-		response.addHeader("jwt-auth-token", token);
+		response.addHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+		// 헤더에 token을 저장하기 위한 설정
+		response.addHeader("Access-Control-Allow-Headers", "Authorization");
+		response.addHeader("Access-Control-Expose-Headers", "Authorization");
+		response.addHeader("Authorization", token);
 		final SingleResponse<User> result = new SingleResponse<>();
 		result.setStatus(true);
 		result.setObject(user);
@@ -83,8 +94,14 @@ public class AccountController {
 		// 약관 동의 내용 포함
 		// 가입 버튼 클릭 시 가입 완료 페이지로 이동
 		// 회원가입단을 생성해 보세요.
-		userDao.save(User.builder().email(email).password(passwordEncoder.encode(password)).nickname(nickname)
-				.roles(Collections.singletonList("ROLE_USER")).build());
+		if(password == "kakao4312!@#$") {
+			User find = userDao.findByNickname(nickname);
+			find.setEmail(email);
+			userDao.save(find);
+		}else {
+			userDao.save(User.builder().email(email).password(passwordEncoder.encode(password)).nickname(nickname)
+					.roles(Collections.singletonList("ROLE_USER")).build());
+		}
 		// 메일 전송
 		// String url = "http://localhost:3000/"+email; // 인증할 url
 		// StringBuffer sb = new StringBuffer();
@@ -117,29 +134,22 @@ public class AccountController {
 		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
 
-	@PutMapping("/user/changePw")
+	@PutMapping("/user/changePW")
 	@ApiOperation(value = "비밀번호 변경")
-	public Object changePw(@RequestParam(required = true) final String email,
+	public Object changePw(@RequestParam(required = true) final String nickname,
 			@RequestParam(required = true) final String befPassword,
 			@RequestParam(required = true) final String password) {
 
-		User find = userDao.getUserByEmail(email).orElseThrow(CocktailException::new);
+		User find = userDao.getUserByNickname(nickname).orElseThrow(CocktailException::new);
 
 		final BasicResponse result = new BasicResponse();
 		result.status = true;
-
-		if (befPassword.equals(find.getPassword())) {
-			find.setPassword(password);
-			result.data = "success";
-		} else
-			result.data = "wrongPw";
-
-		// if (befPassword.equals(find.getPassword())) {
-		// find.setPassword(password);
-		// userDao.save(find);
-		// result.data = "success";
-		// } else
-		// result.data = "wrongPw";
+		 if (passwordEncoder.matches(befPassword, find.getPassword())) {
+			 find.setPassword(passwordEncoder.encode(password));
+			 userDao.save(find);
+			 result.data = "success";
+		 } else
+			 result.data = "wrongPw";
 
 		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
@@ -147,17 +157,16 @@ public class AccountController {
 	@DeleteMapping("/user/withdraw")
 	@ApiOperation(value = "회원탈퇴")
 
-	public Object withdraw(@RequestParam(required = true) final String email,
+	public Object withdraw(@RequestParam(required = true) final String nickname,
 			@RequestParam(required = true) final String password) {
-		// final User user = userDao.getUserByEmail(email);
+		 User find = userDao.getUserByNickname(nickname).orElseThrow(CocktailException::new);
 
 		final BasicResponse result = new BasicResponse();
-		// if (password.equals(user.getPassword())) {
-		// userDao.delete(user);
-		// result.data = "success";
-		// } else {
-		// result.data = "wrongPW";
-		// }
+		if (passwordEncoder.matches(password, find.getPassword())) {
+			 userDao.delete(find);
+			 result.data = "success";
+		 } else
+			 result.data = "wrongPw";
 		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
 

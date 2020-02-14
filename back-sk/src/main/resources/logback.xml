@@ -25,7 +25,7 @@
 			<!-- 파일에 기록할 로그 포맷 -->
 		</encoder>
 	</appender>
-	<logger name="com.cocktail.controller" level="all"/>
+	<logger name="com.cocktail" level="all"/>
 	<logger name="org.springframework" level="info"/>
 	
 	<root level="INFO">

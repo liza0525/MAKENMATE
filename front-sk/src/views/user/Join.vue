@@ -8,7 +8,14 @@
     <div>
       <h1>가입하기</h1>
       <div class="input-with-label">
-        <input v-model="nickname" id="nickname" placeholder="닉네임을 입력하세요." type="text" />
+        <input
+          v-model="nickname"
+          id="nickname"
+          placeholder="닉네임을 입력하세요."
+          type="text"
+          style="disabled:true;"
+          :readonly="isKakao"
+        />
         <label for="nickname">닉네임</label>
       </div>
 
@@ -20,7 +27,13 @@
       </div>
 
       <div class="input-with-label">
-        <input v-model="password" type="password" id="password" placeholder="비밀번호를 입력하세요." />
+        <input
+          v-model="password"
+          type="password"
+          id="password"
+          placeholder="비밀번호를 입력하세요."
+          :readonly="isKakao"
+        />
         <label for="password">비밀번호</label>
         <div class="error-text" v-if="password != 0 && error.password">{{ error.password }}</div>
       </div>
@@ -31,6 +44,7 @@
           :type="passwordConfirmType"
           id="password-confirm"
           placeholder="비밀번호를 다시한번 입력하세요."
+          :readonly="isKakao"
         />
         <label for="password-confirm">비밀번호 확인</label>
         <div
@@ -87,11 +101,25 @@ export default {
       passwordType: "password",
       passwordConfirmType: "password",
       passwordSchema: new PasswordValidator(),
-      termPopup: false
+      termPopup: false,
+      isKakao: false
     };
   },
   created() {
     this.component = this;
+    console.log(this.$route.params.nickname);
+    if (
+      !(
+        this.$route.params.nickname == "undefined" ||
+        this.$route.params.nickname == null ||
+        this.$route.params.nickname == ""
+      )
+    ) {
+      this.nickname = this.$route.params.nickname;
+      this.password = "kakao4312!@#$";
+      this.passwordConfirm = "kakao4312!@#$";
+      this.isKakao = true;
+    }
     this.passwordSchema
       .is()
       .min(8)
@@ -209,10 +237,8 @@ export default {
 </script>
 <style scoped>
 .wrapC {
-  color: white;
 }
 .input-with-label input,
 label {
-  color: white;
 }
 </style>

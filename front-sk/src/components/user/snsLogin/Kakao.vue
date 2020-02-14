@@ -52,7 +52,8 @@ export default {
   data() {
     return {
       CLIENT_ID: "2660ec76173c2f0ea3aa79f02dc02b76",
-      redirectURI: "http://localhost:8080/user/kakaoLogin",
+      redirectURI: "http://localhost:8080/backend/user/kakaoLogin", // local
+      // redirectURI: "http://13.125.94.200/backend/user/kakaoLogin", // aws
       kakaoLoginURL: "https://kauth.kakao.com/oauth/authorize?"
     };
   },

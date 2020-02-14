@@ -20,11 +20,9 @@ body {
   margin: 0;
   padding: 0;
   font-size: 14px;
-  color: white;
   overflow-x: hidden;
-  background: linear-gradient(rgba(0, 0, 0, 0.7)),
-    url(../images/image.png) no-repeat;
-  background-size: cover;
+  background-color: black !important;
+  z-index: -1;
 }
 
 /*html {margin: 0; padding: 0; height: 100%;}*/
@@ -92,8 +90,32 @@ input {
   &:focus {
     outline: 0;
   }
-  &:hover {
-    border: 2px solid #000;
+}
+
+textarea {
+  background: transparent;
+  font-size: 1em;
+  height: 50px;
+  line-height: 1em;
+  border: 1px solid $grey;
+  padding: 0 20px;
+  box-sizing: border-box;
+  transition: 0.2s;
+  outline: none;
+  &::placeholder {
+    color: #333;
+    opacity: 0.5;
+    font-weight: $f600;
+  }
+  &:-ms-textarea-placeholder {
+    color: #333;
+    opacity: 0.5;
+    font-weight: $f600;
+  }
+  &:-ms-textarea-placeholder {
+    color: #333;
+    opacity: 0.5;
+    font-weight: $f600;
   }
 }
 
@@ -815,7 +837,6 @@ p {
   }
   input[type="password"] {
     padding-right: 50px;
-    color: white;
   }
   label {
     position: absolute;
@@ -870,7 +891,6 @@ p {
     &.error {
       border-color: $red;
     }
-    color: white;
   }
   &:last-of-type {
     margin-bottom: 0;
@@ -1473,5 +1493,4 @@ p {
   margin: 0 !important;
   padding: 50px;
   height: 45rem;
-  color: white;
 }

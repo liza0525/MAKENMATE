@@ -1,19 +1,42 @@
 <template>
   <v-app-bar id="navbar" color="#000" data-app hide-on-scroll>
-    <router-link to="/">
+    <router-link :to="{ name: 'Main' }">
       <h1 id="nav-logo" color="#fff">Cocktail</h1>
     </router-link>
     <v-spacer></v-spacer>
     <div id="nav-contents">
-      <v-btn text color="#fff">칵테일 정보</v-btn>
+      <router-link
+        :to="{
+          name: 'CocktailList',
+          query: { pageNm: 1, filtered: 'all', searchedFiltered: '' }
+        }"
+      >
+        <v-btn text color="#fff">칵테일 정보</v-btn>
+      </router-link>
       <!-- board dropdown -->
       <v-menu offset-y bottom>
         <template v-slot:activator="{ on }">
           <v-btn text color="#fff" v-on="on">게시판 선택</v-btn>
         </template>
-        <v-list>
-          <v-list-item v-for="(board, index) in boards" :key="index">
-            <v-list-item-title>{{ board.title }}</v-list-item-title>
+        <v-list stlye="width:400px;">
+          <v-list-item>
+            <v-list-item-title>
+              <router-link :to="{ name: 'BoardRecipeList' }"
+                >레시피 공유</router-link
+              >
+            </v-list-item-title>
+          </v-list-item>
+          <v-list-item>
+            <v-list-item-title>
+              <!-- <router-link :to="{ name: 'CocktailParty' }"> -->
+              칵테일 파티
+              <!-- </router-link> -->
+            </v-list-item-title>
+          </v-list-item>
+          <v-list-item>
+            <v-list-item-title>
+              <router-link :to="{ name: 'BoardList' }">자유게시판</router-link>
+            </v-list-item-title>
           </v-list-item>
         </v-list>
       </v-menu>
@@ -25,9 +48,12 @@
           </v-btn>
         </template>
         <v-list>
-          <v-row style="margin: 0 0.5rem 0 0.5rem;">  
+          <v-row style="margin: 0 0.5rem 0 0.5rem;">
             <v-col cols="9">
-              <v-text-field label="칵테일에 관한 모든 검색" placeholder="검색어 입력"></v-text-field>
+              <v-text-field
+                label="칵테일에 관한 모든 검색"
+                placeholder="검색어 입력"
+              ></v-text-field>
             </v-col>
             <v-col cols="2">
               <v-btn icon>
@@ -49,9 +75,54 @@
             <v-icon>mdi-account-circle</v-icon>
           </v-btn>
         </template>
-        <v-list stlye="width:400px;">
-          <v-list-item v-for="(acc_menu, index) in acc_menus" :key="index">
-            <v-list-item-title>{{ acc_menu.title }}</v-list-item-title>
+        <v-list v-if="this.username" stlye="width:400px;">
+          <v-list-item>
+            <v-list-item-title>
+              <router-link :to="{ name: 'Mypage' }">마이페이지</router-link>
+            </v-list-item-title>
+          </v-list-item>
+          <v-list-item>
+            <v-list-item-title>
+              <router-link
+                :to="{
+                  name: 'UserProfile',
+                  params: {
+                    username: this.$store.state.username
+                  }
+                }"
+              >
+                유저프로필
+              </router-link>
+            </v-list-item-title>
+          </v-list-item>
+          <v-list-item>
+            <v-list-item-title>
+              <router-link
+                :to="{
+                  name: 'UserScrap'
+                }"
+                >유저스크랩</router-link
+              >
+            </v-list-item-title>
+          </v-list-item>
+          <v-list-item>
+            <a href="/#/logout">
+              <v-list-item-title>
+                <router-link :to="{ name: 'Logout' }">로그아웃</router-link>
+              </v-list-item-title>
+            </a>
+          </v-list-item>
+        </v-list>
+        <v-list v-else>
+          <v-list-item>
+            <v-list-item-title>
+              <router-link :to="{ name: 'Login' }">로그인</router-link>
+            </v-list-item-title>
+          </v-list-item>
+          <v-list-item>
+            <v-list-item-title>
+              <router-link :to="{ name: 'Join' }">회원가입</router-link>
+            </v-list-item-title>
           </v-list-item>
         </v-list>
       </v-menu>
@@ -59,25 +130,29 @@
   </v-app-bar>
 </template>
 <script>
+const storage = window.sessionStorage;
 export default {
   data() {
     return {
-      boards: [
-        { title: "레시피 공유" },
-        { title: "칵테일 파티" },
-        { title: "자유 게시판" }
-      ],
-      acc_menus: [
-        { title: "마이 페이지" },
-        { title: "스크랩 목록" },
-        { title: "로그아웃" }
-      ],
-
+      acc_menus: [],
       drawer: true,
       mini: true
     };
   },
-  methods: {}
+  created() {
+    this.$store.state.username = storage.getItem("login_username");
+    this.username = this.$store.state.username;
+  },
+  computed: {
+    username: {
+      get() {
+        return this.$store.state.username;
+      },
+      set(val) {
+        this.$store.commit("Username", { username: val });
+      }
+    }
+  }
 };
 </script>
 <style>
