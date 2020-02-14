@@ -24,7 +24,7 @@ Vue.component("font-awesome-icon", FontAwesomeIcon);
 Vue.config.productionTip = false;
 
 const router = new Router({
-  mode: "history",
+  // mode: "history",
   routes
 });
 

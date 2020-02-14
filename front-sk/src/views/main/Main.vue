@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="animated infinite pulse" id="scroll-down">scroll down ↓</div>
+    <div class="animated infinite pulse" id="scroll-down" @click="fadeOut()">scroll down ↓</div>
     <full-page ref="fullpage" :options="options" id="fullpage">
       <!-- page 1 -->
       <div class="section main-img" id="page1">
@@ -15,12 +15,12 @@
       <!-- page 2 -->
       <div class="section">
           <v-row>
-            <v-col lg="6" sm="12" id="main-subtitle">
+            <v-col lg="6" md="6" sm="12" xs="12" id="main-subtitle">
               대충
               <span style="background-color: rgb(245, 213, 71);">칵테일</span>을 좋아하는
               <br />사람들을 위한 SNS라는 뜻
             </v-col>
-            <v-col lg="6" sm="12" class="main-img" id="page2"></v-col>
+            <v-col lg="6" md="6" sm="12" xs="12" class="main-img" id="page2"></v-col>
           </v-row>
       </div>
       <!-- page 3 -->
@@ -42,14 +42,12 @@
           <h1 id="info-title">Developers</h1>
           <div>
             <v-row id="info-members">
-              <v-col v-for="person in people" lg="3" xs="6" :key="person.id">
-                <div>
-                  <img
-                    class="info-members-profile info-btn"
-                    @click="infoPopUp"
-                    :src="person.profileUrl"
-                  />
-                </div>
+              <v-col v-for="person in people" lg="3" sm="6" xs="6" :key="person.id">
+                <img  
+                  class="info-members-profile info-btn"
+                  @click="infoPopUp"
+                  :src="person.profileUrl"
+                />
               </v-col>
             </v-row>
           </div>
@@ -80,11 +78,14 @@
 </template>
 
 <script>
+// import $ from 'jquery';
 export default {
   data() {
     return {
       controlArrows: true,
-      options: {},
+      options: {
+        // navigation: true,
+      },
       people: [
         {
           name: "김우재",
@@ -127,9 +128,14 @@ export default {
         };
       }
     },
-    temp(){
+    fadeOut(){
+      let scrollDown = document.getElementById("scroll-down")
+      console.log("window.scrollY", window.scrollY)
+      console.log('scrollDown', scrollDown.getBoundingClientRect().top)
+      console.log("window.outerHeight", window.outerHeight)
       console.log(1)
-    }
+
+    },
   },
   created() {
     // $(window).addEventListener("scroll", function(){
@@ -149,22 +155,26 @@ export default {
 @import url("https://fonts.googleapis.com/css?family=Playfair+Display:700i&display=swap");
 @import url("https://fonts.googleapis.com/css?family=Indie+Flower&display=swap");
 @import url("https://fonts.googleapis.com/css?family=Song+Myung&display=swap");
+ul li a span {
+    background: yellow;
+}
 .section {
   background: black;
   color: white;
 }
 #scroll-down {
   position: fixed;
-  margin: 1rem;
+  text-align: center;
+  margin-left: 45vmax;
+  margin-right: 45vmax;
   bottom: 0px;
-  left: 45%;
   z-index: 1;
   font-size: 150%;
   color: white;
   font-family: "Indie Flower", cursive;
 }
 .main-img {
-  padding: 0 10rem;
+  padding: 5vmin 10vmin;
   height: 42rem;
   animation: fadein 2s;
   -moz-animation: fadein 2s; /* Firefox */
@@ -181,7 +191,7 @@ export default {
   display: flex;
   float: right;
   background: url(../../assets/images/image4.jpg) no-repeat;
-  background-position-x: 30%;
+  background-position-x: 45%;
   height: 45rem;
   width: 50%;
   background-size: cover;
@@ -198,6 +208,8 @@ export default {
   background-size: cover;
   background-position-x: 50%;
   background-position-y: 100%;
+  padding-left: 15vmin;
+  padding-right: 15vmin;
   width: 100%;
   height: 80%;
 }
@@ -219,12 +231,13 @@ export default {
 }
 #main-contents {
   position: relative;
+  padding: 10vmin;
   font-size: 3vmin;
   font-family: "Song Myung", serif;
 }
 #info-title {
   position: relative;
-  padding: 4vmax 0;
+  padding-bottom: 4vmax;
   font-family: "Playfair Display";
   font-size: 7vmin;
 }
@@ -242,9 +255,9 @@ export default {
   cursor: pointer;
   align-content: center;
 }
-.info-members-profile:hover {
-  -webkit-filter: grayscale(100%);
-}
+/* .info-members-profile:hover {
+  animation: 
+} */
 .info-members-name {
   margin: 10px 0;
   letter-spacing: 5px;
