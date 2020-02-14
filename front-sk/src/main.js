@@ -8,20 +8,16 @@ import "roboto-fontface/css/roboto/roboto-fontface.css";
 import "@mdi/font/css/materialdesignicons.css";
 import "fullpage.js/vendors/scrolloverflow"; // Optional. When using scrollOverflow:true
 import VueFullPage from "vue-fullpage.js";
-import {
-  library
-} from "@fortawesome/fontawesome-svg-core";
-import {
-  faUserSecret
-} from "@fortawesome/free-solid-svg-icons";
-import {
-  FontAwesomeIcon
-} from "@fortawesome/vue-fontawesome";
+import Carousel3d from "vue-carousel-3d";
+import { library } from "@fortawesome/fontawesome-svg-core";
+import { faUserSecret } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
 Vue.config.productionTip = false;
 
 Vue.use(Router);
 Vue.use(VueFullPage);
+Vue.use(Carousel3d);
 
 library.add(faUserSecret);
 
@@ -30,6 +26,7 @@ Vue.component("font-awesome-icon", FontAwesomeIcon);
 Vue.config.productionTip = false;
 
 const router = new Router({
+  // mode: "history",
   routes
 });
 

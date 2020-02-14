@@ -24,11 +24,10 @@
           </tbody>
         </template>
       </v-simple-table>
-      
     </div>
     <div id="board-list-footer">
-      <button class="board-button" @click="add_move()">글쓰기</button>
-      <div>
+      <button v-if="this.$store.state.username" class="board-button" @click="add_move()">글쓰기</button>
+      <div id="pagination">
         <button v-for="pageNm in pageNms" :key="pageNm" @click="retrieveBoard(pageNm)">
           <span style="margin-right:10px;">{{ pageNm }}</span>
         </button>
@@ -120,5 +119,9 @@ export default {
   height: 3rem;
   border: 1px solid #ccc;
   border-radius: 3rem;
+}
+#pagination {
+  display: inline;
+  margin: 30rem;
 }
 </style>

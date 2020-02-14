@@ -1,10 +1,11 @@
 <template>
   <v-app-bar id="navbar" color="#000" data-app hide-on-scroll>
-    <router-link to="/">
+    <router-link :to="{ name: 'Main' }">
       <h1 id="nav-logo" color="#fff">Cocktail</h1>
     </router-link>
     <v-spacer></v-spacer>
-    <div id="nav-contents">
+    <!-- nav-contents-lg -->
+    <div id="nav-contents-lg">
       <router-link
         :to="{
           name: 'CocktailList',
@@ -22,7 +23,8 @@
           <v-list-item>
             <v-list-item-title>
               <router-link :to="{ name: 'BoardRecipeList' }"
-                >레시피 공유</router-link>
+                >레시피 공유</router-link
+              >
             </v-list-item-title>
           </v-list-item>
           <v-list-item>
@@ -82,14 +84,26 @@
           </v-list-item>
           <v-list-item>
             <v-list-item-title>
-              <router-link :to="{ name: 'UserProfile' }">
+              <router-link
+                :to="{
+                  name: 'UserProfile',
+                  params: {
+                    username: this.$store.state.username
+                  }
+                }"
+              >
                 유저프로필
               </router-link>
             </v-list-item-title>
           </v-list-item>
           <v-list-item>
             <v-list-item-title>
-              <router-link :to="{ name: 'UserScrap' }">유저스크랩</router-link>
+              <router-link
+                :to="{
+                  name: 'UserScrap'
+                }"
+                >유저스크랩</router-link
+              >
             </v-list-item-title>
           </v-list-item>
           <v-list-item>
@@ -114,6 +128,7 @@
         </v-list>
       </v-menu>
     </div>
+    <!-- nav-contents-sm -->
   </v-app-bar>
 </template>
 <script>
@@ -163,5 +178,11 @@ export default {
   padding: 0 20px;
   font-family: "Lobster", cursive;
   color: white;
+}
+
+@media (max-width:700px) {
+  #nav-contents-lg {
+    display: none;
+  }
 }
 </style>

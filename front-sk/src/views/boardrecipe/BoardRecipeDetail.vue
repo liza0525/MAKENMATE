@@ -1,5 +1,5 @@
 <template>
-  <div style="padding: 100px; color: blue;">
+    <div style="padding: 100px; color: blue;">
     <p><a href="/#/boardrecipe/list">레시피 공유 게시판 리스트로</a></p>
     <h1>
       {{ rid }}번 레시피 디테일
@@ -57,6 +57,9 @@
         <span style="margin-right:10px;">{{ pageNm }}</span>
       </button>
     </div>
+    <div v-for="images in imagepath" v-bind:key="images">
+          <img :src="images"/>
+        </div>
   </div>
 </template>
 
@@ -75,7 +78,8 @@ export default {
       isInput: [],
       updatedComment: "",
       pageNm: 1,
-      pageNms: []
+      pageNms: [],
+      imagepath: []
     };
   },
   created() {
@@ -83,6 +87,14 @@ export default {
     http.get("/boardrecipe/" + this.rid).then(res => {
       // console.log(res.data)
       this.boardRecipe = res.data;
+
+       if (this.boardRecipe.filelist.length != 0) {
+                        console.log(this.boardRecipe.filelist[0])
+                        for (let i = 0; i < this.boardRecipe.filelist.length; i++) {
+                          this.imagepath[i] = require("C:/image/" + this.boardRecipe.filelist[i])
+                        }
+                    }
+
 
       this.$store
         .dispatch(Constant.GET_REPLYBOARDRECIPE, {

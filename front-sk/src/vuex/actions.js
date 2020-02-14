@@ -450,10 +450,14 @@ export default {
   },
   // Cocktail 좋아요
   [Constant.GET_COCKTAILLIKE]: (store, payload) => {
+    console.log(payload);
     return new Promise((resolve, reject) => {
       http
-        .get("/cocktail/getlikebyuser", payload.username)
+        .get("/cocktail/getlikebyuser", {
+          params: { username: payload.username }
+        })
         .then(res => {
+          console.log(res.data.object);
           store.commit(Constant.GET_COCKTAILLIKE, {
             cocktailList: res.data.object
           });
@@ -776,6 +780,24 @@ export default {
         });
     });
   },
+  [Constant.MODIFY_USERINTRO]: (store, payload) => {
+    return new Promise((resolve, reject) => {
+      console.log(payload);
+      http
+        .put("/user/updateProfile", null, {
+          params: {
+            username: payload.username,
+            intro: payload.intro
+          }
+        })
+        .then(res => {
+          store.commit(Constant.MODIFY_USERINTRO, {
+            intro: res.data.object.intro
+          });
+          console.log(res.data.data);
+        });
+    });
+  },
   [Constant.ADD_COCKTAILCOMMENTSLIKE]: (store, payload) => {
     return new Promise((resolve, reject) => {
       http
@@ -843,6 +865,28 @@ export default {
         })
         .then(res => {
           resolve(res);
+        })
+        .catch(exp => {
+          console.log(exp);
+          reject();
+        });
+    });
+  },
+  // 내가 쓴 글 가져오기
+  [Constant.GET_BOARDLIKEBYUSER]: (store, payload) => {
+    return new Promise((resolve, reject) => {
+      http
+        .get("/board/user/" + payload.uid, {
+          params: {
+            page: payload.pageNm - 1
+          }
+        })
+        .then(res => {
+          store.commit(Constant.GET_BOARDLIKEBYUSER, {
+            boards: res.data.boards.content,
+            totalPages: res.data.boards.totalPages
+          });
+          resolve();
         })
         .catch(exp => {
           console.log(exp);
