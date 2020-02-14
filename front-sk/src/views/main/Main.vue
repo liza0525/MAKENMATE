@@ -9,28 +9,29 @@
         <div class="stars"></div>
         <div class="stars"></div>
         <div class="scroling-intro-wrap"></div>
-        <h1 class="animated flipInX delay-1s" id="main-title">Daily Cocktail Party</h1>
+        <h1 class="animated flipInX delay-1s" id="main-title">
+          Daily Cocktail Party
+        </h1>
       </div>
       <div class="section">
         <div>
           <div class="main-img" id="page2"></div>
           <h1 id="main-subtitle">
             대충
-            <span style="background-color: rgb(245, 213, 71);">칵테일</span>을 좋아하는
-            <br />사람들을 위한 SNS라는 뜻
+            <span style="background-color: rgb(245, 213, 71);">칵테일</span>을
+            좋아하는 <br />사람들을 위한 SNS라는 뜻
           </h1>
         </div>
       </div>
       <div class="section main-img" id="page3">
         <p id="main-contents">
           칵테일 맛있고
-          <span style="background-color: black;">레시피 공유</span>도 하고 검색하고
+          <span style="background-color: black;">레시피 공유</span>도 하고
+          검색하고
           <br />
-          <span style="background-color: black;">칵테일 번개 약속</span>도 잡을 수 있다, 뭐 그런...
-          <br />그런
-          사이트라고 소개하고 싶은데
-          <br />소개 글 좀 깔쌈하게 쓸 수 없을까 하
-          이놈의 문장력
+          <span style="background-color: black;">칵테일 번개 약속</span>도 잡을
+          수 있다, 뭐 그런... <br />그런 사이트라고 소개하고 싶은데 <br />소개
+          글 좀 깔쌈하게 쓸 수 없을까 하 이놈의 문장력
         </p>
       </div>
       <div class="section">
@@ -59,20 +60,22 @@
             <v-row>
               <v-col cols="6">
                 <img :src="person.profileUrl" />
-                <div style="display:flex; justfy-content:space-around;font-size: 2rem;">
+                <div
+                  style="display:flex; justfy-content:space-around;font-size: 2rem;"
+                >
                   <i class="fab fa-instagram"></i>
                   <i class="fab fa-github"></i>
                   <i class="far fa-envelope"></i>
                 </div>
-                </v-col>
-                <v-col cols="6">  
+              </v-col>
+              <v-col cols="6">
                 <h1 class="info-member-name">
                   {{ person.name }}
                 </h1>
                 <p>
                   {{ person.biography }}
                 </p>
-                </v-col>
+              </v-col>
             </v-row>
           </div>
         </div>
@@ -128,9 +131,10 @@ export default {
           modal[i].style.display = "none";
         };
       }
-    },
+    }
   },
   created() {
+    console.log(process.env);
     window.addEventListener("scroll", this.pageMove);
   },
   mounted() {
@@ -147,7 +151,7 @@ export default {
 @import url("https://fonts.googleapis.com/css?family=Playfair+Display:700i&display=swap");
 @import url("https://fonts.googleapis.com/css?family=Indie+Flower&display=swap");
 @import url("https://fonts.googleapis.com/css?family=Song+Myung&display=swap");
-.section{
+.section {
   background: black;
   color: white;
 }
@@ -308,7 +312,6 @@ export default {
     width: 13rem;
     height: 13rem;
     animation-timing-function: ease-out;
-
   }
   50% {
     width: 13.5rem;

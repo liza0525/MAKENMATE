@@ -25,6 +25,7 @@ Vue.config.productionTip = false;
 
 const router = new Router({
   mode: "history",
+  base: process.env.BASE_URL,
   routes
 });
 

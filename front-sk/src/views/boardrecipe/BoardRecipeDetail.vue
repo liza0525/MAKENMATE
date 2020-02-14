@@ -1,6 +1,8 @@
 <template>
   <div style="padding: 100px; color: blue;">
-    <p><a href="/#/boardrecipe/list">레시피 공유 게시판 리스트로</a></p>
+    <p>
+      <a @click="goback()">레시피 공유 게시판 리스트로</a>
+    </p>
     <h1>
       {{ rid }}번 레시피 디테일
       <button @click="clickLike">
@@ -16,22 +18,9 @@
 
     <p>제목 : {{ boardRecipe.title }}</p>
     <p>내용 : {{ boardRecipe.contents }}</p>
-    <button v-if="!isScrapped" @click="addToScrapList" style="cursor: pointer">
-      스크랩
-    </button>
-    <button
-      v-if="isScrapped"
-      @click="removeFromScrapList"
-      style="cursor: pointer"
-    >
-      스크랩 취소
-    </button>
-    <div
-      :v-if="reply"
-      v-for="(re, i) in reply"
-      :key="i"
-      style="margin-top: 5px; display:block;"
-    >
+    <button v-if="!isScrapped" @click="addToScrapList" style="cursor: pointer">스크랩</button>
+    <button v-if="isScrapped" @click="removeFromScrapList" style="cursor: pointer">스크랩 취소</button>
+    <div :v-if="reply" v-for="(re, i) in reply" :key="i" style="margin-top: 5px; display:block;">
       <div v-if="isInput[i] === 0">
         <span>{{ users[i] }} : {{ re.content }}</span>
         <p v-if="username === users[i]" style="display:inline-block;">
@@ -303,6 +292,9 @@ export default {
           }
           this.pageNms = arr;
         });
+    },
+    goback() {
+      this.$router.go(-1);
     }
   }
 };

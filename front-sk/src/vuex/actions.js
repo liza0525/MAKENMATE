@@ -386,6 +386,7 @@ export default {
     });
   },
   [Constant.REMOVE_SCRAP]: (store, payload) => {
+    console.log(payload);
     return new Promise((resolve, reject) => {
       // 스크랩 TABLE의 id
       http
@@ -396,10 +397,9 @@ export default {
           }
         })
         .then(res => {
-          let list = [...res.data.object];
-          store.scrapList = list;
           store.commit(Constant.GET_SCRAPLIST, {
-            scrapList: res.data.object
+            scrapList: res.data.object.content,
+            totalPages: res.data.object.totalPages
           });
           resolve();
         })

@@ -103,7 +103,7 @@ public class SocialLoginController {
             System.out.println(e);
         }
 
-        return "redirect:http://localhost:3000/auth" + access_token;
+        return "redirect:http://localhost:3000/" + access_token;
     }
 
     @GetMapping("/user/kakaoLogin")
@@ -123,19 +123,16 @@ public class SocialLoginController {
 			if(find != null)
 				email = find.getEmail(); 
 		}
-		mav.setViewName("redirect:http://localhost:3000/auth");
+		mav.setViewName("redirect:http://localhost:3000/#/");	
 		if(email == null) {
-//			mav.setViewName("redirect:http://localhost:3000/user/join");
 			mav.addObject("nickname", nickname);
 			mav.addObject("msg", "email이 존재하지 않아 회원가입 페이지로 이동합니다.");
+			return mav;
 		}else if(userDao.findByNickname(nickname) == null) {
 			userDao.save(User.builder().email(email).password(passwordEncoder.encode("kakao4312!@#$"))
 					.nickname(nickname).roles(Collections.singletonList("ROLE_USER")).build());
-//			mav.setViewName("redirect:http://localhost:3000/auth");
-			mav.addObject("token", access_token);
-		}else {
-			mav.addObject("token", access_token);
 		}
+		mav.addObject("token", access_token);
         return mav;
     }
     

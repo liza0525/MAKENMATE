@@ -143,13 +143,14 @@ export default {
       searchedData: [],
       pageNms: [],
       totalPages: 0,
+
       filter: {
         filtered: "",
         searchData: ""
       },
       clicked: false,
       filters: [
-        { name: "레몬", image: require("../assets/images/lemon.png") },
+        { name: "레몬", image: require("../assets/images/kwj.jpg") },
         { name: "럼", image: require("../assets/images/lemon.png") },
         { name: "위스키", image: require("../assets/images/lemon.png") },
         { name: "진", image: require("../assets/images/lemon.png") },
