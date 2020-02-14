@@ -58,7 +58,7 @@
       </div>
       <v-row>
         <v-col
-          v-for="cocktail in cocktailArray"
+          v-for="(cocktail, i) in cocktailArray"
           v-bind:key="cocktail.cid"
           cols="3"
         >
@@ -68,79 +68,87 @@
               class="white--text align-end"
               gradient="to bottom, rgba(0, 0,0,.1), rgba(0,0,0,.5)"
               :alt="cocktail.cname"
-              style="height:75%"
+              style="height:87%;margin-top:0"
             >
             </v-img>
             <h1
               class="sansfont"
-              style="display:inline-block;font-size:120%;margin-left:15px; margin-top:10px;font-weight:bolder;"
+              style="margin-top:10px;display:inline-block;width:72%;overflow:auto;height:7%;font-size:120%;margin-left:15px;font-weight:bolder;"
             >
               {{ cocktail.cname }}
             </h1>
             <v-text
-              style="margin-top:12px;margin-right:20px;float:right;display:inline-block;"
+              style="margin-top:12px;margin-right:15px;float:right;display:inline-block;"
             >
-              <i class="fas fa-lg fa-heart"></i>
+              <i class="fas fa-lg fa-heart"></i> {{ getLikesByCocktail[i] }}
             </v-text>
           </v-card>
         </v-col>
       </v-row>
     </v-container>
-    <div>
+    <div style="text-align:center; color:#ffffff">
       <input
         type="text"
         @input="autocomplete"
         v-model="searchData"
         @keypress.enter="search(1)"
+        class="neon-input"
+        placeholder="Search"
       />
+      <button @click="search(1)" style="margin-top: 1%; margin-left:1%">
+        <i class="fas fa-2x fa-search"></i>
+      </button>
     </div>
-    <v-container v-if="searchedData.length > 0">
-      <div style="text-align:center;">
-        <v-card
-          class="mx-auto"
-          max-width="500"
-          style="overflow-y:auto; float:center;"
-        >
-          <v-list style=" float:center;">
-            <v-list-item-group v-model="searchedData">
-              <v-list-item v-for="(item, i) in searchedData" :key="i">
-                <v-list-item-content @click="searchDetailPage(item)">
-                  <v-list-item-title v-text="item"></v-list-item-title>
-                </v-list-item-content>
-              </v-list-item>
-            </v-list-item-group>
-          </v-list>
-        </v-card>
+    <div v-if="searchedData.length > 0" style="text-align:center">
+      <div class="autocomplete">
+        <div v-for="(item, i) in searchedData" :key="i">
+          <button @click="searchDetailPage(item)">
+            <div
+              v-text="item"
+              style="font-family: 'GyeonggiBatang';text-align:left; margin-top:1%"
+            ></div>
+          </button>
+        </div>
       </div>
-    </v-container>
-
-    <button
-      v-if="pageNm > 5"
-      v-on:click="search(1)"
-      style="margin-right:10px;margin-top:100px;"
-    >
-      {{ fistBt }}
-    </button>
-    <button
-      v-if="pageNm > 5"
-      v-on:click="search(min - 5 < 0 ? 1 : min - 5)"
-      style="margin-right:10px;"
-    >
-      {{ prevBt }}
-    </button>
-    <button v-for="pageNm in pageNms" :key="pageNm" @click="search(pageNm)">
-      <span style="margin-right:10px;">{{ pageNm }}</span>
-    </button>
-    <button
-      v-if="min + 5 <= totalPages"
-      v-on:click="search(min + 5)"
-      style="margin-right:10px;"
-    >
-      {{ nextBt }}
-    </button>
-    <button v-if="min + 5 <= totalPages" v-on:click="search(totalPages)">
-      {{ lastBt }}
-    </button>
+    </div>
+    <div style="text-align:center; margin-top:3%; margin-bottom:3%">
+      <button
+        v-if="pageNm > 5"
+        v-on:click="search(1)"
+        style="margin-right:10px;margin-top:100px;color:#ffffff"
+      >
+        {{ fistBt }}
+      </button>
+      <button
+        v-if="pageNm > 5"
+        v-on:click="search(min - 5 < 0 ? 1 : min - 5)"
+        style="margin-right:10px;color:#ffffff"
+        class="paging-size"
+      >
+        {{ prevBt }}
+      </button>
+      <button v-for="pageNm in pageNms" :key="pageNm" @click="search(pageNm)">
+        <span style="margin-right:10px;color:#ffffff;" class="paging-size">{{
+          pageNm
+        }}</span>
+      </button>
+      <button
+        v-if="min + 5 <= totalPages"
+        class="paging-size"
+        v-on:click="search(min + 5)"
+        style="margin-right:10px;color:#ffffff"
+      >
+        {{ nextBt }}
+      </button>
+      <button
+        class="paging-size"
+        v-if="min + 5 <= totalPages"
+        v-on:click="search(totalPages)"
+        style="color:#ffffff;"
+      >
+        {{ lastBt }}
+      </button>
+    </div>
   </div>
 </template>
 
@@ -166,6 +174,7 @@ export default {
       },
       openFilterBox: false,
       clicked: false,
+      getLikesByCocktail: [],
       filters: [
         {
           name: "all",
@@ -269,14 +278,24 @@ export default {
           this.cocktailArray = { ...this.$store.state.cocktailList };
           this.totalPages = this.$store.state.totalPages;
           this.pageNm = pageNm;
-          console.log(this.cocktailArray);
+          this.cocktailArray = Object.values(this.cocktailArray);
+          // console.log(typeof this.cocktailArray, this.cocktailArray);
+          this.cocktailArray.forEach(element => {
+            this.$store
+              .dispatch(Constant.GET_LIKEBYCOCKTAIL, {
+                cid: element.cid
+              })
+              .then(() => {
+                this.getLikesByCocktail.push(this.$store.state.likebycocktail);
+                // console.log(this.getLikesByCocktail);
+              });
+          });
         });
       if (this.searchData === "h") {
         this.searchData = "";
       }
       return this.cocktailArray;
     },
-
     search(pageNm) {
       if (this.searchData == "")
         this.searchData = this.$route.query.searchedFiltered;
@@ -356,7 +375,10 @@ export default {
   font-style: normal;
 }
 @import url("https://fonts.googleapis.com/css?family=Jua&display=swap");
-
+body {
+  background-color: black !important;
+  z-index: -1;
+}
 .filter-box {
   font-family: "Vibur", cursive;
   font-size: 1rem;
@@ -382,7 +404,19 @@ export default {
   background: linear-gradient(rgba(0, 0, 0, 0.7));
   z-index: 0;
 }
-
+.autocomplete {
+  font-family: "GyeonggiBatang";
+  color: rgba(242, 30, 178, 0.78);
+  background-color: #ffffff;
+  display: inline-block;
+  width: 15%;
+  font-size: 1.3rem;
+  text-align: left;
+  margin-right: 2.8%;
+  padding-left: 1.5%;
+  padding-bottom: 0.7%;
+  padding-top: 0.7%;
+}
 .sign {
   min-height: 100%;
   font-family: "Vibur", cursive;
@@ -439,6 +473,28 @@ export default {
   border: 2px solid;
   border-radius: 5px;
   background-color: #ffffff;
+}
+
+.neon-input {
+  width: 15%;
+  padding-top: 1%;
+  padding-bottom: 1%;
+  font-size: 1.3rem;
+  font-family: "GyeonggiBatang";
+  color: #c6e2ff;
+  border: 2px solid #ffffff;
+  border-radius: 5px;
+  background-color: transparent;
+}
+.paging-size {
+  font-size: 150%;
+  font-family: "국립박물관문화재단클래식B";
+}
+.neon-input::placeholder {
+  font-family: "GyeonggiBatang";
+  font-size: 1.3rem;
+  color: #c6e2ff;
+  animation: neon-box 0.08s ease-in-out infinite alternate;
 }
 .sansfont {
   /* font-family: "MapoFlowerIsland"; */
