@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -27,6 +28,7 @@ import io.swagger.annotations.ApiResponses;
         @ApiResponse(code = 500, message = "Failure", response = BasicResponse.class) })
 
 @RestController
+@RequestMapping(value = "/backend")
 public class UserProfileController {
     // 디비 셋팅 후 주석을 푸세요.
     @Autowired

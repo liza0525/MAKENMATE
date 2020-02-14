@@ -24,6 +24,7 @@ import com.cocktail.model.like.BoardRecipeCommentsLike;
 import com.cocktail.model.like.BoardRecipeLike;
 import com.cocktail.model.like.CocktailLike;
 import com.cocktail.model.like.CommentsLike;
+import com.cocktail.model.meeting.UserMeeting;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -142,5 +143,10 @@ public class User implements UserDetails {
 	@OneToMany(mappedBy = "user")
 	@JsonManagedReference
 	private final List<BoardRecipeCommentsLike> boardrecipecommentsLike = new ArrayList<>();
+	
+	@OneToMany(mappedBy = "user")
+    @JsonManagedReference
+    private final List<UserMeeting> usermeeting = new ArrayList<>();
+	
 
 }

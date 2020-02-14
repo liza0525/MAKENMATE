@@ -29,7 +29,7 @@ import org.springframework.data.web.PageableDefault;
 
 @CrossOrigin(origins = { "*" }, maxAge = 3600) // "*" => http://localhost:3000
 @RestController
-@RequestMapping("/boardrecipe")
+@RequestMapping("/backend/boardrecipe")
 public class BoardRecipeController{
 
     @Autowired

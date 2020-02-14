@@ -57,11 +57,6 @@ public class BoardRecipe {
     // @JsonIgnore
     private User user;
 
-    // @Column
-    // private int user_uid;
-    // @JsonManagedReference
-    // @OneToMany(mappedBy = "boardrecipe")
-    // private List<UserScrap> userScrapList = new ArrayList<>();
 
     @OneToMany(mappedBy = "boardRecipe")
     @JsonManagedReference

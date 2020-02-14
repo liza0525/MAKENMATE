@@ -17,7 +17,7 @@
 </template>
 
 <script>
-const axios = require("axios");
+import http from "../../../http-common";
 
 export default {
   data: () => {
@@ -34,8 +34,8 @@ export default {
   methods: {
     withdraw() {
       if (confirm("탈퇴하시겠습니까?")) {
-        axios
-          .delete("http://localhost:8080/user/withdraw", null, {
+        http
+          .delete("/user/withdraw", null, {
             params: {
               email: this.email,
               password: this.password

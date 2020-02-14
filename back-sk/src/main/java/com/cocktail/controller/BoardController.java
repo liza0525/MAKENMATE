@@ -38,7 +38,7 @@ import org.springframework.data.domain.Sort.Direction;
 
 @CrossOrigin(origins = { "*" }, maxAge = 3600) // "*" => http://localhost:3000
 @RestController
-@RequestMapping("/board")
+@RequestMapping("/backend/board")
 public class BoardController {
 
     @Autowired

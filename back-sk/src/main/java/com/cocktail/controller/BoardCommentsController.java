@@ -43,7 +43,7 @@ import io.swagger.annotations.ApiResponses;
         @ApiResponse(code = 500, message = "Failure", response = BasicResponse.class) })
 
 @RestController
-@RequestMapping(value = "/comments")
+@RequestMapping(value = "/backend/comments")
 public class BoardCommentsController {
     @Autowired
     BoardCommentsDao commentsDao;

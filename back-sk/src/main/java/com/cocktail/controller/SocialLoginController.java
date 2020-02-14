@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.Collections;
 
 import javax.servlet.http.HttpServletResponse;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
@@ -41,6 +43,7 @@ import lombok.RequiredArgsConstructor;
         @ApiResponse(code = 500, message = "Failure", response = BasicResponse.class) })
 @RequiredArgsConstructor
 @Controller
+@RequestMapping(value = "/backend")
 public class SocialLoginController {
     @Autowired
     NaverAPI naver;
@@ -113,6 +116,7 @@ public class SocialLoginController {
         String userInfo = kakao.getUserInfo(access_token);
         ModelAndView mav = new ModelAndView();
         String[] arr = userInfo.split("&");
+        System.out.println(Arrays.toString(arr));
 		String nickname = arr[0].split("=")[1];
 		String email = null;
 		String[] tmp = arr[1].split("=");
@@ -123,7 +127,8 @@ public class SocialLoginController {
 			if(find != null)
 				email = find.getEmail(); 
 		}
-		mav.setViewName("redirect:http://localhost:3000/#/");	
+		mav.setViewName("redirect:http://localhost:3000/auth"); // local
+//		mav.setViewName("redirect:http://i02a309.p.ssafy.io");  // aws
 		if(email == null) {
 			mav.addObject("nickname", nickname);
 			mav.addObject("msg", "email이 존재하지 않아 회원가입 페이지로 이동합니다.");

@@ -20,9 +20,9 @@
       </table>
     </div>
     <div>
-      <a href="/#/boardrecipe/add">
+      <router-link :to="{name: BoardRecipeAdd}">
         <input type="button" value="글쓰기" />
-      </a>
+      </router-link>
     </div>
     <div>
         <button v-for="pageNm in pageNms" :key="pageNm" @click="retrieveBoard(pageNm)">

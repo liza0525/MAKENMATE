@@ -23,7 +23,6 @@ import BoardRecipeDetail from "./views/boardrecipe/BoardRecipeDetail.vue";
 import FileUpload from "./components/FileUpload.vue";
 import BoardRecipeAdd from "./views/boardrecipe/BoardRecipeAdd.vue";
 import BoardRecipeUpdate from "./views/boardrecipe/BoardRecipeUpdate.vue";
-import Auth from "./components/user/Auth";
 export default [
   {
     path: "/",
@@ -155,10 +154,5 @@ export default [
     name: "BoardRecipeUpdate",
     component: BoardRecipeUpdate,
     props: true
-  },
-  {
-    path: "/auth",
-    name: "Auth",
-    component: Auth
   }
 ];
