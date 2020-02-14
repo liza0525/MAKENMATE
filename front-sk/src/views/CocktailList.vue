@@ -9,60 +9,60 @@
       F<br />I<br />L<br />T<br />E<br />R<br />>
     </button>
     <div v-show="openFilterBox" class="filter-box">
-      <div>
+      <div class="hcontainer" style="margin-bottom:10%">
         <p
           type="button"
           class="close sign"
-          style="position:absolute;right:10%;"
+          style="font-size:4vmin;margin-top:5%;position:absolute;right:10%;"
           @click="openFilterBox = !openFilterBox"
         >
           &times;
         </p>
-        <div class="sign" style="margin-top:4.5%;text-align:center;">
+        <div
+          class="sign"
+          style="font-size:3vmax;padding-top:10%;margin-bottom:5%;text-align:center;"
+        >
           Material
         </div>
-        <v-container class="ma-0 pa-0">
-          <v-row>
-            <router-link
-              :to="{
-                name: 'CocktailList',
-                query: {
-                  pageNm: 1,
-                  filtered: filter.name,
-                  searchedFiltered: $route.query.searchedFiltered
-                }
-              }"
-              v-for="filter in filters"
-              :key="filter.name"
-            >
-              <v-col>
-                <img
-                  :src="filter.image"
-                  :alt="filter.name"
-                  style="height:200px;width:200px;"
-                />
-                <div style="text-align:center;">
-                  <div class="x-sign" style="font-size:30px;text-align:center;">
-                    {{ filter.title }}
-                  </div>
-                </div>
-              </v-col>
-            </router-link>
-          </v-row>
-        </v-container>
+        <div
+          style="text-align:center;display:inline-block;width:20%;margin-bottom:5%"
+          v-for="filter in filters"
+          :key="filter.name"
+        >
+          <router-link
+            :to="{
+              name: 'CocktailList',
+              query: {
+                pageNm: 1,
+                filtered: filter.name,
+                searchedFiltered: $route.query.searchedFiltered
+              }
+            }"
+          >
+            <v-img :src="filter.image" :alt="filter.name" style="width:100%;" />
+            <v-text class="x-sign" style="font-size:1.5vmax;text-align:center;">
+              {{ filter.title }}
+            </v-text>
+          </router-link>
+        </div>
       </div>
     </div>
-    <v-container ma-0 pa-0 style="width:65%;">
-      <div class="sign" style="z-index:200;margin-top:4.5%;text-align:center;">
+    <div class="hcontainer">
+      <div
+        class="sign"
+        style="z-index:200;font-size:400%;margin-top:10%;margin-bottom:10%;text-align:center;"
+      >
         Cocktails
       </div>
       <v-row>
         <v-col
           v-for="(cocktail, i) in cocktailArray"
           v-bind:key="cocktail.cid"
-          cols="3"
+          md="3"
+          sm="6"
+          xs="12"
         >
-          <v-card v-on:click="goToDetail(cocktail.cid)" style="height:400px">
+          <v-card v-on:click="goToDetail(cocktail.cid)" style="height:100%">
             <v-img
               :src="cocktail.image"
               class="white--text align-end"
@@ -85,69 +85,69 @@
           </v-card>
         </v-col>
       </v-row>
-    </v-container>
-    <div style="text-align:center; color:#ffffff">
-      <input
-        type="text"
-        @input="autocomplete"
-        v-model="searchData"
-        @keypress.enter="search(1)"
-        class="neon-input"
-        placeholder="Search"
-      />
-      <button @click="search(1)" style="margin-top: 1%; margin-left:1%">
-        <i class="fas fa-2x fa-search"></i>
-      </button>
-    </div>
-    <div v-if="searchedData.length > 0" style="text-align:center">
-      <div class="autocomplete">
-        <div v-for="(item, i) in searchedData" :key="i">
-          <button @click="searchDetailPage(item)">
-            <div
-              v-text="item"
-              style="font-family: 'GyeonggiBatang';text-align:left; margin-top:1%"
-            ></div>
-          </button>
+      <div style="text-align:center; color:#ffffff">
+        <input
+          type="text"
+          @input="autocomplete"
+          v-model="searchData"
+          @keypress.enter="search(1)"
+          class="neon-input"
+          placeholder="Search"
+        />
+        <button @click="search(1)" style="margin-top: 1%; margin-left:1%">
+          <i class="fas fa-2x fa-search"></i>
+        </button>
+      </div>
+      <div v-if="searchedData.length > 0" style="text-align:center">
+        <div class="autocomplete">
+          <div v-for="(item, i) in searchedData" :key="i">
+            <button @click="searchDetailPage(item)">
+              <div
+                v-text="item"
+                style="font-family: 'GyeonggiBatang';text-align:left; margin-top:1%"
+              ></div>
+            </button>
+          </div>
         </div>
       </div>
-    </div>
-    <div style="text-align:center; margin-top:3%; margin-bottom:3%">
-      <button
-        v-if="pageNm > 5"
-        v-on:click="search(1)"
-        style="margin-right:10px;margin-top:100px;color:#ffffff"
-      >
-        {{ fistBt }}
-      </button>
-      <button
-        v-if="pageNm > 5"
-        v-on:click="search(min - 5 < 0 ? 1 : min - 5)"
-        style="margin-right:10px;color:#ffffff"
-        class="paging-size"
-      >
-        {{ prevBt }}
-      </button>
-      <button v-for="pageNm in pageNms" :key="pageNm" @click="search(pageNm)">
-        <span style="margin-right:10px;color:#ffffff;" class="paging-size">{{
-          pageNm
-        }}</span>
-      </button>
-      <button
-        v-if="min + 5 <= totalPages"
-        class="paging-size"
-        v-on:click="search(min + 5)"
-        style="margin-right:10px;color:#ffffff"
-      >
-        {{ nextBt }}
-      </button>
-      <button
-        class="paging-size"
-        v-if="min + 5 <= totalPages"
-        v-on:click="search(totalPages)"
-        style="color:#ffffff;"
-      >
-        {{ lastBt }}
-      </button>
+      <div style="text-align:center; margin-top:3%; margin-bottom:3%">
+        <button
+          v-if="pageNm > 5"
+          v-on:click="search(1)"
+          style="margin-right:10px;margin-top:100px;color:#ffffff"
+        >
+          {{ fistBt }}
+        </button>
+        <button
+          v-if="pageNm > 5"
+          v-on:click="search(min - 5 < 0 ? 1 : min - 5)"
+          style="margin-right:10px;color:#ffffff"
+          class="paging-size"
+        >
+          {{ prevBt }}
+        </button>
+        <button v-for="pageNm in pageNms" :key="pageNm" @click="search(pageNm)">
+          <span style="margin-right:10px;color:#ffffff;" class="paging-size">{{
+            pageNm
+          }}</span>
+        </button>
+        <button
+          v-if="min + 5 <= totalPages"
+          class="paging-size"
+          v-on:click="search(min + 5)"
+          style="margin-right:10px;color:#ffffff"
+        >
+          {{ nextBt }}
+        </button>
+        <button
+          class="paging-size"
+          v-if="min + 5 <= totalPages"
+          v-on:click="search(totalPages)"
+          style="color:#ffffff;"
+        >
+          {{ lastBt }}
+        </button>
+      </div>
     </div>
   </div>
 </template>
@@ -379,6 +379,10 @@ body {
   background-color: black !important;
   z-index: -1;
 }
+.hcontainer {
+  margin-left: 15%;
+  margin-right: 15%;
+}
 .filter-box {
   font-family: "Vibur", cursive;
   font-size: 1rem;
@@ -390,6 +394,8 @@ body {
   position: fixed;
   z-index: 100;
   width: 100% !important;
+  top: 0px;
+  padding-bottom: %;
 }
 .test {
   background-color: black !important;
@@ -398,8 +404,8 @@ body {
 .rightImage {
   bottom: 0px;
   right: 1%;
-  width: auto;
-  height: 73%;
+  width: 30%;
+  height: auto;
   position: fixed;
   background: linear-gradient(rgba(0, 0, 0, 0.7));
   z-index: 0;
@@ -420,8 +426,8 @@ body {
 .sign {
   min-height: 100%;
   font-family: "Vibur", cursive;
-  font-size: 4rem;
   text-align: center;
+  font-weight: border;
   line-height: 1;
   color: #c6e2ff;
   animation: neon 0.08s ease-in-out infinite alternate;
