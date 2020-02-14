@@ -395,12 +395,8 @@ body {
   z-index: 100;
   width: 100% !important;
   top: 0px;
-  padding-bottom: %;
 }
-.test {
-  background-color: black !important;
-  z-index: -1;
-}
+
 .rightImage {
   bottom: 0px;
   right: 1%;
