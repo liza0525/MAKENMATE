@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="animated infinite pulse" id="scroll-down" @click="fadeOut()">scroll down ↓</div>
+    <div class="animated infinite pulse" id="scroll-down">scroll down ↓</div>
     <full-page ref="fullpage" :options="options" id="fullpage">
       <!-- page 1 -->
       <div class="section main-img" id="page1">
@@ -15,25 +15,25 @@
       <!-- page 2 -->
       <div class="section">
           <v-row>
-            <v-col lg="6" md="6" sm="12" xs="12" id="main-subtitle">
-              대충
-              <span style="background-color: rgb(245, 213, 71);">칵테일</span>을 좋아하는
-              <br />사람들을 위한 SNS라는 뜻
+            <v-col cols="12" md="6" id="main-subtitle">
+              <br />
+              <span style="background-color: #FFBB00;">칵테일</span>을 사랑하는
+              <br />모든 이들과 함께하는 Cocktail
             </v-col>
-            <v-col lg="6" md="6" sm="12" xs="12" class="main-img" id="page2"></v-col>
+            <v-col cols="12" md="6" class="main-img" id="page2"></v-col>
           </v-row>
       </div>
       <!-- page 3 -->
       <div class="section main-img" id="page3">
         <p id="main-contents">
-          칵테일 맛있고
-          <span style="background-color: black;">레시피 공유</span>도 하고 검색하고
+          술과 술이 만나 칵테일이 되듯이
           <br />
-          <span style="background-color: black;">칵테일 번개 약속</span>도 잡을 수 있다, 뭐 그런...
-          <br />그런
-          사이트라고 소개하고 싶은데
-          <br />소개 글 좀 깔쌈하게 쓸 수 없을까 하
-          이놈의 문장력
+          우리의 레시피를 모아 더 <span style="background-color: #000;">특별한 순간</span>을 만들고자 합니다.
+          <br />
+          이러한 가치를 아는 사람들이 모여 함께 한다면 
+          <br />
+          더욱 <span style="background-color: #000;">특별한 하루</span>를 보내지 않을까요..?
+          <br />
         </p>
       </div>
       <!-- page 4 -->
@@ -128,14 +128,6 @@ export default {
         };
       }
     },
-    fadeOut(){
-      let scrollDown = document.getElementById("scroll-down")
-      console.log("window.scrollY", window.scrollY)
-      console.log('scrollDown', scrollDown.getBoundingClientRect().top)
-      console.log("window.outerHeight", window.outerHeight)
-      console.log(1)
-
-    },
   },
   created() {
     // $(window).addEventListener("scroll", function(){
@@ -155,9 +147,6 @@ export default {
 @import url("https://fonts.googleapis.com/css?family=Playfair+Display:700i&display=swap");
 @import url("https://fonts.googleapis.com/css?family=Indie+Flower&display=swap");
 @import url("https://fonts.googleapis.com/css?family=Song+Myung&display=swap");
-ul li a span {
-    background: yellow;
-}
 .section {
   background: black;
   color: white;
@@ -168,8 +157,8 @@ ul li a span {
   margin-left: 45vmax;
   margin-right: 45vmax;
   bottom: 0px;
-  z-index: 1;
   font-size: 150%;
+  z-index: 1;
   color: white;
   font-family: "Indie Flower", cursive;
 }
@@ -255,9 +244,9 @@ ul li a span {
   cursor: pointer;
   align-content: center;
 }
-/* .info-members-profile:hover {
-  animation: 
-} */
+.info-members-profile:hover {
+  filter: brightness(130%)
+}
 .info-members-name {
   margin: 10px 0;
   letter-spacing: 5px;
