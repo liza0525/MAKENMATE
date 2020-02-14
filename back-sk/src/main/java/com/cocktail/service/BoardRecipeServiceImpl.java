@@ -54,16 +54,17 @@ public class BoardRecipeServiceImpl implements BoardRecipeService {
         br.setRegdate(boardrecipe.getContents());
         br.setUser_name(boardrecipe.getUser().getNickname());
         
-        List<UploadFile> file = filedao.list();
-        
-        String[] bb;
+        List<UploadFile> file = filedao.list(boardrecipe.getRid());
+        ArrayList<String> bb = new ArrayList<>();
         if(file.size() != 0) {
             for(int i=0; i < file.size(); i++){
-                bb[i] = file.get(i).getFileName();
-                //filename 담아서 brdetail에 넣어서 상세조회 해보기 
+                bb.add(i, file.get(i).getFileName());
+                //filename 담아서 brdetail에 넣어서 상세조회 해보기
             }
         }
-        return BRdetail;
+        br.setFilelist(bb);
+        System.out.println(br);
+        return br;
     }
 
     // 로그인한 유저가 스크랩한 유저 목록에 있는지 없는지

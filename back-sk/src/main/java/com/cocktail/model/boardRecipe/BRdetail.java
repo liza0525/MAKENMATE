@@ -33,5 +33,5 @@ public class BRdetail implements Serializable {
 
     private String user_name;
 
-    private int[] filelist;
+    private ArrayList<String> filelist;
 }
