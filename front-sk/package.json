@@ -15,6 +15,7 @@
     "@fortawesome/free-regular-svg-icons": "^5.12.1",
     "@fortawesome/free-solid-svg-icons": "^5.12.1",
     "@fortawesome/vue-fontawesome": "^0.1.9",
+    "@mdi/font": "^4.9.95",
     "@websanova/vue-auth": "^2.21.15-beta",
     "axios": "^0.19.1",
     "babel-eslint": "^10.0.3",

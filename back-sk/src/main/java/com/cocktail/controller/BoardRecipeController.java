@@ -42,17 +42,17 @@ public class BoardRecipeController{
         result.status = true;
         result.data = "success"; 
         result.object = this.boardrecipeservice.getAllBoardRecipe(pageable);
-        System.out.println(this.boardrecipeservice.getAllBoardRecipe(pageable).getContent());
+        //System.out.println(this.boardrecipeservice.getAllBoardRecipe(pageable).getContent());
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     //공유게시판 상세조회
     @GetMapping(value="/{boardrecipeno}", produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<BRdetail> getBoardRecipe(@PathVariable("boardrecipeno") int boardrecipeno) {
-        final BasicResponse result = new BasicResponse();
-        result.status = true;
-        result.data = "success";
-        result.object = this.boardrecipeservice.getAllBoardRecipe(); 
+        // final BasicResponse result = new BasicResponse();
+        // result.status = true;
+        // result.data = "success";
+        // result.object = this.boardrecipeservice.getAllBoardRecipe(); 
         return new ResponseEntity<BRdetail>(boardrecipeservice.findById(boardrecipeno), HttpStatus.OK);
     }
     
@@ -65,7 +65,6 @@ public class BoardRecipeController{
     //공유게시판 입력
     @PostMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<Integer> save(@RequestBody BRdetail brdetail){
-        System.out.println(brdetail);
         return new ResponseEntity<Integer>(boardrecipeservice.save(brdetail), HttpStatus.OK);
     }
 

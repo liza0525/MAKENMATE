@@ -61,11 +61,10 @@ public class BoardRecipeServiceImpl implements BoardRecipeService {
         if(file.size() != 0) {
             for(int i=0; i < file.size(); i++){
                 bb.add(i, file.get(i).getFileName());
-                //filename 담아서 brdetail에 넣어서 상세조회 해보기
             }
         }
         br.setFilelist(bb);
-        System.out.println(br);
+
         return br;
     }
 
@@ -103,7 +102,7 @@ public class BoardRecipeServiceImpl implements BoardRecipeService {
         //해당 file board 번호 업데이트
         String str = (String) brdetail.getFile();
         String text = str.replace("[", "").replace("]", "");
-        System.out.println(text);
+ 
         String[] wpqkf = text.split(",");
         for(int i = 0; i < wpqkf.length; i ++){
             UploadFile file = filedao.findById(Integer.parseInt(wpqkf[i])).orElseThrow();

@@ -132,7 +132,7 @@ export default [
   },
   {
     path: "/boardrecipe/list",
-    name: "BoardRecipe",
+    name: "BoardRecipeList",
     component: BoardRecipeList
   },
   {

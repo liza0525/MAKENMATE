@@ -54,8 +54,13 @@
         <span style="margin-right:10px;">{{ pageNm }}</span>
       </button>
     </div>
+    <div v-for="images in imagepath" v-bind:key="images">
+          <img :src="images"/>
+        </div>
     </div>
   </div>
+
+  
 </template>
 
 <script>
@@ -70,7 +75,8 @@ export default {
         file: "",
         contents: "",
         regdate: "",
-        user_name: ""
+        user_name: "",
+        filelist: []
       },
       username: "",
       comment: "",
@@ -79,7 +85,8 @@ export default {
       pageNm: 1,
       pageNms: [],
       isLike: [],
-      likebycomments: []
+      likebycomments: [],
+      imagepath: []
     };
   },
   mounted() {
@@ -124,6 +131,16 @@ export default {
       this.username = this.$store.state.username;
       http.get("/board/" + this.bid).then(res => {
         this.board = res.data;
+
+
+         if (this.board.filelist.length != 0) {
+                        console.log(this.board.filelist[0])
+                        for (let i = 0; i < this.board.filelist.length; i++) {
+                          this.imagepath[i] = require("C:/image/" + this.board.filelist[i])
+                        }
+                    }
+
+
 
         this.search(0);
       });
