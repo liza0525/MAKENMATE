@@ -4,7 +4,8 @@
       <h1 id="nav-logo" color="#fff">Cocktail</h1>
     </router-link>
     <v-spacer></v-spacer>
-    <div id="nav-contents">
+    <!-- nav-contents-lg -->
+    <div id="nav-contents-lg">
       <router-link
         :to="{
           name: 'CocktailList',
@@ -127,6 +128,7 @@
         </v-list>
       </v-menu>
     </div>
+    <!-- nav-contents-sm -->
   </v-app-bar>
 </template>
 <script>
@@ -176,5 +178,11 @@ export default {
   padding: 0 20px;
   font-family: "Lobster", cursive;
   color: white;
+}
+
+@media (max-width:700px) {
+  #nav-contents-lg {
+    display: none;
+  }
 }
 </style>
