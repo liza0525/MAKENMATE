@@ -71,5 +71,6 @@ export default {
   SIGNUP: "SignUp",
   GET_USERINFO: "getUserInfo", // 유저 프로필 불러오기
   MODIFY_USERINFO: "modifyUserInfo", // 유저 정보 수정
-  REMOVE_USER: "removeUserInfo" // 유저 정보 삭제
+  REMOVE_USER: "removeUserInfo", // 유저 정보 삭제
+  MODIFY_USERINTRO: "modifyUserIntro"
 };

@@ -41,21 +41,21 @@ public class BoardRecipeServiceImpl implements BoardRecipeService {
     @Override
     public BoardRecipe findById(int rid) {
         // BRdetail br = boardRecipeDao.findBRdetailById(bid);
-        //BoardRecipe boardrecipe = boardRecipeDao.findByRid(bid).orElseThrow();
+        // BoardRecipe boardrecipe = boardRecipeDao.findByRid(bid).orElseThrow();
         BoardRecipe boardrecipe = boardRecipeDao.findById(rid).orElseThrow(CocktailException::new);
         return boardrecipe;
     }
 
     // 로그인한 유저가 스크랩한 유저 목록에 있는지 없는지
     @Override
-    public Boolean getUserIdScrappingList(int rid, String username){
+    public Boolean getUserIdScrappingList(int rid, String username) {
         List<UserScrap> userScrapList = userScrapDao.findAllByBoardrecipe_rid(rid);
         List<String> usernameList = new ArrayList<>();
         Boolean isScrapping = true;
-        for (int i = 0 ; i < userScrapList.size() ; i++) {
+        for (int i = 0; i < userScrapList.size(); i++) {
             usernameList.add(userScrapList.get(i).getUser().getNickname());
         }
-        if (usernameList.contains(username)){
+        if (usernameList.contains(username)) {
             isScrapping = true;
         } else {
             isScrapping = false;
@@ -67,8 +67,8 @@ public class BoardRecipeServiceImpl implements BoardRecipeService {
     public int save(BRdetail brdetail) {
         BoardRecipe br = new BoardRecipe();
         br.setContents(brdetail.getContents());
-        //r.setImage();
-        SimpleDateFormat format1 = new SimpleDateFormat ( "yyyy-MM-dd HH:mm:ss");
+        // r.setImage();
+        SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date time = new Date();
         String time1 = format1.format(time);
         br.setRegdate(time1);
@@ -83,8 +83,8 @@ public class BoardRecipeServiceImpl implements BoardRecipeService {
     public void updateById(BRdetail brdetail) {
         BoardRecipe br = boardRecipeDao.getBoardRecipeByRid(brdetail.getRid());
         br.setContents(brdetail.getContents());
-        //br.setImage(image);
-        SimpleDateFormat format1 = new SimpleDateFormat ( "yyyy-MM-dd HH:mm:ss");
+        // br.setImage(image);
+        SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date time = new Date();
         String time1 = format1.format(time);
         br.setRegdate(time1);

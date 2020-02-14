@@ -152,5 +152,8 @@ export default {
   },
   [Constant.USERNAME]: (state, payload) => {
     state.username = payload.username;
+  },
+  [Constant.MODIFY_USERINTRO]: (state, payload) => {
+    state.user.intro = payload.user.intro;
   }
 };
