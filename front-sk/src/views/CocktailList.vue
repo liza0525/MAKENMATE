@@ -20,7 +20,7 @@
         </p>
         <div
           class="sign"
-          style="font-size:3vmax;padding-top:10%;margin-bottom:5%;text-align:center;"
+          style="font-size:3vmax;padding-top:7%;margin-bottom:3%;text-align:center;"
         >
           Material
         </div>
