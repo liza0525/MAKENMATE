@@ -15,12 +15,16 @@
       <!-- page 2 -->
       <div class="section">
           <v-row>
-            <v-col cols="12" md="6" id="main-subtitle">
-              <br />
+            <v-col class="main-subtitle" id="main-st-1">
               <span style="background-color: #FFBB00;">칵테일</span>을 사랑하는
               <br />모든 이들과 함께하는 Cocktail
             </v-col>
-            <v-col cols="12" md="6" class="main-img" id="page2"></v-col>
+            <v-col cols="12" sm="6" class="main-img" id="page2">
+              <div class="main-subtitle" id="main-st-2">
+              <span style="background-color: #FFBB00;">칵테일</span>을 사랑하는
+              <br />모든 이들과 함께하는 Cocktail
+              </div>
+            </v-col>
           </v-row>
       </div>
       <!-- page 3 -->
@@ -42,7 +46,7 @@
           <h1 id="info-title">Developers</h1>
           <div>
             <v-row id="info-members">
-              <v-col v-for="person in people" lg="3" sm="6" xs="6" :key="person.id">
+              <v-col v-for="person in people" cols="6" md="3" :key="person.id">
                 <img  
                   class="info-members-profile info-btn"
                   @click="infoPopUp"
@@ -181,7 +185,7 @@ export default {
   float: right;
   background: url(../../assets/images/image4.jpg) no-repeat;
   background-position-x: 45%;
-  height: 45rem;
+  height: 100vh;
   width: 50%;
   background-size: cover;
 }
@@ -208,13 +212,11 @@ export default {
   font-family: "Playfair Display", serif;
   font-size: 10vmin;
 }
-#main-subtitle {
+.main-subtitle {
   position: relative;
   padding: 2rem;
-  top: 20rem;
   float: right;
   text-align: right;
-  vertical-align: middle;
   font-size: 5vmin;
   font-family: "Song Myung", serif;
 }
@@ -257,7 +259,7 @@ export default {
   position: fixed;
   z-index: 2;
   left: 0;
-  top: 75%;
+  top: 77%;
   width: 100%;
   height: 100%;
   overflow: auto;
@@ -268,10 +270,7 @@ export default {
   background-color: #fefefe;
   margin: 7vw auto;
   padding: 1vw;
-  width: 50vw;
-}
-::-webkit-scrollbar {
-  display: none;
+  width: 80vmin;
 }
 .close {
   /* display: inline; */
@@ -357,7 +356,6 @@ export default {
 .stars:nth-child(3) {
   background-position: -20% -30%;
   animation-delay: -2s;
-  transform: rotate(200deg);
 }
 .stars:nth-child(4) {
   background-position: 40% -80%;
@@ -379,6 +377,29 @@ export default {
   }
   100% {
     opacity: 0.1;
+  }
+}
+
+
+@media (max-width: 600px) {
+  #main-st-1 {
+    display: none;
+  }
+  
+  #main-st-2 {
+    display: block;
+    top: 35vmin;
+    left: 25vmin;
+    margin-right: 25vmin;
+  }
+}
+@media (min-width: 600px) {
+  #main-st-1 {
+    display: block;
+  top: 40vh;
+  }
+  #main-st-2 {
+    display: none;
   }
 }
 </style>
