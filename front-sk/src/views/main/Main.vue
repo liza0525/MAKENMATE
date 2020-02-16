@@ -14,29 +14,28 @@
       </div>
       <!-- page 2 -->
       <div class="section">
-          <v-row>
-            <v-col class="main-subtitle" id="main-st-1">
+        <v-row>
+          <v-col class="main-subtitle" id="main-st-1">
+            <span style="background-color: #FFBB00;">칵테일</span>을 사랑하는
+            <br />모든 이들과 함께하는 Cocktail
+          </v-col>
+          <v-col cols="12" sm="6" class="main-img" id="page2">
+            <div class="main-subtitle" id="main-st-2">
               <span style="background-color: #FFBB00;">칵테일</span>을 사랑하는
               <br />모든 이들과 함께하는 Cocktail
-            </v-col>
-            <v-col cols="12" sm="6" class="main-img" id="page2">
-              <div class="main-subtitle" id="main-st-2">
-              <span style="background-color: #FFBB00;">칵테일</span>을 사랑하는
-              <br />모든 이들과 함께하는 Cocktail
-              </div>
-            </v-col>
-          </v-row>
+            </div>
+          </v-col>
+        </v-row>
       </div>
       <!-- page 3 -->
       <div class="section main-img" id="page3">
         <p id="main-contents">
           술과 술이 만나 칵테일이 되듯이
-          <br />
-          우리의 레시피를 모아 더 <span style="background-color: #000;">특별한 순간</span>을 만들고자 합니다.
-          <br />
-          이러한 가치를 아는 사람들이 모여 함께 한다면 
-          <br />
-          더욱 <span style="background-color: #000;">특별한 하루</span>를 보내지 않을까요..?
+          <br />우리의 레시피를 모아 더
+          <span style="background-color: #000;">특별한 순간</span>을 만들고자 합니다.
+          <br />이러한 가치를 아는 사람들이 모여 함께 한다면
+          <br />더욱
+          <span style="background-color: #000;">특별한 하루</span>를 보내지 않을까요..?
           <br />
         </p>
       </div>
@@ -47,7 +46,7 @@
           <div>
             <v-row id="info-members">
               <v-col v-for="person in people" cols="6" md="3" :key="person.id">
-                <img  
+                <img
                   class="info-members-profile info-btn"
                   @click="infoPopUp"
                   :src="person.profileUrl"
@@ -58,23 +57,40 @@
         </div>
         <!-- modal -->
         <div v-for="person in people" class="modal info-modal" :key="person.id">
-          <div class="modal-content">
+          <v-card class="modal-content" max-width="344" outlined>
             <p class="close">&times;</p>
-            <v-row>
-              <v-col cols="6">
-                <img :src="person.profileUrl" />
-                <div style="display:flex; justfy-content:space-around;font-size: 2rem;">
-                  <i class="fab fa-instagram"></i>
-                  <i class="fab fa-github"></i>
-                  <i class="far fa-envelope"></i>
-                </div>
-              </v-col>
-              <v-col cols="6">
-                <h1 class="info-member-name">{{ person.name }}</h1>
-                <p>{{ person.biography }}</p>
-              </v-col>
-            </v-row>
-          </div>
+            <v-img height="40vh" :src="person.profileUrl"></v-img>
+            <v-card-title>
+              <h1 class="info-members-name">{{ person.name }}</h1>
+              <div style="margin-left: auto; float:right; font-size: 2rem;">
+                <a :href="person.instagram" target="_blank">
+                <i v-if="person.instagram != null" class="fab fa-instagram"></i></a>
+                <a :href="person.github" target="_blank">
+                <i v-if="person.github != null" class="fab fa-github" style="margin-left: 10px;"></i></a>
+                <a :href="`mailto:${person.email}`">
+                <i v-if="person.email != null" class="far fa-envelope" style="margin-left: 10px;"></i></a>
+              </div>
+            </v-card-title>
+            <v-card-text>
+              <p style="font-weight: bold;">Role : {{ person.role }}</p>
+              <div class="ability-chart">
+                Java/Spring
+                <v-progress-circular rotate="270" :value="person.java" color="#EC380B"></v-progress-circular>
+              </div>
+              <div class="ability-chart">
+                HTML/CSS/Vue.js
+                <v-progress-circular rotate="270" :value="person.vue" color="#F05F3B"></v-progress-circular>
+              </div>
+              <div class="ability-chart">
+                Python/Django
+                <v-progress-circular rotate="270" :value="person.python" color="#429F9E"></v-progress-circular>
+              </div>
+              <div class="ability-chart">
+                Server
+                <v-progress-circular rotate="2 70" :value="person.server" color="#007872"></v-progress-circular>
+              </div>
+            </v-card-text>
+          </v-card>
         </div>
       </div>
     </full-page>
@@ -93,26 +109,51 @@ export default {
       people: [
         {
           name: "김우재",
-          biography:
-            "므재는 소주를 좋아해요. 사실 소주를 맥주에 말아먹는 걸 좋아한다 봐야지요ㅎㅎ",
-          profileUrl: require("../../assets/images/kwj.jpg")
+          role: "backend / frontend",
+          profileUrl: require("../../assets/images/kwj.jpg"),
+          instagram: "http://www.instagram.com",
+          github: "https://www.github.com",
+          email: "a@naver.com",
+          java: 15,
+          vue: 20,
+          python: 30,
+          server: 40
         },
         {
           name: "손현희",
-          biography: "혀니는 칵테일 덕후예요. 마스터 하는 것이 취미지요.★",
-          profileUrl: require("../../assets/images/shh.jpg")
+          role: "backend / frontend",
+          profileUrl: require("../../assets/images/shh.jpg"),
+          instagram: "http://www.instagram.com",
+          github: "https://www.github.com",
+          email: "a@naver.com",
+          java: 15,
+          vue: 20,
+          python: 30,
+          server: 40
         },
         {
           name: "이근성",
-          biography:
-            "근성쓰는 보드카를 마셔요. 매일 현희를 코칭하고 있어욬ㅋㅋ",
-          profileUrl: require("../../assets/images/lgs.jpg")
+          role: "backend / frontend",
+          profileUrl: require("../../assets/images/lgs.jpg"),
+          instagram: "http://www.instagram.com",
+          github: "https://www.github.com",
+          email: "a@naver.com",
+          java: 15,
+          vue: 20,
+          python: 30,
+          server: 40
         },
         {
           name: "정윤영",
-          biography:
-            "쩡뉴는 맥주를 먹어요. 운동은 많이 먹기 위해 하는 거죠...!",
-          profileUrl: require("../../assets/images/cyy.jpg")
+          role: "backend / frontend",
+          profileUrl: require("../../assets/images/cyy.jpg"),
+          instagram: "http://www.instagram.com",
+          github: "https://www.github.com",
+          email: "a@naver.com",
+          java: 15,
+          vue: 20,
+          python: 30,
+          server: 40
         }
       ]
     };
@@ -131,7 +172,7 @@ export default {
           modal[i].style.display = "none";
         };
       }
-    },
+    }
   },
   created() {
     // $(window).addEventListener("scroll", function(){
@@ -143,14 +184,13 @@ export default {
   },
   beforeDestroy() {
     window.removeEventListener("close", this.infoPopUp);
-  },
+  }
 };
 </script>
 
 <style scoped>
 @import url("https://fonts.googleapis.com/css?family=Playfair+Display:700i&display=swap");
 @import url("https://fonts.googleapis.com/css?family=Indie+Flower&display=swap");
-@import url("https://fonts.googleapis.com/css?family=Song+Myung&display=swap");
 .section {
   background: black;
   color: white;
@@ -218,18 +258,23 @@ export default {
   float: right;
   text-align: right;
   font-size: 5vmin;
-  font-family: "Song Myung", serif;
+  font-family: "GyeonggiBatang";
+}
+span {
+  padding: 0.3%;
+  font-family: "GyeonggiBatang";
+  font-weight: bold;
 }
 #main-contents {
   position: relative;
   padding: 10vmin;
   font-size: 3vmin;
-  font-family: "Song Myung", serif;
+  font-family: "GyeonggiBatang";
 }
 #info-title {
   position: relative;
-  padding-bottom: 4vmax;
-  font-family: "Playfair Display";
+  padding: 3vmax 0;
+  font-family: "Playfair Display", serif;
   font-size: 7vmin;
 }
 #info-members {
@@ -247,12 +292,11 @@ export default {
   align-content: center;
 }
 .info-members-profile:hover {
-  filter: brightness(130%)
+  filter: brightness(130%);
 }
 .info-members-name {
-  margin: 10px 0;
-  letter-spacing: 5px;
-  font-size: 1vw;
+  display: inline;
+  font-size: 2rem;
 }
 .modal {
   display: none;
@@ -268,17 +312,20 @@ export default {
 .modal-content {
   color: black;
   background-color: #fefefe;
-  margin: 7vw auto;
-  padding: 1vw;
-  width: 80vmin;
+  margin: 7vh auto;
+  font-family: "GyeonggiBatang";
 }
 .close {
-  /* display: inline; */
-  float: right;
   font-size: 25px;
   cursor: pointer;
 }
-
+.ability-chart {
+  display: inline;
+  margin-left: 5px;
+}
+a {
+  color: black;
+}
 /* fade in 효과 */
 @keyframes fadein {
   from {
@@ -380,12 +427,11 @@ export default {
   }
 }
 
-
 @media (max-width: 600px) {
   #main-st-1 {
     display: none;
   }
-  
+
   #main-st-2 {
     display: block;
     top: 35vmin;
@@ -396,7 +442,7 @@ export default {
 @media (min-width: 600px) {
   #main-st-1 {
     display: block;
-  top: 40vh;
+    top: 40vh;
   }
   #main-st-2 {
     display: none;

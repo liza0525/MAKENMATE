@@ -40,20 +40,26 @@ import http from "../../http-common";
 export default {
   name: "boardrecipe-list",
   data: () => {
-    return { info: [], loading: true, errored: false, totalPages: 0, pageNms: [] };
+    return {
+      info: [],
+      loading: true,
+      errored: false,
+      totalPages: 0,
+      pageNms: []
+    };
   },
   methods: {
     retrieveBoard(pageNm) {
       http
-        .get("/boardrecipe",{
-          params:{
-            page: pageNm -1
+        .get("/boardrecipe", {
+          params: {
+            page: pageNm - 1
           }
         })
         .then(response => {
-          this.info = response.data.object
-          this.totalPages = response.data.object.totalPages
-          console.log(this.info)
+          this.info = response.data.object;
+          this.totalPages = response.data.object.totalPages;
+          console.log(this.info);
           let arr = [];
 
           let min = parseInt((pageNm - 1) / 5) * 5 + 1;
@@ -69,7 +75,7 @@ export default {
         .finally(() => (this.loading = false));
     },
     add_move() {
-      this.$router.push({name: "BoardRecipeAdd"});
+      this.$router.push({ name: "BoardRecipeAdd" });
     },
     detail_id(sendrid) {
       this.$router.push({
@@ -86,9 +92,15 @@ export default {
 };
 </script>
 <style>
+@font-face {
+  font-family: "BBTreeGB";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_nine_@1.1/BBTreeGB.woff")
+    format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
 #boardrecipe-list-header {
-  background: 
-    url("../../assets/images/image6.jpg") no-repeat;
+  background: url("../../assets/images/image6.jpg") no-repeat;
   background-size: 100%;
   height: 60vh;
   background-position-y: 20%;
@@ -101,6 +113,7 @@ export default {
   float: left;
   top: 35vmin;
   font-size: 11vmin;
+  font-family: "BBTreeGB";
 }
 #boardrecipe-list-footer {
   color: #ccc;
@@ -111,6 +124,7 @@ export default {
 #boardrecipe-context {
   color: #ccc;
   margin: 5vmax 10vmax;
+  font-family: "GyeonggiBatang";
 }
 .boardrecipe-button {
   margin: 0 0.5rem;
@@ -119,16 +133,20 @@ export default {
   border: 1px solid #ccc;
   border-radius: 10vmin;
   font-size: 2vmin;
+  font-family: "GyeonggiBatang";
 }
 #pagination {
   display: inline;
   float: right;
+  font-size: 18px;
+  font-family: "GyeonggiBatang";
 }
 @media (max-width: 700px) {
   #boardrecipe-context {
-  margin: 2vmax 3vmax;
+    margin: 2vmax 3vmax;
   }
-  .numbering-col, .date-col{
+  .numbering-col,
+  .date-col {
     display: none;
   }
   #boardrecipe-list-header {
@@ -137,7 +155,7 @@ export default {
     background-position-x: 50%;
   }
   #boardrecipe-category {
-    margin-top: 3vmin; 
+    margin-top: 3vmin;
     font-size: 7vmin;
   }
 }

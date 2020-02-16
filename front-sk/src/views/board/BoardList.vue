@@ -1,7 +1,7 @@
 <template>
   <div>
     <div id="board-list-header">
-      <h1 id="board-category">자유게시판</h1>
+      <h1 id="board-category">자유 게시판</h1>
     </div>
     <div id="board-context">
       <v-simple-table dark>
@@ -86,6 +86,9 @@ export default {
 };
 </script>
 <style>
+td {
+  font-family: "GyeonggiBatang";
+}
 #board-list-header {
   background: linear-gradient(rgba(0, 0, 0, 0.3)),
     url("../../assets/images/image.png") no-repeat;
@@ -101,6 +104,7 @@ export default {
   float: left;
   top: 35vmin;
   font-size: 11vmin;
+  font-family: 'BBTreeGB';
 }
 #board-list-footer {
   color: #ccc;
@@ -111,6 +115,7 @@ export default {
 #board-context {
   color: #ccc;
   margin: 5vmax 10vmax;
+  font-family: "GyeonggiBatang";
 }
 .board-button {
   margin: 0 0.5rem;
@@ -119,10 +124,13 @@ export default {
   border: 1px solid #ccc;
   border-radius: 10vmin;
   font-size: 2vmin;
+  font-family: "GyeonggiBatang";
 }
 #pagination {
   display: inline;
   float: right;
+  font-size: 18px;
+  font-family: "GyeonggiBatang";
 }
 @media (max-width: 700px) {
   #board-context {

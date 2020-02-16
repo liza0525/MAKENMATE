@@ -17,7 +17,7 @@
             <tr v-for="scrap in scrapList" v-bind:key="scrap.bid">
               <td v-html="scrap.title" @click="goRecipeDetail(scrap.rid)" style="cursor: pointer;"></td>
               <td id="writer-col" v-html="scrap.user.nickname"></td>
-              <td><button @click="removeFromScrapList(scrap.rid)" style="color: rgb(230, 0, 0);">스크랩 취소</button></td>
+              <td><button @click="removeFromScrapList(scrap.rid)" style="color: rgb(230, 0, 0); font-weight: bold;">스크랩 취소</button></td>
             </tr>
           </tbody>
         </template>
@@ -124,6 +124,7 @@ export default {
 #user-scrap-context {
   color: #ccc;
   margin: 5vmax 10vmax;
+  font-family: "GyeonggiBatang";
 }
 @media (max-width: 700px) {
   #user-scrap-header {

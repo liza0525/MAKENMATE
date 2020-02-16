@@ -18,5 +18,6 @@ footer {
   text-align: center;
   line-height: 4rem;
   font-size: 2.5vmin;
+  font-family: 'BBTreeGB';
 }
 </style>

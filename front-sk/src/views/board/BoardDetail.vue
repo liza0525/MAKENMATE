@@ -32,12 +32,12 @@
       <button class="board-button" @click="go_to_list()">목록</button>
       <button
         class="board-button"
-        v-if="this.$store.state.username"
+        v-if="this.$store.state.username === board.user_name"
         @click="update_board(board.bid)"
       >수정</button>
       <button
         class="board-button"
-        v-if="this.$store.state.username"
+        v-if="this.$store.state.username === board.user_name"
         @click="delete_board(board.bid)"
       >삭제</button>
       <div id="board-date">{{ board.regdate }}</div>
@@ -334,6 +334,7 @@ export default {
   float: left;
   top: 35vmin;
   font-size: 11vmin;
+  font-family: 'BBTreeGB';
 }
 #board-username {
   margin: 0 0 0 2rem;
@@ -341,6 +342,7 @@ export default {
   position: relative;
   float: left;
   top: 40vh;
+  font-family: 'BBTreeGB';
 }
 #board-date {
   display: inline;
@@ -348,10 +350,12 @@ export default {
   float: right;
   margin-top: 3vh;
   font-size: 3vmin;
+  font-family: "GyeonggiBatang";
 }
 #board-context {
   color: #ccc;
   margin: 5vw 15vw;
+  font-family: "GyeonggiBatang";
 }
 #board-footer {
   color: #ccc;
@@ -367,6 +371,7 @@ export default {
   border: 1px solid #ccc;
   border-radius: 10vmin;
   font-size: 2.5vmin;
+  font-family: "GyeonggiBatang";
 }
 #board-like-button {
   display: block;
@@ -374,12 +379,14 @@ export default {
   color: white;
   text-align: center;
   margin-bottom: 3vh;
+  font-family: "GyeonggiBatang";
 }
 #board-comment-set {
   margin: 3vmin;
   color: #ccc;
   margin: 0vmax 10vmax;
   padding: 2rem 1rem;
+  font-family: "GyeonggiBatang";
 }
 #img-contents {
   margin: 5vh 15vw;

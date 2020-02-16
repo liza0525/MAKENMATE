@@ -278,7 +278,6 @@ export default {
   font-family: "Lobster", cursive;
   color: white;
 }
-
 @media (max-width: 700px) {
   #nav-contents-lg {
     display: none;

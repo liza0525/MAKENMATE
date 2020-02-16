@@ -1,7 +1,7 @@
 <template>
   <div>
     <div id="board-list-header">
-      <h1 id="board-category">자유게시판</h1>
+      <h1 id="board-category">자유 게시판</h1>
     </div>
     <div v-if="!submitted">
       <form
@@ -115,10 +115,12 @@ export default {
   float: left;
   top: 35vmin;
   font-size: 11vmin;
+  font-family: 'BBTreeGB';
 }
 #board-context {
   color: #ccc;
   padding: 2rem 5vw;
+  font-family: "GyeonggiBatang";
 }
 .board-button {
   color: #ccc;
