@@ -6,7 +6,7 @@
     <div v-if="!submitted">
       <form action method="post" id="_boardForm" name="boaradForm" @submit.prevent="updateBoard">
         <div id="board-context">
-          <h1>제목</h1>
+          <h1 style="display: inline;">제목</h1>
           <br />
           <input
             value="제목"
@@ -14,7 +14,7 @@
             name="titleid"
             id="_titleid"
             v-model="board.title"
-            style="width:100%; border-bottom:1px solid #000;"
+            style="width:100%; border-bottom:1px solid #ccc; margin-bottom: 5vh;"
           />
           <h1>내용</h1>
           <textarea
@@ -23,11 +23,12 @@
             name="contentsid"
             id="_contentsid"
             v-model="board.contents"
-            style="width:100%; height: 10rem; border-bottom:1px solid #000"
+            style="width:100%; height: 10rem; border-bottom:1px solid #ccc"
           />
         </div>
-        <file-upload />
-        <button class="board-button" type="submit" name="button">수정</button>
+        <div style="text-align: center;">
+          <button class="board-button" type="submit" name="button">수정</button>
+        </div>
       </form>
     </div>
   </div>
@@ -58,7 +59,6 @@ export default {
       this.bid = this.$route.params.bid;
       http.get("/board/" + this.bid).then(res => {
         this.board = res.data;
-        console.log(this.board);
       });
     },
     updateBoard() {
@@ -81,5 +81,26 @@ export default {
   }
 };
 </script>
-
-<style></style>
+<style scoped="scoped">
+#board-category {
+  margin: 0 0 0 15vw;
+  display: inline;
+  position: relative;
+  float: left;
+  top: 35vmin;
+  font-size: 11vmin;
+}
+#board-context {
+  color: #ccc;
+  padding: 2rem 5vw;
+}
+.board-button {
+  color: #ccc;
+  width: 50vmin;
+  height: 9vmin;
+  margin-bottom: 3vh;
+  font-size: 3vmin;
+  border: 1px solid #ccc;
+  border-radius: 10vmin;
+}
+</style>

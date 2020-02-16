@@ -65,6 +65,7 @@ public class BoardRecipeController{
     //공유게시판 입력
     @PostMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<Integer> save(@RequestBody BRdetail brdetail){
+        brdetail.setContents(brdetail.getContents().replace("\n", "<br/>"));
         return new ResponseEntity<Integer>(boardrecipeservice.save(brdetail), HttpStatus.OK);
     }
 

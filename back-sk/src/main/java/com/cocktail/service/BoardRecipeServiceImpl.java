@@ -53,7 +53,7 @@ public class BoardRecipeServiceImpl implements BoardRecipeService {
         br.setRid(boardrecipe.getRid());
         br.setTitle(boardrecipe.getTitle());
         br.setContents(boardrecipe.getContents());
-        br.setRegdate(boardrecipe.getContents());
+        br.setRegdate(boardrecipe.getRegdate());
         br.setUser_name(boardrecipe.getUser().getNickname());
         
         List<UploadFile> file = filedao.list(boardrecipe.getRid());

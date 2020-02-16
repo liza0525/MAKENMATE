@@ -126,7 +126,9 @@
         <v-navigation-drawer dark v-model="right" app right>
           <v-list dense>
             <v-list-item>
-              <v-btn text color="#fff">Menu</v-btn>
+              <div>
+              <v-btn text color="#fff">닫기</v-btn>
+              </div>
             </v-list-item>
           </v-list>
           <v-list dense>

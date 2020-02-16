@@ -1,36 +1,40 @@
 <template>
-  <div style="padding-top: 100px; color: red;">
-    <div>
-      <table class="list_table">
-        <col width="10%" />
-        <col width="20%" />
-        <col width="20%" />
-        <col width="10%" />
-        <tr>
-          <th>글 번호</th>
-          <th>제 목</th>
-          <th>날 짜</th>
-        </tr>
-        <tr v-for="board in info.content" v-bind:key="board.rid">
-          <td v-html="board.rid"></td>
-          <td v-html="board.title" @click="detail_id(board.rid)" style="cursor: pointer;"></td>
-          <td v-html="board.regdate"></td>
-        </tr>
-      </table>
+  <div>
+    <div id="boardrecipe-list-header">
+      <h1 id="boardrecipe-category">레시피 공유</h1>
     </div>
-    <div>
-      <a href="/#/boardrecipe/add">
-        <input type="button" value="글쓰기" />
-      </a>
+    <div id="boardrecipe-context">
+      <v-simple-table dark>
+        <template>
+          <thead>
+            <tr>
+              <th class="numbering-col">No.</th>
+              <th>제목</th>
+              <th>글쓴이</th>
+              <th class="date-col">날짜</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="text-center" v-for="board in info.content" v-bind:key="board.rid">
+              <td class="numbering-col" v-html="board.rid"></td>
+              <td v-html="board.title" @click="detail_id(board.rid)" style="cursor: pointer;"></td>
+              <td v-html="board.user.nickname"></td>
+              <td class="date-col" v-html="board.regdate"></td>
+            </tr>
+          </tbody>
+        </template>
+      </v-simple-table>
     </div>
-    <div>
+    <div id="boardrecipe-list-footer">
+      <button v-if="this.$store.state.username" class="boardrecipe-button" @click="add_move()">글쓰기</button>
+      <div id="pagination">
         <button v-for="pageNm in pageNms" :key="pageNm" @click="retrieveBoard(pageNm)">
           <span style="margin-right:10px;">{{ pageNm }}</span>
         </button>
+      </div>
     </div>
   </div>
 </template>
-
 <script>
 import http from "../../http-common";
 export default {
@@ -65,7 +69,7 @@ export default {
         .finally(() => (this.loading = false));
     },
     add_move() {
-      this.$router.push("BoardRecipeAdd");
+      this.$router.push({name: "BoardRecipeAdd"});
     },
     detail_id(sendrid) {
       this.$router.push({
@@ -82,4 +86,59 @@ export default {
 };
 </script>
 <style>
+#boardrecipe-list-header {
+  background: 
+    url("../../assets/images/image6.jpg") no-repeat;
+  background-size: 100%;
+  height: 60vh;
+  background-position-y: 20%;
+  color: white;
+}
+#boardrecipe-category {
+  margin: 0 0 0 15vw;
+  display: inline;
+  position: relative;
+  float: left;
+  top: 35vmin;
+  font-size: 11vmin;
+}
+#boardrecipe-list-footer {
+  color: #ccc;
+  margin: 0vmax 10vmax;
+  padding: 2rem 1rem;
+  border-top: 1px solid #ccc;
+}
+#boardrecipe-context {
+  color: #ccc;
+  margin: 5vmax 10vmax;
+}
+.boardrecipe-button {
+  margin: 0 0.5rem;
+  width: 15vmin;
+  height: 9vmin;
+  border: 1px solid #ccc;
+  border-radius: 10vmin;
+  font-size: 2vmin;
+}
+#pagination {
+  display: inline;
+  float: right;
+}
+@media (max-width: 700px) {
+  #boardrecipe-context {
+  margin: 2vmax 3vmax;
+  }
+  .numbering-col, .date-col{
+    display: none;
+  }
+  #boardrecipe-list-header {
+    height: 50vh;
+    background-size: 200vw;
+    background-position-x: 50%;
+  }
+  #boardrecipe-category {
+    margin-top: 3vmin; 
+    font-size: 7vmin;
+  }
+}
 </style>

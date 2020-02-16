@@ -12,10 +12,11 @@ export default {};
 footer {
   position: relative;  
   color: white;
-  background: rgb(27, 27, 27);
+  background: rgb(12, 12, 12);
   height: 4rem;
   width: 100%;
   text-align: center;
   line-height: 4rem;
+  font-size: 2.5vmin;
 }
 </style>
