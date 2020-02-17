@@ -30,42 +30,26 @@
         ></div>
       </div>
       <div style="text-align:right;margin-bottom:5%;padding-right:3%">
-        <i
-          class="fas fa-4x fa-quote-right"
-          style="color:white;opacity:0.5;"
-        ></i>
+        <i class="fas fa-4x fa-quote-right" style="color:white;opacity:0.5;"></i>
       </div>
-      <div style="white">{{ materials[0] }} , {{ cocktail.method }}</div>
       <v-row justify="space-around">
-        <div
-          v-show="!(materials[0] != '' || cocktail.method != '')"
-          style="text-align:center;"
-        >
+        <div v-show="!(materials[0] != '' || cocktail.method != '')" style="text-align:center;">
           <img v-bind:src="cocktail.image" style="width:30%;" />
         </div>
         <v-col v-show="materials[0] != '' || cocktail.method != ''" cols="6">
-          <v-img
-            v-bind:src="cocktail.image"
-            style="width:70%; float:right;"
-          ></v-img>
+          <v-img v-bind:src="cocktail.image" style="width:70%; float:right;"></v-img>
         </v-col>
         <v-col cols="6">
           <div class="subheading">
             <div v-if="materials[0] != ''">
               <v-row no-gutters style="padding-top:5%;padding-bottom:5%">
-                <v-col
-                  v-for="(m, i) in materials"
-                  :key="i"
-                  cols="6"
-                  style="text-align:center;"
-                >
+                <v-col v-for="(m, i) in materials" :key="i" cols="6" style="text-align:center;">
                   <v-card
                     outlined
                     tile
                     class="sansfont"
                     style="background-color: transparent; font-size:130%;"
-                    >{{ materials[i] }}</v-card
-                  >
+                  >{{ materials[i] }}</v-card>
                 </v-col>
               </v-row>
             </div>
@@ -73,8 +57,7 @@
               <span
                 class="sansfont"
                 style="font-size:500%;opacity:0.7;font-style:italic;font-weight: 900;"
-                >1.</span
-              >
+              >1.</span>
               <div
                 class="sansfont"
                 style=" display:inline; font-size:130%;"
@@ -105,17 +88,8 @@
             {{ users[i] }} :
             <input v-model="re.content" />
           </span>
-          <p
-            v-if="username === users[i]"
-            class="sansfont"
-            style="display:inline-block;"
-          >
-            <button
-              @click="updateComment(i, re.cmid, re.content)"
-              class="sansfont"
-            >
-              수정
-            </button>
+          <p v-if="username === users[i]" class="sansfont" style="display:inline-block;">
+            <button @click="updateComment(i, re.cmid, re.content)" class="sansfont">수정</button>
           </p>
         </div>
       </div>
