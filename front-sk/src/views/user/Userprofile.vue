@@ -14,7 +14,10 @@
             :src="user.image"
             style="position:absoulte; width:100%; height:100%;"
           />
+          <!--file upload component-->
+        
         </div>
+        
         <h1 class="sansfont" style="margin-top:1%;text-align:center">
           {{ user.nickname }}
         </h1>
@@ -22,6 +25,9 @@
           (ID : {{ user.email }})
         </p>
       </div>
+
+           <FileUpload/> 
+
       <v-col class="col-1"></v-col>
       <v-col>
         <div style="display:inline-block; width: 70%">
@@ -153,6 +159,7 @@
 <script>
 import Constant from "../../Constant";
 import { Carousel3d, Slide } from "vue-carousel-3d";
+import FileUpload from '@/components/FileUpload';
 
 export default {
   data: () => {
@@ -212,6 +219,7 @@ export default {
       });
   },
   components: {
+    FileUpload,
     Carousel3d,
     Slide
   },

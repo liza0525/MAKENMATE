@@ -1,52 +1,42 @@
 <template>
   <div style="padding-top: 100px; color: red;">
+<div id="boardrecipe-list-header">
+      <h1 id="boardrecipe-category">{{ board.title }}</h1>
+    </div>
     <div v-if="!submitted">
       <form
-        action=""
+        action="action"
         method="post"
         id="_boardForm"
         name="boaradForm"
         @submit.prevent="updateBoard"
       >
-        <table>
-          <colgroup>
-            <col style="width:30%;" />
-            <col style="width:70%;" />
-          </colgroup>
-          <tr>
-            <th>제목</th>
-            <td>
-              <input
-                data-msg="제목"
-                type="text"
-                name="title"
-                id="_title"
-                size="50"
-                v-model="board.title"
-                style="width:40%"
-              />
-            </td>
-          </tr>
-          <tr>
-            <th>내용</th>
-            <td>
-              <input
-                data-msg="내용"
-                type="text"
-                name="contents"
-                id="_contents"
-                size="50"
-                v-model="board.contents"
-                style="width:40%"
-              />
-            </td>
-          </tr>
-          <tr>
-            <td colspan="2" style="height:50px; text-align:center;">
-              <button type="submit" name="button">글 수정</button>
-            </td>
-          </tr>
-        </table>
+        <div id="boardrecipe-context">
+          <h1 style="display: inline;">제목</h1>
+          <br />
+          <input
+            value="제목"
+            type="text"
+            name="titleid"
+            id="_titleid"
+            v-model="board.title"
+            style="width:100%; border-bottom:1px solid #ccc; margin-bottom: 5vh;"
+          />
+          <h1>내용</h1>
+          <textarea
+            value="내용"
+            type="text"
+            name="contentsid"
+            id="_contentsid"
+            v-model="board.contents"
+            style="width:100%; height: 10rem; border-bottom:1px solid #ccc"
+          />
+        </div>
+
+        <file-upload />
+        <div style="text-align: center;">
+          <button class="boardrecipe-button" type="submit" name="button">수정</button>
+        </div>
       </form>
     </div>
   </div>
@@ -58,7 +48,7 @@ import http from "../../http-common";
 export default {
   data: () => {
     return {
-      bid: 0,
+      rid: 0,
       board: {
         title: "",
         file: "",
@@ -74,24 +64,23 @@ export default {
   },
   methods: {
     getData() {
-      this.bid = this.$route.params.bid;
-      http.get("/board/" + this.bid).then(res => {
+      this.rid = this.$route.params.rid;
+      http.get("/boardrecipe/" + this.rid).then(res => {
         this.board = res.data;
-        console.log(this.board);
       });
     },
     updateBoard() {
       http
-        .put("/board/" + this.bid, {
-          bid: this.bid,
+        .put("/boardrecipe/" + this.rid, {
+          rid: this.rid,
           title: this.board.title,
           contents: this.board.contents
         })
         .then(res => {
           this.$router.push({
-            name: "BoardDetail",
+            name: "BoardRecipeDetail",
             params: {
-              bid: this.bid
+              rid: this.rid
             }
           });
         });
@@ -100,5 +89,28 @@ export default {
   }
 };
 </script>
-
-<style></style>
+<style scoped="scoped">
+#boardrecipe-category {
+  margin: 0 0 0 15vw;
+  display: inline;
+  position: relative;
+  float: left;
+  top: 35vmin;
+  font-size: 11vmin;
+  font-family: 'BBTreeGB';
+}
+#boardrecipe-context {
+  color: #ccc;
+  padding: 2rem 5vw;
+  font-family: "GyeonggiBatang";
+}
+.boardrecipe-button {
+  color: #ccc;
+  width: 50vmin;
+  height: 9vmin;
+  margin-bottom: 3vh;
+  font-size: 3vmin;
+  border: 1px solid #ccc;
+  border-radius: 10vmin;
+}
+</style>

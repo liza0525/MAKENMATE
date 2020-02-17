@@ -21,8 +21,8 @@ body {
   padding: 0;
   font-size: 14px;
   overflow-x: hidden;
-  z-index: -1;
   background-color: black;
+  z-index: -1;
 }
 
 /*html {margin: 0; padding: 0; height: 100%;}*/
@@ -654,7 +654,7 @@ p {
   font: {
     weight: $f600;
   }
-  color: rgb(147, 190, 255) !important;
+  color: rgb(255, 219, 177) !important;
 }
 
 .container {
@@ -1468,29 +1468,4 @@ p {
       }
     }
   }
-}
-
-// Customarize
-@media (min-width: 0px) {
-  #login {
-    width: 100%;
-  }
-}
-@media (min-width: 768px) {
-  #login {
-    width: 60%;
-  }
-}
-@media (min-width: 1024px) {
-  #login {
-    width: 30%;
-  }
-}
-
-#login {
-  background: rgba(70, 187, 255, 0.2);
-  // background : rgba(255,255,255, 0.3);
-  margin: 0 !important;
-  padding: 50px;
-  height: 45rem;
 }

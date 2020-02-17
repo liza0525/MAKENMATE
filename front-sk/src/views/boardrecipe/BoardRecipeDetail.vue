@@ -1,61 +1,93 @@
 <template>
-  <div style="padding: 100px; color: blue;">
-    <p><a href="/#/boardrecipe/list">레시피 공유 게시판 리스트로</a></p>
-    <h1>
-      {{ rid }}번 레시피 디테일
-      <button @click="clickLike">
+  <div id="boardrecipe-detail">
+    <div id="boardrecipe-header">
+      <h1 id="boardrecipe-title">{{ boardRecipe.title }}</h1>
+      <h3 id="boardrecipe-username">by. {{ boardRecipe.user_name }}</h3>
+    </div>
+    <div id="boardrecipe-context" v-html="boardRecipe.contents"></div>
+    
+    <!-- 업로드 이미지-->
+    <v-row id="img-contents">
+    <v-col cols="6" md="3" v-for="images in imagepath" v-bind:key="images">
+      <v-card class="d-inline-block mx-auto"> 
+      <v-img :src="images"></v-img>
+      </v-card>
+      </v-col>
+    </v-row>
+
+    <!-- like button -->
+    <div id="like-button">
+      <button class="boardrecipe-button" @click="clickLike">
         <span v-show="!islike">
           <i class="far fa-heart"></i>
         </span>
-        <span v-show="islike">
+        <span v-show="islike" style="color: red;">
           <i class="fas fa-heart"></i>
         </span>
+        {{ likebyboardrecipe }}
       </button>
-      {{ likebyboardrecipe }}
-    </h1>
-
-    <p>제목 : {{ boardRecipe.title }}</p>
-    <p>내용 : {{ boardRecipe.contents }}</p>
-    <button v-if="!isScrapped" @click="addToScrapList" style="cursor: pointer">
-      스크랩
-    </button>
-    <button
-      v-if="isScrapped"
-      @click="removeFromScrapList"
-      style="cursor: pointer"
-    >
-      스크랩 취소
-    </button>
-    <div
-      :v-if="reply"
-      v-for="(re, i) in reply"
-      :key="i"
-      style="margin-top: 5px; display:block;"
-    >
-      <div v-if="isInput[i] === 0">
-        <span>{{ users[i] }} : {{ re.content }}</span>
-        <p v-if="username === users[i]" style="display:inline-block;">
-          <button @click="click(i)">수정</button>
-          <button @click="deleteComment(i, re.cmid)">삭제</button>
-        </p>
-      </div>
-      <div v-else>
-        <span>
-          {{ users[i] }} :
-          <input v-model="re.content" />
-        </span>
-        <p v-if="username === users[i]" style="display:inline-block;">
-          <button @click="updateComment(i, re.cmid, re.content)">수정</button>
-        </p>
-      </div>
+      <!-- 스크랩 -->
+      <button
+        class="boardrecipe-button"
+        v-if="this.$store.state.username && !isScrapped"
+        @click="addToScrapList"
+        style="cursor: pointer"
+      >스크랩</button>
+      <button
+        class="boardrecipe-button"
+        v-if="this.$store.state.username && isScrapped"
+        @click="removeFromScrapList"
+        style="cursor: pointer"
+      >스크랩 취소</button>
     </div>
-    <!-- </v-text> -->
-    <input type="text" v-model="comment" />
-    <button @click="submitComment" type="submit">button</button>
-    <div>
-      <button v-for="pageNm in pageNms" :key="pageNm" @click="search(pageNm)">
-        <span style="margin-right:10px;">{{ pageNm }}</span>
-      </button>
+
+    <div id="boardrecipe-footer">
+      <button class="boardrecipe-button" @click="go_to_list()">목록</button>
+      <button
+        class="boardrecipe-button"
+        v-if="this.$store.state.username === boardRecipe.user_name"
+        @click="update_board(boardRecipe.rid)"
+      >수정</button>
+      <button
+        class="boardrecipe-button"
+        v-if="this.$store.state.username === boardRecipe.user_name"
+        @click="delete_board(boardRecipe.rid)"
+      >삭제</button>
+      <div id="boardrecipe-date">{{ boardRecipe.regdate }}</div>
+    </div>
+
+    <!-- 댓글 -->
+    <div id="comment-set">
+      <div id="comment-title">
+        <h1 style="display: inline; margin-right: 3vw">Comment</h1>
+        <div style="display: inline;">
+          <input type="text" v-model="comment" style="border-bottom: 1px solid #ccc; width: 45vw" />
+          <button class="boardrecipe-button" @click="submitComment" type="submit">댓글</button>
+        </div>
+      </div>
+      <div :v-if="reply" v-for="(re, i) in reply" :key="i" style="margin-top: 5px; display:block;">
+        <div v-if="isInput[i] === 0">
+          <span>{{ users[i] }} : {{ re.content }}</span>
+          <p v-if="username === users[i]" style="display:inline-block;">
+            <button @click="click(i)">수정</button>
+            <button @click="deleteComment(i, re.cmid)">삭제</button>
+          </p>
+        </div>
+        <div v-else>
+          <span>
+            {{ users[i] }} :
+            <input v-model="re.content" />
+          </span>
+          <p v-if="username === users[i]" style="display:inline-block;">
+            <button @click="updateComment(i, re.cmid, re.content)">수정</button>
+          </p>
+        </div>
+      </div>
+      <div>
+        <button v-for="pageNm in pageNms" :key="pageNm" @click="search(pageNm)">
+          <span style="margin-right:10px;">{{ pageNm }}</span>
+        </button>
+      </div>
     </div>
   </div>
 </template>
@@ -75,7 +107,8 @@ export default {
       isInput: [],
       updatedComment: "",
       pageNm: 1,
-      pageNms: []
+      pageNms: [],
+      imagepath: []
     };
   },
   created() {
@@ -83,6 +116,14 @@ export default {
     http.get("/boardrecipe/" + this.rid).then(res => {
       // console.log(res.data)
       this.boardRecipe = res.data;
+      
+      if (this.boardRecipe.filelist.length != 0) {
+        console.log(this.boardRecipe.filelist[0]);
+        for (let i = 0; i < this.boardRecipe.filelist.length; i++) {
+          this.imagepath[i] = require("C:/image/" +
+            this.boardRecipe.filelist[i]);
+        }
+      }
 
       this.$store
         .dispatch(Constant.GET_REPLYBOARDRECIPE, {
@@ -247,6 +288,26 @@ export default {
           .then(() => (this.islike = this.$store.state.isLike));
       }
     },
+    delete_board(boardid) {
+      http
+        .delete("/boardrecipe/" + boardid)
+        .then(response => {
+          this.$router.push({ name: "BoardRecipeList" });
+        })
+        .catch(error => {
+          this.errored = true;
+        })
+        .finally(() => (this.loading = false));
+    },
+    update_board(boardid) {
+      this.$router.push({
+        name: "BoardRecipeUpdate",
+        params: { rid: boardid }
+      });
+    },
+    go_to_list() {
+      this.$router.push({ name: "BoardRecipeList" });
+    },
     // clickLikeComments(i) {
     //   console.log(this.reply[i]);
 
@@ -308,4 +369,100 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+#boardrecipe-header {
+  background: linear-gradient(rgba(0, 0, 0, 0.3)),
+    url("../../assets/images/image6.jpg") no-repeat;
+  background-size: 100%;
+  height: 60vh;
+  background-position-y: 30%;
+  color: white;
+}
+#boardrecipe-title {
+  margin: 0 0 0 15vw;
+  display: inline;
+  position: relative;
+  float: left;
+  top: 35vmin;
+  font-size: 11vmin;
+  font-family: 'BBTreeGB';
+}
+#boardrecipe-username {
+  margin: 0 0 0 2rem;
+  display: inline;
+  position: relative;
+  float: left;
+  top: 40vh;
+  font-family: 'BBTreeGB';
+}
+#boardrecipe-date {
+  display: inline;
+  bottom: 0;
+  float: right;
+  margin-top: 3vh;
+  font-size: 3vmin;
+  font-family: "GyeonggiBatang";
+}
+#boardrecipe-context {
+  color: #ccc;
+  margin: 5vw 15vw;
+  font-family: "GyeonggiBatang";
+}
+#boardrecipe-footer {
+  color: #ccc;
+  margin: 0vmax 10vmax;
+  padding: 0 1rem;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid #ccc;
+}
+.boardrecipe-button {
+  margin: 0 0.5vmin;
+  width: 15vmin;
+  height: 9vmin;
+  border: 1px solid #ccc;
+  border-radius: 10vmin;
+  font-size: 2.5vmin;
+  font-family: "GyeonggiBatang";
+}
+#like-button {
+  display: block;
+  position: relative;
+  color: #ccc;
+  text-align: center;
+  margin-bottom: 3vh;
+  font-family: "GyeonggiBatang";
+}
+#comment-set {
+  margin: 3vmin;
+  color: #ccc;
+  margin: 0vmax 10vmax;
+  padding: 2rem 1rem;
+  font-family: "GyeonggiBatang";
+}
+#img-contents {
+  margin: 5vh 15vw;
+}
+
+@media (max-width: 700px) {
+  #boardrecipe-context {
+    margin: 10vw 15vw 15vw 15vw;
+    font-size: 15px;
+  }
+  #boardrecipe-header {
+    height: 50vh;
+    background-size: 200vw;
+    background-position-x: 50%;
+  }
+  #boardrecipe-title {
+    margin-top: 3vmin;
+    font-size: 7vmin;
+  }
+  #boardrecipe-username {
+    margin: 0 0 0 2vw;
+    display: inline;
+    float: left;
+    top: 40vmin;
+    font-size: 3vmin;
+  }
+}
+</style>

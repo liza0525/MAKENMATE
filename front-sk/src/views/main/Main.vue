@@ -2,6 +2,7 @@
   <div>
     <div class="animated infinite pulse" id="scroll-down">scroll down ↓</div>
     <full-page ref="fullpage" :options="options" id="fullpage">
+      <!-- page 1 -->
       <div class="section main-img" id="page1">
         <div class="stars"></div>
         <div class="stars"></div>
@@ -11,70 +12,85 @@
         <div class="scroling-intro-wrap"></div>
         <h1 class="animated flipInX delay-1s" id="main-title">Daily Cocktail Party</h1>
       </div>
+      <!-- page 2 -->
       <div class="section">
-        <div>
-          <div class="main-img" id="page2"></div>
-          <h1 id="main-subtitle">
-            대충
-            <span style="background-color: rgb(245, 213, 71);">칵테일</span>을 좋아하는
-            <br />사람들을 위한 SNS라는 뜻
-          </h1>
-        </div>
+        <v-row>
+          <v-col class="main-subtitle" id="main-st-1">
+            <span style="background-color: #FFBB00;">칵테일</span>을 사랑하는
+            <br />모든 이들과 함께하는 Cocktail
+          </v-col>
+          <v-col cols="12" sm="6" class="main-img" id="page2">
+            <div class="main-subtitle" id="main-st-2">
+              <span style="background-color: #FFBB00;">칵테일</span>을 사랑하는
+              <br />모든 이들과 함께하는 Cocktail
+            </div>
+          </v-col>
+        </v-row>
       </div>
+      <!-- page 3 -->
       <div class="section main-img" id="page3">
         <p id="main-contents">
-          칵테일 맛있고
-          <span style="background-color: black;">레시피 공유</span>도 하고 검색하고
+          술과 술이 만나 칵테일이 되듯이
+          <br />우리의 레시피를 모아 더
+          <span style="background-color: #000;">특별한 순간</span>을 만들고자 합니다.
+          <br />이러한 가치를 아는 사람들이 모여 함께 한다면
+          <br />더욱
+          <span style="background-color: #000;">특별한 하루</span>를 보내지 않을까요..?
           <br />
-          <span style="background-color: black;">칵테일 번개 약속</span>도 잡을 수 있다, 뭐 그런...
-          <br />그런
-          사이트라고 소개하고 싶은데
-          <br />소개 글 좀 깔쌈하게 쓸 수 없을까 하
-          이놈의 문장력
         </p>
       </div>
+      <!-- page 4 -->
       <div class="section">
         <div class="main-img" id="page4">
           <h1 id="info-title">Developers</h1>
           <div>
             <v-row id="info-members">
-              <v-col v-for="person in people" cols="3" :key="person.id">
-                <div>
-                  <img
-                    class="info-members-profile info-btn"
-                    @click="infoPopUp"
-                    :src="person.profileUrl"
-                  />
-                </div>
-                <br />
-                <!-- <p class="info-members-name">{{ person.familyName }}{{ person.firstName }}</p> -->
+              <v-col v-for="person in people" cols="6" md="3" :key="person.id">
+                <img
+                  class="info-members-profile info-btn"
+                  @click="infoPopUp"
+                  :src="person.profileUrl"
+                />
               </v-col>
             </v-row>
           </div>
         </div>
         <!-- modal -->
         <div v-for="person in people" class="modal info-modal" :key="person.id">
-          <div class="modal-content">
+          <v-card class="modal-content" max-width="344" outlined>
             <p class="close">&times;</p>
-            <v-row>
-              <v-col cols="6">
-                <img :src="person.profileUrl" />
-                <div style="display:flex; justfy-content:space-around;font-size: 2rem;">
-                  <i class="fab fa-instagram"></i>
-                  <i class="fab fa-github"></i>
-                  <i class="far fa-envelope"></i>
-                </div>
-                </v-col>
-                <v-col cols="6">  
-                <h1 class="info-member-name">
-                  {{ person.name }}
-                </h1>
-                <p>
-                  {{ person.biography }}
-                </p>
-                </v-col>
-            </v-row>
-          </div>
+            <v-img height="40vh" :src="person.profileUrl"></v-img>
+            <v-card-title>
+              <h1 class="info-members-name">{{ person.name }}</h1>
+              <div style="margin-left: auto; float:right; font-size: 2rem;">
+                <a :href="person.instagram" target="_blank">
+                <i v-if="person.instagram != null" class="fab fa-instagram"></i></a>
+                <a :href="person.github" target="_blank">
+                <i v-if="person.github != null" class="fab fa-github" style="margin-left: 10px;"></i></a>
+                <a :href="`mailto:${person.email}`">
+                <i v-if="person.email != null" class="far fa-envelope" style="margin-left: 10px;"></i></a>
+              </div>
+            </v-card-title>
+            <v-card-text>
+              <p style="font-weight: bold;">Role : {{ person.role }}</p>
+              <div class="ability-chart">
+                Java/Spring
+                <v-progress-circular rotate="270" :value="person.java" color="#EC380B"></v-progress-circular>
+              </div>
+              <div class="ability-chart">
+                HTML/CSS/Vue.js
+                <v-progress-circular rotate="270" :value="person.vue" color="#F05F3B"></v-progress-circular>
+              </div>
+              <div class="ability-chart">
+                Python/Django
+                <v-progress-circular rotate="270" :value="person.python" color="#429F9E"></v-progress-circular>
+              </div>
+              <div class="ability-chart">
+                Server
+                <v-progress-circular rotate="2 70" :value="person.server" color="#007872"></v-progress-circular>
+              </div>
+            </v-card-text>
+          </v-card>
         </div>
       </div>
     </full-page>
@@ -82,34 +98,62 @@
 </template>
 
 <script>
+// import $ from 'jquery';
 export default {
   data() {
     return {
       controlArrows: true,
-      options: {},
+      options: {
+        // navigation: true,
+      },
       people: [
         {
           name: "김우재",
-          biography:
-            "므재는 소주를 좋아해요. 사실 소주를 맥주에 말아먹는 걸 좋아한다 봐야지요ㅎㅎ",
-          profileUrl: require("../../assets/images/kwj.jpg")
+          role: "backend / frontend",
+          profileUrl: require("../../assets/images/kwj.jpg"),
+          instagram: "http://www.instagram.com",
+          github: "https://www.github.com",
+          email: "a@naver.com",
+          java: 15,
+          vue: 20,
+          python: 30,
+          server: 40
         },
         {
           name: "손현희",
-          biography: "혀니는 칵테일 덕후예요. 마스터 하는 것이 취미지요.★",
-          profileUrl: require("../../assets/images/shh.jpg")
+          role: "backend / frontend",
+          profileUrl: require("../../assets/images/shh.jpg"),
+          instagram: "http://www.instagram.com",
+          github: "https://www.github.com",
+          email: "a@naver.com",
+          java: 15,
+          vue: 20,
+          python: 30,
+          server: 40
         },
         {
           name: "이근성",
-          biography:
-            "근성쓰는 보드카를 마셔요. 매일 현희를 코칭하고 있어욬ㅋㅋ",
-          profileUrl: require("../../assets/images/lgs.jpg")
+          role: "backend / frontend",
+          profileUrl: require("../../assets/images/lgs.jpg"),
+          instagram: "http://www.instagram.com",
+          github: "https://www.github.com",
+          email: "a@naver.com",
+          java: 15,
+          vue: 20,
+          python: 30,
+          server: 40
         },
         {
           name: "정윤영",
-          biography:
-            "쩡뉴는 맥주를 먹어요. 운동은 많이 먹기 위해 하는 거죠...!",
-          profileUrl: require("../../assets/images/cyy.jpg")
+          role: "backend / frontend",
+          profileUrl: require("../../assets/images/cyy.jpg"),
+          instagram: "http://www.instagram.com",
+          github: "https://www.github.com",
+          email: "a@naver.com",
+          java: 15,
+          vue: 20,
+          python: 30,
+          server: 40
         }
       ]
     };
@@ -128,16 +172,17 @@ export default {
           modal[i].style.display = "none";
         };
       }
-    },
+    }
   },
   created() {
-    window.addEventListener("scroll", this.pageMove);
+    // $(window).addEventListener("scroll", function(){
+    //   console.log(1)
+    // })
   },
   mounted() {
     this.infoPopUp();
   },
   beforeDestroy() {
-    window.removeEventListener("scroll", this.pageMove);
     window.removeEventListener("close", this.infoPopUp);
   }
 };
@@ -146,23 +191,23 @@ export default {
 <style scoped>
 @import url("https://fonts.googleapis.com/css?family=Playfair+Display:700i&display=swap");
 @import url("https://fonts.googleapis.com/css?family=Indie+Flower&display=swap");
-@import url("https://fonts.googleapis.com/css?family=Song+Myung&display=swap");
-.section{
+.section {
   background: black;
   color: white;
 }
 #scroll-down {
   position: fixed;
-  margin: 1rem;
+  text-align: center;
+  margin-left: 45vmax;
+  margin-right: 45vmax;
   bottom: 0px;
-  left: 45%;
-  z-index: 1;
   font-size: 150%;
+  z-index: 1;
   color: white;
   font-family: "Indie Flower", cursive;
 }
 .main-img {
-  padding: 0 10rem;
+  padding: 5vmin 10vmin;
   height: 42rem;
   animation: fadein 2s;
   -moz-animation: fadein 2s; /* Firefox */
@@ -172,78 +217,93 @@ export default {
 #page1 {
   background: url(../../assets/images/image.jpg);
   background-size: cover;
+  background-position-x: 50%;
+  width: 100%;
 }
 #page2 {
   display: flex;
   float: right;
   background: url(../../assets/images/image4.jpg) no-repeat;
-  background-position-x: 30%;
+  background-position-x: 45%;
+  height: 100vh;
   width: 50%;
   background-size: cover;
 }
 #page3 {
   background: url(../../assets/images/image3.jpg);
   background-size: cover;
+  background-position-x: 50%;
+  width: 100%;
 }
 #page4 {
   background: url(../../assets/images/image2.jpg);
   background-blend-mode: hue;
-  height: 80%;
-  background-position-y: 100%;
   background-size: cover;
+  background-position-x: 50%;
+  background-position-y: 100%;
+  padding-left: 15vmin;
+  padding-right: 15vmin;
+  width: 100%;
+  height: 80%;
 }
 #main-title {
   position: relative;
   text-align: center;
   font-family: "Playfair Display", serif;
-  font-size: 550%;
+  font-size: 10vmin;
 }
-#main-subtitle {
+.main-subtitle {
   position: relative;
   padding: 2rem;
-  top: 20rem;
   float: right;
   text-align: right;
-  vertical-align: middle;
-  font-size: 2rem;
-  font-family: "Song Myung", serif;
+  font-size: 5vmin;
+  font-family: "GyeonggiBatang";
+}
+span {
+  padding: 0.3%;
+  font-family: "GyeonggiBatang";
+  font-weight: bold;
 }
 #main-contents {
   position: relative;
-  font-size: 1.5rem;
-  font-family: "Song Myung", serif;
+  padding: 10vmin;
+  font-size: 3vmin;
+  font-family: "GyeonggiBatang";
 }
 #info-title {
   position: relative;
-  padding: 3rem 0;
-  font-family: "Playfair Display";
-  font-size: 3rem;
+  padding: 3vmax 0;
+  font-family: "Playfair Display", serif;
+  font-size: 7vmin;
 }
 #info-members {
   position: relative;
   text-align: center;
 }
 .info-members-profile {
-  width: 13rem;
-  height: 13rem;
+  width: 25vmin;
+  height: 25vmin;
+  margin-left: auto;
+  margin-right: auto;
   object-fit: cover;
   border-radius: 50%;
   cursor: pointer;
+  align-content: center;
 }
 .info-members-profile:hover {
-  animation: hover-profile 0.3s;
+  filter: brightness(130%);
 }
 .info-members-name {
-  margin: 10px 0;
-  letter-spacing: 5px;
-  font-size: 17px;
+  display: inline;
+  font-size: 2rem;
 }
 .modal {
   display: none;
   position: fixed;
   z-index: 2;
   left: 0;
-  top: 75%;
+  top: 77%;
   width: 100%;
   height: 100%;
   overflow: auto;
@@ -252,20 +312,20 @@ export default {
 .modal-content {
   color: black;
   background-color: #fefefe;
-  margin: 5% auto;
-  padding: 2%;
-  width: 50%;
-}
-::-webkit-scrollbar {
-  display: none;
+  margin: 7vh auto;
+  font-family: "GyeonggiBatang";
 }
 .close {
-  /* display: inline; */
-  float: right;
   font-size: 25px;
   cursor: pointer;
 }
-
+.ability-chart {
+  display: inline;
+  margin-left: 5px;
+}
+a {
+  color: black;
+}
 /* fade in 효과 */
 @keyframes fadein {
   from {
@@ -300,24 +360,6 @@ export default {
   }
   to {
     opacity: 1;
-  }
-}
-/* Profile hovering */
-@keyframes hover-profile {
-  0% {
-    width: 13rem;
-    height: 13rem;
-    animation-timing-function: ease-out;
-
-  }
-  50% {
-    width: 13.5rem;
-    height: 13.5rem;
-    animation-timing-function: linear;
-  }
-  100% {
-    width: 13rem;
-    height: 13rem;
   }
 }
 
@@ -361,7 +403,6 @@ export default {
 .stars:nth-child(3) {
   background-position: -20% -30%;
   animation-delay: -2s;
-  transform: rotate(200deg);
 }
 .stars:nth-child(4) {
   background-position: 40% -80%;
@@ -383,6 +424,28 @@ export default {
   }
   100% {
     opacity: 0.1;
+  }
+}
+
+@media (max-width: 600px) {
+  #main-st-1 {
+    display: none;
+  }
+
+  #main-st-2 {
+    display: block;
+    top: 35vmin;
+    left: 25vmin;
+    margin-right: 25vmin;
+  }
+}
+@media (min-width: 600px) {
+  #main-st-1 {
+    display: block;
+    top: 40vh;
+  }
+  #main-st-2 {
+    display: none;
   }
 }
 </style>
