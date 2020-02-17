@@ -1,5 +1,5 @@
 <template>
-  <footer>
+  <footer class="footer">
     <div>ⓒ 2020 SSAFY 2 Seoul class 3 team 9</div>
   </footer>
 </template>
