@@ -12,15 +12,17 @@ import Carousel3d from "vue-carousel-3d";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { faUserSecret } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+import VueDaumMap from 'vue-daum-map'
+import vueGoogleMapWrapper from '@/plugins/vue-google-map-wrapper'
 
 Vue.config.productionTip = false;
 
 Vue.use(Router);
 Vue.use(VueFullPage);
 Vue.use(Carousel3d);
-
+Vue.use(VueDaumMap)
+Vue.use(vueGoogleMapWrapper, {apiKey: "AIzaSyDgOb0c4iJElAW35Vrm9z_S6Uzr3scu6_8"})
 library.add(faUserSecret);
-
 Vue.component("font-awesome-icon", FontAwesomeIcon);
 
 Vue.config.productionTip = false;

@@ -23,6 +23,7 @@ import BoardRecipeDetail from "./views/boardrecipe/BoardRecipeDetail.vue";
 import FileUpload from "./components/FileUpload.vue";
 import BoardRecipeAdd from "./views/boardrecipe/BoardRecipeAdd.vue";
 import BoardRecipeUpdate from "./views/boardrecipe/BoardRecipeUpdate.vue";
+import Map from "./views/meeting/Map"
 export default [
   {
     path: "/",
@@ -154,5 +155,11 @@ export default [
     name: "BoardRecipeUpdate",
     component: BoardRecipeUpdate,
     props: true
+  },
+  {
+    path: "/meeting",
+    name: "Meeting",
+    component: Map
+
   }
 ];

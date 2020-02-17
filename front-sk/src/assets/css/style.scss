@@ -1494,3 +1494,16 @@ p {
   padding: 50px;
   height: 45rem;
 }
+.vue-simple-drawer.right {
+  top: 4rem !important;
+  height: calc(100% - 8rem);
+  width: 35%;
+}
+.vue-simple-drawer.downright {
+  top: 4rem !important;
+  height: 30%;
+  width: 100%;
+  bottom: 0;
+  left: 0;
+  position: absolute;
+}

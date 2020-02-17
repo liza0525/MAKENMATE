@@ -53,7 +53,7 @@ public class Meeting {
     private int limit;
 
     @Column
-    private String time;
+    private String date;
 
 
     @OneToMany(mappedBy = "meeting")

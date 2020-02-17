@@ -85,7 +85,7 @@ public class MeetingController {
 	    }
 
 	    @DeleteMapping(value = "/{mid}", produces = { MediaType.APPLICATION_JSON_VALUE })
-	    public ResponseEntity<Map<String, String>> deleteBoard(@PathVariable("mid") int mid) {
+	    public ResponseEntity<Map<String, String>> deleteMeeting(@PathVariable("mid") int mid) {
 	        meetingDao.delete(meetingDao.findById(mid));
 	        Map<String, String> resultMap = new HashMap<>();
 	        resultMap.put("data", "Success");
