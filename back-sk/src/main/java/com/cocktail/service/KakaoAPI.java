@@ -33,8 +33,8 @@ public class KakaoAPI {
             StringBuilder sb = new StringBuilder();
             sb.append("grant_type=authorization_code");
             sb.append("&client_id=2660ec76173c2f0ea3aa79f02dc02b76");
-            sb.append("&redirect_uri=http://localhost:8080/backend/user/kakaoLogin"); // local
-//            sb.append("&redirect_uri=http://13.125.94.200/backend/user/kakaoLogin"); // aws
+//            sb.append("&redirect_uri=http://localhost:8080/backend/user/kakaoLogin"); // local
+            sb.append("&redirect_uri=https://i02a309.p.ssafy.io:443/backend/user/kakaoLogin"); // aws
             sb.append("&code=" + authorize_code);
             bw.write(sb.toString());
             bw.flush();

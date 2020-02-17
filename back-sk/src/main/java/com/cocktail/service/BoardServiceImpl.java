@@ -51,10 +51,15 @@ public class BoardServiceImpl implements BoardService {
         return bdlist;
     }
     
+    
     public Page<Board> getAllBoard(Pageable pageable) {
         return boardDao.findAll(pageable);
     }
 
+    @Override
+    public Page<Board> getAllBoardTitleLike(String searchData, Pageable pageable) {	 
+    	return boardDao.findAllByTitleLike(searchData, pageable);
+    }
     // 글번호로 상세조회
     @Override
     public Bdetail findById(int bid) {
@@ -105,12 +110,14 @@ public class BoardServiceImpl implements BoardService {
     @Override
     public int save(Bdetail bdetail) {
         Board b = new Board();
-        String username = bdetail.getUser_name();
-        User u = userDao.findByNickname(username);
         b.setContents(bdetail.getContents());
         // b.setFile(bdetail.getFile());
-        b.setRegdate(bdetail.getRegdate());
+        SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date time = new Date();
+        String time1 = format1.format(time);
+        b.setRegdate(time1);
         b.setTitle(bdetail.getTitle());
+        User u = userDao.findByNickname(bdetail.getUser_name());
         b.setUser(u);
         b = boardDao.save(b);
 
@@ -120,7 +127,7 @@ public class BoardServiceImpl implements BoardService {
  
         String[] wpqkf = text.split(",");
         for(int i = 0; i < wpqkf.length; i ++){
-            UploadFile file = filedao.findById(Integer.parseInt(wpqkf[i])).orElseThrow();
+            UploadFile file = filedao.findById(Integer.parseInt(wpqkf[i])).orElseThrow(CocktailException::new);
             file.setBoardno(b.getBid());
             filedao.save(file);
         }

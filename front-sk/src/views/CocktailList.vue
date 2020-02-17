@@ -6,7 +6,13 @@
       alt="cocktail_list_background"
     />
     <button class="neon-button" @click="openFilterBox = true">
-      F<br />I<br />L<br />T<br />E<br />R<br />>
+      F
+      <br />I
+      <br />L
+      <br />T
+      <br />E
+      <br />R
+      <br />>
     </button>
     <div v-show="openFilterBox" class="filter-box">
       <div class="hcontainer" style="margin-bottom:10%">
@@ -15,15 +21,11 @@
           class="close sign"
           style="font-size:4vmin;margin-top:5%;position:absolute;right:10%;"
           @click="openFilterBox = !openFilterBox"
-        >
-          &times;
-        </p>
+        >&times;</p>
         <div
           class="sign"
           style="font-size:3vmax;padding-top:7%;margin-bottom:3%;text-align:center;"
-        >
-          Material
-        </div>
+        >Material</div>
         <div
           style="text-align:center;display:inline-block;width:20%;margin-bottom:5%"
           v-for="filter in filters"
@@ -40,9 +42,7 @@
             }"
           >
             <v-img :src="filter.image" :alt="filter.name" style="width:100%;" />
-            <v-text class="x-sign" style="font-size:1.5vmax;text-align:center;">
-              {{ filter.title }}
-            </v-text>
+            <v-text class="x-sign" style="font-size:1.5vmax;text-align:center;">{{ filter.title }}</v-text>
           </router-link>
         </div>
       </div>
@@ -51,9 +51,7 @@
       <div
         class="sign"
         style="z-index:200;font-size:400%;margin-top:10%;margin-bottom:10%;text-align:center;"
-      >
-        Cocktails
-      </div>
+      >Cocktails</div>
       <v-row>
         <v-col
           v-for="(cocktail, i) in cocktailArray"
@@ -69,18 +67,14 @@
               gradient="to bottom, rgba(0, 0,0,.1), rgba(0,0,0,.5)"
               :alt="cocktail.cname"
               style="height:87%;margin-top:0"
-            >
-            </v-img>
+            ></v-img>
             <h1
               class="sansfont"
               style="margin-top:10px;display:inline-block;width:72%;overflow:auto;height:7%;font-size:120%;margin-left:15px;font-weight:bolder;"
-            >
-              {{ cocktail.cname }}
-            </h1>
-            <v-text
-              style="margin-top:12px;margin-right:15px;float:right;display:inline-block;"
-            >
-              <i class="fas fa-lg fa-heart"></i> {{ getLikesByCocktail[i] }}
+            >{{ cocktail.cname }}</h1>
+            <v-text style="margin-top:12px;margin-right:15px;float:right;display:inline-block;">
+              <i class="fas fa-lg fa-heart"></i>
+              {{ getLikesByCocktail[i] }}
             </v-text>
           </v-card>
         </v-col>
@@ -115,38 +109,32 @@
           v-if="pageNm > 5"
           v-on:click="search(1)"
           style="margin-right:10px;margin-top:100px;color:#ffffff"
-        >
-          {{ fistBt }}
-        </button>
+        >{{ fistBt }}</button>
         <button
           v-if="pageNm > 5"
           v-on:click="search(min - 5 < 0 ? 1 : min - 5)"
           style="margin-right:10px;color:#ffffff"
           class="paging-size"
-        >
-          {{ prevBt }}
-        </button>
+        >{{ prevBt }}</button>
         <button v-for="pageNm in pageNms" :key="pageNm" @click="search(pageNm)">
-          <span style="margin-right:10px;color:#ffffff;" class="paging-size">{{
+          <span style="margin-right:10px;color:#ffffff;" class="paging-size">
+            {{
             pageNm
-          }}</span>
+            }}
+          </span>
         </button>
         <button
           v-if="min + 5 <= totalPages"
           class="paging-size"
           v-on:click="search(min + 5)"
           style="margin-right:10px;color:#ffffff"
-        >
-          {{ nextBt }}
-        </button>
+        >{{ nextBt }}</button>
         <button
           class="paging-size"
           v-if="min + 5 <= totalPages"
           v-on:click="search(totalPages)"
           style="color:#ffffff;"
-        >
-          {{ lastBt }}
-        </button>
+        >{{ lastBt }}</button>
       </div>
     </div>
   </div>
@@ -376,10 +364,12 @@ export default {
   font-style: normal;
 }
 @import url("https://fonts.googleapis.com/css?family=Jua&display=swap");
-body {
+
+.test {
   background-color: black !important;
   z-index: -1;
 }
+
 .hcontainer {
   margin-left: 15%;
   margin-right: 15%;
@@ -396,12 +386,8 @@ body {
   z-index: 100;
   width: 100% !important;
   top: 0px;
-  padding-bottom: %;
 }
-.test {
-  background-color: black !important;
-  z-index: -1;
-}
+
 .rightImage {
   bottom: 0px;
   right: 1%;
@@ -451,7 +437,7 @@ body {
 }
 .neon-button {
   position: fixed;
-  margin-top: 18%;
+  margin-top: 10%;
   float: left;
   width: 3%;
   padding-top: 1%;
@@ -467,7 +453,7 @@ body {
 }
 .neon-button:hover {
   position: fixed;
-  margin-top: 18%;
+  margin-top: 10%;
   float: left;
   width: 3%;
   padding-top: 1%;

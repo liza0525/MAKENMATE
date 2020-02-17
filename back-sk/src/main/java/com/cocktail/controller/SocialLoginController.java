@@ -127,8 +127,8 @@ public class SocialLoginController {
 			if(find != null)
 				email = find.getEmail(); 
 		}
-		mav.setViewName("redirect:http://localhost:3000/auth"); // local
-//		mav.setViewName("redirect:http://i02a309.p.ssafy.io");  // aws
+//		mav.setViewName("redirect:http://localhost:3000/auth"); // local
+		mav.setViewName("redirect:https://i02a309.p.ssafy.io");  // aws
 		if(email == null) {
 			mav.addObject("nickname", nickname);
 			mav.addObject("msg", "email이 존재하지 않아 회원가입 페이지로 이동합니다.");

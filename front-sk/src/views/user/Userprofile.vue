@@ -1,5 +1,9 @@
 <template>
-  <v-container>
+  <div>
+    <div id="user-scrap-header">
+      <h1 id="user-scrap-title">{{user.nickname}} Profile</h1>
+    </div>
+    <div class="backgroundcolor">
     <v-row no-gutters>
       <v-col class="col-1"></v-col>
       <div class="col-12 col-md-6 col-lg-4 col-sm-6" style="text-align:center;">
@@ -148,7 +152,8 @@
 
       </v-col> -->
     </v-row>
-  </v-container>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -175,7 +180,8 @@ export default {
       prevBt: "<",
       nextBt: ">",
       fistBt: "<<",
-      lastBt: ">>"
+      lastBt: ">>",
+      wH: 0
     };
   },
   mounted() {
@@ -235,11 +241,13 @@ export default {
           });
         this.updateIntro = !this.updateIntro;
       }
+    },
     }
-  }
 };
 </script>
 <style scoped>
+html, body { height:100%; overflow:hidden }
+
 @import url("https://fonts.googleapis.com/css?family=Song+Myung|Stylish&display=swap");
 @font-face {
   font-family: "MapoFlowerIsland";
@@ -273,6 +281,29 @@ carousel-3d {
   font-weight: normal;
   font-style: normal;
 }
+#user-scrap-header {
+  background: linear-gradient(rgba(0, 0, 0, 0.5)),
+    url("../../assets/images/image5.jpg") no-repeat;
+  background-size: 110%;
+  height: 20rem;
+  background-position-y: 20%;
+  color: white;
+}
+#user-scrap-title {
+  margin: 0 0 0 15rem;
+  display: inline;
+  position: relative;
+  float: left;
+  top: 12rem;
+  font-size: 4rem;
+}
+
+.backgroundcolor{
+  background-color: #ffffff;
+  padding-top: 8%;
+  padding-left: 10%;
+  padding-right: 10%
+  }
 .sansfont {
   /* font-family: "MapoFlowerIsland"; */
   /* font-family: "MapoGoldenPier"; */

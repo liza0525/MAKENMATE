@@ -60,7 +60,15 @@ public class BoardController {
         result.object = this.boardservice.getAllBoard(pageable);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
-
+    @GetMapping(value = "/search",produces = {MediaType.APPLICATION_JSON_VALUE})
+    public Object boardSearchList(@PageableDefault(size = 20, sort = { "rid" }, direction = Direction.DESC) Pageable pageable,
+    		@RequestParam(required = true) String searchData) {
+    	final BasicResponse result = new BasicResponse();
+    	result.status = true;
+    	result.data = "success"; 
+    	result.object = this.boardservice.getAllBoardTitleLike(searchData, pageable);
+    	return new ResponseEntity<>(result, HttpStatus.OK);
+    }
     // 게시판 번호로 상세조회
     @GetMapping(value = "/{boardno}", produces = { MediaType.APPLICATION_JSON_VALUE })
     public ResponseEntity<Bdetail> getBoard(@PathVariable("boardno") int boardno) {

@@ -3,67 +3,83 @@
     <div id="board-header">
       <h1 id="board-title">{{ board.title }}</h1>
       <h3 id="board-username">by. {{ board.user_name }}</h3>
-      <div id="like-button">
-        <button @click="clickLike">
-          <span v-show="!islike">
-            <i class="far fa-heart"></i>
-          </span>
-          <span v-show="islike" style="color: red;">
-            <i class="fas fa-heart"></i>
-          </span>
-        </button>
-        {{ likebyboard }}
-      </div>
     </div>
     <div id="board-context" v-html="board.contents"></div>
-    <div id="board-footer">
-      <button class="board-button" @click="go_to_list()">목록</button>
-      <button class="board-button" @click="update_board(board.bid)">수정</button>
-      <button class="board-button" @click="delete_board(board.bid)">삭제</button>
-      <div id="board-date">{{ board.regdate }}</div>
-      
-      <!-- 댓글 -->
-      <div
-      :v-if="reply"
-      v-for="(re, i) in reply"
-      :key="i"
-      style="margin-top: 5px; display:block;"
-    >
-      <div v-if="isInput[i] === 0">
-        <span>{{ users[i] }} : {{ re.content }}</span>
-        <p v-if="username === users[i]" style="display:inline-block;">
-          <button @click="click(i)">수정</button>
-          <button @click="deleteComment(i, re.cmid)">삭제</button>
-        </p>
-      </div>
-      <div v-else>
-        <span>
-          {{ users[i] }} :
-          <input v-model="re.content" />
+
+    <!-- 업로드 이미지 -->
+    <!-- <v-row id="img-contents">
+    <v-col cols="6" md="3" v-for="images in imagepath" v-bind:key="images">
+      <v-card class="d-inline-block mx-auto"> 
+      <v-img :src="images"></v-img>
+      </v-card>
+      </v-col>
+    </v-row> -->
+
+    <!-- like button -->
+    <div id="board-like-button">
+      <button class="board-button" @click="clickLike">
+        <span v-show="!islike">
+          <i class="far fa-heart"></i>
         </span>
-        <p v-if="username === users[i]" style="display:inline-block;">
-          <button @click="updateComment(i, re.cmid, re.content)">수정</button>
-        </p>
-      </div>
-    </div>
-    <!-- </v-text> -->
-    <input type="text" v-model="comment" />
-    <button @click="submitComment" type="submit">button</button>
-    <div>
-      <button v-for="pageNm in pageNms" :key="pageNm" @click="search(pageNm)">
-        <span style="margin-right:10px;">{{ pageNm }}</span>
+        <span v-show="islike" style="color: red;">
+          <i class="fas fa-heart"></i>
+        </span>
+      {{ likebyboard }}
       </button>
     </div>
-    <div v-for="images in imagepath" v-bind:key="images">
-          <img :src="images"/>
+
+    <div id="board-footer">
+      <button class="board-button" @click="go_to_list()">목록</button>
+      <button
+        class="board-button"
+        v-if="this.$store.state.username === board.user_name"
+        @click="update_board(board.bid)"
+      >수정</button>
+      <button
+        class="board-button"
+        v-if="this.$store.state.username === board.user_name"
+        @click="delete_board(board.bid)"
+      >삭제</button>
+      <div id="board-date">{{ board.regdate }}</div>
+    </div>
+
+    <!-- 댓글 -->
+    <div id="board-comment-set">
+      <div id="comment-title">
+        <h1 style="display: inline; margin-right: 3vw">Comment</h1>
+        <div style="display: inline;">
+          <input type="text" v-model="comment" style="border-bottom: 1px solid #ccc; width: 45vw" />
+          <button class="board-button" @click="submitComment" type="submit">댓글</button>
         </div>
+      </div>
+      <div :v-if="reply" v-for="(re, i) in reply" :key="i" style="margin-top: 5px; display:block;">
+        <div v-if="isInput[i] === 0">
+          <span>{{ users[i] }} : {{ re.content }}</span>
+          <p v-if="username === users[i]" style="display:inline-block;">
+            <button @click="click(i)">수정</button>
+            <button @click="deleteComment(i, re.cmid)">삭제</button>
+          </p>
+        </div>
+        <div v-else>
+          <span>
+            {{ users[i] }} :
+            <input v-model="re.content" />
+          </span>
+          <p v-if="username === users[i]" style="display:inline-block;">
+            <button @click="updateComment(i, re.cmid, re.content)">수정</button>
+          </p>
+        </div>
+      </div>
+      <div>
+        <button v-for="pageNm in pageNms" :key="pageNm" @click="search(pageNm)">
+          <span style="margin-right:10px;">{{ pageNm }}</span>
+        </button>
+      </div>
     </div>
   </div>
-
-  
 </template>
 
-<script>
+<script scoped>
 import http from "../../http-common";
 import Constant from "../../Constant";
 export default {
@@ -132,15 +148,12 @@ export default {
       http.get("/board/" + this.bid).then(res => {
         this.board = res.data;
 
-
-         if (this.board.filelist.length != 0) {
-                        console.log(this.board.filelist[0])
-                        for (let i = 0; i < this.board.filelist.length; i++) {
-                          this.imagepath[i] = require("C:/image/" + this.board.filelist[i])
-                        }
-                    }
-
-
+        if (this.board.filelist.length != 0) {
+          console.log(this.board.filelist[0]);
+          for (let i = 0; i < this.board.filelist.length; i++) {
+            this.imagepath[i] = require("C:/image/" + this.board.filelist[i]);
+          }
+        }
 
         this.search(0);
       });
@@ -310,57 +323,95 @@ export default {
   background: linear-gradient(rgba(0, 0, 0, 0.3)),
     url("../../assets/images/image.png") no-repeat;
   background-size: 100%;
-  height: 20rem;
+  height: 60vh;
   background-position-y: 30%;
   color: white;
 }
 #board-title {
-  margin: 0 0 0 15rem;
+  margin: 0 0 0 15vw;
   display: inline;
   position: relative;
   float: left;
-  top: 12rem;
-  font-size: 4rem;
-  /* text-align: center; */
+  top: 35vmin;
+  font-size: 11vmin;
+  font-family: 'BBTreeGB';
 }
 #board-username {
   margin: 0 0 0 2rem;
   display: inline;
   position: relative;
   float: left;
-  top: 15rem;
+  top: 40vh;
+  font-family: 'BBTreeGB';
 }
 #board-date {
   display: inline;
   bottom: 0;
   float: right;
+  margin-top: 3vh;
+  font-size: 3vmin;
+  font-family: "GyeonggiBatang";
 }
 #board-context {
-  color: #777;
-  padding: 2rem 15rem;
-  margin: 1rem 0;
+  color: #ccc;
+  margin: 5vw 15vw;
+  font-family: "GyeonggiBatang";
 }
 #board-footer {
-  color: #777;
-  margin: 0 10rem;
-  padding: 2rem 1rem;
-  border-top: 1px solid #ccc;
+  color: #ccc;
+  margin: 0vmax 10vmax;
+  padding: 0 1rem;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid #ccc;
 }
 .board-button {
-  margin: 0 0.5rem;
-  width: 5rem;
-  height: 3rem;
+  margin: 0 0.5vmin;
+  width: 15vmin;
+  height: 9vmin;
   border: 1px solid #ccc;
-  border-radius: 3rem;
+  border-radius: 10vmin;
+  font-size: 2.5vmin;
+  font-family: "GyeonggiBatang";
 }
-#like-button {
-  display: inline;
+#board-like-button {
+  display: block;
   position: relative;
   color: white;
-  font-size: 2rem;
-  line-height: 5rem;
-  float: right;
-  top: 13.5rem;
-  margin: 0 15rem 0 0;
+  text-align: center;
+  margin-bottom: 3vh;
+  font-family: "GyeonggiBatang";
+}
+#board-comment-set {
+  margin: 3vmin;
+  color: #ccc;
+  margin: 0vmax 10vmax;
+  padding: 2rem 1rem;
+  font-family: "GyeonggiBatang";
+}
+#img-contents {
+  margin: 5vh 15vw;
+}
+
+@media (max-width: 700px) {
+  #board-context {
+    margin: 10vw 15vw 15vw 15vw;
+    font-size: 15px;
+  }
+  #board-header {
+    height: 50vh;
+    background-size: 200vw;
+    background-position-x: 50%;
+  }
+  #board-title {
+    margin-top: 3vmin;
+    font-size: 7vmin;
+  }
+  #board-username {
+    margin: 0 0 0 2vw;
+    display: inline;
+    float: left;
+    top: 40vmin;
+    font-size: 3vmin;
+  }
 }
 </style>

@@ -2,7 +2,6 @@ package com.cocktail.service;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -21,7 +20,6 @@ import com.cocktail.model.boardRecipe.BRdetail;
 import com.cocktail.model.boardRecipe.BoardRecipe;
 import com.cocktail.model.user.User;
 import com.cocktail.model.user.UserScrap;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Service
 public class BoardRecipeServiceImpl implements BoardRecipeService {
@@ -42,7 +40,10 @@ public class BoardRecipeServiceImpl implements BoardRecipeService {
     public Page<BoardRecipe> getAllBoardRecipe(Pageable pageable) {
         return boardRecipeDao.findAll(pageable);
     }
-
+    @Override
+    public Page<BoardRecipe> getAllBoardRecipeLike(String searchData, Pageable pageable) {	 
+    	return boardRecipeDao.findAllByTitleLike(searchData,pageable);
+    }
     // 글번호로 공유게시판 상세조회
     @Override
     public BRdetail findById(int rid) {
@@ -53,7 +54,7 @@ public class BoardRecipeServiceImpl implements BoardRecipeService {
         br.setRid(boardrecipe.getRid());
         br.setTitle(boardrecipe.getTitle());
         br.setContents(boardrecipe.getContents());
-        br.setRegdate(boardrecipe.getContents());
+        br.setRegdate(boardrecipe.getRegdate());
         br.setUser_name(boardrecipe.getUser().getNickname());
         
         List<UploadFile> file = filedao.list(boardrecipe.getRid());
@@ -105,7 +106,7 @@ public class BoardRecipeServiceImpl implements BoardRecipeService {
  
         String[] wpqkf = text.split(",");
         for(int i = 0; i < wpqkf.length; i ++){
-            UploadFile file = filedao.findById(Integer.parseInt(wpqkf[i])).orElseThrow();
+            UploadFile file = filedao.findById(Integer.parseInt(wpqkf[i])).orElseThrow(CocktailException::new);
             file.setBoardno(br.getRid());
             filedao.save(file);
         }
@@ -130,5 +131,6 @@ public class BoardRecipeServiceImpl implements BoardRecipeService {
     public void deleteById(int bid) {
         boardRecipeDao.deleteById(bid);
     }
+
 
 }

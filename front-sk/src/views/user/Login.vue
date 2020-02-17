@@ -1,11 +1,17 @@
 <template>
-  <div class="user" id="login">
-    <div class="wrapC">
-      <h1 id="title">Login to drink Cocktail&#x1F378;</h1>
-
+  <div id="login-bg">
+    <div id="login-window">
+      <h1 id="title">한 잔 하러 갈까요?&#x1F378;</h1>
       <div class="input-with-label">
-        <input v-model="email" @keyup.enter="login" id="email" placeholder="email" type="text" />
-        <label for="email" id="label-text">Email</label>
+        <input
+          v-model="email"
+          @keyup.enter="login"
+          id="email"
+          placeholder="이메일"
+          type="text"
+          style="color:white;"
+        />
+        <label for="email" id="label-text">이메일</label>
         <div class="error-text" v-if="error.email">{{ error.email }}</div>
       </div>
 
@@ -15,9 +21,10 @@
           type="password"
           id="password"
           @keyup.enter="login"
-          placeholder="password"
+          placeholder="비밀번호"
+          style="color:white;"
         />
-        <label for="password" id="label-text">Password</label>
+        <label for="password" id="label-text">비밀번호</label>
         <div class="error-text" v-if="error.password">{{ error.password }}</div>
       </div>
       <button
@@ -25,29 +32,28 @@
         v-on:click="login"
         :disabled="!isSubmit"
         :class="{ disabled: !isSubmit }"
-      >sign in</button>
+      >로그인</button>
       <div class="sns-login">
         <div class="text">
-          <p id="label-text">Sign in with SNS</p>
-          <div class="bar"></div>
+          <p id="label-title">SNS 로그인</p>
         </div>
-
-        <kakaoLogin :component="component" />
-        <!-- <GoogleLogin :component="component" /> -->
-        <NaverLogin :component="component" />
+        <div id="sns-login-button">
+          <kakaoLogin :component="component" />
+          <!-- <GoogleLogin :component="component" /> -->
+          <NaverLogin :component="component" />
+        </div>
       </div>
       <div class="add-option">
         <div class="text">
-          <p id="label-text">etc.</p>
-          <div class="bar"></div>
+          <p id="label-title">혹시,</p>
         </div>
         <div class="wrap">
-          <p>forget your password,</p>
-          <router-link v-bind:to="{ name: 'InputEmail' }" class="btn--text">Change your password</router-link>
+          <span style="color: white;">비밀번호 잊으셨나요?</span>
+          <router-link v-bind:to="{ name: 'InputEmail' }" class="btn--text" id="etc-link">비밀번호 변경</router-link>
         </div>
         <div class="wrap">
-          <p>Not join our site yet,</p>
-          <router-link v-bind:to="{ name: 'Join' }" class="btn--text">Sign up</router-link>
+          <span style="color: white;">아직 회원이 아니라면?</span>
+          <router-link v-bind:to="{ name: 'Join' }" class="btn--text" id="etc-link">회원가입</router-link>
         </div>
       </div>
     </div>
@@ -63,9 +69,7 @@ import KakaoLogin from "../../components/user/snsLogin/Kakao.vue";
 // import GoogleLogin from "../../components/user/snsLogin/Google.vue";
 import NaverLogin from "../../components/user/snsLogin/Naver.vue";
 import UserApi from "../../apis/UserApi";
-
 const storage = window.sessionStorage;
-
 export default {
   components: {
     KakaoLogin,
@@ -74,7 +78,6 @@ export default {
   },
   created() {
     this.component = this;
-
     this.passwordSchema
       .is()
       .min(8)
@@ -98,14 +101,12 @@ export default {
       if (this.email.length >= 0 && !EmailValidator.validate(this.email))
         this.error.email = "이메일 형식이 아닙니다.";
       else this.error.email = false;
-
       if (
         this.password.length >= 0 &&
         !this.passwordSchema.validate(this.password)
       )
         this.error.password = "영문,숫자 포함 8 자리이상이어야 합니다.";
       else this.error.password = false;
-
       let isSubmit = true;
       Object.values(this.error).map(v => {
         if (v) isSubmit = false;
@@ -160,8 +161,15 @@ export default {
 };
 </script>
 <style>
+@font-face {
+  font-family: "MapoPeacefull";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/MapoPeacefullA.woff")
+    format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
 #title {
-  font-family: "Libre Caslon Text", serif;
+  font-family: "MapoPeacefull";
   color: white !important;
 }
 #label-text {
@@ -169,5 +177,57 @@ export default {
 }
 input::placeholder {
   color: white;
+}
+#login-bg {
+  background: linear-gradient(rgba(0, 0, 0, 0.7)),
+    url("../../assets/images/login_bg.jpg") no-repeat;
+  background-size: cover;
+}
+#login-window {
+  background: rgba(43, 19, 15, 0.815);
+  padding: 20vh 5vw;
+  height: 110vh;
+  margin-left: auto;
+}
+#kakao-login {
+  margin: 0 10px;
+}
+#naverIdLogin_loginButton {
+  width: 55px;
+  height: 55px;
+  border-radius: 55px;
+}
+.btn--naver,
+#kakao-login {
+  display: inline-block;
+}
+#etc-link {
+  float: right;
+}
+.wrap {
+  margin: 1vh 0;
+}
+#label-title {
+  color: white;
+  margin: 3vh 0;
+  text-align: right;
+  border-bottom: 1px solid #fff;
+}
+@media (min-width: 0px) {
+  #login-window {
+    width: 100%;
+    padding: 20vh 10vw;
+  }
+}
+@media (min-width: 600px) {
+  #login-window {
+    width: 60%;
+    padding: 20vh 7vw;
+  }
+}
+@media (min-width: 1024px) {
+  #login-window {
+    width: 40%;
+  }
 }
 </style>

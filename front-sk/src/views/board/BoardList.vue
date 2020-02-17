@@ -1,34 +1,32 @@
 <template>
   <div>
     <div id="board-list-header">
-      <h1 id="board-category">자유게시판</h1>
+      <h1 id="board-category">자유 게시판</h1>
     </div>
     <div id="board-context">
-      <!-- {{ info.content }} -->
-      <v-simple-table>
+      <v-simple-table dark>
         <template>
           <thead>
             <tr>
-              <th>No.</th>
+              <th class="numbering-col">No.</th>
               <th>제목</th>
               <th>글쓴이</th>
-              <th>날짜</th>
+              <th class="date-col">날짜</th>
             </tr>
           </thead>
           <tbody>
             <tr v-for="board in info.content" v-bind:key="board.bid">
-              <td v-html="board.bid"></td>
+              <td class="numbering-col" v-html="board.bid"></td>
               <td v-html="board.title" @click="detail_id(board.bid)" style="cursor: pointer;"></td>
               <td v-html="board.user_name"></td>
-              <td v-html="board.regdate"></td>
+              <td class="date-col" v-html="board.regdate"></td>
             </tr>
           </tbody>
         </template>
       </v-simple-table>
-      
     </div>
     <div id="board-list-footer">
-      <button class="board-button" @click="add_move()">글쓰기</button>
+      <button v-if="this.$store.state.username" class="board-button" @click="add_move()">글쓰기</button>
       <div id="pagination">
         <button v-for="pageNm in pageNms" :key="pageNm" @click="retrieveBoard(pageNm)">
           <span style="margin-right:10px;">{{ pageNm }}</span>
@@ -88,42 +86,67 @@ export default {
 };
 </script>
 <style>
+td {
+  font-family: "GyeonggiBatang";
+}
 #board-list-header {
   background: linear-gradient(rgba(0, 0, 0, 0.3)),
     url("../../assets/images/image.png") no-repeat;
   background-size: 100%;
-  height: 20rem;
+  height: 60vh;
   background-position-y: 30%;
   color: white;
 }
 #board-category {
-  margin: 0 0 0 15rem;
+  margin: 0 0 0 15vw;
   display: inline;
   position: relative;
   float: left;
-  top: 12rem;
-  font-size: 4rem;
+  top: 35vmin;
+  font-size: 11vmin;
+  font-family: 'BBTreeGB';
 }
 #board-list-footer {
-  color: #777;
-  margin: 0 10rem;
+  color: #ccc;
+  margin: 0vmax 10vmax;
   padding: 2rem 1rem;
   border-top: 1px solid #ccc;
 }
 #board-context {
-  color: #777;
-  padding: 2rem 15rem;
-  margin: 1rem 0;
+  color: #ccc;
+  margin: 5vmax 10vmax;
+  font-family: "GyeonggiBatang";
 }
 .board-button {
   margin: 0 0.5rem;
-  width: 5rem;
-  height: 3rem;
+  width: 15vmin;
+  height: 9vmin;
   border: 1px solid #ccc;
-  border-radius: 3rem;
+  border-radius: 10vmin;
+  font-size: 2vmin;
+  font-family: "GyeonggiBatang";
 }
 #pagination {
   display: inline;
-  margin: 30rem;
+  float: right;
+  font-size: 18px;
+  font-family: "GyeonggiBatang";
+}
+@media (max-width: 700px) {
+  #board-context {
+  margin: 2vmax 3vmax;
+  }
+  .numbering-col, .date-col{
+    display: none;
+  }
+  #board-list-header {
+    height: 50vh;
+    background-size: 200vw;
+    background-position-x: 50%;
+  }
+  #board-category {
+    margin-top: 3vmin; 
+    font-size: 7vmin;
+  }
 }
 </style>

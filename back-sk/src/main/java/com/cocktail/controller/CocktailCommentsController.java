@@ -110,4 +110,5 @@ public class CocktailCommentsController {
         result.data = "success";
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
+    
 }

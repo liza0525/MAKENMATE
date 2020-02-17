@@ -25,4 +25,5 @@ public interface BoardService {
 
     // 게시글 삭제
     void deleteById(int bid);
+	Page<Board> getAllBoardTitleLike(String searchData, Pageable pageable);
 }

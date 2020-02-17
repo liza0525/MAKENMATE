@@ -45,7 +45,17 @@ public class BoardRecipeController{
         //System.out.println(this.boardrecipeservice.getAllBoardRecipe(pageable).getContent());
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
-
+    
+    @GetMapping(value = "/search",produces = {MediaType.APPLICATION_JSON_VALUE})
+    public Object boardRecipeSearchList(@PageableDefault(size = 20, sort = { "rid" }, direction = Direction.DESC) Pageable pageable,
+    		@RequestParam(required = true) String searchData) {
+    	final BasicResponse result = new BasicResponse();
+    	result.status = true;
+    	result.data = "success"; 
+    	result.object = this.boardrecipeservice.getAllBoardRecipeLike(searchData,pageable);
+    	return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+    
     //공유게시판 상세조회
     @GetMapping(value="/{boardrecipeno}", produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<BRdetail> getBoardRecipe(@PathVariable("boardrecipeno") int boardrecipeno) {
@@ -65,6 +75,7 @@ public class BoardRecipeController{
     //공유게시판 입력
     @PostMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<Integer> save(@RequestBody BRdetail brdetail){
+        brdetail.setContents(brdetail.getContents().replace("\n", "<br/>"));
         return new ResponseEntity<Integer>(boardrecipeservice.save(brdetail), HttpStatus.OK);
     }
 
