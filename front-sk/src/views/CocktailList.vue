@@ -1,5 +1,23 @@
 <template>
   <div class="test">
+    <div class="cocktailheader">
+      <div v-show="window.width >= 435">
+        <h1
+          class="cocktailtitle sign "
+          style="z-index:200;margin-right;auto;margin-left;auto;display:inline-block;z-index:200;font-family: 'neontubes';"
+        >
+          COCKTAIL
+        </h1>
+      </div>
+      <div v-show="window.width < 435">
+        <h1
+          class="cocktailtitle sign "
+          style="z-index:200;margin-top:20vmax;margin-right;auto;margin-left;auto;display:inline-block;z-index:200;font-family: 'neontubes';"
+        >
+          COCKTAIL
+        </h1>
+      </div>
+    </div>
     <img
       src="../assets/images/cocktail_list_copy02.png"
       class="rightImage titlefont"
@@ -35,7 +53,7 @@
         </p>
         <div
           class="sign"
-          style="font-size:3vmax;padding-top:7%;margin-bottom:3%;text-align:center;"
+          style="font-size:3vmax;padding-top:7%;margin-bottom:3%;text-align:center;  font-family: 'neontubes';"
         >
           Material
         </div>
@@ -68,9 +86,7 @@
       <div
         class="sign"
         style="z-index:200;font-size:400%;margin-top:10%;margin-bottom:10%;text-align:center;"
-      >
-        Cocktails
-      </div>
+      ></div>
       <v-row>
         <v-col
           v-for="(cocktail, i) in cocktailArray"
@@ -407,11 +423,37 @@ export default {
   font-weight: normal;
   font-style: normal;
 }
+@font-face {
+  font-family: "neontubes";
+  src: url("https://bitbucket.org/kennethjensen/webfonts/raw/fc13c1cb430a0e9462da56fe3f421ff7af72db71/neontubes/neontubes-webfont.eot");
+  src: url("https://bitbucket.org/kennethjensen/webfonts/raw/fc13c1cb430a0e9462da56fe3f421ff7af72db71/neontubes/neontubes-webfont.eot?#iefix")
+      format("embedded-opentype"),
+    url("https://bitbucket.org/kennethjensen/webfonts/raw/fc13c1cb430a0e9462da56fe3f421ff7af72db71/neontubes/neontubes-webfont.woff2")
+      format("woff2"),
+    url("https://bitbucket.org/kennethjensen/webfonts/raw/fc13c1cb430a0e9462da56fe3f421ff7af72db71/neontubes/neontubes-webfont.woff")
+      format("woff"),
+    url("https://bitbucket.org/kennethjensen/webfonts/raw/fc13c1cb430a0e9462da56fe3f421ff7af72db71/neontubes/neontubes-webfont.ttf")
+      format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
 @import url("https://fonts.googleapis.com/css?family=Jua&display=swap");
 
-.test {
-  background-color: black !important;
-  z-index: -1;
+.cocktailheader {
+  background-image: url("https://www.dropbox.com/s/2ct0i6kc61vp0bh/wall.jpg?raw=1");
+  background-size: 100%;
+  height: 38vh;
+  background-position-y: 30%;
+  color: white;
+  z-index: 200;
+  text-align: center;
+}
+.cocktailtitle {
+  font-family: "neontubes";
+  text-align: center;
+  margin-top: 20vmin;
+  font-size: 11vmin;
+  font-weight: 500;
 }
 
 .hcontainer {
@@ -419,7 +461,7 @@ export default {
   margin-right: 15%;
 }
 .filter-box {
-  font-family: "Vibur", cursive;
+  font-family: "neontubes";
   font-size: 1rem;
   background-image: url("https://www.dropbox.com/s/2ct0i6kc61vp0bh/wall.jpg?raw=1");
   background-size: cover;
@@ -439,7 +481,7 @@ export default {
   height: auto;
   position: fixed;
   background: linear-gradient(rgba(0, 0, 0, 0.7));
-  z-index: 0;
+  z-index: -1;
 }
 .autocomplete {
   font-family: "GyeonggiBatang";

@@ -1,26 +1,47 @@
 <template>
   <div class="test">
+    <div class="cocktailheader">
+      <div v-show="window.width >= 435">
+        <h1
+          class="cocktailtitle sign "
+          style="z-index:200;margin-right;auto;margin-left;auto;display:inline-block;z-index:200;font-family: 'neontubes';"
+        >
+          {{ cocktail.cname }}
+          <button @click="clickLike">
+            <span v-show="!islike">
+              <i class="far fa-heart"></i>
+            </span>
+            <span v-show="islike">
+              <i class="fas fa-heart"></i>
+            </span>
+          </button>
+          {{ likebycocktail }}
+        </h1>
+      </div>
+      <div v-show="window.width < 435">
+        <h1
+          class="cocktailtitle sign "
+          style="z-index:200;margin-top:15vmax;margin-right;auto;margin-left;auto;display:inline-block;z-index:200;font-family: 'neontubes';"
+        >
+          {{ cocktail.cname }} <br />
+          <button @click="clickLike" style="margin-top:10px;">
+            <span v-show="!islike">
+              <i class="far fa-heart"></i>
+            </span>
+            <span v-show="islike">
+              <i class="fas fa-heart"></i>
+            </span>
+          </button>
+          {{ likebycocktail }}
+        </h1>
+      </div>
+    </div>
     <img
       src="../assets/images/cocktail_list_copy02.png"
       class="rightImage titlefont"
       alt="cocktail_detail_background"
     />
     <div class="hcontainer">
-      <div
-        class="sign titlefont"
-        style="z-index:200;font-size:10vmin;margin-top:10%;margin-bottom:3%;text-align:center;"
-      >
-        {{ cocktail.cname }}
-        <button @click="clickLike">
-          <span v-show="!islike">
-            <i class="far fa-heart"></i>
-          </span>
-          <span v-show="islike">
-            <i class="fas fa-heart"></i>
-          </span>
-        </button>
-        {{ likebycocktail }}
-      </div>
       <div v-show="window.width >= 435">
         <i class="fas fa-4x fa-quote-left" style="color:white;opacity:0.5"></i>
       </div>
@@ -114,7 +135,7 @@
           </div>
         </v-col>
       </v-row>
-      <v-row>
+      <v-row style="margin-top:5%">
         <v-col cols="2">
           <div
             style="margin-top:4%; display:inline-block; overflow: hidden;  float:right;height:50px; width: 50px; border-radius:50px;"
@@ -484,11 +505,41 @@ export default {
   font-weight: normal;
   font-style: normal;
 }
+@font-face {
+  font-family: "neontubes";
+  src: url("https://bitbucket.org/kennethjensen/webfonts/raw/fc13c1cb430a0e9462da56fe3f421ff7af72db71/neontubes/neontubes-webfont.eot");
+  src: url("https://bitbucket.org/kennethjensen/webfonts/raw/fc13c1cb430a0e9462da56fe3f421ff7af72db71/neontubes/neontubes-webfont.eot?#iefix")
+      format("embedded-opentype"),
+    url("https://bitbucket.org/kennethjensen/webfonts/raw/fc13c1cb430a0e9462da56fe3f421ff7af72db71/neontubes/neontubes-webfont.woff2")
+      format("woff2"),
+    url("https://bitbucket.org/kennethjensen/webfonts/raw/fc13c1cb430a0e9462da56fe3f421ff7af72db71/neontubes/neontubes-webfont.woff")
+      format("woff"),
+    url("https://bitbucket.org/kennethjensen/webfonts/raw/fc13c1cb430a0e9462da56fe3f421ff7af72db71/neontubes/neontubes-webfont.ttf")
+      format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
 @import url("https://fonts.googleapis.com/css?family=Jua&display=swap");
 
 body {
   background-color: black !important;
   z-index: -1;
+}
+.cocktailheader {
+  background-image: url("https://www.dropbox.com/s/2ct0i6kc61vp0bh/wall.jpg?raw=1");
+  background-size: 100%;
+  height: 38vh;
+  background-position-y: 30%;
+  color: white;
+  z-index: 200;
+  text-align: center;
+}
+.cocktailtitle {
+  font-family: "neontubes";
+  text-align: center;
+  margin-top: 20vmin;
+  font-size: 11vmin;
+  font-weight: 500;
 }
 
 /* Button: Neon */
