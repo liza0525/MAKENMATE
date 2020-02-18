@@ -1,5 +1,6 @@
 package com.cocktail.model.meeting;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,7 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -26,7 +27,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class Meeting {
+public class Meeting implements Serializable{
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int mid;
@@ -36,9 +37,6 @@ public class Meeting {
 	
     @Column
     private String title;
-
-    @Column
-    private String content;
 
     @Column
     private String latitude;
@@ -53,11 +51,11 @@ public class Meeting {
     private int limit;
 
     @Column
-    private String time;
+    private String date;
 
 
     @OneToMany(mappedBy = "meeting")
-    @JsonManagedReference
+    @JsonIgnore
     private List<UserMeeting> usermeeting = new ArrayList<>();
 
 

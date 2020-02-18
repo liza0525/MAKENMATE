@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.tomcat.jni.Mmap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -23,6 +24,7 @@ import com.cocktail.dao.MeetingDao;
 import com.cocktail.dao.UserDao;
 import com.cocktail.exception.CocktailException;
 import com.cocktail.model.BasicResponse;
+import com.cocktail.model.meeting.Mdetail;
 import com.cocktail.model.meeting.Meeting;
 import com.cocktail.model.user.User;
 
@@ -66,9 +68,17 @@ public class MeetingController {
 	    }
 
 	    @PostMapping
-	    public Object save(@RequestBody Meeting meeting) {
-	        System.out.println(meeting);
-	        meetingDao.save(meeting);
+	    public Object save(@RequestBody Mdetail mdetail) {
+	        System.out.println(mdetail);
+	        Meeting m = new Meeting();
+	        m.setAuthor(mdetail.getAuthor());
+	        m.setTitle(mdetail.getTitle());
+	        m.setLatitude(mdetail.getLatitude());
+	        m.setLongitude(mdetail.getLongitude());
+	        m.setPlace(mdetail.getPlace());
+	        m.setLimit(mdetail.getLimit());
+	        m.setDate(mdetail.getDate());
+	        meetingDao.save(m);
 	        
 	        final BasicResponse result = new BasicResponse();
 	        result.status = true;
@@ -85,7 +95,7 @@ public class MeetingController {
 	    }
 
 	    @DeleteMapping(value = "/{mid}", produces = { MediaType.APPLICATION_JSON_VALUE })
-	    public ResponseEntity<Map<String, String>> deleteBoard(@PathVariable("mid") int mid) {
+	    public ResponseEntity<Map<String, String>> deleteMeeting(@PathVariable("mid") int mid) {
 	        meetingDao.delete(meetingDao.findById(mid));
 	        Map<String, String> resultMap = new HashMap<>();
 	        resultMap.put("data", "Success");

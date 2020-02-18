@@ -1,8 +1,7 @@
 import axios from "axios";
-
+import config from "../config";
 export default axios.create({
-  // baseURL: "https://localhost:443/backend/", // local
-  baseURL: "https://i02a309.p.ssafy.io:443/backend/", // aws
+  baseURL: config.url,
   headers: {
     "Content-type": "application/json"
   }
