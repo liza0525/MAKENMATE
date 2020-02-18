@@ -4,8 +4,8 @@
     <div id="boardrecipe-header">
       <h1 id="boardrecipe-title">{{ boardRecipe.title }}</h1>
       <h3 id="boardrecipe-username">by. {{ boardRecipe.user_name }}</h3>
-    </div>
-    <div id="boardrecipe-context" v-html="boardRecipe.contents"></div>
+    </div><font size="10">
+    <div id="boardrecipe-context" v-html="boardRecipe.contents"></div></font>
     
     <!-- 업로드 이미지-->
     <v-row id="img-contents">
@@ -68,11 +68,12 @@
       </div>
       <div :v-if="reply" v-for="(re, i) in reply" :key="i" style="margin-top: 5px; display:block;">
         <div v-if="isInput[i] === 0">
-          <span><br> {{ users[i] }} <br><br> {{ re.content }} <br><br><hr style="opacity: 0.3;"> <br></span>
-          <p v-if="username === users[i]" style="display:inline-block;">
-            <button @click="click(i)">수정</button>
-            <button @click="deleteComment(i, re.cmid)">삭제</button>
+          <span><font size="3"><br> {{ users[i] }}</font></span> <br><br>  <span><font size="4">{{ re.content }}</font></span>
+          <p v-if="username === users[i]" style="display:inline-block; float: right;">
+            <button @click="click(i)" style="margin-right: 15px">수정</button>
+            <button @click="deleteComment(i, re.cmid)">삭제</button>      
           </p>
+           <br><br><hr style="opacity: 0.3;"> <br>
         </div>
         <div v-else>
           <span>
@@ -192,6 +193,7 @@
 <script>
 import Constant from "../../Constant";
 import http from "@/http-common";
+
 export default {
   data() {
     return {
