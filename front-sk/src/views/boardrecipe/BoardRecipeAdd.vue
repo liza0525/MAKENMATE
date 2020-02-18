@@ -92,8 +92,13 @@ export default {
       console.log(this.aa);
       this.$store.state.filelist = [];
       this.$store.state.filedelete = null;
-      // this.$store.commit(Constant.ADD_FILELIST, {filelist: null})
-      // this.$store.commit(Constant.DELETE_FILELIST, {filedelete: null})
+      
+      if(this.aa.length === 0) {
+        this.aa[0] = 49104755;
+        console.log(this.add);
+      }
+      
+
       http
         .post("/boardrecipe/", {
           title: this.btitleid,

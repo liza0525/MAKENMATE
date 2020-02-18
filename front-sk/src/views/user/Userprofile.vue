@@ -188,12 +188,27 @@ export default {
     };
   },
   mounted() {
+    var fid = this.$store.state.filelist;
+    if (fid != null) {
+      console.log(this.$store.state.filelist);
+      http
+        .put("/userprofileimage/" + fid, {
+          nickname: window.sessionStorage.getItem("login_username")
+          // 파일 번호로 파일이름 찾아와서 유저 이미지 컬럼에 주소 넣어주기~
+        })
+        .then(res => {
+          console.log("aaa");
+          this.$store.state.filelist = [];
+        });
+    }
     console.log(this.$route.params.username);
     this.user.nickname = this.$route.params.username;
     this.$store
       .dispatch(Constant.GET_USERINFO, { username: this.user.nickname })
       .then(() => {
-        this.user = { ...this.$store.state.user };
+        this.user = {
+          ...this.$store.state.user
+        };
         if (this.user.image === null)
           this.user.image = require(`../../../../images/default.png`);
         console.log(this.user);
@@ -201,7 +216,9 @@ export default {
     this.$store
       .dispatch(Constant.GET_COCKTAILLIKE, { username: this.user.nickname })
       .then(() => {
-        this.cocktailList = { ...this.$store.state.cocktailList };
+        this.cocktailList = {
+          ...this.$store.state.cocktailList
+        };
         this.cocktailList = Object.values(this.cocktailList);
         this.cocktailList.forEach(element => {
           if (element.image != "") {
