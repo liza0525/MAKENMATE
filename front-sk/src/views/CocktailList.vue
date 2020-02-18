@@ -148,6 +148,7 @@
           v-if="pageNm > 5"
           v-on:click="search(1)"
           style="margin-right:10px;margin-top:100px;color:#ffffff"
+          class="paging-size"
         >
           {{ fistBt }}
         </button>

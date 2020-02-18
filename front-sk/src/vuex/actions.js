@@ -10,7 +10,6 @@ export default {
           }
         })
         .then(res => {
-          console.log(res);
           store.commit(Constant.GET_REPLY, {
             reply: res.data.comments.content,
             users: res.data.userArray,

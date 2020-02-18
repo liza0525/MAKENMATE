@@ -338,7 +338,7 @@ export default {
   background: linear-gradient(rgba(0, 0, 0, 0.5)),
     url("../../assets/images/image5.jpg") no-repeat;
   background-size: 100%;
-  height: 60vh;
+  height: 50vh;
   background-position-y: 30%;
   color: white;
 }
@@ -347,7 +347,7 @@ export default {
   display: inline;
   position: relative;
   float: left;
-  top: 35vmin;
+  top: 30vmin;
   font-size: 11vmin;
   font-family: "BBTreeGB";
 }
@@ -413,13 +413,13 @@ export default {
     font-size: 15px;
   }
   #board-header {
-    height: 50vh;
+    height: 35vh;
     background-size: 200vw;
     background-position-x: 50%;
   }
   #board-title {
-    margin-top: 3vmin;
-    font-size: 7vmin;
+    margin-top: 4vmin;
+    font-size: 8vmin;
   }
   #board-username {
     margin: 0 0 0 2vw;
