@@ -158,23 +158,10 @@
                             nextBt: ">",
                             fistBt: "<<",
                             lastBt: ">>",
-                            wH: 0
+                            wH: 0,
                         };
                     },
                     mounted() {
-                        var fid = this.$store.state.filelist;
-                        if(fid != null){
-                        console.log(this.$store.state.filelist)
-                        http
-                            .put("/userprofileimage/" + fid, {
-                                nickname: window.sessionStorage.getItem("login_username")
-                                // 파일 번호로 파일이름 찾아와서 유저 이미지 컬럼에 주소 넣어주기~
-                            })
-                            .then(res => {
-                              console.log("aaa");
-                              this.$store.state.filelist = [];
-                            });
-                        }
                         console.log(this.$route.params.username);
                         this.user.nickname = this.$route.params.username;
                         this
@@ -184,8 +171,9 @@
                                 this.user = {
                                     ...this.$store.state.user
                                 };
-                                if (this.user.image === null) 
+                                if (this.user.image === null)
                                     this.user.image = require(`../../../../images/default.png`);
+ 
                                 console.log(this.user);
                             });
                         this
