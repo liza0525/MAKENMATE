@@ -10,10 +10,12 @@ export default {
           }
         })
         .then(res => {
+          console.log(res);
           store.commit(Constant.GET_REPLY, {
             reply: res.data.comments.content,
-            users: res.data.UserArray,
-            totalPages: res.data.comments.totalPages
+            users: res.data.userArray,
+            totalPages: res.data.comments.totalPages,
+            userImg: res.data.userImg
           });
           resolve();
         })
