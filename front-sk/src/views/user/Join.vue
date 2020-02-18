@@ -48,17 +48,23 @@
               v-if="passwordConfirm != 0 && password != passwordConfirm"
             >{{ error.passwordConfirm }}</div>
             <label>
-              <input v-model="isTerm" @click="isTerm = !isTerm" type="checkbox" id="term" />
-              <span>약관을 동의합니다.</span>
+              <input @click="termConfirm" type="checkbox" id="term" />
+              <span>약관에 동의합니다.</span>
             </label>
             <span
               @click="termPopup = !termPopup"
-              style="float: right; margin-top: 5px; margin-right: 3px;"
-            >약관보기</span>
-            <div
-              v-if="termPopup == true"
-              style="background-color: white; color: black; padding: 3vmin; margin: 1vmin;border-radius: 10px"
-            >"약관입니다"</div>
+              style="margin-top: 5px; margin-left: 10px; cursor: pointer;"
+            >약관 보기</span>
+
+            <v-card v-if="termPopup" dark scrollable style="10px">
+              <v-card-title class="headline">Cocktail 이용 약관 동의</v-card-title>
+              <v-card-text>개인정보 수집 및 이용 동의(필수)<br />
+              위치 정보 제공 동의(필수)
+              </v-card-text>
+              <v-card-actions>
+                <v-spacer></v-spacer>
+              </v-card-actions>
+            </v-card>
             <div class="my-5 width-100">
               <button
                 type="button"
@@ -76,8 +82,6 @@
 </template>
 
 <script>
-// import "../../assets/css/style.scss";
-// import "../../assets/css/user.scss";
 import PasswordValidator from "password-validator";
 import * as EmailValidator from "email-validator";
 import UserApi from "../../apis/UserApi";
@@ -233,6 +237,10 @@ export default {
           }
         );
       }
+    },
+    termConfirm() {
+      this.isTerm = !this.isTerm;
+      this.termPopup = false;
     }
   }
 };
@@ -240,165 +248,6 @@ export default {
 <style>
 #join-window {
   margin: 15vh auto;
-}
-/* neon */
-:root {
-  --neon-main: #f7f3f7;
-  --neon-shadow: rgb(210, 153, 153);
-  --neon-main-glitch: #f7f3f7c2;
-  --neon-text-glitch: #f7f3f788;
-  --neon-shadow-glitch: rgba(210, 153, 172, 0.76);
-}
-.neon-btn {
-  background-color: transparent;
-  color: var(--neon-main);
-  border: 3px solid var(--neon-main);
-  box-shadow: 0px 0px 25px 10px var(--neon-shadow),
-    inset 0px 0px 25px 10px var(--neon-shadow);
-  border-radius: 25px;
-  height: 50px;
-  padding: 0;
-  text-shadow: 0 0 5px var(--neon-shadow);
-  transition: box-shadow 0.25s ease;
-  animation: neon-text-glitch 3s steps(1) infinite,
-    neon-border-glitch 4.5s steps(1) infinite;
-}
-.neon-btn:focus {
-  box-shadow: 0px 0px 25px 10px var(--neon-shadow),
-    inset 0px 0px 25px 10px var(--neon-shadow);
-  animation: neon-text-glitch 3s steps(1) infinite;
-}
-.neon-btn:active {
-  box-shadow: 0px 0px 50px 20px var(--neon-shadow),
-    inset 0px 0px 25px 13px var(--neon-shadow);
-  animation: neon-text-glitch 3s steps(1) infinite;
-}
-.neon-card {
-  border: 3px solid var(--neon-main);
-  border-radius: 15px;
-  box-shadow: 0px 0px 45px 10px var(--neon-shadow),
-    inset 0px 0px 25px 10px var(--neon-shadow);
-  padding: 25px;
-  color: var(--neon-main);
-  text-shadow: 0 0 5px var(--neon-shadow);
-  animation: neon-card-glitch 4s steps(1) infinite;
-}
-
-@keyframes neon-card-glitch {
-  0% {
-    box-shadow: 0px 0px 25px 10px var(--neon-shadow),
-      inset 0px 0px 25px 10px var(--neon-shadow);
-  }
-  90% {
-    box-shadow: 0px 0px 25px 10px var(--neon-shadow),
-      inset 0px 0px 25px 10px var(--neon-shadow);
-  }
-  95% {
-    box-shadow: 0px 0px 10px 5px var(--neon-shadow-glitch),
-      inset 0px 0px 10px 5px var(--neon-shadow-glitch);
-  }
-  100% {
-    box-shadow: 0px 0px 25px 10px var(--neon-shadow),
-      inset 0px 0px 25px 10px var(--neon-shadow);
-  }
-}
-.neon-label {
-  color: var(--neon-main);
-  text-shadow: 0 0 5px var(--neon-shadow);
-  animation: neon-label-glitch 3s steps(1) infinite;
-  margin: 5px 0;
-}
-.neon-label::after {
-  content: "";
-  width: 3px;
-  height: 20px;
-  background-color: #000;
-  position: absolute;
-  bottom: -10px;
-  left: 16px;
-  z-index: -1;
-  border-radius: 3px;
-}
-.neon-input {
-  margin: 10px 0;
-  border-radius: 25px;
-  box-shadow: 0px 0px 25px 10px var(--neon-shadow),
-    inset 0px 0px 15px 4px var(--neon-shadow);
-  border: 3px solid var(--neon-main);
-  background-color: transparent;
-  color: var(--neon-main);
-  outline: none !important;
-  padding: 7px 20px;
-  animation: neon-input-glitch 3s steps(1) infinite;
-}
-.neon-input:focus {
-  box-shadow: 0px 0px 25px 10px var(--neon-shadow),
-    inset 0px 0px 15px 7px var(--neon-shadow);
-  animation: none;
-}
-
-.neon-input_disabled {
-  box-shadow: 0px 0px 2px 1px var(--neon-shadow-glitch),
-    inset 0px 0px 2px 1px var(--neon-shadow-glitch);
-  animation: none;
-  border: 3px solid var(--neon-main-glitch);
-}
-
-@keyframes neon-input-glitch {
-  0% {
-    box-shadow: 0px 0px 15px 4px var(--neon-shadow),
-      inset 0px 0px 15px 4px var(--neon-shadow);
-  }
-
-  85% {
-    box-shadow: 0px 0px 15px 4px var(--neon-shadow),
-      inset 0px 0px 15px 4px var(--neon-shadow);
-  }
-
-  90% {
-    box-shadow: 0px 0px 10px 4px var(--neon-shadow-glitch),
-      inset 0px 0px 10px 4px var(--neon-shadow-glitch);
-  }
-
-  100% {
-    box-shadow: 0px 0px 15px 4px var(--neon-shadow),
-      inset 0px 0px 15px 4px var(--neon-shadow);
-  }
-}
-
-@keyframes neon-label-glitch {
-  0% {
-    color: var(--neon-main);
-    text-shadow: 0 0 5px var(--neon-shadow);
-  }
-
-  85% {
-    color: var(--neon-main);
-    text-shadow: 0 0 5px var(--neon-shadow);
-  }
-
-  90% {
-    color: var(--neon-main-glitch);
-    text-shadow: 0 0 1px var(--neon-shadow-glitch);
-  }
-
-  100% {
-    color: var(--neon-main);
-    text-shadow: 0 0 5px var(--neon-shadow);
-  }
-}
-.neon-input ~ .neon-input {
-  animation-delay: 0.5s;
-}
-.neon-input ~ .neon-input ~ .neon-input {
-  animation-delay: 2.5s;
-}
-.neon-input ~ .neon-input ~ .neon-input ~ .neon-input {
-  animation-delay: 1.5s;
-}
-
-.neon-label ~ .neon-label {
-  animation-delay: 1s;
 }
 /* check box */
 [type="checkbox"]:checked + span:before,
@@ -432,5 +281,14 @@ export default {
   #join-window {
     width: 30%;
   }
+}
+
+/* neon */
+
+.neon-input ~ .neon-input ~ .neon-input {
+  animation-delay: 1.5s;
+}
+.neon-input ~ .neon-input ~ .neon-input ~ .neon-input {
+  animation-delay: 1s;
 }
 </style>

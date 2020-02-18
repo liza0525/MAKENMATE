@@ -38,15 +38,14 @@
                 <div class="text">
                   <p id="label-title">SNS 로그인</p>
                 </div>
-                <div id="sns-login-button">
-                  <kakaoLogin :component="component" />
-                  <!-- <GoogleLogin :component="component" /> -->
-                  <NaverLogin :component="component" />
-                </div>
+                    
+                <kakaoLogin :component="component" />
+                <!-- <GoogleLogin :component="component" /> -->
+                <NaverLogin :component="component"  />
               </div>
               <div class="add-option">
                 <div class="text">
-                  <p id="label-title">혹시,</p>
+                  <p id="label-title">etc.</p>
                 </div>
                 <div class="wrap">
                   <span style="color: white;">비밀번호 잊으셨나요?</span>
@@ -196,18 +195,17 @@ input::placeholder {
   background-size: cover;
   height: 100vh;
 }
-#kakao-login {
-  margin: 0 10px;
+#sns-login {
+  width: 100%;
 }
-#naverIdLogin_loginButton {
-  width: 55px;
-  height: 55px;
-  border-radius: 55px;
+#kakao-btn {
+  margin-right: 10px;
 }
-.btn--naver,
-#kakao-login {
+#naver-btn,
+#kakao-btn {
   display: inline-block;
 }
+
 #etc-link {
   float: right;
 }
@@ -235,24 +233,32 @@ input::placeholder {
     width: 30%;
   }
 }
+/* input 자동완성 */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+transition: background-color 5000s ease-in-out 0s;
+-webkit-transition: background-color 9999s ease-out;
+  -webkit-text-fill-color: #fff !important;
+}
+
 /* neon */
 :root {
   --neon-main: #f7f3f7;
-  --neon-shadow: rgb(210, 153, 153);
+  --neon-shadow: rgb(214, 128, 125);
   --neon-main-glitch: #f7f3f7c2;
   --neon-text-glitch: #f7f3f788;
-  --neon-shadow-glitch: rgba(210, 153, 172, 0.76);
+  --neon-shadow-glitch: rgb(185, 92, 92);
 }
 .neon-btn {
-  background-color: transparent;
-  color: var(--neon-main);
   border: 3px solid var(--neon-main);
-  box-shadow: 0px 0px 25px 10px var(--neon-shadow),
-    inset 0px 0px 25px 10px var(--neon-shadow);
+  box-shadow: 0px 0px 10px 3px var(--neon-main),
+    inset 0px 0px 10px 3px var(--neon-main);
   border-radius: 25px;
   height: 50px;
   padding: 0;
-  margin: 5px;
+  margin: 5px 0;
   text-shadow: 0 0 5px var(--neon-shadow);
   transition: box-shadow 0.25s ease;
   animation: neon-text-glitch 3s steps(1) infinite,
@@ -281,20 +287,16 @@ input::placeholder {
 
 @keyframes neon-card-glitch {
   0% {
-    box-shadow: 0px 0px 25px 10px var(--neon-shadow),
-      inset 0px 0px 25px 10px var(--neon-shadow);
-  }
-  90% {
-    box-shadow: 0px 0px 25px 10px var(--neon-shadow),
-      inset 0px 0px 25px 10px var(--neon-shadow);
+    box-shadow: 0px 0px 15px 0px var(--neon-shadow),
+      inset 0px 0px 15px 0px var(--neon-shadow);
   }
   95% {
-    box-shadow: 0px 0px 10px 5px var(--neon-shadow-glitch),
-      inset 0px 0px 10px 5px var(--neon-shadow-glitch);
+    box-shadow: 0px 0px 15px 3px var(--neon-shadow-glitch),
+      inset 0px 0px 15px 3px var(--neon-shadow-glitch);
   }
   100% {
-    box-shadow: 0px 0px 25px 10px var(--neon-shadow),
-      inset 0px 0px 25px 10px var(--neon-shadow);
+    box-shadow: 0px 0px 15px 0px var(--neon-shadow),
+      inset 0px 0px 15px 0px var(--neon-shadow);
   }
 }
 .neon-label {
