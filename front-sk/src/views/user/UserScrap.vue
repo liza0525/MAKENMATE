@@ -1,10 +1,10 @@
 <template>
-  <div>
+  <div style="background-color: white;">
     <div id="user-scrap-header">
       <h1 id="user-scrap-title">스크랩 목록</h1>
     </div>
     <div id="user-scrap-context">
-      <v-simple-table dark>
+      <v-simple-table>
         <template>
           <thead>
             <tr>
@@ -120,6 +120,7 @@ export default {
   float: left;
   top: 35vmin;
   font-size: 11vmin;
+  font-family: "BBTreeGB";
 }
 #user-scrap-context {
   color: #ccc;
