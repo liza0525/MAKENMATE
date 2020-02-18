@@ -17,7 +17,11 @@
           <tbody>
             <tr v-for="board in info.content" v-bind:key="board.bid">
               <td class="numbering-col" v-html="board.bid"></td>
-              <td v-html="board.title" @click="detail_id(board.bid)" style="cursor: pointer;"></td>
+              <td
+                v-html="board.title"
+                @click="detail_id(board.bid)"
+                style="cursor: pointer;"
+              ></td>
               <td v-html="board.user_name"></td>
               <td class="date-col" v-html="board.regdate"></td>
             </tr>
@@ -26,9 +30,19 @@
       </v-simple-table>
     </div>
     <div id="board-list-footer">
-      <button v-if="this.$store.state.username" class="board-button" @click="add_move()">글쓰기</button>
+      <button
+        v-if="this.$store.state.username"
+        class="board-button"
+        @click="add_move()"
+      >
+        글쓰기
+      </button>
       <div id="pagination">
-        <button v-for="pageNm in pageNms" :key="pageNm" @click="retrieveBoard(pageNm)">
+        <button
+          v-for="pageNm in pageNms"
+          :key="pageNm"
+          @click="retrieveBoard(pageNm)"
+        >
           <span style="margin-right:10px;">{{ pageNm }}</span>
         </button>
       </div>
@@ -41,19 +55,25 @@ import http from "../../http-common";
 export default {
   name: "board-list",
   data: () => {
-    return { info: [], loading: true, errored: false, totalPages: 0, pageNms: [] };
+    return {
+      info: [],
+      loading: true,
+      errored: false,
+      totalPages: 0,
+      pageNms: []
+    };
   },
   methods: {
     retrieveBoard(pageNm) {
       http
-        .get("/board",{
-          params:{
-            page: pageNm -1
+        .get("/board", {
+          params: {
+            page: pageNm - 1
           }
         })
         .then(response => {
-          this.info = response.data.object
-          this.totalPages = response.data.object.totalPages
+          this.info = response.data.object;
+          this.totalPages = response.data.object.totalPages;
           let arr = [];
 
           let min = parseInt((pageNm - 1) / 5) * 5 + 1;
@@ -69,7 +89,7 @@ export default {
         .finally(() => (this.loading = false));
     },
     add_move() {
-      this.$router.push({name: "BoardAdd"});
+      this.$router.push({ name: "BoardAdd" });
     },
     detail_id(sendbid) {
       this.$router.push({
@@ -90,8 +110,8 @@ td {
   font-family: "GyeonggiBatang";
 }
 #board-list-header {
-  background: linear-gradient(rgba(0, 0, 0, 0.3)),
-    url("../../assets/images/image.png") no-repeat;
+  background: linear-gradient(rgba(0, 0, 0, 0.5)),
+    url("../../assets/images/image5.jpg") no-repeat;
   background-size: 100%;
   height: 60vh;
   background-position-y: 30%;
@@ -104,7 +124,7 @@ td {
   float: left;
   top: 35vmin;
   font-size: 11vmin;
-  font-family: 'BBTreeGB';
+  font-family: "BBTreeGB";
 }
 #board-list-footer {
   color: #ccc;
@@ -134,9 +154,10 @@ td {
 }
 @media (max-width: 700px) {
   #board-context {
-  margin: 2vmax 3vmax;
+    margin: 2vmax 3vmax;
   }
-  .numbering-col, .date-col{
+  .numbering-col,
+  .date-col {
     display: none;
   }
   #board-list-header {
@@ -145,7 +166,7 @@ td {
     background-position-x: 50%;
   }
   #board-category {
-    margin-top: 3vmin; 
+    margin-top: 3vmin;
     font-size: 7vmin;
   }
 }

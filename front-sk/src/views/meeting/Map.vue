@@ -41,13 +41,35 @@
         <div class="up">
           <div>
             <label>제목</label>
-            <input type="text" v-model="meeting.title" placeholder="제목" />
+            <input
+              type="text"
+              v-model="meeting.title"
+              placeholder="제목"
+            /><br />
             <label>시간</label>
-            <input type="text" v-model="meeting.date" placeholder="시간" />
+            <input
+              type="text"
+              v-model="meeting.date"
+              placeholder="시간"
+            /><br />
             <label>인원</label>
-            <input type="text" v-model="meeting.count" placeholder="인원" />
+            <input
+              type="text"
+              v-model="meeting.count"
+              placeholder="인원"
+            /><br />
             <label>장소</label>
-            <input type="text" v-model="meeting.place" placeholder="장소" />
+            <input
+              type="text"
+              v-model="meeting.place"
+              placeholder="장소"
+            /><br />
+            <label>상세 주소</label>
+            <input
+              type="text"
+              v-model="meeting.detail"
+              placeholder="상세 주소"
+            />
             <button @click="makeMeeting()"><h1>만남 만들기</h1></button>
           </div>
         </div>
@@ -69,6 +91,8 @@
 <script>
 import Drawer from "vue-simple-drawer";
 import http from "../../http-common";
+import axios from "axios";
+import config from "../../../config";
 export default {
   components: {
     Drawer
@@ -87,7 +111,8 @@ export default {
         title: "",
         date: "",
         count: 0,
-        place: ""
+        place: "",
+        detail: ""
       },
       open: false,
       location: null,
@@ -98,7 +123,6 @@ export default {
   },
   mounted() {
     this.username = this.$store.state.username;
-    console.log(this.username);
     this.getMarker();
   },
   methods: {
@@ -107,6 +131,18 @@ export default {
       this.open = !this.open;
       this.pos.lat = lat;
       this.pos.lng = lng;
+      axios
+        .get(
+          "https://maps.googleapis.com/maps/api/geocode/json?latlng=" +
+            lat +
+            ", " +
+            lng +
+            "&key=" +
+            config.apiKey
+        )
+        .then(res => {
+          this.meeting.place = res.data.results[0].formatted_address;
+        });
     },
     panTo(e, map) {
       map.panTo(e.latLng);
@@ -146,7 +182,6 @@ export default {
       http.get("/meeting").then(res => {
         this.meetings = res.data.object;
         this.markers = [];
-        console.log(res.data.object[1].usermeeting);
         this.meetings.forEach(el => {
           let pos = {
             position: {
@@ -166,7 +201,7 @@ export default {
           latitude: this.pos.lat,
           longitude: this.pos.lng,
           date: this.meeting.date,
-          place: this.meeting.place,
+          place: this.meeting.place + " " + this.meeting.detail,
           count: this.meeting.count
         })
         .then(res => {
@@ -262,6 +297,9 @@ export default {
   position: absolute;
   left: 0;
   right: 0;
-  width: 50%;
+  width: 80%;
+}
+input {
+  width: 90%;
 }
 </style>

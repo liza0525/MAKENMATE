@@ -564,8 +564,8 @@ export default {
 
 <style>
 #boardrecipe-header {
-  background: linear-gradient(rgba(0, 0, 0, 0.3)),
-    url("../../assets/images/image6.jpg") no-repeat;
+  background: linear-gradient(rgba(0, 0, 0, 0.5)),
+    url("../../assets/images/image7.jpg") no-repeat;
   background-size: 100%;
   height: 60vh;
   background-position-y: 30%;

@@ -77,8 +77,9 @@ public class UserProfileController {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    @PutMapping(value="/userprofileimage/{fid}")
-    public Object userimage(@PathVariable int fid, @RequestBody String username) {
+    @PutMapping(value="/userprofileimage")
+    public Object userimage(@RequestParam(required = true) final int fid,
+    @RequestParam(required = true) final String username) {
         System.out.println("fid       " +  fid );
         System.out.println("username       "  + username);
         UploadFile file = filedao.findById(fid);
