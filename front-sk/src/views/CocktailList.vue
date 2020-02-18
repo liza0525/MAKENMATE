@@ -1,18 +1,27 @@
 <template>
   <div class="test">
     <img
-      src="../assets/images/cocktail_list_copy02.jpg"
+      src="../assets/images/cocktail_list_copy02.png"
       class="rightImage titlefont"
       alt="cocktail_list_background"
     />
-    <button class="neon-button" @click="openFilterBox = true">
+    <button
+      class="neon-button"
+      @click="openFilterBox = true"
+      style="width: 3%"
+      v-show="window.width >= 1024"
+    >
       F
-      <br />I
-      <br />L
-      <br />T
-      <br />E
-      <br />R
-      <br />>
+      <br />I <br />L <br />T <br />E <br />R <br />>
+    </button>
+    <button
+      class="neon-button"
+      @click="openFilterBox = true"
+      style="width: 30px;"
+      v-show="window.width < 1024"
+    >
+      F
+      <br />I <br />L <br />T <br />E <br />R <br />>
     </button>
     <div v-show="openFilterBox" class="filter-box">
       <div class="hcontainer" style="margin-bottom:10%">
@@ -21,11 +30,15 @@
           class="close sign"
           style="font-size:4vmin;margin-top:5%;position:absolute;right:10%;"
           @click="openFilterBox = !openFilterBox"
-        >&times;</p>
+        >
+          &times;
+        </p>
         <div
           class="sign"
           style="font-size:3vmax;padding-top:7%;margin-bottom:3%;text-align:center;"
-        >Material</div>
+        >
+          Material
+        </div>
         <div
           style="text-align:center;display:inline-block;width:20%;margin-bottom:5%"
           v-for="filter in filters"
@@ -42,7 +55,11 @@
             }"
           >
             <v-img :src="filter.image" :alt="filter.name" style="width:100%;" />
-            <v-text class="x-sign" style="font-size:1.5vmax;text-align:center;">{{ filter.title }}</v-text>
+            <v-text
+              class="x-sign"
+              style="font-size:1.5vmax;text-align:center;"
+              >{{ filter.title }}</v-text
+            >
           </router-link>
         </div>
       </div>
@@ -51,7 +68,9 @@
       <div
         class="sign"
         style="z-index:200;font-size:400%;margin-top:10%;margin-bottom:10%;text-align:center;"
-      >Cocktails</div>
+      >
+        Cocktails
+      </div>
       <v-row>
         <v-col
           v-for="(cocktail, i) in cocktailArray"
@@ -71,8 +90,12 @@
             <h1
               class="sansfont"
               style="margin-top:10px;display:inline-block;width:72%;overflow:auto;height:7%;font-size:120%;margin-left:15px;font-weight:bolder;"
-            >{{ cocktail.cname }}</h1>
-            <v-text style="margin-top:12px;margin-right:15px;float:right;display:inline-block;">
+            >
+              {{ cocktail.cname }}
+            </h1>
+            <v-text
+              style="margin-top:12px;margin-right:15px;float:right;display:inline-block;"
+            >
               <i class="fas fa-lg fa-heart"></i>
               {{ getLikesByCocktail[i] }}
             </v-text>
@@ -109,18 +132,20 @@
           v-if="pageNm > 5"
           v-on:click="search(1)"
           style="margin-right:10px;margin-top:100px;color:#ffffff"
-        >{{ fistBt }}</button>
+        >
+          {{ fistBt }}
+        </button>
         <button
           v-if="pageNm > 5"
           v-on:click="search(min - 5 < 0 ? 1 : min - 5)"
           style="margin-right:10px;color:#ffffff"
           class="paging-size"
-        >{{ prevBt }}</button>
+        >
+          {{ prevBt }}
+        </button>
         <button v-for="pageNm in pageNms" :key="pageNm" @click="search(pageNm)">
           <span style="margin-right:10px;color:#ffffff;" class="paging-size">
-            {{
-            pageNm
-            }}
+            {{ pageNm }}
           </span>
         </button>
         <button
@@ -128,13 +153,17 @@
           class="paging-size"
           v-on:click="search(min + 5)"
           style="margin-right:10px;color:#ffffff"
-        >{{ nextBt }}</button>
+        >
+          {{ nextBt }}
+        </button>
         <button
           class="paging-size"
           v-if="min + 5 <= totalPages"
           v-on:click="search(totalPages)"
           style="color:#ffffff;"
-        >{{ lastBt }}</button>
+        >
+          {{ lastBt }}
+        </button>
       </div>
     </div>
   </div>
@@ -216,10 +245,16 @@ export default {
           title: "BEER"
         }
       ],
-      min: 1
+      min: 1,
+      window: {
+        width: 0,
+        height: 0
+      }
     };
   },
   mounted() {
+    window.addEventListener("resize", this.handleResize);
+    this.handleResize();
     this.pageNm = this.$route.query.pageNm;
     this.filtered = this.$route.query.filtered;
     this.getCocktailName();
@@ -249,6 +284,9 @@ export default {
         return this.$route.query.filtered;
       }
     }
+  },
+  destroyed() {
+    window.removeEventListener("resize", this.handleResize);
   },
   methods: {
     paginate(pageNm) {
@@ -328,6 +366,13 @@ export default {
           cid: id
         }
       });
+    },
+    handleResize() {
+      this.window.width = window.innerWidth;
+      this.window.height = window.innerHeight;
+      // console.log(typeof this.window.height);
+      this.window.height = this.window.height + "px";
+      this.window.height = "calc(" + this.window.height + " - 4rem)";
     }
   }
 };
@@ -383,7 +428,7 @@ export default {
   background-repeat: no-repeat;
   background-color: #141414;
   position: fixed;
-  z-index: 100;
+  z-index: 500;
   width: 100% !important;
   top: 0px;
 }
@@ -439,7 +484,6 @@ export default {
   position: fixed;
   margin-top: 10%;
   float: left;
-  width: 3%;
   padding-top: 1%;
   padding-bottom: 1%;
   font-size: 1.3rem;
@@ -455,7 +499,6 @@ export default {
   position: fixed;
   margin-top: 10%;
   float: left;
-  width: 3%;
   padding-top: 1%;
   padding-bottom: 1%;
   font-size: 1.3rem;

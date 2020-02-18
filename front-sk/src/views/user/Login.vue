@@ -1,60 +1,69 @@
 <template>
-  <div id="login-bg">
-    <div id="login-window">
-      <h1 id="title">한 잔 하러 갈까요?&#x1F378;</h1>
-      <div class="input-with-label">
-        <input
-          v-model="email"
-          @keyup.enter="login"
-          id="email"
-          placeholder="이메일"
-          type="text"
-          style="color:white;"
-        />
-        <label for="email" id="label-text">이메일</label>
-        <div class="error-text" v-if="error.email">{{ error.email }}</div>
-      </div>
-
-      <div class="input-with-label">
-        <input
-          v-model="password"
-          type="password"
-          id="password"
-          @keyup.enter="login"
-          placeholder="비밀번호"
-          style="color:white;"
-        />
-        <label for="password" id="label-text">비밀번호</label>
-        <div class="error-text" v-if="error.password">{{ error.password }}</div>
-      </div>
-      <button
-        class="btn btn--back btn--login"
-        v-on:click="login"
-        :disabled="!isSubmit"
-        :class="{ disabled: !isSubmit }"
-      >로그인</button>
-      <div class="sns-login">
-        <div class="text">
-          <p id="label-title">SNS 로그인</p>
-        </div>
-        <div id="sns-login-button">
-          <kakaoLogin :component="component" />
-          <!-- <GoogleLogin :component="component" /> -->
-          <NaverLogin :component="component" />
-        </div>
-      </div>
-      <div class="add-option">
-        <div class="text">
-          <p id="label-title">혹시,</p>
-        </div>
-        <div class="wrap">
-          <span style="color: white;">비밀번호 잊으셨나요?</span>
-          <router-link v-bind:to="{ name: 'InputEmail' }" class="btn--text" id="etc-link">비밀번호 변경</router-link>
-        </div>
-        <div class="wrap">
-          <span style="color: white;">아직 회원이 아니라면?</span>
-          <router-link v-bind:to="{ name: 'Join' }" class="btn--text" id="etc-link">회원가입</router-link>
-        </div>
+  <div class="account-bg">
+    <div>
+      <div id="login-window">
+        <v-row>
+          <v-col class="neon-card mx-auto" style="width: 30vw; background-color: black">
+            <h1 class="neon-label" style="text-align: center;">레시피 보러 로그인&#x1F378;</h1>
+            <label class="neon-label col-12 mb-2">이메일</label>
+            <input
+              v-model="email"
+              id="email"
+              placeholder="이메일을 입력하세요."
+              class="neon-input col-12 mb-4"
+              @keyup.enter="login"
+              type="text"
+            />
+            <div class="error-text" v-if="error.email">{{ error.email }}</div>
+            <label class="neon-label col-12 mb-2">비밀번호</label>
+            <input
+              v-model="password"
+              id="password"
+              @keyup.enter="login"
+              placeholder="비밀번호를 입력하세요."
+              :readonly="isKakao"
+              type="password"
+              class="neon-input col-12 mb-4"
+            />
+            <div class="error-text" v-if="password != 0 && error.password">{{ error.password }}</div>
+            <div class="my-5 width-100">
+              <button
+                type="button"
+                v-on:click="login()"
+                :disabled="!isSubmit"
+                :class="{ disabled: !isSubmit }"
+                class="neon-btn col-12 mb-4"
+              >Log In</button>
+              <div class="sns-login">
+                <div class="text">
+                  <p id="label-title">SNS 로그인</p>
+                </div>
+                <div id="sns-login-button">
+                  <kakaoLogin :component="component" />
+                  <!-- <GoogleLogin :component="component" /> -->
+                  <NaverLogin :component="component" />
+                </div>
+              </div>
+              <div class="add-option">
+                <div class="text">
+                  <p id="label-title">혹시,</p>
+                </div>
+                <div class="wrap">
+                  <span style="color: white;">비밀번호 잊으셨나요?</span>
+                  <router-link
+                    v-bind:to="{ name: 'InputEmail' }"
+                    class="btn--text"
+                    id="etc-link"
+                  >비밀번호 변경</router-link>
+                </div>
+                <div class="wrap">
+                  <span style="color: white;">아직 회원이 아니라면?</span>
+                  <router-link v-bind:to="{ name: 'Join' }" class="btn--text" id="etc-link">회원가입</router-link>
+                </div>
+              </div>
+            </div>
+          </v-col>
+        </v-row>
       </div>
     </div>
   </div>
@@ -168,6 +177,9 @@ export default {
   font-weight: normal;
   font-style: normal;
 }
+#login-window {
+  margin: 15vh auto;
+}
 #title {
   font-family: "MapoPeacefull";
   color: white !important;
@@ -178,16 +190,11 @@ export default {
 input::placeholder {
   color: white;
 }
-#login-bg {
+.account-bg {
   background: linear-gradient(rgba(0, 0, 0, 0.7)),
-    url("../../assets/images/login_bg.jpg") no-repeat;
+    url("../../assets/images/account_bg.jpg") no-repeat;
   background-size: cover;
-}
-#login-window {
-  background: rgba(43, 19, 15, 0.815);
-  padding: 20vh 5vw;
-  height: 110vh;
-  margin-left: auto;
+  height: 100vh;
 }
 #kakao-login {
   margin: 0 10px;
@@ -215,19 +222,170 @@ input::placeholder {
 }
 @media (min-width: 0px) {
   #login-window {
-    width: 100%;
-    padding: 20vh 10vw;
+    width: 90%;
   }
 }
 @media (min-width: 600px) {
   #login-window {
-    width: 60%;
-    padding: 20vh 7vw;
+    width: 50%;
   }
 }
 @media (min-width: 1024px) {
   #login-window {
-    width: 40%;
+    width: 30%;
   }
+}
+/* neon */
+:root {
+  --neon-main: #f7f3f7;
+  --neon-shadow: rgb(210, 153, 153);
+  --neon-main-glitch: #f7f3f7c2;
+  --neon-text-glitch: #f7f3f788;
+  --neon-shadow-glitch: rgba(210, 153, 172, 0.76);
+}
+.neon-btn {
+  background-color: transparent;
+  color: var(--neon-main);
+  border: 3px solid var(--neon-main);
+  box-shadow: 0px 0px 25px 10px var(--neon-shadow),
+    inset 0px 0px 25px 10px var(--neon-shadow);
+  border-radius: 25px;
+  height: 50px;
+  padding: 0;
+  margin: 5px;
+  text-shadow: 0 0 5px var(--neon-shadow);
+  transition: box-shadow 0.25s ease;
+  animation: neon-text-glitch 3s steps(1) infinite,
+    neon-border-glitch 4.5s steps(1) infinite;
+}
+.neon-btn:focus {
+  box-shadow: 0px 0px 25px 10px var(--neon-shadow),
+    inset 0px 0px 25px 10px var(--neon-shadow);
+  animation: neon-text-glitch 3s steps(1) infinite;
+}
+.neon-btn:active {
+  box-shadow: 0px 0px 50px 20px var(--neon-shadow),
+    inset 0px 0px 25px 13px var(--neon-shadow);
+  animation: neon-text-glitch 3s steps(1) infinite;
+}
+.neon-card {
+  border: 3px solid var(--neon-main);
+  border-radius: 15px;
+  box-shadow: 0px 0px 45px 10px var(--neon-shadow),
+    inset 0px 0px 25px 10px var(--neon-shadow);
+  padding: 25px;
+  color: var(--neon-main);
+  text-shadow: 0 0 5px var(--neon-shadow);
+  animation: neon-card-glitch 4s steps(1) infinite;
+}
+
+@keyframes neon-card-glitch {
+  0% {
+    box-shadow: 0px 0px 25px 10px var(--neon-shadow),
+      inset 0px 0px 25px 10px var(--neon-shadow);
+  }
+  90% {
+    box-shadow: 0px 0px 25px 10px var(--neon-shadow),
+      inset 0px 0px 25px 10px var(--neon-shadow);
+  }
+  95% {
+    box-shadow: 0px 0px 10px 5px var(--neon-shadow-glitch),
+      inset 0px 0px 10px 5px var(--neon-shadow-glitch);
+  }
+  100% {
+    box-shadow: 0px 0px 25px 10px var(--neon-shadow),
+      inset 0px 0px 25px 10px var(--neon-shadow);
+  }
+}
+.neon-label {
+  color: var(--neon-main);
+  text-shadow: 0 0 5px var(--neon-shadow);
+  animation: neon-label-glitch 3s steps(1) infinite;
+  margin: 5px 0;
+}
+.neon-label::after {
+  content: "";
+  width: 3px;
+  height: 20px;
+  background-color: #000;
+  position: absolute;
+  bottom: -10px;
+  left: 16px;
+  z-index: -1;
+  border-radius: 3px;
+}
+.neon-input {
+  margin: 10px 0;
+  border-radius: 25px;
+  box-shadow: 0px 0px 25px 10px var(--neon-shadow),
+    inset 0px 0px 15px 4px var(--neon-shadow);
+  border: 3px solid var(--neon-main);
+  background-color: transparent;
+  color: var(--neon-main);
+  outline: none !important;
+  padding: 7px 20px;
+  animation: neon-input-glitch 3s steps(1) infinite;
+}
+.neon-input:focus {
+  box-shadow: 0px 0px 25px 10px var(--neon-shadow),
+    inset 0px 0px 15px 7px var(--neon-shadow);
+  animation: none;
+}
+
+.neon-input_disabled {
+  box-shadow: 0px 0px 2px 1px var(--neon-shadow-glitch),
+    inset 0px 0px 2px 1px var(--neon-shadow-glitch);
+  animation: none;
+  border: 3px solid var(--neon-main-glitch);
+}
+
+@keyframes neon-input-glitch {
+  0% {
+    box-shadow: 0px 0px 15px 4px var(--neon-shadow),
+      inset 0px 0px 15px 4px var(--neon-shadow);
+  }
+
+  85% {
+    box-shadow: 0px 0px 15px 4px var(--neon-shadow),
+      inset 0px 0px 15px 4px var(--neon-shadow);
+  }
+
+  90% {
+    box-shadow: 0px 0px 10px 4px var(--neon-shadow-glitch),
+      inset 0px 0px 10px 4px var(--neon-shadow-glitch);
+  }
+
+  100% {
+    box-shadow: 0px 0px 15px 4px var(--neon-shadow),
+      inset 0px 0px 15px 4px var(--neon-shadow);
+  }
+}
+
+@keyframes neon-label-glitch {
+  0% {
+    color: var(--neon-main);
+    text-shadow: 0 0 5px var(--neon-shadow);
+  }
+
+  85% {
+    color: var(--neon-main);
+    text-shadow: 0 0 5px var(--neon-shadow);
+  }
+
+  90% {
+    color: var(--neon-main-glitch);
+    text-shadow: 0 0 1px var(--neon-shadow-glitch);
+  }
+
+  100% {
+    color: var(--neon-main);
+    text-shadow: 0 0 5px var(--neon-shadow);
+  }
+}
+.neon-input ~ .neon-input {
+  animation-delay: 0.5s;
+}
+.neon-label ~ .neon-label {
+  animation-delay: 1s;
 }
 </style>

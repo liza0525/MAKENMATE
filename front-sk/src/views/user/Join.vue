@@ -1,81 +1,83 @@
-<!--
-    가입하기는 기본적인 폼만 제공됩니다
-    기능명세에 따라 개발을 진행하세요.
-    Sub PJT I에서는 UX, 디자인 등을 포함하여 백엔드를 제외하여 개발합니다.
- -->
 <template>
-  <div class="wrapC" style="margin-top : 30px">
+  <div class="account-bg">
     <div>
-      <h1>가입하기</h1>
-      <div class="input-with-label">
-        <input
-          v-model="nickname"
-          id="nickname"
-          placeholder="닉네임을 입력하세요."
-          type="text"
-          style="disabled:true;"
-          :readonly="isKakao"
-        />
-        <label for="nickname">닉네임</label>
+      <div id="join-window">
+        <v-row>
+          <v-col class="neon-card mx-auto" style="width: 30vw; background-color: black">
+            <h1 class="neon-label" style="text-align: center;">한 잔 하러 회원가입&#x1F378;</h1>
+            <label class="neon-label col-12 mb-2">닉네임</label>
+            <input
+              v-model="nickname"
+              id="nickname"
+              placeholder="닉네임을 입력하세요."
+              style="disabled:true;"
+              :readonly="isKakao"
+              type="text"
+              class="neon-input col-12 mb-4"
+            />
+            <label class="neon-label col-12 mb-2">이메일</label>
+            <input
+              v-model="email"
+              id="email"
+              placeholder="이메일을 입력하세요."
+              class="neon-input col-12 mb-4"
+            />
+            <!-- <button @click="checkEmail()" :disabled="!duplicateEmail">중복 체크</button> -->
+            <div class="error-text" v-if="error.email">{{ error.email }}</div>
+            <label class="neon-label col-12 mb-2">비밀번호</label>
+            <input
+              v-model="password"
+              id="password"
+              placeholder="비밀번호를 입력하세요."
+              :readonly="isKakao"
+              type="password"
+              class="neon-input col-12 mb-4"
+            />
+            <div class="error-text" v-if="password != 0 && error.password">{{ error.password }}</div>
+            <label class="neon-label col-12 mb-2">비밀번호 확인</label>
+            <input
+              v-model="passwordConfirm"
+              :type="passwordConfirmType"
+              id="password-confirm"
+              placeholder="비밀번호를 다시한번 입력하세요."
+              :readonly="isKakao"
+              class="neon-input col-12 mb-4"
+            />
+            <div
+              class="error-text"
+              v-if="passwordConfirm != 0 && password != passwordConfirm"
+            >{{ error.passwordConfirm }}</div>
+            <label>
+              <input v-model="isTerm" @click="isTerm = !isTerm" type="checkbox" id="term" />
+              <span>약관을 동의합니다.</span>
+            </label>
+            <span
+              @click="termPopup = !termPopup"
+              style="float: right; margin-top: 5px; margin-right: 3px;"
+            >약관보기</span>
+            <div
+              v-if="termPopup == true"
+              style="background-color: white; color: black; padding: 3vmin; margin: 1vmin;border-radius: 10px"
+            >"약관입니다"</div>
+            <div class="my-5 width-100">
+              <button
+                type="button"
+                v-on:click="join()"
+                :disabled="!isSubmit"
+                :class="{ disabled: !isSubmit }"
+                class="neon-btn col-12 mb-4"
+              >Sign Up</button>
+            </div>
+          </v-col>
+        </v-row>
       </div>
-
-      <div class="input-with-label">
-        <input v-model="email" id="email" placeholder="이메일을 입력하세요." type="text" />
-        <label for="email">이메일</label>
-        <!-- <button @click="checkEmail()" :disabled="!duplicateEmail">중복 체크</button> -->
-        <div class="error-text" v-if="error.email">{{ error.email }}</div>
-      </div>
-
-      <div class="input-with-label">
-        <input
-          v-model="password"
-          type="password"
-          id="password"
-          placeholder="비밀번호를 입력하세요."
-          :readonly="isKakao"
-        />
-        <label for="password">비밀번호</label>
-        <div class="error-text" v-if="password != 0 && error.password">{{ error.password }}</div>
-      </div>
-
-      <div class="input-with-label">
-        <input
-          v-model="passwordConfirm"
-          :type="passwordConfirmType"
-          id="password-confirm"
-          placeholder="비밀번호를 다시한번 입력하세요."
-          :readonly="isKakao"
-        />
-        <label for="password-confirm">비밀번호 확인</label>
-        <div
-          class="error-text"
-          v-if="passwordConfirm != 0 && password != passwordConfirm"
-        >{{ error.passwordConfirm }}</div>
-      </div>
-    </div>
-    <div>
-      <label>
-        <input v-model="isTerm" @click="isTerm = !isTerm" type="checkbox" id="term" />
-        <span>약관을 동의합니다.</span>
-      </label>
-
-      <span @click="termPopup = !termPopup">약관보기</span>
-      <div v-if="termPopup == true">"약관입니다"</div>
-      <router-link v-bind:to="{ name: 'CompleteJoin' }">
-        <button
-          class="btn btn--back"
-          v-on:click="join()"
-          :disabled="!isSubmit"
-          :class="{ disabled: !isSubmit }"
-        >회원 가입</button>
-      </router-link>
     </div>
   </div>
 </template>
 
 <script>
-import "../../assets/css/style.scss";
-import "../../assets/css/user.scss";
+// import "../../assets/css/style.scss";
+// import "../../assets/css/user.scss";
 import PasswordValidator from "password-validator";
 import * as EmailValidator from "email-validator";
 import UserApi from "../../apis/UserApi";
@@ -235,10 +237,200 @@ export default {
   }
 };
 </script>
-<style scoped>
-.wrapC {
+<style>
+#join-window {
+  margin: 15vh auto;
 }
-.input-with-label input,
-label {
+/* neon */
+:root {
+  --neon-main: #f7f3f7;
+  --neon-shadow: rgb(210, 153, 153);
+  --neon-main-glitch: #f7f3f7c2;
+  --neon-text-glitch: #f7f3f788;
+  --neon-shadow-glitch: rgba(210, 153, 172, 0.76);
+}
+.neon-btn {
+  background-color: transparent;
+  color: var(--neon-main);
+  border: 3px solid var(--neon-main);
+  box-shadow: 0px 0px 25px 10px var(--neon-shadow),
+    inset 0px 0px 25px 10px var(--neon-shadow);
+  border-radius: 25px;
+  height: 50px;
+  padding: 0;
+  text-shadow: 0 0 5px var(--neon-shadow);
+  transition: box-shadow 0.25s ease;
+  animation: neon-text-glitch 3s steps(1) infinite,
+    neon-border-glitch 4.5s steps(1) infinite;
+}
+.neon-btn:focus {
+  box-shadow: 0px 0px 25px 10px var(--neon-shadow),
+    inset 0px 0px 25px 10px var(--neon-shadow);
+  animation: neon-text-glitch 3s steps(1) infinite;
+}
+.neon-btn:active {
+  box-shadow: 0px 0px 50px 20px var(--neon-shadow),
+    inset 0px 0px 25px 13px var(--neon-shadow);
+  animation: neon-text-glitch 3s steps(1) infinite;
+}
+.neon-card {
+  border: 3px solid var(--neon-main);
+  border-radius: 15px;
+  box-shadow: 0px 0px 45px 10px var(--neon-shadow),
+    inset 0px 0px 25px 10px var(--neon-shadow);
+  padding: 25px;
+  color: var(--neon-main);
+  text-shadow: 0 0 5px var(--neon-shadow);
+  animation: neon-card-glitch 4s steps(1) infinite;
+}
+
+@keyframes neon-card-glitch {
+  0% {
+    box-shadow: 0px 0px 25px 10px var(--neon-shadow),
+      inset 0px 0px 25px 10px var(--neon-shadow);
+  }
+  90% {
+    box-shadow: 0px 0px 25px 10px var(--neon-shadow),
+      inset 0px 0px 25px 10px var(--neon-shadow);
+  }
+  95% {
+    box-shadow: 0px 0px 10px 5px var(--neon-shadow-glitch),
+      inset 0px 0px 10px 5px var(--neon-shadow-glitch);
+  }
+  100% {
+    box-shadow: 0px 0px 25px 10px var(--neon-shadow),
+      inset 0px 0px 25px 10px var(--neon-shadow);
+  }
+}
+.neon-label {
+  color: var(--neon-main);
+  text-shadow: 0 0 5px var(--neon-shadow);
+  animation: neon-label-glitch 3s steps(1) infinite;
+  margin: 5px 0;
+}
+.neon-label::after {
+  content: "";
+  width: 3px;
+  height: 20px;
+  background-color: #000;
+  position: absolute;
+  bottom: -10px;
+  left: 16px;
+  z-index: -1;
+  border-radius: 3px;
+}
+.neon-input {
+  margin: 10px 0;
+  border-radius: 25px;
+  box-shadow: 0px 0px 25px 10px var(--neon-shadow),
+    inset 0px 0px 15px 4px var(--neon-shadow);
+  border: 3px solid var(--neon-main);
+  background-color: transparent;
+  color: var(--neon-main);
+  outline: none !important;
+  padding: 7px 20px;
+  animation: neon-input-glitch 3s steps(1) infinite;
+}
+.neon-input:focus {
+  box-shadow: 0px 0px 25px 10px var(--neon-shadow),
+    inset 0px 0px 15px 7px var(--neon-shadow);
+  animation: none;
+}
+
+.neon-input_disabled {
+  box-shadow: 0px 0px 2px 1px var(--neon-shadow-glitch),
+    inset 0px 0px 2px 1px var(--neon-shadow-glitch);
+  animation: none;
+  border: 3px solid var(--neon-main-glitch);
+}
+
+@keyframes neon-input-glitch {
+  0% {
+    box-shadow: 0px 0px 15px 4px var(--neon-shadow),
+      inset 0px 0px 15px 4px var(--neon-shadow);
+  }
+
+  85% {
+    box-shadow: 0px 0px 15px 4px var(--neon-shadow),
+      inset 0px 0px 15px 4px var(--neon-shadow);
+  }
+
+  90% {
+    box-shadow: 0px 0px 10px 4px var(--neon-shadow-glitch),
+      inset 0px 0px 10px 4px var(--neon-shadow-glitch);
+  }
+
+  100% {
+    box-shadow: 0px 0px 15px 4px var(--neon-shadow),
+      inset 0px 0px 15px 4px var(--neon-shadow);
+  }
+}
+
+@keyframes neon-label-glitch {
+  0% {
+    color: var(--neon-main);
+    text-shadow: 0 0 5px var(--neon-shadow);
+  }
+
+  85% {
+    color: var(--neon-main);
+    text-shadow: 0 0 5px var(--neon-shadow);
+  }
+
+  90% {
+    color: var(--neon-main-glitch);
+    text-shadow: 0 0 1px var(--neon-shadow-glitch);
+  }
+
+  100% {
+    color: var(--neon-main);
+    text-shadow: 0 0 5px var(--neon-shadow);
+  }
+}
+.neon-input ~ .neon-input {
+  animation-delay: 0.5s;
+}
+.neon-input ~ .neon-input ~ .neon-input {
+  animation-delay: 2.5s;
+}
+.neon-input ~ .neon-input ~ .neon-input ~ .neon-input {
+  animation-delay: 1.5s;
+}
+
+.neon-label ~ .neon-label {
+  animation-delay: 1s;
+}
+/* check box */
+[type="checkbox"]:checked + span:before,
+[type="radio"]:checked + span:before {
+  background: rgb(194, 78, 97);
+  border: 1px solid rgb(194, 78, 97);
+}
+[type="checkbox"]:checked + span,
+[type="checkbox"]:not(:checked) + span,
+[type="radio"]:checked + span,
+[type="radio"]:not(:checked) + span {
+  position: relative;
+  padding-left: 38px;
+  cursor: pointer;
+  display: inline-block;
+  color: rgb(255, 255, 255);
+  font-weight: 600;
+  line-height: 30px;
+}
+@media (min-width: 0px) {
+  #join-window {
+    width: 90%;
+  }
+}
+@media (min-width: 600px) {
+  #join-window {
+    width: 50%;
+  }
+}
+@media (min-width: 1024px) {
+  #join-window {
+    width: 30%;
+  }
 }
 </style>

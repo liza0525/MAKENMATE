@@ -53,18 +53,24 @@ public class CocktailCommentsController {
 
     @GetMapping("/cocktail/{cid}")
     @ApiOperation(value = "댓글")
-    public Object load(@PageableDefault(size = 5, sort = { "cmid" }, direction = Direction.DESC) final Pageable pageable, @PathVariable final int cid) {
+    public Object load(
+            @PageableDefault(size = 5, sort = { "cmid" }, direction = Direction.DESC) final Pageable pageable,
+            @PathVariable final int cid) {
         // final Cocktail cocktail = cocktailDao.getCocktailByCid(cid);
-        final Page<CocktailComments> comments = commentsDao.findAllByCocktail_cid(cid,pageable);
-        final List<String> UserArray = new ArrayList<>();
+        final Page<CocktailComments> comments = commentsDao.findAllByCocktail_cid(cid, pageable);
+        final List<String> userArray = new ArrayList<>();
+        final List<String> userImg = new ArrayList<>();
         for (int idex = 0; idex < comments.getNumberOfElements(); ++idex) {
-        	comments.toList().get(idex).setCount(comments.toList().get(idex).getComments().size());
-            User user = userDao.getUserByUid(comments.toList().get(idex).getUser_uid()).orElseThrow(CocktailException::new);
-            UserArray.add(user.getNickname());
+            comments.toList().get(idex).setCount(comments.toList().get(idex).getComments().size());
+            User user = userDao.getUserByUid(comments.toList().get(idex).getUser_uid())
+                    .orElseThrow(CocktailException::new);
+            userArray.add(user.getNickname());
+            userImg.add(user.getImage());
         }
         Map<String, Object> result = new HashMap<>();
         result.put("comments", comments);
-        result.put("UserArray", UserArray);
+        result.put("userArray", userArray);
+        result.put("userImg", userImg);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
