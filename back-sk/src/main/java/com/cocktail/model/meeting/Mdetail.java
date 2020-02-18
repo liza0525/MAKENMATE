@@ -27,7 +27,7 @@ public class Mdetail implements Serializable{
 	    
 	    private String place;
 
-	    private int limit;
+	    private int count;
 
 	    private String date;
 }

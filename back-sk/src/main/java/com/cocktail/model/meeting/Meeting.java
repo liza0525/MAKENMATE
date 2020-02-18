@@ -12,7 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -45,17 +45,19 @@ public class Meeting implements Serializable{
     private String longitude;
     
     @Column
+    private int count;
+
+    @Column
     private String place;
 
     @Column
-    private int limit;
-
-    @Column
     private String date;
-
-
+    
+    @Column
+    private int people;
+    
     @OneToMany(mappedBy = "meeting")
-    @JsonIgnore
+    @JsonManagedReference
     private List<UserMeeting> usermeeting = new ArrayList<>();
 
 

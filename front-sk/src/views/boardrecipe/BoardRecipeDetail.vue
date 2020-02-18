@@ -1,115 +1,256 @@
 <template>
-  <div id="boardrecipe-detail">
-    <div id="boardrecipe-header">
-      <h1 id="boardrecipe-title">{{ boardRecipe.title }}</h1>
-      <h3 id="boardrecipe-username">by. {{ boardRecipe.user_name }}</h3>
-    </div>
-    <div id="boardrecipe-context" v-html="boardRecipe.contents"></div>
+  <div v-if="window.width >= 1000">
+    <div id="boardrecipe-detail">
+      <div id="boardrecipe-header">
+        <h1 id="boardrecipe-title">{{ boardRecipe.title }}</h1>
+        <h3 id="boardrecipe-username">by. {{ boardRecipe.user_name }}</h3>
+      </div>
+      <div id="boardrecipe-context" v-html="boardRecipe.contents"></div>
 
-    <!-- 업로드 이미지-->
-    <v-row id="img-contents">
-      <v-col cols="6" md="3" v-for="images in imagepath" v-bind:key="images">
-        <v-card class="d-inline-block mx-auto">
-          <v-img :src="images"></v-img>
-        </v-card>
-      </v-col>
-    </v-row>
+      <!-- 업로드 이미지-->
+      <v-row id="img-contents">
+        <v-col cols="6" md="3" v-for="images in imagepath" v-bind:key="images">
+          <v-card class="d-inline-block mx-auto">
+            <v-img :src="images"></v-img>
+          </v-card>
+        </v-col>
+      </v-row>
 
-    <!-- like button -->
-    <div id="like-button">
-      <button class="boardrecipe-button" @click="clickLike">
-        <span v-show="!islike">
-          <i class="far fa-heart"></i>
-        </span>
-        <span v-show="islike" style="color: red;">
-          <i class="fas fa-heart"></i>
-        </span>
-        {{ likebyboardrecipe }}
-      </button>
-      <!-- 스크랩 -->
-      <button
-        class="boardrecipe-button"
-        v-if="this.$store.state.username && !isScrapped"
-        @click="addToScrapList"
-        style="cursor: pointer"
-      >
-        스크랩
-      </button>
-      <button
-        class="boardrecipe-button"
-        v-if="this.$store.state.username && isScrapped"
-        @click="removeFromScrapList"
-        style="cursor: pointer"
-      >
-        스크랩 취소
-      </button>
-    </div>
+      <!-- like button -->
+      <div id="like-button">
+        <button class="boardrecipe-button3" @click="clickLike">
+          <span v-show="!islike">
+            <i class="far fa-heart"></i>
+          </span>
+          <span v-show="islike" style="color: red;">
+            <i class="fas fa-heart"></i>
+          </span>
+          {{ likebyboardrecipe }}
+        </button>
+        <!-- 스크랩 -->
+        <button
+          class="boardrecipe-button3"
+          v-if="this.$store.state.username && !isScrapped"
+          @click="addToScrapList"
+          style="cursor: pointer"
+        >
+          스크랩
+        </button>
+        <button
+          class="boardrecipe-button3"
+          v-if="this.$store.state.username && isScrapped"
+          @click="removeFromScrapList"
+          style="cursor: pointer"
+        >
+          스크랩 취소
+        </button>
+      </div>
 
-    <div id="boardrecipe-footer">
-      <button class="boardrecipe-button" @click="go_to_list()">목록</button>
-      <button
-        class="boardrecipe-button"
-        v-if="this.$store.state.username === boardRecipe.user_name"
-        @click="update_board(boardRecipe.rid)"
-      >
-        수정
-      </button>
-      <button
-        class="boardrecipe-button"
-        v-if="this.$store.state.username === boardRecipe.user_name"
-        @click="delete_board(boardRecipe.rid)"
-      >
-        삭제
-      </button>
-      <div id="boardrecipe-date">{{ boardRecipe.regdate }}</div>
-    </div>
+      <div id="boardrecipe-footer">
+        <button class="boardrecipe-button3" @click="go_to_list()">목록</button>
+        <button
+          class="boardrecipe-button3"
+          v-if="this.$store.state.username === boardRecipe.user_name"
+          @click="update_board(boardRecipe.rid)"
+        >
+          수정
+        </button>
+        <button
+          class="boardrecipe-button3"
+          v-if="this.$store.state.username === boardRecipe.user_name"
+          @click="delete_board(boardRecipe.rid)"
+        >
+          삭제
+        </button>
+        <div id="boardrecipe-date">{{ boardRecipe.regdate }}</div>
+      </div>
 
-    <!-- 댓글 -->
-    <div id="comment-set">
-      <div id="comment-title">
-        <h1 style="display: inline; margin-right: 3vw">Comment</h1>
-        <div style="display: inline;">
-          <input
-            type="text"
-            v-model="comment"
-            style="border-bottom: 1px solid #ccc; width: 45vw"
-          />
+      <!-- 댓글 -->
+      <div id="comment-set">
+        <div id="comment-title">
+          <h1 style="display: inline; margin-right: 3vw">Comment</h1>
+          <div style="display: inline;">
+            <input
+              type="text"
+              v-model="comment"
+              style="border-bottom: 1px solid #ccc; width: 45vw"
+            />
+            <button
+              class="boardrecipe-button3"
+              @click="submitComment"
+              type="submit"
+            >
+              댓글
+            </button>
+          </div>
+        </div>
+        <div
+          :v-if="reply"
+          v-for="(re, i) in reply"
+          :key="i"
+          style="margin-top: 5px; display:block;"
+        >
+          <div v-if="isInput[i] === 0">
+            <span
+              ><br />
+              {{ users[i] }} <br /><br />
+              {{ re.content }} <br /><br />
+              <hr style="opacity: 0.3;"/>
+              <br
+            /></span>
+            <p v-if="username === users[i]" style="display:inline-block;">
+              <button @click="click(i)">수정</button>
+              <button @click="deleteComment(i, re.cmid)">삭제</button>
+            </p>
+          </div>
+          <div v-else>
+            <span>
+              {{ users[i] }} :
+              <input v-model="re.content" />
+            </span>
+            <p v-if="username === users[i]" style="display:inline-block;">
+              <button @click="updateComment(i, re.cmid, re.content)">
+                수정
+              </button>
+            </p>
+          </div>
+        </div>
+        <div>
           <button
-            class="boardrecipe-button"
-            @click="submitComment"
-            type="submit"
+            v-for="pageNm in pageNms"
+            :key="pageNm"
+            @click="search(pageNm)"
           >
-            댓글
+            <span style="margin-right:10px;">{{ pageNm }}</span>
           </button>
         </div>
       </div>
-      <div
-        :v-if="reply"
-        v-for="(re, i) in reply"
-        :key="i"
-        style="margin-top: 5px; display:block;"
-      >
-        <div v-if="isInput[i] === 0">
-          <span>{{ users[i] }} : {{ re.content }}</span>
-          <p v-if="username === users[i]" style="display:inline-block;">
-            <button @click="click(i)">수정</button>
-            <button @click="deleteComment(i, re.cmid)">삭제</button>
-          </p>
-        </div>
-        <div v-else>
-          <span>
-            {{ users[i] }} :
-            <input v-model="re.content" />
-          </span>
-          <p v-if="username === users[i]" style="display:inline-block;">
-            <button @click="updateComment(i, re.cmid, re.content)">수정</button>
-          </p>
-        </div>
+    </div>
+  </div>
+  <div v-else>
+    <div id="boardrecipe-detail">
+      <div id="boardrecipe-header">
+        <h1 id="boardrecipe-title">{{ boardRecipe.title }}</h1>
+        <h3 id="boardrecipe-username">by. {{ boardRecipe.user_name }}</h3>
       </div>
-      <div>
-        <button v-for="pageNm in pageNms" :key="pageNm" @click="search(pageNm)">
-          <span style="margin-right:10px;">{{ pageNm }}</span>
+      <div id="boardrecipe-context" v-html="boardRecipe.contents"></div>
+
+      <!-- 업로드 이미지-->
+      <v-row id="img-contents">
+        <v-col cols="6" md="3" v-for="images in imagepath" v-bind:key="images">
+          <v-card class="d-inline-block mx-auto">
+            <v-img :src="images"></v-img>
+          </v-card>
+        </v-col>
+      </v-row>
+
+      <!-- like button -->
+      <div id="like-button">
+        <button class="boardrecipe-button2" @click="clickLike">
+          <span v-show="!islike">
+            <i class="far fa-heart"></i>
+          </span>
+          <span v-show="islike" style="color: red;">
+            <i class="fas fa-heart"></i>
+          </span>
+          {{ likebyboardrecipe }}
         </button>
+        <!-- 스크랩 -->
+        <button
+          class="boardrecipe-button2"
+          v-if="this.$store.state.username && !isScrapped"
+          @click="addToScrapList"
+          style="cursor: pointer"
+        >
+          스크랩
+        </button>
+        <button
+          class="boardrecipe-button2"
+          v-if="this.$store.state.username && isScrapped"
+          @click="removeFromScrapList"
+          style="cursor: pointer"
+        >
+          스크랩 취소
+        </button>
+      </div>
+
+      <div id="boardrecipe-footer">
+        <button class="boardrecipe-button2" @click="go_to_list()">목록</button>
+        <button
+          class="boardrecipe-button2"
+          v-if="this.$store.state.username === boardRecipe.user_name"
+          @click="update_board(boardRecipe.rid)"
+        >
+          수정
+        </button>
+        <button
+          class="boardrecipe-button2"
+          v-if="this.$store.state.username === boardRecipe.user_name"
+          @click="delete_board(boardRecipe.rid)"
+        >
+          삭제
+        </button>
+        <div id="boardrecipe-date">{{ boardRecipe.regdate }}</div>
+      </div>
+
+      <!-- 댓글 -->
+      <div id="comment-set">
+        <div id="comment-title">
+          <h1 style="display: inline; margin-right: 3vw">Comment</h1>
+          <div style="display: inline;">
+            <input
+              type="text"
+              v-model="comment"
+              style="border-bottom: 1px solid #ccc; width: 45vw"
+            />
+            <button
+              class="boardrecipe-button2"
+              @click="submitComment"
+              type="submit"
+            >
+              댓글
+            </button>
+          </div>
+        </div>
+        <div
+          :v-if="reply"
+          v-for="(re, i) in reply"
+          :key="i"
+          style="margin-top: 5px; display:block;"
+        >
+          <div v-if="isInput[i] === 0">
+            <span
+              >{{ users[i] }} <br /><br />
+              {{ re.content }}
+              <hr />
+              <br
+            /></span>
+            <p v-if="username === users[i]" style="display:inline-block;">
+              <button @click="click(i)">수정</button>
+              <button @click="deleteComment(i, re.cmid)">삭제</button>
+            </p>
+          </div>
+          <div v-else>
+            <span>
+              {{ users[i] }} :
+              <input v-model="re.content" />
+            </span>
+            <p v-if="username === users[i]" style="display:inline-block;">
+              <button @click="updateComment(i, re.cmid, re.content)">
+                수정
+              </button>
+            </p>
+          </div>
+        </div>
+        <div>
+          <button
+            v-for="pageNm in pageNms"
+            :key="pageNm"
+            @click="search(pageNm)"
+          >
+            <span style="margin-right:10px;">{{ pageNm }}</span>
+          </button>
+        </div>
       </div>
     </div>
   </div>
@@ -131,11 +272,18 @@ export default {
       updatedComment: "",
       pageNm: 1,
       pageNms: [],
-      imagepath: []
+      imagepath: [],
+      window: {
+        width: 0,
+        height: 0
+      }
     };
   },
   created() {
-    this.rid = Number(this.$route.params.rid);
+    window.addEventListener("resize", this.handleResize);
+    this.handleResize();
+    (this.username = this.$store.state.username),
+      (this.rid = Number(this.$route.params.rid));
     http.get("/boardrecipe/" + this.rid).then(res => {
       // console.log(res.data)
       this.boardRecipe = res.data;
@@ -244,6 +392,23 @@ export default {
     }
   },
   methods: {
+    handleResize() {
+      this.window.width = window.innerWidth;
+      this.window.height = window.innerHeight;
+      console.log(typeof this.window.height);
+      this.window.height = this.window.height + "px";
+      this.window.height = "calc(" + this.window.height + " - 4rem)";
+
+      console.log(this.window);
+
+      if (this.window.width <= 1000) {
+        const element = document.getElementsByClassName("boardrecipe-button");
+        for (let i = 0; i < element.length; i++) {
+          console.log(element[i].width);
+        }
+      }
+    },
+
     addToScrapList() {
       this.isScrapped = true;
       this.$store.dispatch(Constant.ADD_SCRAP, {
@@ -390,6 +555,9 @@ export default {
     goback() {
       this.$router.go(-1);
     }
+  },
+  destroyed() {
+    window.removeEventListener("resize", this.handleResize);
   }
 };
 </script>
@@ -440,10 +608,19 @@ export default {
   padding-bottom: 2rem;
   border-bottom: 1px solid #ccc;
 }
-.boardrecipe-button {
+.boardrecipe-button3 {
   margin: 0 0.5vmin;
-  width: 15vmin;
-  height: 9vmin;
+  width: 14vmin;
+  height: 6vmin;
+  border: 1px solid #ccc;
+  border-radius: 10vmin;
+  font-size: 2.5vmin;
+  font-family: "GyeonggiBatang";
+}
+.boardrecipe-button2 {
+  margin: 0 0.5vmin;
+  width: 12vmin;
+  height: 5vmin;
   border: 1px solid #ccc;
   border-radius: 10vmin;
   font-size: 2.5vmin;

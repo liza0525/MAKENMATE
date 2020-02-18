@@ -29,6 +29,7 @@ public class UserMeeting {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
+    
     private Long id;
     @ManyToOne
     @JoinColumn(name = "user_uid")
@@ -39,4 +40,7 @@ public class UserMeeting {
     @JoinColumn(name = "meeting_mid")
     @JsonBackReference
     private Meeting meeting;
+    
+    private String userImg;
+    private String username;
 }

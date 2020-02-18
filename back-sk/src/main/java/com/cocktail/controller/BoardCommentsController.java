@@ -29,7 +29,6 @@ import com.cocktail.exception.CocktailException;
 import com.cocktail.model.BasicResponse;
 import com.cocktail.model.board.Board;
 import com.cocktail.model.comments.BoardComments;
-import com.cocktail.model.comments.CocktailComments;
 import com.cocktail.model.user.User;
 
 import io.swagger.annotations.ApiOperation;

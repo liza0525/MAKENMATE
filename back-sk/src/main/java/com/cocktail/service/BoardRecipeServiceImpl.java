@@ -35,32 +35,35 @@ public class BoardRecipeServiceImpl implements BoardRecipeService {
 
     @Autowired
     private FileDAO filedao;
+
     // 공유게시판 전체 리스트 조회
     @Override
     public Page<BoardRecipe> getAllBoardRecipe(Pageable pageable) {
         return boardRecipeDao.findAll(pageable);
     }
+
     @Override
-    public Page<BoardRecipe> getAllBoardRecipeLike(String searchData, Pageable pageable) {	 
-    	return boardRecipeDao.findAllByTitleLike(searchData,pageable);
+    public Page<BoardRecipe> getAllBoardRecipeLike(String searchData, Pageable pageable) {
+        return boardRecipeDao.findAllByTitleLike(searchData, pageable);
     }
+
     // 글번호로 공유게시판 상세조회
     @Override
     public BRdetail findById(int rid) {
-        // BRdetail br = boardRecipeDao.findBRdetailById(bid);
-        // BoardRecipe boardrecipe = boardRecipeDao.findByRid(bid).orElseThrow();
+        // BRdetail br = boardRecipeDao.findBRdetailById(bid); BoardRecipe boardrecipe =
+        // boardRecipeDao.findByRid(bid).orElseThrow();
         BoardRecipe boardrecipe = boardRecipeDao.findById(rid).orElseThrow(CocktailException::new);
-        BRdetail br = new BRdetail();        
+        BRdetail br = new BRdetail();
         br.setRid(boardrecipe.getRid());
         br.setTitle(boardrecipe.getTitle());
         br.setContents(boardrecipe.getContents());
         br.setRegdate(boardrecipe.getRegdate());
         br.setUser_name(boardrecipe.getUser().getNickname());
-        
+
         List<UploadFile> file = filedao.list(boardrecipe.getRid());
         ArrayList<String> bb = new ArrayList<>();
-        if(file.size() != 0) {
-            for(int i=0; i < file.size(); i++){
+        if (file.size() != 0) {
+            for (int i = 0; i < file.size(); i++) {
                 bb.add(i, file.get(i).getFileName());
             }
         }
@@ -99,18 +102,20 @@ public class BoardRecipeServiceImpl implements BoardRecipeService {
         User u = userdao.findByNickname(brdetail.getUser_name());
         br.setUser(u);
         br = boardRecipeDao.save(br);
+        System.out.println(brdetail.getFile());
+        // 해당 file board 번호 업데이트
 
-        //해당 file board 번호 업데이트
         String str = (String) brdetail.getFile();
         String text = str.replace("[", "").replace("]", "");
- 
-        String[] wpqkf = text.split(",");
-        for(int i = 0; i < wpqkf.length; i ++){
-            UploadFile file = filedao.findById(Integer.parseInt(wpqkf[i])).orElseThrow(CocktailException::new);
-            file.setBoardno(br.getRid());
-            filedao.save(file);
+
+        if (!text.equals("49104755")) {
+            String[] wpqkf = text.split(",");
+            for (int i = 0; i < wpqkf.length; i++) {
+                UploadFile file = filedao.findById(Integer.parseInt(wpqkf[i]));
+                file.setBoardno(br.getRid());
+                filedao.save(file);
+            }
         }
-        
         return br.getRid();
     }
 
@@ -132,5 +137,10 @@ public class BoardRecipeServiceImpl implements BoardRecipeService {
         boardRecipeDao.deleteById(bid);
     }
 
+    @Override
+    public List<BRdetail> getBestRecipe() {
+        List<BRdetail> list = new ArrayList<>();
 
+        return null;
+    }
 }

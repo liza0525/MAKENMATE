@@ -85,6 +85,11 @@ export default {
       this.$store.state.filelist = [];
       this.$store.state.filedelete = null;
 
+      if(this.aa.length === 0) {
+        this.aa[0] = 49104755;
+        console.log(this.add);
+      }
+
       http
         .post("/board/", {
           title: this.btitleid,

@@ -42,7 +42,7 @@ public class FileUploadController {
     }
     
     @GetMapping("/uploadFile/{id}")
-    public Optional<UploadFile> getUploadFile(@PathVariable int id){
+    public UploadFile getUploadFile(@PathVariable int id){
         return service.getUploadFile(id);
     }
     @PostMapping("/uploadFile")

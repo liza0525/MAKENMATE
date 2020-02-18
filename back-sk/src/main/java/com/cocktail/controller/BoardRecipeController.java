@@ -1,12 +1,10 @@
 package com.cocktail.controller;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import com.cocktail.model.BasicResponse;
 import com.cocktail.model.boardRecipe.BRdetail;
-import com.cocktail.model.boardRecipe.BoardRecipe;
 import com.cocktail.service.BoardRecipeService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -93,5 +91,16 @@ public class BoardRecipeController{
         Map<String, String> resultMap = new HashMap<>();
         resultMap.put("data", "Success");
         return new ResponseEntity<>(resultMap, HttpStatus.OK);
-    }
+     }
+     
+     //best 3
+    //  @GetMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
+    //  public Object boardRecipeList() {
+    //      final BasicResponse result = new BasicResponse();
+    //      result.status = true;
+    //      result.data = "success"; 
+    //      result.object = this.boardrecipeservice.getBestRecipe();
+    //      //System.out.println(this.boardrecipeservice.getAllBoardRecipe(pageable).getContent());
+    //      return new ResponseEntity<>(result, HttpStatus.OK);
+    //  }
 }

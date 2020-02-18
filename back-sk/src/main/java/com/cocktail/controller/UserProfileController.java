@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -11,10 +12,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.cocktail.dao.FileDAO;
 import com.cocktail.dao.UserDao;
 import com.cocktail.exception.CocktailException;
 // import com.cocktail.dao.UserDao;
 import com.cocktail.model.BasicResponse;
+import com.cocktail.model.UploadFile;
 import com.cocktail.model.user.User;
 
 import io.swagger.annotations.ApiOperation;
@@ -33,6 +36,9 @@ public class UserProfileController {
     // 디비 셋팅 후 주석을 푸세요.
     @Autowired
     UserDao userDao;
+
+    @Autowired
+    FileDAO filedao;
 
     @PostMapping("/user/profile")
     @ApiOperation(value = "유저프로필")
@@ -71,4 +77,25 @@ public class UserProfileController {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
+    @PutMapping(value="/userprofileimage/{fid}")
+    public Object userimage(@PathVariable int fid, @RequestBody String username) {
+        System.out.println("fid       " +  fid );
+        System.out.println("username       "  + username);
+        UploadFile file = filedao.findById(fid);
+        
+        String str = "C:/image/";
+        String filename = str.concat(file.getFileName());
+
+        System.out.println(filename);
+
+        User user = userDao.findByNickname(username);
+        user.setImage(filename);
+        userDao.save(user);
+
+        final BasicResponse result = new BasicResponse();
+        result.status = true;
+        result.data = "success";
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+    
 }

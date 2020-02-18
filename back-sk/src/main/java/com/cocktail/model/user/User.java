@@ -133,7 +133,6 @@ public class User implements UserDetails {
 	@OneToMany(mappedBy = "user")
 	@JsonManagedReference
 	private final List<BoardRecipeLike> boardRecipeLike = new ArrayList<>();
-
 	@OneToMany(mappedBy = "user")
 	@JsonManagedReference
 	private final List<CommentsLike> commentsLike = new ArrayList<>();
@@ -143,7 +142,6 @@ public class User implements UserDetails {
 	@OneToMany(mappedBy = "user")
 	@JsonManagedReference
 	private final List<BoardRecipeCommentsLike> boardrecipecommentsLike = new ArrayList<>();
-	
 	@OneToMany(mappedBy = "user")
     @JsonManagedReference
     private final List<UserMeeting> usermeeting = new ArrayList<>();

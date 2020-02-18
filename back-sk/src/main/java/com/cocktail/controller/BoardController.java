@@ -1,19 +1,13 @@
 package com.cocktail.controller;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-
-import javax.mail.Multipart;
 
 import com.cocktail.dao.BoardDao;
 import com.cocktail.dao.UserDao;
-import com.cocktail.exception.CocktailException;
 import com.cocktail.model.BasicResponse;
 import com.cocktail.model.board.Bdetail;
 import com.cocktail.model.board.Board;
-import com.cocktail.model.user.User;
 import com.cocktail.service.BoardService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,9 +22,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -108,4 +100,6 @@ public class BoardController {
         resultMap.put("boards", boards);
         return new ResponseEntity<>(resultMap, HttpStatus.OK);
     }
+
+    
 }

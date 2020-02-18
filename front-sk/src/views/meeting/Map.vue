@@ -26,9 +26,15 @@
         <div v-for="meet in meetings" :key="meet.mid">
           <h1>{{ meet.title }}</h1>
           <p>{{ meet.date }}</p>
-          <p>{{ meet.limit }}명</p>
-          <button @click="goMeeting()">신청하기</button>
-          <button v-if="meet.author === username" @click="deleteMeeting()">
+          <p>{{ meet.people }} / {{ meet.count }}명</p>
+          <span v-for="um in meet.usermeeting" :key="um.id">
+            <img :src="um.userImg" />
+          </span>
+          <button @click="goMeeting(meet.mid)">신청하기</button>
+          <button
+            v-if="meet.author === username"
+            @click="deleteMeeting(meet.mid)"
+          >
             삭제
           </button>
         </div>
@@ -39,7 +45,7 @@
             <label>시간</label>
             <input type="text" v-model="meeting.date" placeholder="시간" />
             <label>인원</label>
-            <input type="text" v-model="meeting.limit" placeholder="인원" />
+            <input type="text" v-model="meeting.count" placeholder="인원" />
             <label>장소</label>
             <input type="text" v-model="meeting.place" placeholder="장소" />
             <button @click="makeMeeting()"><h1>만남 만들기</h1></button>
@@ -47,6 +53,16 @@
         </div>
       </div>
     </Drawer>
+    <div class="modal info-modal">
+      <v-card class="modal-content" max-width="344" outlined>
+        <p class="close">&times;</p>
+        <div>
+          <h1>{{ meeting.title }}</h1>
+          <p>{{ meeting.people }} / {{ meeting.count }}명</p>
+          <button @click="goMeeting(meeting.mid)">신청하기</button>
+        </div>
+      </v-card>
+    </div>
   </div>
 </template>
 
@@ -65,40 +81,24 @@ export default {
         lng: 127
       },
       username: "",
-      meetings: [
-        {
-          id: 1,
-          title: "aaa",
-          date: "2020.2.27",
-          limit: 3,
-          place: "강남역",
-          author: "aa"
-        },
-        {
-          id: 2,
-          title: "bbb",
-          date: "2020.3.1",
-          limit: 4,
-          place: "역삼역",
-          author: "aa"
-        }
-      ],
+      meetings: [],
       meeting: {
-        id: 0,
+        mid: 0,
         title: "",
         date: "",
-        limit: 0,
+        count: 0,
         place: ""
       },
       open: false,
       location: null,
       gettingLocation: false,
-      errorStr: null
+      errorStr: null,
+      Images: []
     };
   },
   mounted() {
     this.username = this.$store.state.username;
-    this.locateMe();
+    console.log(this.username);
     this.getMarker();
   },
   methods: {
@@ -110,15 +110,43 @@ export default {
     },
     panTo(e, map) {
       map.panTo(e.latLng);
+      http
+        .get("/meeting/one", {
+          params: {
+            latitude: e.latLng.lat(),
+            longitude: e.latLng.lng()
+          }
+        })
+        .then(res => {
+          console.log(res);
+          let modal = document.getElementsByClassName("modal");
+          let close = document.getElementsByClassName("close");
+          this.meeting = res.data;
+          modal[0].style.display = "block";
+          close[0].onclick = function(e) {
+            modal[0].style.display = "none";
+          };
+        });
     },
     toggle() {
       this.open = !this.open;
     },
+    goMeeting(mid) {
+      http
+        .post("/meeting/user", null, {
+          params: {
+            username: this.username,
+            mid: mid
+          }
+        })
+        .then(res => console.log(res))
+        .catch(exp => console.log(exp));
+    },
     getMarker() {
       http.get("/meeting").then(res => {
-        console.log(res);
         this.meetings = res.data.object;
         this.markers = [];
+        console.log(res.data.object[1].usermeeting);
         this.meetings.forEach(el => {
           let pos = {
             position: {
@@ -139,7 +167,7 @@ export default {
           longitude: this.pos.lng,
           date: this.meeting.date,
           place: this.meeting.place,
-          limit: this.meeting.limit
+          count: this.meeting.count
         })
         .then(res => {
           this.meetings = res.data.object;
