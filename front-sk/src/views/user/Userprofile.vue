@@ -163,6 +163,7 @@
 import Constant from "../../Constant";
 import { Carousel3d, Slide } from "vue-carousel-3d";
 import FileUpload from "@/components/FileUpload";
+import http from "../../http-common";
 
 export default {
   data: () => {
