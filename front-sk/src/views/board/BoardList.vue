@@ -4,6 +4,8 @@
       <h1 id="board-category">자유 게시판</h1>
     </div>
     <div id="board-context">
+      <!-- 검색 기능은 getSearchData 메소드에 정리 -->
+      <Search @searchData="getSearchData" class="search"></Search>
       <v-simple-table dark>
         <template>
           <thead>
@@ -27,7 +29,7 @@
     </div>
     <div id="board-list-footer">
       <button v-if="this.$store.state.username" class="board-button" @click="add_move()">글쓰기</button>
-      <div id="pagination">
+      <div class="pagination">
         <button v-for="pageNm in pageNms" :key="pageNm" @click="retrieveBoard(pageNm)">
           <span style="margin-right:10px;">{{ pageNm }}</span>
         </button>
@@ -38,22 +40,32 @@
 
 <script>
 import http from "../../http-common";
+import Search from "../../components/common/Search.vue";
 export default {
   name: "board-list",
+  components: {
+    Search
+  },
   data: () => {
-    return { info: [], loading: true, errored: false, totalPages: 0, pageNms: [] };
+    return {
+      info: [],
+      loading: true,
+      errored: false,
+      totalPages: 0,
+      pageNms: []
+    };
   },
   methods: {
     retrieveBoard(pageNm) {
       http
-        .get("/board",{
-          params:{
-            page: pageNm -1
+        .get("/board", {
+          params: {
+            page: pageNm - 1
           }
         })
         .then(response => {
-          this.info = response.data.object
-          this.totalPages = response.data.object.totalPages
+          this.info = response.data.object;
+          this.totalPages = response.data.object.totalPages;
           let arr = [];
 
           let min = parseInt((pageNm - 1) / 5) * 5 + 1;
@@ -69,7 +81,7 @@ export default {
         .finally(() => (this.loading = false));
     },
     add_move() {
-      this.$router.push({name: "BoardAdd"});
+      this.$router.push({ name: "BoardAdd" });
     },
     detail_id(sendbid) {
       this.$router.push({
@@ -78,6 +90,9 @@ export default {
           bid: sendbid
         }
       });
+    },
+    getSearchData(inputValue) {
+      console.log(inputValue);
     }
   },
   mounted() {
@@ -104,7 +119,7 @@ td {
   float: left;
   top: 35vmin;
   font-size: 11vmin;
-  font-family: 'BBTreeGB';
+  font-family: "BBTreeGB";
 }
 #board-list-footer {
   color: #ccc;
@@ -126,17 +141,18 @@ td {
   font-size: 2vmin;
   font-family: "GyeonggiBatang";
 }
-#pagination {
+.pagination {
   display: inline;
   float: right;
   font-size: 18px;
   font-family: "GyeonggiBatang";
 }
-@media (max-width: 700px) {
+@media (max-width: 960px) {
   #board-context {
-  margin: 2vmax 3vmax;
+    margin: 2vmax 3vmax;
   }
-  .numbering-col, .date-col{
+  .numbering-col,
+  .date-col {
     display: none;
   }
   #board-list-header {
@@ -145,8 +161,15 @@ td {
     background-position-x: 50%;
   }
   #board-category {
-    margin-top: 3vmin; 
+    margin-top: 3vmin;
     font-size: 7vmin;
   }
+}
+.search {
+  border-bottom: 2px solid #ccc;
+  width: 230px;
+  margin-right: 10px;
+  margin-left: auto;
+  margin-bottom: 20px;
 }
 </style>
