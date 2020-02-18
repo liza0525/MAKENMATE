@@ -120,13 +120,14 @@ public class BoardServiceImpl implements BoardService {
         String str = (String) bdetail.getFile();
         String text = str.replace("[", "").replace("]", "");
  
+        if (!text.equals("49104755")) {
         String[] wpqkf = text.split(",");
         for(int i = 0; i < wpqkf.length; i ++){
-            UploadFile file = filedao.findById(Integer.parseInt(wpqkf[i])).orElseThrow();
+            UploadFile file = filedao.findById(Integer.parseInt(wpqkf[i]));
             file.setBoardno(b.getBid());
             filedao.save(file);
         }
-
+        }
         return b.getBid();
     }
 }

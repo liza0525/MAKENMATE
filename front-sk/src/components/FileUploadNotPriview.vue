@@ -7,8 +7,9 @@
       allow-multiple="true"
       allowFileTypeValidation="false"
       accepted-file-types="image/jpeg, image/png"
-      allowImagePreview="true"
+      allowImagePreview="false"
       :server="server"
+      maxFiles=1
       v-bind:files="myFiles"
       v-on:init="handleFilePondInit"
     />
