@@ -72,7 +72,7 @@
                 :disabled="!isSubmit"
                 :class="{ disabled: !isSubmit }"
                 class="neon-btn col-12 mb-4"
-              >Sign Up</button>
+              >가입하기</button>
             </div>
           </v-col>
         </v-row>
@@ -113,7 +113,6 @@ export default {
   },
   created() {
     this.component = this;
-    console.log(this.$route.params.nickname);
     if (
       !(
         this.$route.params.nickname == "undefined" ||
@@ -143,6 +142,9 @@ export default {
     password: function(v) {
       this.checkForm();
     },
+    passwordConfirm: function(v){
+      this.checkForm();
+    },
     isTerm: function(v) {
       this.checkForm();
     }
@@ -159,6 +161,13 @@ export default {
       )
         this.error.password = "영문,숫자 포함 8 자리이상이어야 합니다.";
       else this.error.password = false;
+
+      if(this.password.length > 0 &&
+        this.passwordConfirm.length > 0 &&
+        this.password !== this.passwordConfirm
+      )
+        this.error.passwordConfirm = "비밀번호가 일치하지 않습니다.";
+      else this.error.passwordConfirm = false;
 
       let isSubmit = false;
       if (this.email.length > 0 && this.password.length > 0) isSubmit = true;
@@ -181,13 +190,18 @@ export default {
         };
         this.isSubmit = false;
 
-        if (!this.isTerm || this.passwordConfirm != this.password) {
+        if (!this.isTerm || this.passwordConfirm !== this.password) {
+          console.log(this.isTerm, this.password, this.passwordConfirm)
           if (!this.isTerm) this.error.term = "약관에 동의해야 합니다.";
           else this.error.term = false;
 
-          if (this.passwordConfirm != this.password)
-            this.error.passwordConfirm = "비밀번호와 일치하지 않습니다.";
-          else this.error.passwordConfirm = false;
+          if (this.passwordConfirm == this.password){
+            console.log("ggg")
+            this.error.passwordConfirm = "비밀번호가 일치하지 않습니다.";
+          } else {
+            console.log("hhh")
+            this.error.passwordConfirm = false;
+          }
 
           this.isSubmit = true;
         } else {

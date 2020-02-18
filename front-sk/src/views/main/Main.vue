@@ -1,6 +1,8 @@
 <template>
   <div>
-    <div class="animated infinite pulse" id="scroll-down">scroll down ↓</div>
+    <div>
+    <div class="animated infinite pulse" id="scroll-down" style="width: 100%;">scroll down ↓</div>
+    </div>
     <full-page ref="fullpage" :options="options" id="fullpage">
       <!-- page 1 -->
       <div class="section main-img" id="page1">
@@ -201,8 +203,8 @@ export default {
 #scroll-down {
   position: fixed;
   text-align: center;
-  margin-left: 45vmax;
-  margin-right: 45vmax;
+  margin-left: auto;
+  margin-right: auto;
   bottom: 0px;
   font-size: 150%;
   z-index: 1;

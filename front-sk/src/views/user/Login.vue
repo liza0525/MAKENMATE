@@ -179,6 +179,10 @@ export default {
 #login-window {
   margin: 15vh auto;
 }
+.error-text {
+  color: red;
+  margin: 3px 0px 10px 5px;
+}
 #title {
   font-family: "MapoPeacefull";
   color: white !important;
@@ -252,6 +256,7 @@ transition: background-color 5000s ease-in-out 0s;
   --neon-shadow-glitch: rgb(185, 92, 92);
 }
 .neon-btn {
+  color: white;
   border: 3px solid var(--neon-main);
   box-shadow: 0px 0px 10px 3px var(--neon-main),
     inset 0px 0px 10px 3px var(--neon-main);

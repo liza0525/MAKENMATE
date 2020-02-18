@@ -5,11 +5,15 @@
         <v-row>
           <v-col class="neon-card mx-auto" style="width: 30vw; background-color: black">
             <h1>이메일 전송</h1>
-            <div class="input-with-label">
-              <input v-model="email" id="email" placeholder="이메일을 입력하세요." type="text" />
-              <label class="neon-label" for="email">이메일</label>
-            </div>
-            <div class="error-text" v-if="error.email" style="color:red; margin-bottom: 7px;">{{ error.email }}</div>
+            <input
+              v-model="email"
+              id="email"
+              placeholder="이메일을 입력하세요."
+              class="neon-input col-12 mb-4"
+              @keyup.enter="login"
+              type="text"
+            />
+            <div class="error-text" v-if="error.email">{{ error.email }}</div>
             <router-link v-bind:to="{name:'SendEmail'}">
               <button
                 class="neon-btn col-12 mb-4"
@@ -34,7 +38,7 @@ export default {
   },
   methods: {
     checkForm() {
-      if (this.email.length >= 0 && !EmailValidator.validate(this.email))
+      if (this.email.length > 0 && !EmailValidator.validate(this.email))
         this.error.email = "이메일 형식이 아닙니다.";
       else this.error.email = false;
 
@@ -44,7 +48,6 @@ export default {
       });
       this.isSubmit = isSubmit;
     },
-    sendemail() {}
   },
   data: () => {
     return {
