@@ -140,7 +140,7 @@ body {
 }
 #user-scrap-header {
   background: linear-gradient(rgba(0, 0, 0, 0.5)),
-    url("../../assets/images/image5.jpg") no-repeat;
+    url("../../assets/images/image6.jpg") no-repeat;
   background-size: 100%;
   height: 50vh;
   background-position-y: 30%;
