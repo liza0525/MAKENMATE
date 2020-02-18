@@ -19,16 +19,10 @@
             />
             <!--file upload component-->
           </div>
-
-          <h1 class="sansfont" style="margin-top:1%;text-align:center">
-            {{ user.nickname }}
-          </h1>
-          <p class="sansfont" style="text-align:center;">
-            (ID : {{ user.email }})
-          </p>
+          <FileUploadNotPriview style ="margin: 0px"/>
         </div>
 
-        <FileUpload />
+        
 
         <v-col class="col-1"></v-col>
         <v-col>
@@ -162,7 +156,7 @@
 <script>
 import Constant from "../../Constant";
 import { Carousel3d, Slide } from "vue-carousel-3d";
-import FileUpload from "@/components/FileUpload";
+import FileUploadNotPriview from "@/components/FileUploadNotPriview";
 
 export default {
   data: () => {
@@ -188,19 +182,6 @@ export default {
     };
   },
   mounted() {
-    var fid = this.$store.state.filelist;
-    if (fid != null) {
-      console.log(this.$store.state.filelist);
-      http
-        .put("/userprofileimage/" + fid, {
-          nickname: window.sessionStorage.getItem("login_username")
-          // 파일 번호로 파일이름 찾아와서 유저 이미지 컬럼에 주소 넣어주기~
-        })
-        .then(res => {
-          console.log("aaa");
-          this.$store.state.filelist = [];
-        });
-    }
     console.log(this.$route.params.username);
     this.user.nickname = this.$route.params.username;
     this.$store
@@ -239,7 +220,7 @@ export default {
       });
   },
   components: {
-    FileUpload,
+    FileUploadNotPriview,
     Carousel3d,
     Slide
   },
