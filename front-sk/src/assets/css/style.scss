@@ -850,13 +850,6 @@ p {
   h4 {
     @include ellipsis;
   }
-
-  .error-text {
-    @include wrap;
-    color: $red;
-    margin-top: 3px;
-  }
-
   .eyes-icon {
     position: absolute;
     font-size: 1em;
