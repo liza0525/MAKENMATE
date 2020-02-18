@@ -6,6 +6,7 @@ export default {
     state.reply = payload.reply;
     state.users = payload.users;
     state.totalPages = payload.totalPages;
+    state.userImg = payload.userImg;
   },
   [Constant.ADD_REPLY]: (state, payload) => {},
   [Constant.MODIFY_REPLY]: (state, payload) => {},
@@ -155,7 +156,7 @@ export default {
   },
   //공유게시판
   [Constant.ADD_FILELIST]: (state, payload) => {
-    state.filelist = [...state.filelist, payload]
+    state.filelist = [...state.filelist, payload];
   },
   [Constant.DELETE_FILELIST]: (state, payload) => {
     state.filedelete = payload.filedelete;

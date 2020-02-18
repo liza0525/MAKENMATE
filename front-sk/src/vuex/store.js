@@ -17,6 +17,7 @@ const state = {
   scrapList: [],
   user: "",
   users: [],
+  userImg: [],
   reply: [],
   comment: "",
   email: "",

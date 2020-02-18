@@ -1,14 +1,14 @@
 <template>
   <div class="test">
     <img
-      src="../assets/images/cocktail_list_copy02.jpg"
+      src="../assets/images/cocktail_list_copy02.png"
       class="rightImage titlefont"
-      alt="cocktail_list_background"
+      alt="cocktail_detail_background"
     />
     <div class="hcontainer">
       <div
         class="sign titlefont"
-        style="z-index:200;font-size:400%;margin-top:10%;margin-bottom:3%;text-align:center;"
+        style="z-index:200;font-size:10vmin;margin-top:10%;margin-bottom:3%;text-align:center;"
       >
         {{ cocktail.cname }}
         <button @click="clickLike">
@@ -21,35 +21,80 @@
         </button>
         {{ likebycocktail }}
       </div>
-      <i class="fas fa-4x fa-quote-left" style="color:white;opacity:0.5"></i>
+      <div v-show="window.width >= 435">
+        <i class="fas fa-4x fa-quote-left" style="color:white;opacity:0.5"></i>
+      </div>
+      <div v-show="window.width < 435">
+        <i class="fas fa-lg fa-quote-left" style="color:white;opacity:0.5"></i>
+      </div>
       <div style="text-align:center;">
         <div
           class="sansfont"
-          style="display:inline-block;font-size:130%;margin-left:4%;margin-right:4%;opacity:0.7;font-style:italic"
+          :style="{ 'font-size': fontsize }"
+          style="display:inline-block;margin-left:4%;margin-right:4%;opacity:0.7;font-style:italic"
           v-html="cocktail.description"
         ></div>
       </div>
-      <div style="text-align:right;margin-bottom:5%;padding-right:3%">
-        <i class="fas fa-4x fa-quote-right" style="color:white;opacity:0.5;"></i>
+      <div
+        v-show="window.width >= 435"
+        style="text-align:right;margin-bottom:5%;padding-right:3%"
+      >
+        <i
+          class="fas fa-4x fa-quote-right"
+          style="color:white;opacity:0.5;"
+        ></i>
       </div>
+      <div
+        v-show="window.width < 435"
+        style="text-align:right;margin-bottom:5%;padding-right:3%"
+      >
+        <i
+          class="fas fa-lg fa-quote-right"
+          style="color:white;opacity:0.5;"
+        ></i>
+      </div>
+
       <v-row justify="space-around">
-        <div v-show="!(materials[0] != '' || cocktail.method != '')" style="text-align:center;">
+        <div
+          v-show="!(materials[0] != '' || cocktail.method != '')"
+          style="text-align:center;"
+        >
           <img v-bind:src="cocktail.image" style="width:30%;" />
         </div>
-        <v-col v-show="materials[0] != '' || cocktail.method != ''" cols="6">
-          <v-img v-bind:src="cocktail.image" style="width:70%; float:right;"></v-img>
+        <v-col
+          v-show="materials[0] != '' || cocktail.method != ''"
+          md="6"
+          sm="12"
+        >
+          <v-img
+            v-show="window.width >= 1024"
+            v-bind:src="cocktail.image"
+            style="float:right;"
+          ></v-img>
+          <v-img
+            v-show="window.width < 1024"
+            v-bind:src="cocktail.image"
+            style="float:center;"
+          ></v-img>
         </v-col>
-        <v-col cols="6">
+        <v-col md="6" sm="12">
           <div class="subheading">
             <div v-if="materials[0] != ''">
               <v-row no-gutters style="padding-top:5%;padding-bottom:5%">
-                <v-col v-for="(m, i) in materials" :key="i" cols="6" style="text-align:center;">
+                <v-col
+                  v-for="(m, i) in materials"
+                  :key="i"
+                  cols="6"
+                  style="text-align:center;"
+                >
                   <v-card
                     outlined
                     tile
                     class="sansfont"
-                    style="background-color: transparent; font-size:130%;"
-                  >{{ materials[i] }}</v-card>
+                    style="background-color: transparent;"
+                    :style="{ 'font-size': fontsize }"
+                    >{{ materials[i] }}</v-card
+                  >
                 </v-col>
               </v-row>
             </div>
@@ -57,14 +102,40 @@
               <span
                 class="sansfont"
                 style="font-size:500%;opacity:0.7;font-style:italic;font-weight: 900;"
-              >1.</span>
+                >1.</span
+              >
               <div
                 class="sansfont"
-                style=" display:inline; font-size:130%;"
+                style=" display:inline;"
+                :style="{ 'font-size': fontsize }"
                 v-html="cocktail.method"
               ></div>
             </div>
           </div>
+        </v-col>
+      </v-row>
+      <v-row>
+        <v-col cols="2">
+          <div
+            style="margin-top:4%; display:inline-block; overflow: hidden;  float:right;height:50px; width: 50px; border-radius:50px;"
+          >
+            <img
+              :src="user.image"
+              style="width:100%; height:100%;display:table-cell; vertical-align:middle"
+            />
+          </div>
+        </v-col>
+        <v-col>
+          <input
+            class="reply_input"
+            type="text"
+            v-model="comment"
+            placeholder="댓글 추가"
+            v-on:keyup.enter="submitComment"
+          />
+          <button @click="submitComment" class="neon reply_btn" type="submit">
+            등록
+          </button>
         </v-col>
       </v-row>
       <div
@@ -74,28 +145,69 @@
         style="margin-top: 5px; display:block;"
         class="sansfont"
       >
-        <!-- <v-text v-if="isInput[i]"> -->
-
-        <div v-if="isInput[i] === 0">
-          <span>{{ users[i] }} : {{ re.content }}</span>
-          <p v-if="username === users[i]" style="display:inline-block;">
-            <button @click="click(i)">수정</button>
-            <button @click="deleteComment(i, re.cmid)">삭제</button>
-          </p>
-        </div>
-        <div v-else>
-          <span class="sansfont">
-            {{ users[i] }} :
-            <input v-model="re.content" />
-          </span>
-          <p v-if="username === users[i]" class="sansfont" style="display:inline-block;">
-            <button @click="updateComment(i, re.cmid, re.content)" class="sansfont">수정</button>
-          </p>
-        </div>
+        <v-row>
+          <v-col cols="2">
+            <div
+              style="margin-top:4%; display:inline-block; overflow: hidden; float:right; height:50px; width: 50px; border-radius:50px;"
+            >
+              <img :src="userImg[i]" style="width:100%; height:100%;" />
+            </div>
+          </v-col>
+          <v-col>
+            <div v-if="isInput[i] === 0">
+              <v-row>
+                <v-col cols="8" style="margin-top:2vh" class="sansfont">
+                  <span class="sansfont"
+                    >{{ users[i] }} : {{ re.content }}</span
+                  >
+                </v-col>
+                <v-col cols="4">
+                  <p
+                    v-if="user.nickname === users[i]"
+                    style="display:inline-block;"
+                    class="sansfont"
+                  >
+                    <button @click="click(i)">
+                      수정
+                    </button>
+                    <button
+                      @click="deleteComment(i, re.cmid)"
+                      style="margin-left:1vw"
+                      class="sansfont"
+                    >
+                      삭제
+                    </button>
+                  </p>
+                </v-col>
+              </v-row>
+            </div>
+            <div v-else>
+              <v-row>
+                <v-col cols="10">
+                  <span class="sansfont">
+                    {{ users[i] }} :
+                    <input v-model="re.content" />
+                  </span>
+                </v-col>
+                <v-col cols="2">
+                  <p
+                    v-if="user.nickname === users[i]"
+                    class="sansfont"
+                    style="display:inline-block;"
+                  >
+                    <button
+                      @click="updateComment(i, re.cmid, re.content)"
+                      class="sansfont"
+                    >
+                      수정
+                    </button>
+                  </p>
+                </v-col>
+              </v-row>
+            </div>
+          </v-col>
+        </v-row>
       </div>
-      <!-- </v-text> -->
-      <input type="text" v-model="comment" />
-      <button @click="submitComment" type="submit">button</button>
       <div>
         <button v-for="pageNm in pageNms" :key="pageNm" @click="search(pageNm)">
           <span style="margin-right:10px;">{{ pageNm }}</span>
@@ -124,15 +236,32 @@ export default {
       },
       materials: [],
       email: "",
-      username: "",
+      user: {
+        nickname: "",
+        image: ""
+      },
       comment: "",
       isInput: [],
+      userImg: [],
       updatedComment: "",
       pageNm: 1,
-      pageNms: []
+      pageNms: [],
+      window: {
+        width: 0,
+        height: 0
+      }
     };
   },
   mounted() {
+    window.addEventListener("resize", this.handleResize);
+    this.handleResize();
+    this.$store
+      .dispatch(Constant.GET_USERINFO, { username: this.$store.state.username })
+      .then(() => {
+        this.user = { ...this.$store.state.user };
+        if (this.user.image === null)
+          this.user.image = require(`../../../images/default.png`);
+      });
     this.$store
       .dispatch(Constant.GET_COCKTAIL, { cid: this.$route.params.cid })
       .then(() => {
@@ -161,11 +290,16 @@ export default {
           .then(() => {
             this.reply = { ...this.$store.state.reply };
             this.users = { ...this.$store.state.users };
+            this.userImg = { ...this.$store.state.userImg };
+            this.userImg = Object.values(this.userImg);
             for (let i = 0; i < this.reply.length; ++i) {
               this.isInput.push(0);
+              if (this.userImg[i] === null) {
+                this.userImg[i] = require(`../../../images/default.png`);
+              }
             }
             let arr = [];
-
+            console.log(this.reply, this.users, this.isInput);
             let min = 1;
             for (let index = 0; index < 5; index++) {
               if (Number(min + index) > this.$store.state.totalPages) break;
@@ -176,6 +310,7 @@ export default {
               .dispatch(Constant.GET_LIKEBYCOCKTAIL, {
                 cid: this.$route.params.cid
               })
+
               .then(() => {
                 this.$store.dispatch(Constant.GET_LIKEBYUSERANDCOCKTAIL, {
                   cid: this.cocktail.cid,
@@ -184,10 +319,13 @@ export default {
               });
           });
       });
-    this.username = this.$store.state.username;
-    if (this.username === undefined) {
-      this.username = "h";
+    this.user.nickname = this.$store.state.username;
+    if (this.user.nickname === undefined) {
+      this.user.nickname = "h";
     }
+  },
+  destroyed() {
+    window.removeEventListener("resize", this.handleResize);
   },
   computed: {
     users: {
@@ -199,7 +337,7 @@ export default {
     reply: {
       set(val) {},
       get() {
-        return this.$store.state.reply;
+        return Object.values(this.$store.state.reply);
       }
     },
     clicked: {
@@ -208,6 +346,13 @@ export default {
       },
       get() {
         return true;
+      }
+    },
+    fontsize() {
+      if (this.window.width > 425) {
+        return "3vmin";
+      } else {
+        return "4vmin";
       }
     },
     likebycocktail() {
@@ -223,6 +368,13 @@ export default {
     }
   },
   methods: {
+    handleResize() {
+      this.window.width = window.innerWidth;
+      this.window.height = window.innerHeight;
+      // console.log(typeof this.window.height);
+      this.window.height = this.window.height + "px";
+      this.window.height = "calc(" + this.window.height + " - 4rem)";
+    },
     submitComment() {
       this.$store.dispatch(Constant.ADD_REPLY, {
         cid: this.cocktail.cid,
@@ -230,7 +382,8 @@ export default {
         comment: this.comment
       });
       this.isInput.push(0);
-      this.users.push(this.username);
+      this.users.splice(0, 0, this.user.nickname);
+      this.userImg.splice(0, 0, this.user.image);
       this.comment = "";
     },
     updateComment(i, cmid, content) {
@@ -337,6 +490,75 @@ body {
   background-color: black !important;
   z-index: -1;
 }
+
+/* Button: Neon */
+.button.neon,
+.neon-box,
+button.neon,
+input[type="reset"].neon,
+input[type="submit"].neon,
+input[type="text"].neon {
+  font-weight: 400;
+  background: transparent !important;
+  font-family: "GyeonggiBatang";
+  border: 3px solid lighten(hsl(308, 100%, 50%), 51%);
+  color: #ffffff;
+  padding: 2%;
+  text-shadow: hsl(0, 100%, 100%) 0px 0px 0.15em,
+    hsl(0, 100%, 100%) 0px 0px 0.3em, hsl(0, 100%, 100%) 0px 0px 0.45em,
+    hsl(308, 100%, 50%) 0px 0px 0.3em, hsl(308, 100%, 50%) 0px 0px 0.52em,
+    hsl(308, 100%, 50%) 0px 0px 0.6em, hsl(308, 100%, 50%) 0px 0px 0.75em;
+  box-shadow: hsl(0, 100%, 100%) 0px 0px 0.075em,
+    hsl(0, 100%, 100%) 0px 0px 0.15em, hsl(0, 100%, 100%) 0px 0px 0.22em,
+    hsl(308, 100%, 50%) 0px 0px 0.3em, hsl(308, 100%, 50%) 0px 0px 0.52em,
+    hsl(308, 100%, 50%) 0px 0px 0.6em, hsl(308, 100%, 50%) 0px 0px 0.75em,
+    inset hsl(308, 100%, 50%) 0 0 0.6em;
+}
+.button.neon:hover,
+button.neon:hover,
+input[type="text"].neon,
+input[type="reset"].neon:hover,
+input[type="submit"].neon:hover {
+  text-shadow: hsl(0, 100%, 100%) 0px 0px 0.3em,
+    hsl(0, 100%, 100%) 0px 0px 0.6em, hsl(0, 100%, 100%) 0px 0px 0.9em,
+    hsl(308, 100%, 50%) 0px 0px 0.6em, hsl(308, 100%, 50%) 0px 0px 1.04em,
+    hsl(308, 100%, 50%) 0px 0px 1.2em, hsl(308, 100%, 50%) 0px 0px 1.5em;
+  box-shadow: hsl(0, 100%, 100%) 0px 0px 0.15em,
+    hsl(0, 100%, 100%) 0px 0px 0.3em, hsl(0, 100%, 100%) 0px 0px 0.44em,
+    hsl(308, 100%, 50%) 0px 0px 0.6em, hsl(308, 100%, 50%) 0px 0px 1.04em,
+    hsl(308, 100%, 50%) 0px 0px 1.2em, hsl(308, 100%, 50%) 0px 0px 1.5em,
+    inset hsl(308, 100%, 50%) 0 0 1.2em;
+}
+.neon::placeholder {
+  font-family: "GyeonggiBatang";
+  font-size: 1.3rem;
+  color: #c6e2ff;
+  text-shadow: hsl(0, 100%, 100%) 0px 0px 0.3em,
+    hsl(0, 100%, 100%) 0px 0px 0.6em, hsl(0, 100%, 100%) 0px 0px 0.9em,
+    hsl(308, 100%, 50%) 0px 0px 0.6em, hsl(308, 100%, 50%) 0px 0px 1.04em,
+    hsl(308, 100%, 50%) 0px 0px 1.2em, hsl(308, 100%, 50%) 0px 0px 1.5em;
+}
+
+.fullfontsize {
+  font-size: 3vmin;
+}
+.mobilefontsize {
+  font-size: 4vmin;
+}
+.reply_input {
+  border-bottom: 0.5px solid hsl(308, 100%, 50%);
+  box-shadow: 0px 15px 10px -15px hsl(308, 100%, 50%);
+  width: 80%;
+  color: #ffffff;
+  text-shadow: hsl(0, 100%, 100%) 0px 0px 0.15em,
+    hsl(0, 100%, 100%) 0px 0px 0.3em, hsl(0, 100%, 100%) 0px 0px 0.45em,
+    hsl(308, 100%, 50%) 0px 0px 0.3em, hsl(308, 100%, 50%) 0px 0px 0.52em,
+    hsl(308, 100%, 50%) 0px 0px 0.6em, hsl(308, 100%, 50%) 0px 0px 0.75em;
+}
+.reply_btn {
+  width: 20%;
+}
+
 .hcontainer {
   margin-left: 15%;
   margin-right: 15%;
@@ -393,38 +615,6 @@ body {
   --color4: purple;
   font-family: Bad Script;
 }
-.neon-button {
-  position: fixed;
-  margin-top: 18%;
-  float: left;
-  width: 3%;
-  padding-top: 1%;
-  padding-bottom: 1%;
-  font-size: 1.3rem;
-  font-weight: bolder;
-  font-family: "Jua", sans-serif;
-  animation: neon-box 0.08s ease-in-out infinite alternate;
-  color: #c6e2ff;
-  border: 2px solid;
-  border-radius: 5px;
-  background-color: transparent;
-}
-.neon-button:hover {
-  position: fixed;
-  margin-top: 18%;
-  float: left;
-  width: 3%;
-  padding-top: 1%;
-  padding-bottom: 1%;
-  font-size: 1.3rem;
-  font-weight: bolder;
-  font-family: "Jua", sans-serif;
-  animation: neon-box 0.08s ease-in-out infinite alternate;
-  color: rgba(242, 30, 178, 0.52);
-  border: 2px solid;
-  border-radius: 5px;
-  background-color: #ffffff;
-}
 
 .neon-input {
   width: 15%;
@@ -436,6 +626,7 @@ body {
   border: 2px solid #ffffff;
   border-radius: 5px;
   background-color: transparent;
+  animation: neon-box 0.08s infinite alternate;
 }
 .paging-size {
   font-size: 150%;
