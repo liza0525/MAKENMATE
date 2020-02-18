@@ -1,26 +1,47 @@
 <template>
   <div class="test">
+    <div class="cocktailheader">
+      <div v-show="window.width >= 435">
+        <h1
+          class="titlefont cocktailtitle sign"
+          style="z-index:200;margin-right;auto;margin-left;auto;display:inline-block;z-index:200;  font-family: 'Jua', sans-serif;"
+        >
+          {{ cocktail.cname }}
+          <button @click="clickLike">
+            <span v-show="!islike">
+              <i class="far fa-heart"></i>
+            </span>
+            <span v-show="islike">
+              <i class="fas fa-heart"></i>
+            </span>
+          </button>
+          {{ likebycocktail }}
+        </h1>
+      </div>
+      <div v-show="window.width < 435">
+        <h1
+          class="cocktailtitle sign "
+          style="z-index:200;margin-top:15vmax;margin-right;auto;margin-left;auto;display:inline-block;z-index:200;font-family: 'neontubes';"
+        >
+          {{ cocktail.cname }} <br />
+          <button @click="clickLike" style="margin-top:10px;">
+            <span v-show="!islike">
+              <i class="far fa-heart"></i>
+            </span>
+            <span v-show="islike">
+              <i class="fas fa-heart"></i>
+            </span>
+          </button>
+          {{ likebycocktail }}
+        </h1>
+      </div>
+    </div>
     <img
       src="../assets/images/cocktail_list_copy02.png"
       class="rightImage titlefont"
       alt="cocktail_detail_background"
     />
     <div class="hcontainer">
-      <div
-        class="sign titlefont"
-        style="z-index:200;font-size:10vmin;margin-top:10%;margin-bottom:3%;text-align:center;"
-      >
-        {{ cocktail.cname }}
-        <button @click="clickLike">
-          <span v-show="!islike">
-            <i class="far fa-heart"></i>
-          </span>
-          <span v-show="islike">
-            <i class="fas fa-heart"></i>
-          </span>
-        </button>
-        {{ likebycocktail }}
-      </div>
       <div v-show="window.width >= 435">
         <i class="fas fa-4x fa-quote-left" style="color:white;opacity:0.5"></i>
       </div>
@@ -114,7 +135,7 @@
           </div>
         </v-col>
       </v-row>
-      <v-row>
+      <v-row style="margin-top:5%">
         <v-col cols="2">
           <div
             style="margin-top:4%; display:inline-block; overflow: hidden;  float:right;height:50px; width: 50px; border-radius:50px;"
@@ -208,9 +229,25 @@
           </v-col>
         </v-row>
       </div>
-      <div>
+      <div style="text-align:center">
+        <button
+          v-if="pageNms[0] > 5"
+          v-on:click="search(min - 5 < 0 ? 1 : min - 5)"
+          style="margin-right:10px;color:#ffffff"
+          class="paging-size"
+        >
+          {{ prevBt }}
+        </button>
         <button v-for="pageNm in pageNms" :key="pageNm" @click="search(pageNm)">
-          <span style="margin-right:10px;">{{ pageNm }}</span>
+          <span style="margin-right:10px;color:#FFF">{{ pageNm }}</span>
+        </button>
+        <button
+          v-if="min + 5 <= totalPages"
+          class="paging-size"
+          v-on:click="search(min + 5)"
+          style="margin-right:10px;color:#ffffff"
+        >
+          {{ nextBt }}
         </button>
       </div>
     </div>
@@ -240,11 +277,14 @@ export default {
         nickname: "",
         image: ""
       },
+      min: 1,
       comment: "",
       isInput: [],
       userImg: [],
+      totalPages: 1,
       updatedComment: "",
-      pageNm: 1,
+      prevBt: "<",
+      nextBt: ">",
       pageNms: [],
       window: {
         width: 0,
@@ -260,7 +300,7 @@ export default {
       .then(() => {
         this.user = { ...this.$store.state.user };
         if (this.user.image === null)
-          this.user.image = require(`../../../images/default.png`);
+          this.user.image = require(`../assets/images/profile_default.png`);
       });
     this.$store
       .dispatch(Constant.GET_COCKTAIL, { cid: this.$route.params.cid })
@@ -291,15 +331,17 @@ export default {
             this.reply = { ...this.$store.state.reply };
             this.users = { ...this.$store.state.users };
             this.userImg = { ...this.$store.state.userImg };
+            this.totalPages = this.$store.state.totalPages;
             this.userImg = Object.values(this.userImg);
             for (let i = 0; i < this.reply.length; ++i) {
               this.isInput.push(0);
               if (this.userImg[i] === null) {
-                this.userImg[i] = require(`../../../images/default.png`);
+                this.userImg[
+                  i
+                ] = require(`../assets/images/profile_default.png`);
               }
             }
             let arr = [];
-            console.log(this.reply, this.users, this.isInput);
             let min = 1;
             for (let index = 0; index < 5; index++) {
               if (Number(min + index) > this.$store.state.totalPages) break;
@@ -402,6 +444,7 @@ export default {
     deleteComment(i, cmid) {
       this.users.splice(i, 1);
       this.isInput.splice(i, 1);
+      this.userImg.splice(i, 1);
       this.$store.dispatch(Constant.REMOVE_REPLY, {
         cmid: cmid,
         cid: this.cocktail.cid
@@ -438,17 +481,25 @@ export default {
         .then(() => {
           this.reply = { ...this.$store.state.reply };
           this.users = { ...this.$store.state.users };
+          this.userImg = { ...this.$store.state.userImg };
+          this.totalPages = this.$store.state.totalPages;
           for (let i = 0; i < this.reply.length; ++i) {
             this.isInput.push(0);
           }
           let arr = [];
-
-          let min = parseInt((pageNm - 1) / 5) * 5 + 1;
+          this.min = parseInt((pageNm - 1) / 5) * 5 + 1;
+          for (let i = 0; i < this.reply.length; ++i) {
+            this.isInput.push(0);
+            if (this.userImg[i] === null) {
+              this.userImg[i] = require(`../assets/images/profile_default.png`);
+            }
+          }
           for (let index = 0; index < 5; index++) {
-            if (Number(min + index) > this.$store.state.totalPages) break;
-            arr.push(Number(min + index));
+            if (Number(this.min + index) > this.$store.state.totalPages) break;
+            arr.push(Number(this.min + index));
           }
           this.pageNms = arr;
+          console.log(this.min, this.pageNms, this.totalPages);
         });
     }
   }
@@ -489,6 +540,22 @@ export default {
 body {
   background-color: black !important;
   z-index: -1;
+}
+.cocktailheader {
+  background-image: url("https://www.dropbox.com/s/2ct0i6kc61vp0bh/wall.jpg?raw=1");
+  background-size: 100%;
+  height: 38vh;
+  background-position-y: 30%;
+  color: white;
+  z-index: 200;
+  text-align: center;
+  font-family: "Jua", sans-serif;
+}
+.cocktailtitle {
+  text-align: center;
+  margin-top: 20vmin;
+  font-size: 11vmin;
+  font-weight: 500;
 }
 
 /* Button: Neon */
@@ -629,7 +696,6 @@ input[type="submit"].neon:hover {
   animation: neon-box 0.08s infinite alternate;
 }
 .paging-size {
-  font-size: 150%;
   font-family: "국립박물관문화재단클래식B";
 }
 .neon-input::placeholder {

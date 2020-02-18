@@ -19,7 +19,11 @@
           <tbody>
             <tr v-for="board in info.content" v-bind:key="board.bid">
               <td class="numbering-col" v-html="board.bid"></td>
-              <td v-html="board.title" @click="detail_id(board.bid)" style="cursor: pointer;"></td>
+              <td
+                v-html="board.title"
+                @click="detail_id(board.bid)"
+                style="cursor: pointer;"
+              ></td>
               <td v-html="board.user_name"></td>
               <td class="date-col" v-html="board.regdate"></td>
             </tr>
@@ -28,9 +32,19 @@
       </v-simple-table>
     </div>
     <div id="board-list-footer">
-      <button v-if="this.$store.state.username" class="board-button" @click="add_move()">글쓰기</button>
-      <div class="pagination">
-        <button v-for="pageNm in pageNms" :key="pageNm" @click="retrieveBoard(pageNm)">
+      <button
+        v-if="this.$store.state.username"
+        class="board-button"
+        @click="add_move()"
+      >
+        글쓰기
+      </button>
+      <div id="pagination">
+        <button
+          v-for="pageNm in pageNms"
+          :key="pageNm"
+          @click="retrieveBoard(pageNm)"
+        >
           <span style="margin-right:10px;">{{ pageNm }}</span>
         </button>
       </div>
@@ -105,10 +119,10 @@ td {
   font-family: "GyeonggiBatang";
 }
 #board-list-header {
-  background: linear-gradient(rgba(0, 0, 0, 0.3)),
-    url("../../assets/images/image.png") no-repeat;
+  background: linear-gradient(rgba(0, 0, 0, 0.5)),
+    url("../../assets/images/image5.jpg") no-repeat;
   background-size: 100%;
-  height: 60vh;
+  height: 50vh;
   background-position-y: 30%;
   color: white;
 }
@@ -117,7 +131,7 @@ td {
   display: inline;
   position: relative;
   float: left;
-  top: 35vmin;
+  top: 30vmin;
   font-size: 11vmin;
   font-family: "BBTreeGB";
 }
@@ -156,20 +170,13 @@ td {
     display: none;
   }
   #board-list-header {
-    height: 50vh;
+    height: 35vh;
     background-size: 200vw;
     background-position-x: 50%;
   }
   #board-category {
-    margin-top: 3vmin;
-    font-size: 7vmin;
+    margin-top: 4vmin;
+    font-size: 8vmin;
   }
-}
-.search {
-  border-bottom: 2px solid #ccc;
-  width: 230px;
-  margin-right: 10px;
-  margin-left: auto;
-  margin-bottom: 20px;
 }
 </style>
