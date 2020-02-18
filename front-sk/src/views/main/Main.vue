@@ -1,6 +1,8 @@
 <template>
   <div>
-    <div class="animated infinite pulse" id="scroll-down">scroll down ↓</div>
+    <div>
+    <div class="animated infinite pulse" id="scroll-down" style="width: 100%;">scroll down ↓</div>
+    </div>
     <full-page ref="fullpage" :options="options" id="fullpage">
       <!-- page 1 -->
       <div class="section main-img" id="page1">
@@ -58,7 +60,7 @@
           </div>
         </div>
         <!-- modal -->
-        <div v-for="person in people" class="modal info-modal" :key="person.id">
+        <div v-for="person in people" class="modal" :key="person.id">
           <v-card class="modal-content" max-width="344" outlined>
             <p class="close">&times;</p>
             <v-img height="40vh" :src="person.profileUrl"></v-img>
@@ -193,7 +195,7 @@ export default {
   },
   methods: {
     infoPopUp() {
-      let modal = document.getElementsByClassName("info-modal");
+      let modal = document.getElementsByClassName("modal");
       let btn = document.getElementsByClassName("info-btn");
       let close = document.getElementsByClassName("close");
 
@@ -204,6 +206,9 @@ export default {
         close[i].onclick = function(e) {
           modal[i].style.display = "none";
         };
+        modal[i].onclick = function(e) {
+          modal[i].style.display = "none";
+        }
       }
     }
   },
@@ -250,7 +255,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style>
 @import url("https://fonts.googleapis.com/css?family=Playfair+Display:700i&display=swap");
 @import url("https://fonts.googleapis.com/css?family=Indie+Flower&display=swap");
 .section {
@@ -260,8 +265,8 @@ export default {
 #scroll-down {
   position: fixed;
   text-align: center;
-  margin-left: 45vmax;
-  margin-right: 45vmax;
+  margin-left: auto;
+  margin-right: auto;
   bottom: 0px;
   font-size: 150%;
   z-index: 1;
@@ -359,22 +364,22 @@ span {
 .info-members-name {
   display: inline;
   font-size: 2rem;
+  font-family: 'BBTreeGB';
 }
 .modal {
   display: none;
   position: fixed;
   z-index: 2;
   left: 0;
-  top: 77%;
+  bottom: 0;
   width: 100%;
-  height: 100%;
   overflow: auto;
   background-color: rgb(0, 0, 0, 0.7);
 }
 .modal-content {
   color: black;
   background-color: #fefefe;
-  margin: 7vh auto;
+  margin: 12vh auto;
   font-family: "GyeonggiBatang";
 }
 .close {
@@ -437,16 +442,13 @@ a {
 }
 
 .stars {
-  background-image: radial-gradient(
-      2px 2px at 20px 30px,
-      #eee,
-      rgba(0, 0, 0, 0)
-    ),
+  background-image: 
+    radial-gradient(2.3px 2.3px at 20px 30px,#eee,rgba(0, 0, 0, 0)),
     radial-gradient(2px 2px at 40px 70px, #fff, rgba(0, 0, 0, 0)),
-    radial-gradient(2px 2px at 50px 160px, #ddd, rgba(0, 0, 0, 0)),
+    radial-gradient(2.3px 2.3px at 50px 160px, #ddd, rgba(0, 0, 0, 0)),
     radial-gradient(2px 2px at 90px 40px, #fff, rgba(0, 0, 0, 0)),
     radial-gradient(2px 2px at 130px 80px, #fff, rgba(0, 0, 0, 0)),
-    radial-gradient(2px 2px at 160px 120px, #ddd, rgba(0, 0, 0, 0));
+    radial-gradient(2.3px 2.3px at 160px 120px, #ddd, rgba(0, 0, 0, 0));
   background-repeat: repeat;
   background-size: 200px 200px;
   animation: twinkle 4s infinite;

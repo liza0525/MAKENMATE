@@ -3,7 +3,7 @@
     <div id="user-scrap-header">
       <h1 id="user-scrap-title">{{ user.nickname }} Profile</h1>
     </div>
-    <div class="backgroundcolor">
+    <div class="backgroundcolor" v-show="window.width >= 768">
       <v-row no-gutters>
         <v-col class="col-1"></v-col>
         <div
@@ -37,7 +37,7 @@
           </div>
           <div
             class="text-center"
-            style="margin-top:10%;display:inline-block;float:right"
+            style="margin-top:13%;display:inline-block;float:right"
           >
             <v-btn
               v-show="updateIntro"
@@ -62,7 +62,7 @@
           </div>
           <div
             class="sansfont"
-            style=" margin-top:5%;font-size:200%; text-align:center; font-weight:bolder;"
+            style=" margin-top:13%;font-size:200%; text-align:center; font-weight:bolder;"
           >
             자기 소개
           </div>
@@ -92,7 +92,7 @@
           </div>
         </v-col>
       </v-row>
-      <v-row>
+      <v-row v-show="cocktailList.length > 0">
         <v-col>
           <h1
             class="sansfont"
@@ -148,6 +148,154 @@
       </v-col> -->
       </v-row>
     </div>
+    <div style="background-color:#FFF" v-show="window.width < 768">
+      <v-row no-gutters>
+        <v-col class="col-1"></v-col>
+        <div
+          class="col-12 col-md-6 col-lg-4 col-sm-6"
+          style="text-align:center;"
+        >
+          <div
+            style="position:absoulte; margin-top:4%; display:inline-block; overflow: hidden;  height:300px; width: 300px; border-radius:300px;"
+          >
+            <img
+              :src="user.image"
+              style="position:absoulte; width:100%; height:100%;"
+            />
+            <!--file upload component-->
+          </div>
+          <FileUploadNotPriview style="margin: 0px" />
+        </div>
+        <v-col>
+          <div style="display:inline-block; width: 70%">
+            <div
+              class="sansfont"
+              style="margin-top:10%; margin-left:2%; margin-right:2%;font-size:400%; display:inline-block;"
+            >
+              {{ user.nickname }}
+            </div>
+            <span class="sansfont" style="margin-left:3%;font-size:100%;"
+              >(ID : {{ user.email }})</span
+            >
+          </div>
+          <div
+            class="text-center"
+            style=" margin-top:10%;display:inline-block;float:right;  margin-right:2%;"
+          >
+            <v-btn
+              v-show="updateIntro"
+              class="ma-2"
+              tile
+              outlined
+              color="success"
+              @click="updatedIntro()"
+            >
+              <v-icon left>mdi-pencil</v-icon> Submit
+            </v-btn>
+            <v-btn
+              v-show="!updateIntro"
+              class="ma-2"
+              tile
+              outlined
+              color="success"
+              @click="updatedIntro()"
+            >
+              <v-icon left>mdi-pencil</v-icon> Edit
+            </v-btn>
+          </div>
+          <div
+            class="sansfont"
+            style=" margin-top:5%;font-size:200%; text-align:center; font-weight:bolder;"
+          >
+            자기 소개
+          </div>
+          <div
+            v-show="!updateIntro"
+            style="padding:2%;margin-top:5%; display: table; width: 100%; height: 50% ;border: 0.5px solid #DCDCDC;"
+          >
+            <div
+              class="sansfont"
+              style="display: table-cell; font-size:130%;
+    vertical-align: middle;"
+            >
+              <div class="sansfont">
+                {{ user.intro }}
+              </div>
+            </div>
+          </div>
+          <div
+            v-show="updateIntro"
+            style="margin-top:5%; width: 100%; height: 50% ;border: 0.5px solid #DCDCDC;"
+          >
+            <textarea
+              v-model="user.intro"
+              class="sansfont"
+              style="font-size:130%; width:98%; height:96%; margin-top: 0.5%;"
+            ></textarea>
+          </div>
+        </v-col>
+      </v-row>
+      <v-row v-show="cocktailList.length > 0">
+        <v-col>
+          <h1
+            class="sansfont"
+            style=" margin-top:20%;font-size:200%; text-align:center; font-weight:bolder;"
+          >
+            좋아하는 칵테일
+          </h1>
+          <carousel-3d
+            :count="cocktailList.length"
+            :controls-visible="true"
+            :controls-prev-html="'&#10092;'"
+            :controls-next-html="'&#10093;'"
+            :controls-width="20"
+            :controls-height="0"
+            style="opacity:100 !important; height:600px !important;"
+          >
+            <slide
+              v-for="(slide, i) in cocktailList"
+              :index="i"
+              :key="i"
+              style="opacity:100 !important; visibility:visible;height:500px !important;background-color:#ffffff;"
+              ><v-card style="height:400px">
+                <v-img :src="slide.image" alt="ll" style="height:100%;">
+                </v-img>
+                <h1
+                  class="sansfont"
+                  style="margin-left:30px; margin-top:10px;font-weight:bolder;"
+                >
+                  {{ slide.cname }}
+                </h1>
+                <v-text
+                  style="margin-left:30px;margin-top:10px;display:inline-block"
+                >
+                  <i class="fas fa-lg fa-heart"></i> {{ getLikesByCocktail[i] }}
+                </v-text>
+                <button
+                  @click="goToDetail(slide.cid)"
+                  class="sansfont"
+                  style="color:blue;margin-left:230px"
+                >
+                  ...더보기
+                </button>
+              </v-card>
+            </slide>
+          </carousel-3d>
+        </v-col>
+      </v-row>
+
+      <h1
+        class="sansfont"
+        style=" margin-top:20%;font-size:200%; text-align:center; font-weight:bolder;"
+      >
+        {{ user.nickname }}님이 쓴 글
+      </h1>
+      <v-row>
+        <!-- <v-col v-for="(board, i) in boardArray" :key="i">
+
+      </v-col> -->
+      </v-row>
+    </div>
   </div>
 </template>
 
@@ -178,10 +326,15 @@ export default {
       nextBt: ">",
       fistBt: "<<",
       lastBt: ">>",
-      wH: 0
+      window: {
+        width: 0,
+        height: 0
+      }
     };
   },
   mounted() {
+    window.addEventListener("resize", this.handleResize);
+    this.handleResize();
     console.log(this.$route.params.username);
     this.user.nickname = this.$route.params.username;
     this.$store
@@ -191,7 +344,7 @@ export default {
           ...this.$store.state.user
         };
         if (this.user.image === null)
-          this.user.image = require(`../../../../images/default.png`);
+          this.user.image = require(`../../assets/images/profile_default.png`);
         console.log(this.user);
       });
     this.$store
@@ -219,6 +372,9 @@ export default {
         });
       });
   },
+  destroyed() {
+    window.removeEventListener("resize", this.handleResize);
+  },
   components: {
     FileUploadNotPriview,
     Carousel3d,
@@ -242,6 +398,13 @@ export default {
           });
         this.updateIntro = !this.updateIntro;
       }
+    },
+    handleResize() {
+      this.window.width = window.innerWidth;
+      this.window.height = window.innerHeight;
+      // console.log(typeof this.window.height);
+      this.window.height = this.window.height + "px";
+      this.window.height = "calc(" + this.window.height + " - 4rem)";
     }
   }
 };
@@ -285,6 +448,33 @@ carousel-3d {
     format("woff");
   font-weight: normal;
   font-style: normal;
+}
+@import url("https://fonts.googleapis.com/css?family=Indie+Flower&display=swap");
+#scroll-right {
+  display: inline-block;
+  position: relative;
+  text-align: right;
+  margin-left: 45vmax;
+  margin-right: 3vmax;
+  top: 43%;
+  bottom: 50%;
+  font-size: 10px;
+  z-index: 1;
+  color: #797979;
+  font-family: "Indie Flower", cursive;
+}
+#scroll-left {
+  display: inline-block;
+  position: relative;
+  text-align: left;
+  margin-left: 3vmax;
+  margin-right: 45vmax;
+  top: 50%;
+  bottom: 50%;
+  font-size: 10px;
+  z-index: 1;
+  color: #797979;
+  font-family: "Indie Flower", cursive;
 }
 #user-scrap-header {
   background: linear-gradient(rgba(0, 0, 0, 0.5)),

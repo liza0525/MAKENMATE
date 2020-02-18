@@ -3,7 +3,7 @@
     <div id="user-scrap-header">
       <h1 id="user-scrap-title">{{ user.nickname }} 페이지</h1>
     </div>
-    <div class="backgroundcolor">
+    <div v-show="window.width >= 375" class="backgroundcolor">
       <v-row no-gutters>
         <v-col md="5">
           <v-card
@@ -62,6 +62,71 @@
         </v-col>
       </v-row>
     </div>
+    <div v-show="window.width < 375" style="background-color:white">
+      <v-row no-gutters>
+        <v-col md="5">
+          <div style="margin-bottom:10%;width:100%;text-align:center">
+            <div
+              style="display:inline-block; text-align:center;position:absoulte; margin-top:7%; display:inline-block; overflow: hidden;height:300px; width: 300px; border-radius:300px;"
+            >
+              <img
+                :src="user.image"
+                style="position:absoulte; width:100%; height:100%;"
+              />
+            </div>
+            <h1
+              class="sansfont"
+              style="margin-top:4%;text-align:center;font-size:230%"
+            >
+              {{ user.nickname }}
+            </h1>
+            <p class="sansfont" style="text-align:center;padding-bottom:6%;">
+              (ID : {{ user.email }})
+            </p>
+          </div>
+        </v-col>
+        <v-col>
+          <v-card>
+            <h1 class="sansfont" style="margin-bottom:1%;margin-left:2%">
+              비밀번호 변경
+            </h1>
+            <div class="sansfont" style="margin-left:2%">
+              비밀번호를 변경하시겠습니까?
+            </div>
+            <br />
+            <div style="text-align:center;">
+              <div class="router sansfont rot-135">
+                <router-link
+                  tag="button"
+                  v-bind:to="{ name: 'UserChangePW' }"
+                  class="sansfonts"
+                  >비밀번호 변경으로 이동</router-link
+                >
+              </div>
+            </div>
+          </v-card>
+          <v-card style="  margin-top:3%; margin-bottom:10%">
+            <h1 class="sansfont" style="margin-bottom:2%;margin-left:2%">
+              회원 탈퇴
+            </h1>
+            <div class="sansfont" style="margin-left:2%">
+              정말로 탈퇴하시겠습니까?
+            </div>
+            <br />
+            <div style="text-align:center;">
+              <div class="router2 sansfont rot-135">
+                <router-link
+                  tag="button"
+                  v-bind:to="{ name: 'UserWithdraw' }"
+                  class="btn--text"
+                  >회원 탈퇴로 이동</router-link
+                >
+              </div>
+            </div>
+          </v-card>
+        </v-col>
+      </v-row>
+    </div>
   </div>
 </template>
 <script>
@@ -69,6 +134,10 @@ import Constant from "../../Constant";
 export default {
   data: () => {
     return {
+      window: {
+        width: 0,
+        height: 0
+      },
       user: {
         email: "",
         nickname: "",
@@ -78,6 +147,8 @@ export default {
     };
   },
   mounted() {
+    window.addEventListener("resize", this.handleResize);
+    this.handleResize();
     // this.user.email = this.$router.params.user.email;
     // this.user.nickname = this.$router.params.user.nickname;
     // this.user.image = this.$router.params.user.image;
@@ -87,9 +158,21 @@ export default {
       .then(() => {
         this.user = { ...this.$store.state.user };
         if (this.user.image === null)
-          this.user.image = require(`../../../../images/default.png`);
+          this.user.image = require(`../../assets/images/profile_default.png`);
         console.log(this.user);
       });
+  },
+  destroyed() {
+    window.removeEventListener("resize", this.handleResize);
+  },
+  methods: {
+    handleResize() {
+      this.window.width = window.innerWidth;
+      this.window.height = window.innerHeight;
+      // console.log(typeof this.window.height);
+      this.window.height = this.window.height + "px";
+      this.window.height = "calc(" + this.window.height + " - 4rem)";
+    }
   }
 };
 </script>

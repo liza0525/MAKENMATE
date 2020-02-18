@@ -4,6 +4,8 @@
       <h1 id="boardrecipe-category">레시피 공유</h1>
     </div>
     <div id="boardrecipe-context">
+      <!-- 검색 기능은 getSearchData 메소드에 정리 -->
+      <Search @searchData="getSearchData" class="search"></Search>
       <v-simple-table dark>
         <template>
           <thead>
@@ -55,6 +57,7 @@
 </template>
 <script>
 import http from "../../http-common";
+import Search from "../../components/common/Search.vue";
 export default {
   name: "boardrecipe-list",
   data: () => {
@@ -65,6 +68,9 @@ export default {
       totalPages: 0,
       pageNms: []
     };
+  },
+  components: {
+    Search,
   },
   methods: {
     retrieveBoard(pageNm) {
@@ -102,6 +108,9 @@ export default {
           rid: sendrid
         }
       });
+    },
+    getSearchData(inputValue) {
+      console.log(inputValue);
     }
   },
   mounted() {
@@ -121,8 +130,8 @@ export default {
   background: linear-gradient(rgba(0, 0, 0, 0.5)),
     url("../../assets/images/image7.jpg") no-repeat;
   background-size: 100%;
-  height: 60vh;
-  background-position-y: 20%;
+  height: 50vh;
+  background-position-y: 30%;
   color: white;
 }
 #boardrecipe-category {
@@ -130,7 +139,7 @@ export default {
   display: inline;
   position: relative;
   float: left;
-  top: 35vmin;
+  top: 30vmin;
   font-size: 11vmin;
   font-family: "BBTreeGB";
 }
@@ -154,12 +163,6 @@ export default {
   font-size: 2vmin;
   font-family: "GyeonggiBatang";
 }
-#pagination {
-  display: inline;
-  float: right;
-  font-size: 18px;
-  font-family: "GyeonggiBatang";
-}
 @media (max-width: 700px) {
   #boardrecipe-context {
     margin: 2vmax 3vmax;
@@ -169,13 +172,13 @@ export default {
     display: none;
   }
   #boardrecipe-list-header {
-    height: 50vh;
+    height: 35vh;
     background-size: 200vw;
     background-position-x: 50%;
   }
   #boardrecipe-category {
-    margin-top: 3vmin;
-    font-size: 7vmin;
+    margin-top: 4vmin;
+    font-size: 8vmin;
   }
 }
 </style>
