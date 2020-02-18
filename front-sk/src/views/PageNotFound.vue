@@ -1,23 +1,32 @@
 <template>
   <div>
     <div style="text-align:center;">
-      <div class="background" :style="{height: window.height}">
+      <div class="background" :style="{ height: window.height }">
         <v-row v-show="window.width >= 425">
-          <v-col md="6" xs="12" style="display:inline-table" :style="{height: window.height}">
+          <v-col
+            md="6"
+            xs="12"
+            style="display:inline-table"
+            :style="{ height: window.height }"
+          >
             <div
               style="padding-right:10%;padding-left:10%;display:table-cell; vertical-align:middle"
             >
               <div class="oops">
                 Oops,
-                <br />Something's
-                <br />gone wrong
+                <br />Something's <br />gone wrong
               </div>
-              <div class="nottoworry">Not to worry. Why don't you try one of these helpful links:</div>
+              <div class="nottoworry">
+                Not to worry. Why don't you try one of these helpful links:
+              </div>
               <button class="gobtn" @click="clickback">GO BACK</button>
               <button class="gobtn" @click="clickmain">GO MAIN</button>
             </div>
           </v-col>
-          <v-col style="display:inline-table" :style="{height: window.height}">
+          <v-col
+            style="display:inline-table"
+            :style="{ height: window.height }"
+          >
             <div class="log" style="display:table-cell; vertical-align:middle">
               <div class="open">404</div>
               <div class="hrs">PAGE NOT FOUND</div>
@@ -27,7 +36,7 @@
         <div
           v-show="window.width < 425"
           style="display:inline-table"
-          :style="{height: window.height}"
+          :style="{ height: window.height }"
         >
           <div class="log" style="display:table-cell; vertical-align:middle">
             <div class="open">404</div>
@@ -63,7 +72,7 @@ export default {
     handleResize() {
       this.window.width = window.innerWidth;
       this.window.height = window.innerHeight;
-      console.log(typeof this.window.height);
+      // console.log(typeof this.window.height);
       this.window.height = this.window.height + "px";
       this.window.height = "calc(" + this.window.height + " - 4rem)";
     },
