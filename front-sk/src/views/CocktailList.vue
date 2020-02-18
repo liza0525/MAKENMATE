@@ -1,12 +1,27 @@
 <template>
   <div class="test">
     <img
-      src="../assets/images/cocktail_list_copy02.jpg"
+      src="../assets/images/cocktail_list_copy02.png"
       class="rightImage titlefont"
       alt="cocktail_list_background"
     />
-    <button class="neon-button" @click="openFilterBox = true">
-      F<br />I<br />L<br />T<br />E<br />R<br />>
+    <button
+      class="neon-button"
+      @click="openFilterBox = true"
+      style="width: 3%"
+      v-show="window.width >= 1024"
+    >
+      F
+      <br />I <br />L <br />T <br />E <br />R <br />>
+    </button>
+    <button
+      class="neon-button"
+      @click="openFilterBox = true"
+      style="width: 30px;"
+      v-show="window.width < 1024"
+    >
+      F
+      <br />I <br />L <br />T <br />E <br />R <br />>
     </button>
     <div v-show="openFilterBox" class="filter-box">
       <div class="hcontainer" style="margin-bottom:10%">
@@ -40,9 +55,11 @@
             }"
           >
             <v-img :src="filter.image" :alt="filter.name" style="width:100%;" />
-            <v-text class="x-sign" style="font-size:1.5vmax;text-align:center;">
-              {{ filter.title }}
-            </v-text>
+            <v-text
+              class="x-sign"
+              style="font-size:1.5vmax;text-align:center;"
+              >{{ filter.title }}</v-text
+            >
           </router-link>
         </div>
       </div>
@@ -69,8 +86,7 @@
               gradient="to bottom, rgba(0, 0,0,.1), rgba(0,0,0,.5)"
               :alt="cocktail.cname"
               style="height:87%;margin-top:0"
-            >
-            </v-img>
+            ></v-img>
             <h1
               class="sansfont"
               style="margin-top:10px;display:inline-block;width:72%;overflow:auto;height:7%;font-size:120%;margin-left:15px;font-weight:bolder;"
@@ -80,7 +96,8 @@
             <v-text
               style="margin-top:12px;margin-right:15px;float:right;display:inline-block;"
             >
-              <i class="fas fa-lg fa-heart"></i> {{ getLikesByCocktail[i] }}
+              <i class="fas fa-lg fa-heart"></i>
+              {{ getLikesByCocktail[i] }}
             </v-text>
           </v-card>
         </v-col>
@@ -127,9 +144,9 @@
           {{ prevBt }}
         </button>
         <button v-for="pageNm in pageNms" :key="pageNm" @click="search(pageNm)">
-          <span style="margin-right:10px;color:#ffffff;" class="paging-size">{{
-            pageNm
-          }}</span>
+          <span style="margin-right:10px;color:#ffffff;" class="paging-size">
+            {{ pageNm }}
+          </span>
         </button>
         <button
           v-if="min + 5 <= totalPages"
@@ -227,10 +244,16 @@ export default {
           title: "BEER"
         }
       ],
-      min: 1
+      min: 1,
+      window: {
+        width: 0,
+        height: 0
+      }
     };
   },
   mounted() {
+    window.addEventListener("resize", this.handleResize);
+    this.handleResize();
     this.pageNm = this.$route.query.pageNm;
     this.filtered = this.$route.query.filtered;
     this.getCocktailName();
@@ -260,6 +283,9 @@ export default {
         return this.$route.query.filtered;
       }
     }
+  },
+  destroyed() {
+    window.removeEventListener("resize", this.handleResize);
   },
   methods: {
     paginate(pageNm) {
@@ -339,6 +365,13 @@ export default {
           cid: id
         }
       });
+    },
+    handleResize() {
+      this.window.width = window.innerWidth;
+      this.window.height = window.innerHeight;
+      // console.log(typeof this.window.height);
+      this.window.height = this.window.height + "px";
+      this.window.height = "calc(" + this.window.height + " - 4rem)";
     }
   }
 };
@@ -375,10 +408,12 @@ export default {
   font-style: normal;
 }
 @import url("https://fonts.googleapis.com/css?family=Jua&display=swap");
-body {
+
+.test {
   background-color: black !important;
   z-index: -1;
 }
+
 .hcontainer {
   margin-left: 15%;
   margin-right: 15%;
@@ -392,15 +427,11 @@ body {
   background-repeat: no-repeat;
   background-color: #141414;
   position: fixed;
-  z-index: 100;
+  z-index: 500;
   width: 100% !important;
   top: 0px;
-  padding-bottom: %;
 }
-.test {
-  background-color: black !important;
-  z-index: -1;
-}
+
 .rightImage {
   bottom: 0px;
   right: 1%;
@@ -450,9 +481,8 @@ body {
 }
 .neon-button {
   position: fixed;
-  margin-top: 18%;
+  margin-top: 10%;
   float: left;
-  width: 3%;
   padding-top: 1%;
   padding-bottom: 1%;
   font-size: 1.3rem;
@@ -466,9 +496,8 @@ body {
 }
 .neon-button:hover {
   position: fixed;
-  margin-top: 18%;
+  margin-top: 10%;
   float: left;
-  width: 3%;
   padding-top: 1%;
   padding-bottom: 1%;
   font-size: 1.3rem;

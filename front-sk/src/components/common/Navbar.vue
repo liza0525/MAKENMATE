@@ -1,135 +1,233 @@
 <template>
-  <v-app-bar id="navbar" color="#000" data-app hide-on-scroll>
-    <router-link :to="{ name: 'Main' }">
-      <h1 id="nav-logo" color="#fff">Cocktail</h1>
-    </router-link>
-    <v-spacer></v-spacer>
-    <!-- nav-contents-lg -->
-    <div id="nav-contents-lg">
-      <router-link
-        :to="{
+  <div>
+    <v-app-bar id="navbar" color="#000" data-app hide-on-scroll>
+      <router-link :to="{ name: 'Main' }">
+        <h1 id="nav-logo" color="#fff">Cocktail</h1>
+      </router-link>
+      <v-spacer></v-spacer>
+      <!-- nav-contents-lg -->
+      <div id="nav-contents-lg">
+        <router-link
+          :to="{
           name: 'CocktailList',
           query: { pageNm: 1, filtered: 'all', searchedFiltered: '' }
         }"
-      >
-        <v-btn text color="#fff">칵테일 정보</v-btn>
-      </router-link>
-      <!-- board dropdown -->
-      <v-menu offset-y bottom>
-        <template v-slot:activator="{ on }">
-          <v-btn text color="#fff" v-on="on">게시판 선택</v-btn>
-        </template>
-        <v-list stlye="width:400px;">
-          <v-list-item>
-            <v-list-item-title>
-              <router-link :to="{ name: 'BoardRecipeList' }"
-                >레시피 공유</router-link
-              >
-            </v-list-item-title>
-          </v-list-item>
-          <v-list-item>
-            <v-list-item-title>
-              <!-- <router-link :to="{ name: 'CocktailParty' }"> -->
-              칵테일 파티
-              <!-- </router-link> -->
-            </v-list-item-title>
-          </v-list-item>
-          <v-list-item>
-            <v-list-item-title>
-              <router-link :to="{ name: 'BoardList' }">자유게시판</router-link>
-            </v-list-item-title>
-          </v-list-item>
-        </v-list>
-      </v-menu>
-      <!-- search bar -->
-      <v-menu offset-y :close-on-content-click="false">
-        <template v-slot:activator="{ on }">
-          <v-btn icon color="#fff" v-on="on">
-            <v-icon>mdi-magnify</v-icon>
-          </v-btn>
-        </template>
-        <v-list>
-          <v-row style="margin: 0 0.5rem 0 0.5rem;">
-            <v-col cols="9">
-              <v-text-field
-                label="칵테일에 관한 모든 검색"
-                placeholder="검색어 입력"
-              ></v-text-field>
-            </v-col>
-            <v-col cols="2">
-              <v-btn icon>
-                <v-icon>mdi-magnify</v-icon>
-              </v-btn>
-            </v-col>
-          </v-row>
-        </v-list>
-      </v-menu>
+        >
+          <v-btn text color="#fff">칵테일 정보</v-btn>
+        </router-link>
+        <!-- board dropdown -->
+        <v-menu offset-y bottom>
+          <template v-slot:activator="{ on }">
+            <v-btn text color="#fff" v-on="on">게시판 선택</v-btn>
+          </template>
+          <v-list stlye="width:400px;">
+            <v-list-item>
+              <v-list-item-title>
+                <router-link :to="{ name: 'BoardRecipeList' }">레시피 공유</router-link>
+              </v-list-item-title>
+            </v-list-item>
+            <v-list-item>
+              <v-list-item-title>
+                <!-- <router-link :to="{ name: 'CocktailParty' }"> -->
+                칵테일 파티
+                <!-- </router-link> -->
+              </v-list-item-title>
+            </v-list-item>
+            <v-list-item>
+              <v-list-item-title>
+                <router-link :to="{ name: 'BoardList' }">자유게시판</router-link>
+              </v-list-item-title>
+            </v-list-item>
+          </v-list>
+        </v-menu>
+        <!-- search bar -->
+        <v-menu offset-y :close-on-content-click="false">
+          <template v-slot:activator="{ on }">
+            <v-btn icon color="#fff" v-on="on">
+              <v-icon>mdi-magnify</v-icon>
+            </v-btn>
+          </template>
+          <v-list>
+            <v-row style="margin: 0 0.5rem 0 0.5rem;">
+              <v-col cols="9">
+                <v-text-field label="칵테일에 관한 모든 검색" placeholder="검색어 입력"></v-text-field>
+              </v-col>
+              <v-col cols="2">
+                <v-btn icon>
+                  <v-icon>mdi-magnify</v-icon>
+                </v-btn>
+              </v-col>
+            </v-row>
+          </v-list>
+        </v-menu>
 
-      <!-- alert icon -->
-      <v-btn icon color="#fff">
-        <v-icon>mdi-bell</v-icon>
-      </v-btn>
-      <!-- account dropdown -->
-      <v-menu offset-y bottom>
-        <template v-slot:activator="{ on }">
-          <v-btn icon color="#fff" v-on="on">
-            <v-icon>mdi-account-circle</v-icon>
-          </v-btn>
-        </template>
-        <v-list v-if="this.username" stlye="width:400px;">
-          <v-list-item>
-            <v-list-item-title>
-              <router-link :to="{ name: 'Mypage' }">마이페이지</router-link>
-            </v-list-item-title>
-          </v-list-item>
-          <v-list-item>
-            <v-list-item-title>
-              <router-link
-                :to="{
+        <!-- alert icon -->
+        <v-btn icon color="#fff">
+          <v-icon>mdi-bell</v-icon>
+        </v-btn>
+        <!-- account dropdown -->
+        <v-menu offset-y bottom>
+          <template v-slot:activator="{ on }">
+            <v-btn icon color="#fff" v-on="on">
+              <v-icon>mdi-account-circle</v-icon>
+            </v-btn>
+          </template>
+          <v-list v-if="this.username" stlye="width:400px;">
+            <v-list-item>
+              <v-list-item-title>
+                <router-link :to="{ name: 'Mypage' }">마이페이지</router-link>
+              </v-list-item-title>
+            </v-list-item>
+            <v-list-item>
+              <v-list-item-title>
+                <router-link
+                  :to="{
                   name: 'UserProfile',
                   params: {
                     username: this.$store.state.username
                   }
                 }"
-              >
-                유저프로필
-              </router-link>
-            </v-list-item-title>
-          </v-list-item>
-          <v-list-item>
-            <v-list-item-title>
+                >유저프로필</router-link>
+              </v-list-item-title>
+            </v-list-item>
+            <v-list-item>
+              <v-list-item-title>
+                <router-link :to="{
+                  name: 'UserScrap'
+                }">유저스크랩</router-link>
+              </v-list-item-title>
+            </v-list-item>
+            <v-list-item>
+              <a href="/#/logout">
+                <v-list-item-title>
+                  <router-link :to="{ name: 'Logout' }">로그아웃</router-link>
+                </v-list-item-title>
+              </a>
+            </v-list-item>
+          </v-list>
+          <v-list v-else>
+            <v-list-item>
+              <v-list-item-title>
+                <router-link :to="{ name: 'Login' }">로그인</router-link>
+              </v-list-item-title>
+            </v-list-item>
+            <v-list-item>
+              <v-list-item-title>
+                <router-link :to="{ name: 'Join' }">회원가입</router-link>
+              </v-list-item-title>
+            </v-list-item>
+          </v-list>
+        </v-menu>
+      </div>
+      <!-- nav-contents-sm -->
+      <!-- nav-contents-sm -->
+      <div id="nav-contents-sm">
+        <v-app-bar-nav-icon color="#fff" @click.stop="right = !right" />
+        <v-navigation-drawer dark v-model="right" app right>
+          <v-list dense>
+            <v-list-item>
+              <div>
+              <v-btn text color="#fff">닫기</v-btn>
+              </div>
+            </v-list-item>
+          </v-list>
+          <v-list dense>
+            <v-list-item>
               <router-link
                 :to="{
+                  name: 'CocktailList',
+                  query: { pageNm: 1, filtered: 'all', searchedFiltered: '' }
+                }"
+              >
+                <v-btn text color="#fff">칵테일 정보</v-btn>
+              </router-link>
+            </v-list-item>
+            <v-list-item>
+              <v-menu offset-y bottom>
+                <template v-slot:activator="{ on }">
+                  <v-btn text color="#fff" v-on="on">게시판 선택</v-btn>
+                </template>
+                <v-list stlye="width:400px;">
+                  <v-list-item>
+                    <v-list-item-title>
+                      <router-link :to="{ name: 'BoardRecipeList' }">레시피 공유</router-link>
+                    </v-list-item-title>
+                  </v-list-item>
+                  <v-list-item>
+                    <v-list-item-title>
+                      <!-- <router-link :to="{ name: 'CocktailParty' }"> -->
+                      칵테일 파티
+                      <!-- </router-link> -->
+                    </v-list-item-title>
+                  </v-list-item>
+                  <v-list-item>
+                    <v-list-item-title>
+                      <router-link :to="{ name: 'BoardList' }">자유게시판</router-link>
+                    </v-list-item-title>
+                  </v-list-item>
+                </v-list>
+              </v-menu>
+            </v-list-item>
+            <v-list-item>
+              <!-- account dropdown -->
+              <v-menu offset-y bottom>
+                <template v-slot:activator="{ on }">
+                  <v-btn text color="#fff" v-on="on">회원 정보</v-btn>
+                </template>
+                <v-list v-if="this.username" stlye="width:400px;">
+                  <v-list-item>
+                    <v-list-item-title>
+                      <router-link :to="{ name: 'Mypage' }">마이페이지</router-link>
+                    </v-list-item-title>
+                  </v-list-item>
+                  <v-list-item>
+                    <v-list-item-title>
+                      <router-link
+                        :to="{
+                  name: 'UserProfile',
+                  params: {
+                    username: this.$store.state.username
+                  }
+                }"
+                      >유저프로필</router-link>
+                    </v-list-item-title>
+                  </v-list-item>
+                  <v-list-item>
+                    <v-list-item-title>
+                      <router-link
+                        :to="{
                   name: 'UserScrap'
                 }"
-                >유저스크랩</router-link
-              >
-            </v-list-item-title>
-          </v-list-item>
-          <v-list-item>
-            <a href="/#/logout">
-              <v-list-item-title>
-                <router-link :to="{ name: 'Logout' }">로그아웃</router-link>
-              </v-list-item-title>
-            </a>
-          </v-list-item>
-        </v-list>
-        <v-list v-else>
-          <v-list-item>
-            <v-list-item-title>
-              <router-link :to="{ name: 'Login' }">로그인</router-link>
-            </v-list-item-title>
-          </v-list-item>
-          <v-list-item>
-            <v-list-item-title>
-              <router-link :to="{ name: 'Join' }">회원가입</router-link>
-            </v-list-item-title>
-          </v-list-item>
-        </v-list>
-      </v-menu>
-    </div>
-    <!-- nav-contents-sm -->
-  </v-app-bar>
+                      >유저스크랩</router-link>
+                    </v-list-item-title>
+                  </v-list-item>
+                  <v-list-item>
+                    <a href="/#/logout">
+                      <v-list-item-title>
+                        <router-link :to="{ name: 'Logout' }">로그아웃</router-link>
+                      </v-list-item-title>
+                    </a>
+                  </v-list-item>
+                </v-list>
+                <v-list v-else>
+                  <v-list-item>
+                    <v-list-item-title>
+                      <router-link :to="{ name: 'Login' }">로그인</router-link>
+                    </v-list-item-title>
+                  </v-list-item>
+                  <v-list-item>
+                    <v-list-item-title>
+                      <router-link :to="{ name: 'Join' }">회원가입</router-link>
+                    </v-list-item-title>
+                  </v-list-item>
+                </v-list>
+              </v-menu>
+            </v-list-item>
+          </v-list>
+        </v-navigation-drawer>
+      </div>
+    </v-app-bar>
+  </div>
 </template>
 <script>
 const storage = window.sessionStorage;
@@ -138,7 +236,8 @@ export default {
     return {
       acc_menus: [],
       drawer: true,
-      mini: true
+      mini: true,
+      right: false
     };
   },
   created() {
@@ -179,9 +278,13 @@ export default {
   font-family: "Lobster", cursive;
   color: white;
 }
-
-@media (max-width:700px) {
+@media (max-width: 700px) {
   #nav-contents-lg {
+    display: none;
+  }
+}
+@media (min-width: 700px) {
+  #nav-contents-sm {
     display: none;
   }
 }

@@ -21,7 +21,7 @@ body {
   padding: 0;
   font-size: 14px;
   overflow-x: hidden;
-  background-color: black !important;
+  background-color: black;
   z-index: -1;
 }
 
@@ -654,7 +654,7 @@ p {
   font: {
     weight: $f600;
   }
-  color: rgb(147, 190, 255) !important;
+  color: rgb(255, 177, 177) !important;
 }
 
 .container {
@@ -850,13 +850,6 @@ p {
   h4 {
     @include ellipsis;
   }
-
-  .error-text {
-    @include wrap;
-    color: $red;
-    margin-top: 3px;
-  }
-
   .eyes-icon {
     position: absolute;
     font-size: 1em;
@@ -1468,29 +1461,4 @@ p {
       }
     }
   }
-}
-
-// Customarize
-@media (min-width: 0px) {
-  #login {
-    width: 100%;
-  }
-}
-@media (min-width: 768px) {
-  #login {
-    width: 60%;
-  }
-}
-@media (min-width: 1024px) {
-  #login {
-    width: 30%;
-  }
-}
-
-#login {
-  background: rgba(70, 187, 255, 0.2);
-  // background : rgba(255,255,255, 0.3);
-  margin: 0 !important;
-  padding: 50px;
-  height: 45rem;
 }

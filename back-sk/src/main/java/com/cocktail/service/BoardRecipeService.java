@@ -3,6 +3,8 @@ package com.cocktail.service;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
+
 import com.cocktail.model.boardRecipe.BRdetail;
 import com.cocktail.model.boardRecipe.BoardRecipe;
 
@@ -25,4 +27,6 @@ public interface BoardRecipeService {
 
     // 공유게시글 삭제
     void deleteById(int bid);
+
+	List<BRdetail> getBestRecipe();
 }

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="background-color: white;">
     <div id="user-scrap-header">
       <h1 id="user-scrap-title">스크랩 목록</h1>
     </div>
@@ -9,15 +9,15 @@
           <thead>
             <tr>
               <th>제목</th>
-              <th>글쓴이</th>
+              <th id="writer-col">글쓴이</th>
               <th></th>
             </tr>
           </thead>
           <tbody>
             <tr v-for="scrap in scrapList" v-bind:key="scrap.bid">
               <td v-html="scrap.title" @click="goRecipeDetail(scrap.rid)" style="cursor: pointer;"></td>
-              <td v-html="scrap.user.nickname"></td>
-              <td><button @click="removeFromScrapList(scrap.rid)" style="color: rgb(230, 0, 0);">스크랩 취소</button></td>
+              <td id="writer-col" v-html="scrap.user.nickname"></td>
+              <td><button @click="removeFromScrapList(scrap.rid)" style="color: rgb(230, 0, 0); font-weight: bold;">스크랩 취소</button></td>
             </tr>
           </tbody>
         </template>
@@ -108,22 +108,37 @@ export default {
 #user-scrap-header {
   background: linear-gradient(rgba(0, 0, 0, 0.5)),
     url("../../assets/images/image5.jpg") no-repeat;
-  background-size: 110%;
-  height: 20rem;
+  background-size: 100%;
+  height: 60vh;
   background-position-y: 20%;
   color: white;
 }
 #user-scrap-title {
-  margin: 0 0 0 15rem;
+  margin: 0 0 0 15vw;
   display: inline;
   position: relative;
   float: left;
-  top: 12rem;
-  font-size: 4rem;
+  top: 35vmin;
+  font-size: 11vmin;
+  font-family: "BBTreeGB";
 }
 #user-scrap-context {
-  color: #777;
-  padding: 2rem 15rem;
-  margin: 1rem 0;
+  color: #ccc;
+  margin: 5vmax 10vmax;
+  font-family: "GyeonggiBatang";
+}
+@media (max-width: 700px) {
+  #user-scrap-header {
+    height: 50vh;
+    background-size: 200vw;
+    background-position-x: 50%;
+  }
+  #user-scrap-title {
+    margin-top: 3vmin; 
+    font-size: 7vmin;
+  }
+  #writer-col{
+    display: none;
+  }
 }
 </style>

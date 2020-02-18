@@ -71,8 +71,8 @@ public class FileUploadDownloadService{
         return  iterable;
     }
     
-    public Optional<UploadFile> getUploadFile(int id) {
-        Optional<UploadFile> uploadFile = fileDAO.findById(id);
+    public UploadFile getUploadFile(int id) {
+        UploadFile uploadFile = fileDAO.findById(id);
         
         if(null == uploadFile) {
             throw new FileStorageException("해당 아이디["+id+"]로 업로드 된 파일이 존재하지 않습니다.");
