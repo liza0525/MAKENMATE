@@ -6,17 +6,11 @@
     <div class="backgroundcolor" v-show="window.width >= 768">
       <v-row no-gutters>
         <v-col class="col-1"></v-col>
-        <div
-          class="col-12 col-md-6 col-lg-4 col-sm-6"
-          style="text-align:center;"
-        >
+        <div class="col-12 col-md-6 col-lg-4 col-sm-6" style="text-align:center;">
           <div
             style="position:absoulte; margin-top:4%; display:inline-block; overflow: hidden;  height:300px; width: 300px; border-radius:300px;"
           >
-            <img
-              :src="user.image"
-              style="position:absoulte; width:100%; height:100%;"
-            />
+            <img :src="user.image" style="position:absoulte; width:100%; height:100%;" />
             <!--file upload component-->
           </div>
           <FileUploadNotPriview style="margin: 0px" />
@@ -27,18 +21,20 @@
           <div style="display:inline-block; width: 70%">
             <div
               class="sansfont"
-              style="margin-top:10%; font-size:400%; display:inline-block;"
-            >
-              {{ user.nickname }}
-            </div>
-            <span class="sansfont" style="margin-left:3%;font-size:150%;"
-              >(ID : {{ user.email }})</span
-            >
+              style="margin-top:10%; font-size:300%; display:inline-block;"
+            >{{ user.nickname }}</div>
+            <span
+              class="sansfont"
+              style="margin-left:3%;font-size:100%;"
+              v-show="window.width > 1035"
+            >(ID : {{ user.email }})</span>
+            <span
+              class="sansfont"
+              style="margin-left:3%;font-size:100%;display:block;margin-top:5%;"
+              v-show="window.width < 1035"
+            >(ID : {{ user.email }})</span>
           </div>
-          <div
-            class="text-center"
-            style="margin-top:13%;display:inline-block;float:right"
-          >
+          <div class="text-center" style="margin-top:13%;display:inline-block;float:right">
             <v-btn
               v-show="updateIntro"
               class="ma-2"
@@ -47,7 +43,7 @@
               color="success"
               @click="updatedIntro()"
             >
-              <v-icon left>mdi-pencil</v-icon> Submit
+              <v-icon left>mdi-pencil</v-icon>Submit
             </v-btn>
             <v-btn
               v-show="!updateIntro"
@@ -57,15 +53,13 @@
               color="success"
               @click="updatedIntro()"
             >
-              <v-icon left>mdi-pencil</v-icon> Edit
+              <v-icon left>mdi-pencil</v-icon>Edit
             </v-btn>
           </div>
           <div
             class="sansfont"
             style=" margin-top:13%;font-size:200%; text-align:center; font-weight:bolder;"
-          >
-            자기 소개
-          </div>
+          >자기 소개</div>
           <div
             v-show="!updateIntro"
             style="margin-top:5%; display: table; width: 100%; height: 50% ;border: 0.5px solid #DCDCDC;"
@@ -75,9 +69,7 @@
               style="display: table-cell; font-size:130%;
     vertical-align: middle;"
             >
-              <div class="sansfont" style="margin-left:3%;margin-right:3%;">
-                {{ user.intro }}
-              </div>
+              <div class="sansfont" style="margin-left:3%;margin-right:3%;">{{ user.intro }}</div>
             </div>
           </div>
           <div
@@ -97,9 +89,7 @@
           <h1
             class="sansfont"
             style=" margin-top:5%;font-size:200%; text-align:center; font-weight:bolder;"
-          >
-            좋아하는 칵테일
-          </h1>
+          >좋아하는 칵테일</h1>
           <carousel-3d
             :count="cocktailList.length"
             style="opacity:100 !important; height:600px !important;"
@@ -109,27 +99,22 @@
               :index="i"
               :key="i"
               style="opacity:100 !important; visibility:visible;height:500px !important;background-color:#ffffff;"
-              ><v-card style="height:400px">
-                <v-img :src="slide.image" alt="ll" style="height:100%;">
-                </v-img>
+            >
+              <v-card style="height:400px">
+                <v-img :src="slide.image" alt="ll" style="height:100%;"></v-img>
                 <h1
                   class="sansfont"
                   style="margin-left:30px; margin-top:10px;font-weight:bolder;"
-                >
-                  {{ slide.cname }}
-                </h1>
-                <v-text
-                  style="margin-left:30px;margin-top:10px;display:inline-block"
-                >
-                  <i class="fas fa-lg fa-heart"></i> {{ getLikesByCocktail[i] }}
-                </v-text>
+                >{{ slide.cname }}</h1>
+                <div style="margin-left:30px;margin-top:10px;display:inline-block">
+                  <i class="fas fa-lg fa-heart"></i>
+                  {{ getLikesByCocktail[i] }}
+                </div>
                 <button
                   @click="goToDetail(slide.cid)"
                   class="sansfont"
                   style="color:blue;margin-left:230px"
-                >
-                  ...더보기
-                </button>
+                >...더보기</button>
               </v-card>
             </slide>
           </carousel-3d>
@@ -139,29 +124,21 @@
       <h1
         class="sansfont"
         style=" margin-top:5%;font-size:200%; text-align:center; font-weight:bolder;"
-      >
-        {{ user.nickname }}님이 쓴 글
-      </h1>
+      >{{ user.nickname }}님이 쓴 글</h1>
       <v-row>
         <!-- <v-col v-for="(board, i) in boardArray" :key="i">
 
-      </v-col> -->
+        </v-col>-->
       </v-row>
     </div>
     <div style="background-color:#FFF" v-show="window.width < 768">
       <v-row no-gutters>
         <v-col class="col-1"></v-col>
-        <div
-          class="col-12 col-md-6 col-lg-4 col-sm-6"
-          style="text-align:center;"
-        >
+        <div class="col-12 col-md-6 col-lg-4 col-sm-6" style="text-align:center;">
           <div
             style="position:absoulte; margin-top:4%; display:inline-block; overflow: hidden;  height:300px; width: 300px; border-radius:300px;"
           >
-            <img
-              :src="user.image"
-              style="position:absoulte; width:100%; height:100%;"
-            />
+            <img :src="user.image" style="position:absoulte; width:100%; height:100%;" />
             <!--file upload component-->
           </div>
           <FileUploadNotPriview style="margin: 0px" />
@@ -170,13 +147,9 @@
           <div style="display:inline-block; width: 70%">
             <div
               class="sansfont"
-              style="margin-top:10%; margin-left:2%; margin-right:2%;font-size:400%; display:inline-block;"
-            >
-              {{ user.nickname }}
-            </div>
-            <span class="sansfont" style="margin-left:3%;font-size:100%;"
-              >(ID : {{ user.email }})</span
-            >
+              style="margin-top:10%; margin-left:5%; margin-right:2%;font-size:250%; font-weight:300;display:inline-block;"
+            >{{ user.nickname }}</div>
+            <span class="sansfont" style="margin-left:3%;font-size:100%;">(ID : {{ user.email }})</span>
           </div>
           <div
             class="text-center"
@@ -190,7 +163,7 @@
               color="success"
               @click="updatedIntro()"
             >
-              <v-icon left>mdi-pencil</v-icon> Submit
+              <v-icon left>mdi-pencil</v-icon>Submit
             </v-btn>
             <v-btn
               v-show="!updateIntro"
@@ -200,15 +173,13 @@
               color="success"
               @click="updatedIntro()"
             >
-              <v-icon left>mdi-pencil</v-icon> Edit
+              <v-icon left>mdi-pencil</v-icon>Edit
             </v-btn>
           </div>
           <div
             class="sansfont"
-            style=" margin-top:5%;font-size:200%; text-align:center; font-weight:bolder;"
-          >
-            자기 소개
-          </div>
+            style=" margin-top:15%;font-size:200%; text-align:center; font-weight:bolder;"
+          >자기 소개</div>
           <div
             v-show="!updateIntro"
             style="padding:2%;margin-top:5%; display: table; width: 100%; height: 50% ;border: 0.5px solid #DCDCDC;"
@@ -218,9 +189,7 @@
               style="display: table-cell; font-size:130%;
     vertical-align: middle;"
             >
-              <div class="sansfont">
-                {{ user.intro }}
-              </div>
+              <div class="sansfont">{{ user.intro }}</div>
             </div>
           </div>
           <div
@@ -240,9 +209,7 @@
           <h1
             class="sansfont"
             style=" margin-top:20%;font-size:200%; text-align:center; font-weight:bolder;"
-          >
-            좋아하는 칵테일
-          </h1>
+          >좋아하는 칵테일</h1>
           <carousel-3d
             :count="cocktailList.length"
             :controls-visible="true"
@@ -257,27 +224,22 @@
               :index="i"
               :key="i"
               style="opacity:100 !important; visibility:visible;height:500px !important;background-color:#ffffff;"
-              ><v-card style="height:400px">
-                <v-img :src="slide.image" alt="ll" style="height:100%;">
-                </v-img>
+            >
+              <v-card style="height:400px">
+                <v-img :src="slide.image" alt="ll" style="height:100%;"></v-img>
                 <h1
                   class="sansfont"
                   style="margin-left:30px; margin-top:10px;font-weight:bolder;"
-                >
-                  {{ slide.cname }}
-                </h1>
-                <v-text
-                  style="margin-left:30px;margin-top:10px;display:inline-block"
-                >
-                  <i class="fas fa-lg fa-heart"></i> {{ getLikesByCocktail[i] }}
-                </v-text>
+                >{{ slide.cname }}</h1>
+                <div style="margin-left:30px;margin-top:10px;display:inline-block">
+                  <i class="fas fa-lg fa-heart"></i>
+                  {{ getLikesByCocktail[i] }}
+                </div>
                 <button
                   @click="goToDetail(slide.cid)"
                   class="sansfont"
                   style="color:blue;margin-left:230px"
-                >
-                  ...더보기
-                </button>
+                >...더보기</button>
               </v-card>
             </slide>
           </carousel-3d>
@@ -287,13 +249,11 @@
       <h1
         class="sansfont"
         style=" margin-top:20%;font-size:200%; text-align:center; font-weight:bolder;"
-      >
-        {{ user.nickname }}님이 쓴 글
-      </h1>
+      >{{ user.nickname }}님이 쓴 글</h1>
       <v-row>
         <!-- <v-col v-for="(board, i) in boardArray" :key="i">
 
-      </v-col> -->
+        </v-col>-->
       </v-row>
     </div>
   </div>

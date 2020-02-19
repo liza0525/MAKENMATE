@@ -1,7 +1,7 @@
 <template>
-  <div style="background-color: white;">
+  <div style="background-color: white;" :style="{ height: window.height }">
     <div id="user-scrap-header">
-      <h1 id="user-scrap-title">스크랩 목록</h1>
+      <h1 id="user-scrap-title" class="sansfont">스크랩 목록</h1>
     </div>
     <div id="user-scrap-context">
       <v-simple-table>
@@ -15,19 +15,13 @@
           </thead>
           <tbody>
             <tr v-for="scrap in scrapList" v-bind:key="scrap.bid">
-              <td
-                v-html="scrap.title"
-                @click="goRecipeDetail(scrap.rid)"
-                style="cursor: pointer;"
-              ></td>
+              <td v-html="scrap.title" @click="goRecipeDetail(scrap.rid)" style="cursor: pointer;"></td>
               <td id="writer-col" v-html="scrap.user.nickname"></td>
               <td>
                 <button
                   @click="removeFromScrapList(scrap.rid)"
                   style="color: rgb(230, 0, 0); font-weight: bold;"
-                >
-                  스크랩 취소
-                </button>
+                >스크랩 취소</button>
               </td>
             </tr>
           </tbody>
@@ -35,11 +29,7 @@
       </v-simple-table>
     </div>
     <div>
-      <button
-        v-for="pageNm in pageNms"
-        :key="pageNm"
-        @click="loadScrapList(pageNm)"
-      >
+      <button v-for="pageNm in pageNms" :key="pageNm" @click="loadScrapList(pageNm)">
         <span style="margin-right:10px;">{{ pageNm }}</span>
       </button>
     </div>
@@ -58,10 +48,16 @@ export default {
       nextBt: ">",
       fistBt: "<<",
       lastBt: ">>",
-      pageNms: []
+      pageNms: [],
+      window: {
+        width: 0,
+        height: 0
+      }
     };
   },
   created() {
+    window.addEventListener("resize", this.handleResize);
+    this.handleResize();
     this.username = this.$store.state.username;
     this.loadScrapList(1);
   },
@@ -115,7 +111,17 @@ export default {
           rid: selectedRid
         }
       });
+    },
+    handleResize() {
+      this.window.width = window.innerWidth;
+      this.window.height = window.innerHeight;
+      // console.log(typeof this.window.height);
+      this.window.height = this.window.height + "px";
+      this.window.height = "calc(" + this.window.height + " - 4rem)";
     }
+  },
+  destroyed() {
+    window.removeEventListener("resize", this.handleResize);
   }
 };
 </script>
