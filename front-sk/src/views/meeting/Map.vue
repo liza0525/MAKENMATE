@@ -54,11 +54,15 @@
               placeholder="제목"
             /><br />
             <label>시간</label>
-            <input
+            <!-- <input
               type="text"
               v-model="meeting.date"
               placeholder="시간"
-            /><br />
+            /><br /> -->
+            <datetime
+              format="YYYY-MM-DD H:i:s"
+              v-model="meeting.date"
+            ></datetime>
             <label>인원</label>
             <input
               type="text"
@@ -100,9 +104,11 @@ import Drawer from "vue-simple-drawer";
 import http from "../../http-common";
 import axios from "axios";
 import config from "../../../config";
+import datetime from "vuejs-datetimepicker";
 export default {
   components: {
-    Drawer
+    Drawer,
+    datetime
   },
   data() {
     return {

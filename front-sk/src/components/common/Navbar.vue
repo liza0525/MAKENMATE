@@ -104,11 +104,9 @@
               </v-list-item-title>
             </v-list-item>
             <v-list-item>
-              <a href="/#/logout">
-                <v-list-item-title>
-                  <router-link :to="{ name: 'Logout' }">로그아웃</router-link>
-                </v-list-item-title>
-              </a>
+              <v-list-item-title>
+                <router-link :to="{ name: 'Logout' }">로그아웃</router-link>
+              </v-list-item-title>
             </v-list-item>
           </v-list>
           <v-list v-else>
@@ -138,7 +136,10 @@
           <v-list>
             <v-row style="margin: 0 0.5rem 0 0.5rem;">
               <v-col cols="9">
-                <v-text-field label="칵테일에 관한 모든 검색" placeholder="검색어 입력"></v-text-field>
+                <v-text-field
+                  label="칵테일에 관한 모든 검색"
+                  placeholder="검색어 입력"
+                ></v-text-field>
               </v-col>
               <v-col cols="2">
                 <v-btn icon>
@@ -237,13 +238,11 @@
                     </v-list-item-title>
                   </v-list-item>
                   <v-list-item>
-                    <a href="/#/logout">
-                      <v-list-item-title>
-                        <router-link :to="{ name: 'Logout' }"
-                          >로그아웃</router-link
-                        >
-                      </v-list-item-title>
-                    </a>
+                    <v-list-item-title>
+                      <router-link :to="{ name: 'Logout' }"
+                        >로그아웃</router-link
+                      >
+                    </v-list-item-title>
                   </v-list-item>
                 </v-list>
                 <v-list v-else>

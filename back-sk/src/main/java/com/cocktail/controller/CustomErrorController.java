@@ -1,10 +1,7 @@
 package com.cocktail.controller;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
  
 @Controller
@@ -17,9 +14,9 @@ public class CustomErrorController implements ErrorController {
         return ERROR_PATH;
     }
     
-    @RequestMapping("/error")
-    public String handleError(HttpServletRequest request, Model model) {
-        return "/404";
+    @RequestMapping(value = "/error")
+    public String handleError() {
+        return "redirect:https://localhost/404";
     }
  
 }

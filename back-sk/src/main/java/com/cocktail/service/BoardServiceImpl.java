@@ -38,6 +38,7 @@ public class BoardServiceImpl implements BoardService {
         List<Bdetail> bdlist = new ArrayList<>();
         for (int i = 0; i < b.size(); i++) {
             String name = b.get(i).getUser().getNickname();
+            System.out.println(name);
             Bdetail bd = new Bdetail();
             bd.setBid(b.get(i).getBid());
             bd.setContents(b.get(i).getContents());
