@@ -42,7 +42,7 @@ import io.swagger.annotations.ApiResponses;
         @ApiResponse(code = 500, message = "Failure", response = BasicResponse.class) })
 
 @RestController
-@RequestMapping(value = "/comments")
+@RequestMapping(value = "/backend/comments")
 public class CocktailCommentsController {
     @Autowired
     CocktailCommentsDao commentsDao;
@@ -116,4 +116,5 @@ public class CocktailCommentsController {
         result.data = "success";
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
+    
 }

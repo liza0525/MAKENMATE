@@ -31,13 +31,13 @@ public class BoardServiceImpl implements BoardService {
 
     @Autowired
     private FileDAO filedao;
-    
+
     // 전체조회
     @Override
     public List<Bdetail> getAllBoard() {
         List<Board> b = boardDao.findAll();
         List<Bdetail> bdlist = new ArrayList<>();
-        for (int i = 0; i < b.size(); i++){
+        for (int i = 0; i < b.size(); i++) {
             String name = b.get(i).getUser().getNickname();
             Bdetail bd = new Bdetail();
             bd.setBid(b.get(i).getBid());
@@ -50,9 +50,14 @@ public class BoardServiceImpl implements BoardService {
         }
         return bdlist;
     }
-    
+
     public Page<Board> getAllBoard(Pageable pageable) {
         return boardDao.findAll(pageable);
+    }
+
+    @Override
+    public Page<Board> getAllBoardTitleLike(String searchData, Pageable pageable) {
+        return boardDao.findAllByTitleLike(searchData, pageable);
     }
 
     // 글번호로 상세조회
@@ -64,7 +69,7 @@ public class BoardServiceImpl implements BoardService {
         b.setBid(board.getBid());
         b.setFile(board.getFile());
         b.setContents(board.getContents());
-        SimpleDateFormat format1 = new SimpleDateFormat ( "yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date time = new Date();
         String time1 = format1.format(time);
         b.setRegdate(time1);
@@ -73,15 +78,14 @@ public class BoardServiceImpl implements BoardService {
 
         List<UploadFile> file = filedao.list(board.getBid());
         ArrayList<String> bb = new ArrayList<>();
-        if(file.size() != 0) {
-            for(int i=0; i < file.size(); i++){
+        if (file.size() != 0) {
+            for (int i = 0; i < file.size(); i++) {
                 bb.add(i, file.get(i).getFileName());
             }
         }
         System.out.println(bb);
         b.setFilelist(bb);
 
-        
         return b;
     }
 
@@ -116,17 +120,17 @@ public class BoardServiceImpl implements BoardService {
         b.setUser(u);
         b = boardDao.save(b);
 
-        //해당 file board 번호 업데이트
+        // 해당 file board 번호 업데이트
         String str = (String) bdetail.getFile();
         String text = str.replace("[", "").replace("]", "");
- 
+
         if (!text.equals("49104755")) {
-        String[] wpqkf = text.split(",");
-        for(int i = 0; i < wpqkf.length; i ++){
-            UploadFile file = filedao.findById(Integer.parseInt(wpqkf[i]));
-            file.setBoardno(b.getBid());
-            filedao.save(file);
-        }
+            String[] wpqkf = text.split(",");
+            for (int i = 0; i < wpqkf.length; i++) {
+                UploadFile file = filedao.findById(Integer.parseInt(wpqkf[i]));
+                file.setBoardno(b.getBid());
+                filedao.save(file);
+            }
         }
         return b.getBid();
     }

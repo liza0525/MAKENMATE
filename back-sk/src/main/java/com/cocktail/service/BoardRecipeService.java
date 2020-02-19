@@ -28,5 +28,7 @@ public interface BoardRecipeService {
     // 공유게시글 삭제
     void deleteById(int bid);
 
-	List<BRdetail> getBestRecipe();
+    Object getAllBoardRecipeTitleLike(String searchData, Pageable pageable);
+
+    List<BRdetail> getBestRecipe();
 }
