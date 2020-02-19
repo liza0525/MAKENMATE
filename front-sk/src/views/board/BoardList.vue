@@ -19,20 +19,18 @@
           <tbody>
             <tr v-for="board in info.content" v-bind:key="board.bid">
               <td class="numbering-col" v-html="board.bid"></td>
-              <td
-                v-html="board.title"
-                @click="detail_id(board.bid)"
-              ></td>
+              <td v-html="board.title" @click="detail_id(board.bid)"></td>
               <td>
-              <router-link
-                :to="{
-                  name: 'UserProfile',
-                  params: { username: board.user.nickname }
-                }"
-                 style="color: white; cursor: pointer;"
-              >
-                {{ board.user.nickname }}
-              </router-link></td>
+                <router-link
+                  :to="{
+                    name: 'UserProfile',
+                    params: { username: board.user.nickname }
+                  }"
+                  style="color: white; cursor: pointer;"
+                >
+                  {{ board.user.nickname }}
+                </router-link>
+              </td>
               <td class="date-col" v-html="board.regdate"></td>
             </tr>
           </tbody>
@@ -40,7 +38,13 @@
       </v-simple-table>
     </div>
     <div id="board-list-footer">
-      <button v-if="this.$store.state.username" class="board-button" @click="add_move()">글쓰기</button>
+      <button
+        v-if="this.$store.state.username"
+        class="board-button"
+        @click="add_move()"
+      >
+        글쓰기
+      </button>
       <button
         v-if="this.$store.state.username"
         class="board-button"

@@ -84,7 +84,7 @@ public class UserProfileController {
         System.out.println("username       "  + username);
         UploadFile file = filedao.findById(fid);
         
-        String str = "C:/image/";
+        String str = "/home/ubuntu/image/";
         String filename = str.concat(file.getFileName());
 
         System.out.println(filename);
