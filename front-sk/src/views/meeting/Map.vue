@@ -30,58 +30,136 @@
 
     <Drawer @close="toggle" align="right" :closeable="true">
       <div v-if="open">
-        <div v-for="meet in meetings" :key="meet.mid">
-          <h1>{{ meet.title }}</h1>
-          <p>{{ meet.date }}</p>
-          <p>{{ meet.people }} / {{ meet.count }}명</p>
-          <span v-for="um in meet.usermeeting" :key="um.id">
-            <img :src="um.userImg" />
-          </span>
-          <button @click="goMeeting(meet.mid)">신청하기</button>
-          <button
-            v-if="meet.author === username"
-            @click="deleteMeeting(meet.mid)"
+        <div
+          v-show="isOpen"
+          :style="{ height: meetingHeight }"
+          style="overflow: auto; display:inline-block; width:100%"
+        >
+          <div v-for="meet in meetings" :key="meet.mid">
+            <h1 style="margin-top:3%">{{ meet.title }}</h1>
+            <p>{{ meet.date }}</p>
+            <p style="display:inline-block">
+              {{ meet.people }} / {{ meet.count }}명
+            </p>
+            <div
+              v-for="um in meet.usermeeting"
+              style="margin-left: 2%;overflow: hidden; display:inline-block; height:30px; width: 30px; border-radius:30px;"
+              :key="um.id"
+            >
+              <img :src="um.userImg" style="height:100%; width:100%" />
+            </div>
+            <button
+              style="float:right;font-size:20"
+              @click="goMeeting(meet.mid)"
+            >
+              신청하기
+            </button>
+            <button
+              v-if="meet.author === username"
+              @click="deleteMeeting(meet.mid)"
+              style="float:right; margin-right: 2%"
+            >
+              삭제
+            </button>
+            <hr style="margin-top:3%" />
+          </div>
+          <div
+            class="up"
+            :style="{ top: meetingHeightTrue }"
+            style="padding:4%"
           >
-            삭제
-          </button>
-        </div>
-        <div class="up">
-          <div>
-            <label>제목</label>
-            <input
-              type="text"
-              v-model="meeting.title"
-              placeholder="제목"
-            /><br />
-            <label>시간</label>
-            <!-- <input
+            <div style="text-align:center">
+              <button @click="isOpen = !isOpen">
+                <i class="fas fa-4x fa-chevron-down"></i>
+              </button>
+            </div>
+            <div>
+              <label>제목</label>
+              <input
+                type="text"
+                v-model="meeting.title"
+                placeholder="제목"
+              /><br />
+              <label>시간</label>
+              <!-- <input
               type="text"
               v-model="meeting.date"
               placeholder="시간"
             /><br /> -->
-            <datetime
-              format="YYYY-MM-DD H:i:s"
-              v-model="meeting.date"
-            ></datetime>
-            <label>인원</label>
-            <input
-              type="text"
-              v-model="meeting.count"
-              placeholder="인원"
-            /><br />
-            <label>장소</label>
-            <input
-              type="text"
-              v-model="meeting.place"
-              placeholder="장소"
-            /><br />
-            <label>상세 주소</label>
-            <input
-              type="text"
-              v-model="meeting.detail"
-              placeholder="상세 주소"
-            />
-            <button @click="makeMeeting()"><h1>만남 만들기</h1></button>
+              <datetime
+                style="margin: 2%;bottom:100%;width:100%"
+                format="YYYY-MM-DD H:i:s"
+                v-model="meeting.date"
+              ></datetime>
+              <label>인원</label>
+              <input
+                type="text"
+                v-model="meeting.count"
+                placeholder="인원"
+              /><br />
+              <label>장소</label>
+              <input
+                type="text"
+                v-model="meeting.place"
+                placeholder="장소"
+              /><br />
+              <label>상세 주소</label>
+              <input
+                type="text"
+                v-model="meeting.detail"
+                placeholder="상세 주소"
+              />
+              <button
+                @click="makeMeeting()"
+                style="border: 1px solid white; width:100%; padding: 2%"
+              >
+                <h1>만남 만들기</h1>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div
+          v-show="!isOpen"
+          :style="{ height: meetingHeightFalse }"
+          style="overflow: auto; display:inline-block; width:100%"
+        >
+          <div style="text-align:center;"></div>
+          <div v-for="meet in meetings" :key="meet.mid">
+            <h1 style="margin-top:3%">{{ meet.title }}</h1>
+            <p>{{ meet.date }}</p>
+            <p style="display:inline-block">
+              {{ meet.people }} / {{ meet.count }}명
+            </p>
+            <div
+              v-for="um in meet.usermeeting"
+              style="margin-left: 2%;overflow: hidden; display:inline-block; height:30px; width: 30px; border-radius:30px;"
+              :key="um.id"
+            >
+              <img :src="um.userImg" style="height:100%; width:100%" />
+            </div>
+            <button
+              style="float:right;font-size:20"
+              @click="goMeeting(meet.mid)"
+            >
+              신청하기
+            </button>
+            <button
+              v-if="meet.author === username"
+              @click="deleteMeeting(meet.mid)"
+              style="float:right; margin-right: 2%"
+            >
+              삭제
+            </button>
+            <hr style="margin-top:3%" />
+          </div>
+          <div v-show="!isOpen" style="text-align:center">
+            <div
+              style="margin-left:40%; margin-right: 50%; position:absolute;bottom: 0%; text-align:center"
+            >
+              <button @click="isOpen = !isOpen">
+                <i class="fas fa-4x fa-chevron-up"></i>
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -139,7 +217,11 @@ export default {
       map: {
         width: 0,
         height: 0
-      }
+      },
+      meetingHeight: 0,
+      isOpen: false,
+      meetingHeightFalse: 0,
+      meetingHeightTrue: 0
     };
   },
   mounted() {
@@ -156,7 +238,10 @@ export default {
       this.window.width = window.innerWidth;
       this.window.height = window.innerHeight;
       // console.log(typeof this.window.height);
+      this.meetingHeight = this.window.height * (2 / 4) + "px";
+      this.meetingHeightFalse = this.window.height * (3 / 4) + "px";
       this.window.height = this.window.height + "px";
+      this.meetingHeightTrue = "calc(" + this.meetingHeight + " + 4rem)";
       this.map.height = "calc(" + this.window.height + " - 8rem)";
       this.window.height = "calc(" + this.window.height + " - 4rem)";
     },
@@ -224,6 +309,11 @@ export default {
             }
           };
           this.markers.push(pos);
+          el.usermeeting.forEach(element => {
+            if (element.userImg === "h") {
+              element.userImg = require(`../../assets/images/profile_default.png`);
+            }
+          });
         });
       });
     },
@@ -329,12 +419,9 @@ export default {
   cursor: pointer;
 }
 .up {
-  padding-left: 5%;
-  bottom: 2rem;
   position: absolute;
   left: 0;
   right: 0;
-  width: 80%;
 }
 input {
   width: 90%;
