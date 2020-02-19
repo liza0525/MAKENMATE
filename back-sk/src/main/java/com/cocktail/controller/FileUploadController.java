@@ -84,8 +84,7 @@ public class FileUploadController {
 
     @DeleteMapping(value = "/uploadFileDelete/{id}", produces = { MediaType.APPLICATION_JSON_VALUE })
     public void deleteBoard(@PathVariable("id") int id) {
-        System.out.println("ffffffffffffffffffffffffff");
-        System.out.println("sadsadasdasdasdasd"+ id);
+    
         boolean check = service.deleteFile(id);
     }
 }

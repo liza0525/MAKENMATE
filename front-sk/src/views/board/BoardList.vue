@@ -55,7 +55,7 @@ export default {
           this.info = response.data.object
           this.totalPages = response.data.object.totalPages
           let arr = [];
-
+          console.log(this.info)
           let min = parseInt((pageNm - 1) / 5) * 5 + 1;
           for (let index = 0; index < 5; index++) {
             if (Number(min + index) > this.totalPages) break;
