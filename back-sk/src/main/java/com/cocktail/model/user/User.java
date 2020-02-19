@@ -18,8 +18,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import com.cocktail.model.board.Board;
-import com.cocktail.model.boardRecipe.BoardRecipe;
 import com.cocktail.model.like.BoardCommentsLike;
 import com.cocktail.model.like.BoardLike;
 import com.cocktail.model.like.BoardRecipeCommentsLike;
@@ -115,9 +113,9 @@ public class User implements UserDetails {
 	}
 
 
-	@OneToMany(mappedBy = "user")
-	@JsonManagedReference
-	private final List<Board> board = new ArrayList<>();
+//	@OneToMany(mappedBy = "user")
+//	@JsonManagedReference
+//	private final List<Board> board = new ArrayList<>();
 //	@OneToMany(mappedBy = "user")
 //	@JsonManagedReference
 //	private final List<BoardRecipe> boardRecipe = new ArrayList<>();
