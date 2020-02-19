@@ -4,6 +4,8 @@
       <h1 id="board-category">자유 게시판</h1>
     </div>
     <div id="board-context">
+      <!-- 검색 기능은 getSearchData 메소드에 정리 -->
+      <Search @searchData="getSearchData" class="search"></Search>
       <v-simple-table dark>
         <template>
           <thead>
@@ -38,22 +40,32 @@
 
 <script>
 import http from "../../http-common";
+import Search from "../../components/common/Search.vue";
 export default {
   name: "board-list",
+  components: {
+    Search
+  },
   data: () => {
-    return { info: [], loading: true, errored: false, totalPages: 0, pageNms: [] };
+    return {
+      info: [],
+      loading: true,
+      errored: false,
+      totalPages: 0,
+      pageNms: []
+    };
   },
   methods: {
     retrieveBoard(pageNm) {
       http
-        .get("/board",{
-          params:{
-            page: pageNm -1
+        .get("/board", {
+          params: {
+            page: pageNm - 1
           }
         })
         .then(response => {
-          this.info = response.data.object
-          this.totalPages = response.data.object.totalPages
+          this.info = response.data.object;
+          this.totalPages = response.data.object.totalPages;
           let arr = [];
           console.log(this.info)
           let min = parseInt((pageNm - 1) / 5) * 5 + 1;
@@ -69,7 +81,7 @@ export default {
         .finally(() => (this.loading = false));
     },
     add_move() {
-      this.$router.push({name: "BoardAdd"});
+      this.$router.push({ name: "BoardAdd" });
     },
     detail_id(sendbid) {
       this.$router.push({
@@ -78,6 +90,32 @@ export default {
           bid: sendbid
         }
       });
+    },
+    getSearchData(inputValue) {
+      console.log(inputValue);
+      http
+        .get("/board/search", {
+          params: {
+            searchData: inputValue
+          }
+        })
+        .then(response => {
+          this.info = response.data.object;
+          this.totalPages = response.data.object.totalPages;
+          console.log(this.info);
+          let arr = [];
+
+          let min = 1;
+          for (let index = 0; index < 5; index++) {
+            if (Number(min + index) > this.totalPages) break;
+            arr.push(Number(min + index));
+          }
+          this.pageNms = arr;
+        })
+        .catch(error => {
+          this.errored = true;
+        })
+        .finally(() => (this.loading = false));
     }
   },
   mounted() {
@@ -90,10 +128,10 @@ td {
   font-family: "GyeonggiBatang";
 }
 #board-list-header {
-  background: linear-gradient(rgba(0, 0, 0, 0.3)),
-    url("../../assets/images/image.png") no-repeat;
+  background: linear-gradient(rgba(0, 0, 0, 0.5)),
+    url("../../assets/images/image5.jpg") no-repeat;
   background-size: 100%;
-  height: 60vh;
+  height: 50vh;
   background-position-y: 30%;
   color: white;
 }
@@ -102,9 +140,9 @@ td {
   display: inline;
   position: relative;
   float: left;
-  top: 35vmin;
+  top: 30vmin;
   font-size: 11vmin;
-  font-family: 'BBTreeGB';
+  font-family: "BBTreeGB";
 }
 #board-list-footer {
   color: #ccc;
@@ -126,27 +164,28 @@ td {
   font-size: 2vmin;
   font-family: "GyeonggiBatang";
 }
-#pagination {
+.pagination {
   display: inline;
   float: right;
   font-size: 18px;
   font-family: "GyeonggiBatang";
 }
-@media (max-width: 700px) {
+@media (max-width: 960px) {
   #board-context {
-  margin: 2vmax 3vmax;
+    margin: 2vmax 3vmax;
   }
-  .numbering-col, .date-col{
+  .numbering-col,
+  .date-col {
     display: none;
   }
   #board-list-header {
-    height: 50vh;
+    height: 35vh;
     background-size: 200vw;
     background-position-x: 50%;
   }
   #board-category {
-    margin-top: 3vmin; 
-    font-size: 7vmin;
+    margin-top: 4vmin;
+    font-size: 8vmin;
   }
 }
 </style>

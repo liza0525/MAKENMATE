@@ -3,19 +3,15 @@
     <div class="cocktailheader">
       <div v-show="window.width >= 435">
         <h1
-          class="cocktailtitle sign "
+          class="cocktailtitle sign"
           style="z-index:200;margin-right;auto;margin-left;auto;display:inline-block;z-index:200;font-family: 'neontubes';"
-        >
-          COCKTAIL
-        </h1>
+        >COCKTAIL</h1>
       </div>
       <div v-show="window.width < 435">
         <h1
-          class="cocktailtitle sign "
+          class="cocktailtitle sign"
           style="z-index:200;margin-top:20vmax;margin-right;auto;margin-left;auto;display:inline-block;z-index:200;font-family: 'neontubes';"
-        >
-          COCKTAIL
-        </h1>
+        >COCKTAIL</h1>
       </div>
     </div>
     <img
@@ -30,7 +26,12 @@
       v-show="window.width >= 1024"
     >
       F
-      <br />I <br />L <br />T <br />E <br />R <br />>
+      <br />I
+      <br />L
+      <br />T
+      <br />E
+      <br />R
+      <br />>
     </button>
     <button
       class="neon-button"
@@ -39,7 +40,12 @@
       v-show="window.width < 1024"
     >
       F
-      <br />I <br />L <br />T <br />E <br />R <br />>
+      <br />I
+      <br />L
+      <br />T
+      <br />E
+      <br />R
+      <br />>
     </button>
     <div v-show="openFilterBox" class="filter-box">
       <div class="hcontainer" style="margin-bottom:10%">
@@ -48,15 +54,11 @@
           class="close sign"
           style="font-size:4vmin;margin-top:5%;position:absolute;right:10%;"
           @click="openFilterBox = !openFilterBox"
-        >
-          &times;
-        </p>
+        >&times;</p>
         <div
           class="sign"
           style="font-size:3vmax;padding-top:7%;margin-bottom:3%;text-align:center;  font-family: 'neontubes';"
-        >
-          Material
-        </div>
+        >Material</div>
         <div
           style="text-align:center;display:inline-block;width:20%;margin-bottom:5%"
           v-for="filter in filters"
@@ -73,14 +75,24 @@
             }"
           >
             <v-img :src="filter.image" :alt="filter.name" style="width:100%;" />
-            <v-text
-              class="x-sign"
-              style="font-size:1.5vmax;text-align:center;"
-              >{{ filter.title }}</v-text
-            >
+            <v-text class="x-sign" style="font-size:1.5vmax;text-align:center;">{{ filter.title }}</v-text>
           </router-link>
         </div>
       </div>
+    </div>
+    <div style="text-align:center; color:#ffffff" v-show="window.width < 435">
+      <input
+        type="text"
+        @input="autocomplete"
+        v-model="searchData"
+        @keypress.enter="search(1)"
+        class="neon-input"
+        placeholder="Search"
+        style="width:50%; font-size:0.8rem"
+      />
+      <button @click="search(1)" style="margin-top: 1%; margin-left:1%">
+        <i class="fas fa-2x fa-search"></i>
+      </button>
     </div>
     <div class="hcontainer">
       <div
@@ -106,19 +118,15 @@
             <h1
               class="sansfont"
               style="margin-top:10px;display:inline-block;width:72%;overflow:auto;height:7%;font-size:120%;margin-left:15px;font-weight:bolder;"
-            >
-              {{ cocktail.cname }}
-            </h1>
-            <v-text
-              style="margin-top:12px;margin-right:15px;float:right;display:inline-block;"
-            >
+            >{{ cocktail.cname }}</h1>
+            <v-text style="margin-top:12px;margin-right:15px;float:right;display:inline-block;">
               <i class="fas fa-lg fa-heart"></i>
               {{ getLikesByCocktail[i] }}
             </v-text>
           </v-card>
         </v-col>
       </v-row>
-      <div style="text-align:center; color:#ffffff">
+      <div style="text-align:center; color:#ffffff" v-show="window.width >= 435">
         <input
           type="text"
           @input="autocomplete"
@@ -148,38 +156,29 @@
           v-if="pageNm > 5"
           v-on:click="search(1)"
           style="margin-right:10px;margin-top:100px;color:#ffffff"
-        >
-          {{ fistBt }}
-        </button>
+          class="paging-size"
+        >{{ fistBt }}</button>
         <button
           v-if="pageNm > 5"
           v-on:click="search(min - 5 < 0 ? 1 : min - 5)"
           style="margin-right:10px;color:#ffffff"
           class="paging-size"
-        >
-          {{ prevBt }}
-        </button>
+        >{{ prevBt }}</button>
         <button v-for="pageNm in pageNms" :key="pageNm" @click="search(pageNm)">
-          <span style="margin-right:10px;color:#ffffff;" class="paging-size">
-            {{ pageNm }}
-          </span>
+          <span style="margin-right:10px;color:#ffffff;" class="paging-size">{{ pageNm }}</span>
         </button>
         <button
           v-if="min + 5 <= totalPages"
           class="paging-size"
           v-on:click="search(min + 5)"
           style="margin-right:10px;color:#ffffff"
-        >
-          {{ nextBt }}
-        </button>
+        >{{ nextBt }}</button>
         <button
           class="paging-size"
           v-if="min + 5 <= totalPages"
           v-on:click="search(totalPages)"
           style="color:#ffffff;"
-        >
-          {{ lastBt }}
-        </button>
+        >{{ lastBt }}</button>
       </div>
     </div>
   </div>
@@ -201,6 +200,7 @@ export default {
       searchedData: [],
       pageNms: [],
       totalPages: 0,
+
       filter: {
         filtered: "",
         searchData: ""
@@ -523,7 +523,7 @@ export default {
 }
 .neon-button {
   position: fixed;
-  margin-top: 10%;
+  margin-top: 0%;
   float: left;
   padding-top: 1%;
   padding-bottom: 1%;
@@ -538,7 +538,7 @@ export default {
 }
 .neon-button:hover {
   position: fixed;
-  margin-top: 10%;
+  margin-top: 0%;
   float: left;
   padding-top: 1%;
   padding-bottom: 1%;
@@ -553,7 +553,7 @@ export default {
 }
 
 .neon-input {
-  width: 15%;
+  width: 20%;
   padding-top: 1%;
   padding-bottom: 1%;
   font-size: 1.3rem;
@@ -569,7 +569,6 @@ export default {
 }
 .neon-input::placeholder {
   font-family: "GyeonggiBatang";
-  font-size: 1.3rem;
   color: #c6e2ff;
   animation: neon-box 0.08s ease-in-out infinite alternate;
 }

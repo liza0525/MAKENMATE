@@ -3,36 +3,45 @@ package com.cocktail.controller;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.cocktail.model.BasicResponse;
-import com.cocktail.model.boardRecipe.BRdetail;
-import com.cocktail.service.BoardRecipeService;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.data.domain.Sort.Direction;
-import org.springframework.data.web.PageableDefault;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.cocktail.dao.BoardRecipeDao;
+import com.cocktail.dao.UserDao;
+import com.cocktail.exception.CocktailException;
+import com.cocktail.model.BasicResponse;
+import com.cocktail.model.boardRecipe.BRdetail;
+import com.cocktail.model.boardRecipe.BoardRecipe;
+import com.cocktail.model.user.User;
+import com.cocktail.service.BoardRecipeService;
 
 @CrossOrigin(origins = { "*" }, maxAge = 3600) // "*" => http://localhost:3000
 @RestController
-@RequestMapping("/boardrecipe")
+@RequestMapping("/backend/boardrecipe")
 public class BoardRecipeController{
 
     @Autowired
     private BoardRecipeService boardrecipeservice;
-
+    @Autowired
+    private BoardRecipeDao boardrecipeDao;
+    @Autowired
+    private UserDao userDao;
     //공유게시판 게시글 전체 조회
     @GetMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
     public Object boardRecipeList(@PageableDefault(size = 20, sort = { "rid" }, direction = Direction.DESC) Pageable pageable) {
@@ -43,7 +52,18 @@ public class BoardRecipeController{
         //System.out.println(this.boardrecipeservice.getAllBoardRecipe(pageable).getContent());
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
-
+    
+    @GetMapping(value = "/search",produces = {MediaType.APPLICATION_JSON_VALUE})
+    public Object boardRecipeSearchList(@PageableDefault(size = 20, sort = { "rid" }, direction = Direction.DESC) Pageable pageable,
+    		@RequestParam(required = true) String searchData) {
+    	final BasicResponse result = new BasicResponse();
+    	searchData = '%' + searchData + '%';
+    	result.status = true;
+    	result.data = "success"; 
+    	result.object = this.boardrecipeservice.getAllBoardRecipeTitleLike(searchData,pageable);
+    	return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+    
     //공유게시판 상세조회
     @GetMapping(value="/{boardrecipeno}", produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<BRdetail> getBoardRecipe(@PathVariable("boardrecipeno") int boardrecipeno) {
@@ -93,4 +113,16 @@ public class BoardRecipeController{
     //    //System.out.println(this.boardrecipeservice.getAllBoardRecipe(pageable).getContent());
     //    return new ResponseEntity<>(result, HttpStatus.OK);
     // }
+    
+    @GetMapping(value = "/user")
+    public Object getBoardRecipeByUser(
+            @PageableDefault(size = 5, sort = { "rid" }, direction = Direction.DESC) final Pageable pageable,
+            @RequestParam(required = true) final String username) {
+    	User find = userDao.getUserByNickname(username).orElseThrow(CocktailException::new);
+        final BasicResponse result = new BasicResponse();
+    	result.status = true;
+    	result.data = "success"; 
+    	result.object = boardrecipeDao.findAllByUser_uid(find.getUid(), pageable);
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
 }

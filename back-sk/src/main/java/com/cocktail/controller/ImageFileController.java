@@ -21,6 +21,7 @@ import com.cocktail.model.UploadFileResponse;
 import com.cocktail.service.DBFileStorageService;
 
 @RestController
+@RequestMapping(value = "/backend")
 public class ImageFileController {
 
     private static final Logger logger = LoggerFactory.getLogger(ImageFileController.class);

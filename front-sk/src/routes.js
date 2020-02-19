@@ -23,7 +23,7 @@ import BoardRecipeDetail from "./views/boardrecipe/BoardRecipeDetail.vue";
 import FileUpload from "./components/FileUpload.vue";
 import BoardRecipeAdd from "./views/boardrecipe/BoardRecipeAdd.vue";
 import BoardRecipeUpdate from "./views/boardrecipe/BoardRecipeUpdate.vue";
-import Auth from "./components/user/Auth";
+import Map from "./views/meeting/Map"
 export default [
   {
     path: "/",
@@ -71,7 +71,7 @@ export default [
     component: Mypage
   },
   {
-    path: "/cocktail/list",
+    path: "/cocktaillist",
     name: "CocktailList",
     component: CocktailList
   },
@@ -157,8 +157,9 @@ export default [
     props: true
   },
   {
-    path: "/auth",
-    name: "Auth",
-    component: Auth
+    path: "/meeting",
+    name: "Meeting",
+    component: Map
+
   }
 ];

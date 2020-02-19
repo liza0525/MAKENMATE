@@ -850,13 +850,6 @@ p {
   h4 {
     @include ellipsis;
   }
-
-  .error-text {
-    @include wrap;
-    color: $red;
-    margin-top: 3px;
-  }
-
   .eyes-icon {
     position: absolute;
     font-size: 1em;
@@ -1467,5 +1460,18 @@ p {
         }
       }
     }
+  }
+  .vue-simple-drawer.right {
+    top: 4rem !important;
+    height: calc(100% - 8rem);
+    width: 35% !important;
+  }
+  .vue-simple-drawer.downright {
+    top: 4rem !important;
+    height: 30%;
+    width: 100%;
+    bottom: 0;
+    left: 0;
+    position: absolute;
   }
 }

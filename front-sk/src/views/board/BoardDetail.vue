@@ -24,7 +24,7 @@
         <span v-show="islike" style="color: red;">
           <i class="fas fa-heart"></i>
         </span>
-      {{ likebyboard }}
+        {{ likebyboard }}
       </button>
     </div>
 
@@ -34,12 +34,16 @@
         class="board-button"
         v-if="this.$store.state.username === board.user_name"
         @click="update_board(board.bid)"
-      >수정</button>
+      >
+        수정
+      </button>
       <button
         class="board-button"
         v-if="this.$store.state.username === board.user_name"
         @click="delete_board(board.bid)"
-      >삭제</button>
+      >
+        삭제
+      </button>
       <div id="board-date">{{ board.regdate }}</div>
     </div>
 
@@ -48,11 +52,22 @@
       <div id="comment-title">
         <h1 style="display: inline; margin-right: 3vw">Comment</h1>
         <div style="display: inline;">
-          <input type="text" v-model="comment" style="border-bottom: 1px solid #ccc; width: 45vw" />
-          <button class="board-button" @click="submitComment" type="submit">댓글</button>
+          <input
+            type="text"
+            v-model="comment"
+            style="border-bottom: 1px solid #ccc; width: 45vw"
+          />
+          <button class="board-button" @click="submitComment" type="submit">
+            댓글
+          </button>
         </div>
       </div>
-      <div :v-if="reply" v-for="(re, i) in reply" :key="i" style="margin-top: 5px; display:block;">
+      <div
+        :v-if="reply"
+        v-for="(re, i) in reply"
+        :key="i"
+        style="margin-top: 5px; display:block;"
+      >
         <div v-if="isInput[i] === 0">
           <span><font size="3"><br> {{ users[i] }}</font></span> <br><br>  <span><font size="4">{{ re.content }}</font></span>
           <p v-if="username === users[i]" style="display:inline-block; float: right;">
@@ -325,10 +340,10 @@ export default {
 </script>
 <style scoped>
 #board-header {
-  background: linear-gradient(rgba(0, 0, 0, 0.3)),
-    url("../../assets/images/image.png") no-repeat;
+  background: linear-gradient(rgba(0, 0, 0, 0.5)),
+    url("../../assets/images/image5.jpg") no-repeat;
   background-size: 100%;
-  height: 60vh;
+  height: 50vh;
   background-position-y: 30%;
   color: white;
 }
@@ -337,9 +352,9 @@ export default {
   display: inline;
   position: relative;
   float: left;
-  top: 35vmin;
+  top: 30vmin;
   font-size: 11vmin;
-  font-family: 'BBTreeGB';
+  font-family: "BBTreeGB";
 }
 #board-username {
   margin: 0 0 0 2rem;
@@ -347,7 +362,7 @@ export default {
   position: relative;
   float: left;
   top: 40vh;
-  font-family: 'BBTreeGB';
+  font-family: "BBTreeGB";
 }
 #board-date {
   display: inline;
@@ -403,13 +418,13 @@ export default {
     font-size: 15px;
   }
   #board-header {
-    height: 50vh;
+    height: 35vh;
     background-size: 200vw;
     background-position-x: 50%;
   }
   #board-title {
-    margin-top: 3vmin;
-    font-size: 7vmin;
+    margin-top: 4vmin;
+    font-size: 8vmin;
   }
   #board-username {
     margin: 0 0 0 2vw;

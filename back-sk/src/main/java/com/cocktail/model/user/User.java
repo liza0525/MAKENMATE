@@ -18,12 +18,15 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.cocktail.model.board.Board;
+import com.cocktail.model.boardRecipe.BoardRecipe;
 import com.cocktail.model.like.BoardCommentsLike;
 import com.cocktail.model.like.BoardLike;
 import com.cocktail.model.like.BoardRecipeCommentsLike;
 import com.cocktail.model.like.BoardRecipeLike;
 import com.cocktail.model.like.CocktailLike;
 import com.cocktail.model.like.CommentsLike;
+import com.cocktail.model.meeting.UserMeeting;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -111,18 +114,13 @@ public class User implements UserDetails {
 		this.uid = uid;
 	}
 
-	// @JsonManagedReference
-	// @OneToMany
-	// @Builder.Default
-	// @JoinColumn(name = "cmid")
-	// private List<Comments> commentsArray = new ArrayList<>();
 
-	// @Column(insertable = false, updatable = false)
-	// private LocalDateTime createDate;
-	// @ManyToOne(targetEntity = Comments.class, fetch = FetchType.EAGER)
-	// @JoinColumn(name = "cmid")
-	// private Comments comments;
-
+	@OneToMany(mappedBy = "user")
+	@JsonManagedReference
+	private final List<Board> board = new ArrayList<>();
+//	@OneToMany(mappedBy = "user")
+//	@JsonManagedReference
+//	private final List<BoardRecipe> boardRecipe = new ArrayList<>();
 	@OneToMany(mappedBy = "user")
 	@JsonManagedReference
 	private final List<CocktailLike> cocktailLike = new ArrayList<>();
@@ -132,7 +130,6 @@ public class User implements UserDetails {
 	@OneToMany(mappedBy = "user")
 	@JsonManagedReference
 	private final List<BoardRecipeLike> boardRecipeLike = new ArrayList<>();
-
 	@OneToMany(mappedBy = "user")
 	@JsonManagedReference
 	private final List<CommentsLike> commentsLike = new ArrayList<>();
@@ -142,5 +139,9 @@ public class User implements UserDetails {
 	@OneToMany(mappedBy = "user")
 	@JsonManagedReference
 	private final List<BoardRecipeCommentsLike> boardrecipecommentsLike = new ArrayList<>();
+	@OneToMany(mappedBy = "user")
+    @JsonManagedReference
+    private final List<UserMeeting> usermeeting = new ArrayList<>();
+	
 
 }
