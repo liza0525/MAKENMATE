@@ -20,7 +20,16 @@
                 @click="goRecipeDetail(scrap.rid)"
                 style="cursor: pointer;"
               ></td>
-              <td id="writer-col" v-html="scrap.user.nickname"></td>
+              <td id="writer-col">
+                
+                <router-link
+                  :to="{
+                  name: 'UserProfile',
+                  params: {
+                    username: scrap.user.nickname
+                  }
+                }"
+                 style="color: black; cursor: pointer;">{{ scrap.user.nickname }}</router-link></td>
               <td>
                 <button
                   @click="removeFromScrapList(scrap.rid)"
@@ -119,7 +128,7 @@ export default {
   }
 };
 </script>
-<style>
+<style scoped>
 #user-scrap-header {
   background: linear-gradient(rgba(0, 0, 0, 0.5)),
     url("../../assets/images/image6.jpg") no-repeat;

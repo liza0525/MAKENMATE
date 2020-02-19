@@ -259,7 +259,7 @@ export default {
   }
 };
 </script>
-<style>
+<style scoped>
 #join-window {
   margin: 15vh auto;
 }

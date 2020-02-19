@@ -60,11 +60,6 @@
             </v-row>
           </v-list>
         </v-menu>
-
-        <!-- alert icon -->
-        <v-btn icon color="#fff">
-          <v-icon>mdi-bell</v-icon>
-        </v-btn>
         <!-- account dropdown -->
         <v-menu offset-y bottom>
           <template v-slot:activator="{ on }">
@@ -122,6 +117,27 @@
       <!-- nav-contents-sm -->
       <!-- nav-contents-sm -->
       <div id="nav-contents-sm">
+        <!-- search bar -->
+        <v-menu offset-y :close-on-content-click="false">
+          <template v-slot:activator="{ on }">
+            <v-btn icon color="#fff" v-on="on">
+              <v-icon>mdi-magnify</v-icon>
+            </v-btn>
+          </template>
+          <v-list>
+            <v-row style="margin: 0 0.5rem 0 0.5rem;">
+              <v-col cols="9">
+                <v-text-field label="칵테일에 관한 모든 검색" placeholder="검색어 입력"></v-text-field>
+              </v-col>
+              <v-col cols="2">
+                <v-btn icon>
+                  <v-icon>mdi-magnify</v-icon>
+                </v-btn>
+              </v-col>
+            </v-row>
+          </v-list>
+        </v-menu>
+        <!-- hamberger button -->
         <v-app-bar-nav-icon color="#fff" @click.stop="right = !right" />
         <v-navigation-drawer dark v-model="right" app right>
           <v-list dense>
@@ -256,7 +272,7 @@ export default {
   }
 };
 </script>
-<style>
+<style scoped>
 @import url("https://fonts.googleapis.com/css?family=Lobster&display=swap");
 @import url("https://fonts.googleapis.com/css?family=Noto+Sans+KR:500&display=swap");
 #navbar {
