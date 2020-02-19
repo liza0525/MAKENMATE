@@ -3,7 +3,14 @@
     <div id="boardrecipe-detail">
       <div id="boardrecipe-header">
         <h1 id="boardrecipe-title">{{ boardRecipe.title }}</h1>
-        <h3 id="boardrecipe-username">by. {{ boardRecipe.user_name }}</h3>
+        <h3 id="boardrecipe-username">by. 
+        <router-link
+        :to="{
+          name: 'UserProfile',
+          params: {
+            username: boardRecipe.user_name,
+          }
+        }" style="color:white;">{{ boardRecipe.user_name }}</router-link></h3>
       </div>
       <div id="boardrecipe-context" v-html="boardRecipe.contents"></div>
 
@@ -562,7 +569,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 #boardrecipe-header {
   background: linear-gradient(rgba(0, 0, 0, 0.5)),
     url("../../assets/images/image7.jpg") no-repeat;

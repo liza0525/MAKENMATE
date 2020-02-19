@@ -1,5 +1,5 @@
 <template>
-  <div id="app" >
+  <div id="app">
     <file-pond
       name="test"
       ref="pond"
@@ -19,6 +19,7 @@
 // Import FilePond
 import vueFilePond from "vue-filepond";
 import Constant from "../Constant";
+import config from "../../config";
 // Import plugins
 import FilePondPluginFileValidateType from "filepond-plugin-file-validate-type/dist/filepond-plugin-file-validate-type.esm.js";
 import FilePondPluginImagePreview from "filepond-plugin-image-preview/dist/filepond-plugin-image-preview.esm.js";
@@ -51,7 +52,7 @@ export default {
           progress,
           abort,
           transfer,
-          options,
+          options
         ) => {
           // fieldName is the name of the input field file is the actual file object to
           // send
@@ -60,7 +61,7 @@ export default {
           formData.append(fieldName, file, file.name);
 
           const request = new XMLHttpRequest();
-          request.open("POST", "http://localhost:8080/uploadFile");
+          request.open("POST", config.url + "/uploadFile");
           console.log(formData);
           // Should call the progress method to update the progress to 100% before calling
           // load Setting computable to false switches the loading indicator to infinite
@@ -102,11 +103,7 @@ export default {
           var self = this;
           const request = new XMLHttpRequest();
           const id = JSON.parse(uniqueFileId).id;
-          request.open(
-            "DELETE",
-            "http://localhost:8080/uploadFileDelete/" + id,
-            true
-          );
+          request.open("DELETE", config.url + "/uploadFileDelete/" + id, true);
           request.send();
           // Should remove the earlier created temp file here ... Can call the error
           // method if something is wrong, should exit after
