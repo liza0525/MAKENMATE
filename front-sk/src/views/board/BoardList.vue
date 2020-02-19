@@ -19,8 +19,19 @@
           <tbody>
             <tr v-for="board in info.content" v-bind:key="board.bid">
               <td class="numbering-col" v-html="board.bid"></td>
-              <td v-html="board.title" @click="detail_id(board.bid)" style="cursor: pointer;"></td>
-              <td v-html="board.user_name"></td>
+              <td
+                v-html="board.title"
+                @click="detail_id(board.bid)"
+                style="cursor: pointer;"
+              ></td>
+              <router-link
+                :to="{
+                  name: 'UserProfile',
+                  params: { username: board.user.nickname }
+                }"
+              >
+                <td v-html="board.user.nickname"></td>
+              </router-link>
               <td class="date-col" v-html="board.regdate"></td>
             </tr>
           </tbody>
@@ -28,9 +39,19 @@
       </v-simple-table>
     </div>
     <div id="board-list-footer">
-      <button v-if="this.$store.state.username" class="board-button" @click="add_move()">글쓰기</button>
+      <button
+        v-if="this.$store.state.username"
+        class="board-button"
+        @click="add_move()"
+      >
+        글쓰기
+      </button>
       <div id="pagination">
-        <button v-for="pageNm in pageNms" :key="pageNm" @click="retrieveBoard(pageNm)">
+        <button
+          v-for="pageNm in pageNms"
+          :key="pageNm"
+          @click="retrieveBoard(pageNm)"
+        >
           <span style="margin-right:10px;">{{ pageNm }}</span>
         </button>
       </div>
@@ -67,7 +88,7 @@ export default {
           this.info = response.data.object;
           this.totalPages = response.data.object.totalPages;
           let arr = [];
-
+          console.log(this.info);
           let min = parseInt((pageNm - 1) / 5) * 5 + 1;
           for (let index = 0; index < 5; index++) {
             if (Number(min + index) > this.totalPages) break;
