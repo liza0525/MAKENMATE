@@ -17,17 +17,9 @@
             </tr>
           </thead>
           <tbody>
-            <tr
-              class="text-center"
-              v-for="board in info.content"
-              v-bind:key="board.rid"
-            >
+            <tr class="text-center" v-for="board in info.content" v-bind:key="board.rid">
               <td class="numbering-col" v-html="board.rid"></td>
-              <td
-                v-html="board.title"
-                @click="detail_id(board.rid)"
-                style="cursor: pointer;"
-              ></td>
+              <td v-html="board.title" @click="detail_id(board.rid)" style="cursor: pointer;"></td>
               <td v-html="board.user.nickname"></td>
               <td class="date-col" v-html="board.regdate"></td>
             </tr>
@@ -36,19 +28,9 @@
       </v-simple-table>
     </div>
     <div id="boardrecipe-list-footer">
-      <button
-        v-if="this.$store.state.username"
-        class="boardrecipe-button"
-        @click="add_move()"
-      >
-        글쓰기
-      </button>
+      <button v-if="this.$store.state.username" class="boardrecipe-button" @click="add_move()">글쓰기</button>
       <div id="pagination">
-        <button
-          v-for="pageNm in pageNms"
-          :key="pageNm"
-          @click="retrieveBoard(pageNm)"
-        >
+        <button v-for="pageNm in pageNms" :key="pageNm" @click="retrieveBoard(pageNm)">
           <span style="margin-right:10px;">{{ pageNm }}</span>
         </button>
       </div>
@@ -70,7 +52,7 @@ export default {
     };
   },
   components: {
-    Search,
+    Search
   },
   methods: {
     retrieveBoard(pageNm) {
@@ -111,6 +93,29 @@ export default {
     },
     getSearchData(inputValue) {
       console.log(inputValue);
+      http
+        .get("/boardrecipe/search", {
+          params: {
+            searchData: inputValue
+          }
+        })
+        .then(response => {
+          this.info = response.data.object;
+          this.totalPages = response.data.object.totalPages;
+          console.log(this.info);
+          let arr = [];
+
+          let min = 1;
+          for (let index = 0; index < 5; index++) {
+            if (Number(min + index) > this.totalPages) break;
+            arr.push(Number(min + index));
+          }
+          this.pageNms = arr;
+        })
+        .catch(error => {
+          this.errored = true;
+        })
+        .finally(() => (this.loading = false));
     }
   },
   mounted() {

@@ -287,7 +287,6 @@ export default {
     http.get("/boardrecipe/" + this.rid).then(res => {
       // console.log(res.data)
       this.boardRecipe = res.data;
-
       if (this.boardRecipe.filelist.length != 0) {
         console.log(this.boardRecipe.filelist[0]);
         for (let i = 0; i < this.boardRecipe.filelist.length; i++) {
@@ -552,6 +551,9 @@ export default {
           }
           this.pageNms = arr;
         });
+    },
+    goback() {
+      this.$router.go(-1);
     }
   },
   destroyed() {

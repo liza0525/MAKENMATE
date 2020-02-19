@@ -48,11 +48,12 @@
 </template>
 
 <script>
+import config from "../../../../config";
 export default {
   data() {
     return {
       CLIENT_ID: "2660ec76173c2f0ea3aa79f02dc02b76",
-      redirectURI: "http://localhost:8080/user/kakaoLogin",
+      redirectURI: config.url + "/user/kakaoLogin",
       kakaoLoginURL: "https://kauth.kakao.com/oauth/authorize?"
     };
   },

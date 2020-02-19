@@ -200,6 +200,7 @@ export default {
       searchedData: [],
       pageNms: [],
       totalPages: 0,
+
       filter: {
         filtered: "",
         searchData: ""

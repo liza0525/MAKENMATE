@@ -36,7 +36,7 @@ import io.swagger.annotations.ApiResponses;
         @ApiResponse(code = 500, message = "Failure", response = BasicResponse.class) })
 
 @RestController
-@RequestMapping(value = "/board")
+@RequestMapping(value = "/backend/board")
 public class BoardCommentsLikeController {
 
     @Autowired

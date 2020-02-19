@@ -12,7 +12,9 @@
         <div class="stars"></div>
         <div class="stars"></div>
         <div class="scroling-intro-wrap"></div>
-        <h1 class="animated flipInX delay-1s" id="main-title">Daily Cocktail Party</h1>
+        <h1 class="animated flipInX delay-1s" id="main-title">
+          Daily Cocktail Party
+        </h1>
       </div>
       <!-- page 2 -->
       <div class="section">
@@ -34,10 +36,10 @@
         <p id="main-contents">
           술과 술이 만나 칵테일이 되듯이
           <br />우리의 레시피를 모아 더
-          <span style="background-color: #000;">특별한 순간</span>을 만들고자 합니다.
-          <br />이러한 가치를 아는 사람들이 모여 함께 한다면
-          <br />더욱
-          <span style="background-color: #000;">특별한 하루</span>를 보내지 않을까요..?
+          <span style="background-color: #000;">특별한 순간</span>을 만들고자
+          합니다. <br />이러한 가치를 아는 사람들이 모여 함께 한다면 <br />더욱
+          <span style="background-color: #000;">특별한 하루</span>를 보내지
+          않을까요..?
           <br />
         </p>
       </div>
@@ -66,30 +68,60 @@
               <h1 class="info-members-name">{{ person.name }}</h1>
               <div style="margin-left: auto; float:right; font-size: 2rem;">
                 <a :href="person.instagram" target="_blank">
-                <i v-if="person.instagram != null" class="fab fa-instagram"></i></a>
+                  <i
+                    v-if="person.instagram != null"
+                    class="fab fa-instagram"
+                  ></i
+                ></a>
                 <a :href="person.github" target="_blank">
-                <i v-if="person.github != null" class="fab fa-github" style="margin-left: 10px;"></i></a>
+                  <i
+                    v-if="person.github != null"
+                    class="fab fa-github"
+                    style="margin-left: 10px;"
+                  ></i
+                ></a>
                 <a :href="`mailto:${person.email}`">
-                <i v-if="person.email != null" class="far fa-envelope" style="margin-left: 10px;"></i></a>
+                  <i
+                    v-if="person.email != null"
+                    class="far fa-envelope"
+                    style="margin-left: 10px;"
+                  ></i
+                ></a>
               </div>
             </v-card-title>
             <v-card-text>
               <p style="font-weight: bold;">Role : {{ person.role }}</p>
               <div class="ability-chart">
                 Java/Spring
-                <v-progress-circular rotate="270" :value="person.java" color="#EC380B"></v-progress-circular>
+                <v-progress-circular
+                  rotate="270"
+                  :value="person.java"
+                  color="#EC380B"
+                ></v-progress-circular>
               </div>
               <div class="ability-chart">
                 HTML/CSS/Vue.js
-                <v-progress-circular rotate="270" :value="person.vue" color="#F05F3B"></v-progress-circular>
+                <v-progress-circular
+                  rotate="270"
+                  :value="person.vue"
+                  color="#F05F3B"
+                ></v-progress-circular>
               </div>
               <div class="ability-chart">
                 Python/Django
-                <v-progress-circular rotate="270" :value="person.python" color="#429F9E"></v-progress-circular>
+                <v-progress-circular
+                  rotate="270"
+                  :value="person.python"
+                  color="#429F9E"
+                ></v-progress-circular>
               </div>
               <div class="ability-chart">
                 Server
-                <v-progress-circular rotate="2 70" :value="person.server" color="#007872"></v-progress-circular>
+                <v-progress-circular
+                  rotate="2 70"
+                  :value="person.server"
+                  color="#007872"
+                ></v-progress-circular>
               </div>
             </v-card-text>
           </v-card>
@@ -100,7 +132,8 @@
 </template>
 
 <script>
-// import $ from 'jquery';
+const storage = window.sessionStorage;
+import http from "../../http-common";
 export default {
   data() {
     return {
@@ -186,6 +219,35 @@ export default {
   },
   mounted() {
     this.infoPopUp();
+    if (
+      !(
+        this.$route.query.msg == "undefined" ||
+        this.$route.query.msg == null ||
+        this.$route.query.msg == ""
+      )
+    ) {
+      alert(this.$route.query.msg);
+      this.$router.push({
+        name: "Join",
+        params: { nickname: this.$route.query.nickname }
+      });
+    } else {
+      http
+        .post("/user/auth", null, {
+          params: {
+            token: this.$route.query.token
+          }
+        })
+        .then(res => {
+          storage.setItem("Authorization", res.headers["authorization"]);
+          storage.setItem("login_username", res.data.object.nickname);
+          storage.setItem("login_useremail", res.data.object.email);
+          this.$store.state.username = res.data.object.nickname;
+          this.$store.state.useremail = res.data.object.email;
+          this.$router.push({ name: "Main" });
+        })
+        .catch(exp => console.log(exp));
+    }
   },
   beforeDestroy() {
     window.removeEventListener("close", this.infoPopUp);
