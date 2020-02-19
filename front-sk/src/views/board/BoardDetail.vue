@@ -2,7 +2,17 @@
   <div id="board-detail">
     <div id="board-header">
       <h1 id="board-title">{{ board.title }}</h1>
-      <h3 id="board-username">by. {{ board.user_name }}</h3>
+      <h3 id="board-username">
+        by. 
+        <router-link
+        :to="{
+          name: 'UserProfile',
+          params: {
+            username: board.user_name,
+          }
+        }" style="color:white;">
+        {{ board.user_name }}
+        </router-link></h3>
     </div><font size="10">
     <div id="board-context" v-html="board.contents"></div></font>
 

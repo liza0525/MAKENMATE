@@ -61,7 +61,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 #input-email-window {
   margin: 15vh auto;
 }

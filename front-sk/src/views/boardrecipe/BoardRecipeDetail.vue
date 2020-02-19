@@ -1,12 +1,18 @@
 <template>
-    <div v-if="window.width >= 1000">
-        <div id="boardrecipe-detail">
-            <div id="boardrecipe-header">
-                <h1 id="boardrecipe-title">{{ boardRecipe.title }}</h1>
-                <h3 id="boardrecipe-username">by.
-                    {{ boardRecipe.user_name }}</h3>
-            </div>
-            <div id="boardrecipe-context" v-html="boardRecipe.contents"></div>
+  <div v-if="window.width >= 1000">
+    <div id="boardrecipe-detail">
+      <div id="boardrecipe-header">
+        <h1 id="boardrecipe-title">{{ boardRecipe.title }}</h1>
+        <h3 id="boardrecipe-username">by. 
+        <router-link
+        :to="{
+          name: 'UserProfile',
+          params: {
+            username: boardRecipe.user_name,
+          }
+        }" style="color:white;">{{ boardRecipe.user_name }}</router-link></h3>
+      </div>
+      <div id="boardrecipe-context" v-html="boardRecipe.contents"></div>
 
             <!-- 업로드 이미지-->
             <v-row id="img-contents">
@@ -552,86 +558,88 @@
                                 };
                             </script>
 
-                            <style>
-                                #boardrecipe-header {
-                                    background: linear-gradient(rgba(0, 0, 0, 0.5)), url("../../assets/images/image7.jpg") no-repeat;
-                                    background-size: 100%;
-                                    height: 50vh;
-                                    background-position-y: 30%;
-                                    color: white;
-                                }
-                                #boardrecipe-title {
-                                    margin: 0 0 0 15vw;
-                                    display: inline;
-                                    position: relative;
-                                    float: left;
-                                    top: 30vmin;
-                                    font-size: 11vmin;
-                                    font-family: "BBTreeGB";
-                                }
-                                #boardrecipe-username {
-                                    margin: 0 0 0 2rem;
-                                    display: inline;
-                                    position: relative;
-                                    float: left;
-                                    top: 40vh;
-                                    font-family: "BBTreeGB";
-                                }
-                                #boardrecipe-date {
-                                    display: inline;
-                                    bottom: 0;
-                                    float: right;
-                                    margin-top: 3vh;
-                                    font-size: 3vmin;
-                                    font-family: "GyeonggiBatang";
-                                }
-                                #boardrecipe-context {
-                                    color: #ccc;
-                                    margin: 5vw 15vw;
-                                    font-family: "GyeonggiBatang";
-                                }
-                                #boardrecipe-footer {
-                                    color: #ccc;
-                                    margin: 0 10vmax;
-                                    padding: 0 1rem 2rem;
-                                    border-bottom: 1px solid #ccc;
-                                }
-                                .boardrecipe-button3 {
-                                    margin: 0 0.5vmin;
-                                    width: 14vmin;
-                                    height: 6vmin;
-                                    border: 1px solid #ccc;
-                                    border-radius: 10vmin;
-                                    font-size: 2.5vmin;
-                                    font-family: "GyeonggiBatang";
-                                }
-                                .boardrecipe-button2 {
-                                    margin: 0 0.5vmin;
-                                    width: 12vmin;
-                                    height: 5vmin;
-                                    border: 1px solid #ccc;
-                                    border-radius: 10vmin;
-                                    font-size: 2.5vmin;
-                                    font-family: "GyeonggiBatang";
-                                }
-                                #like-button {
-                                    display: block;
-                                    position: relative;
-                                    color: #ccc;
-                                    text-align: center;
-                                    margin-bottom: 3vh;
-                                    font-family: "GyeonggiBatang";
-                                }
-                                #comment-set {
-                                    margin: 3vmin;
-                                    color: #ccc;
-                                    margin: 0 10vmax;
-                                    padding: 2rem 1rem;
-                                    font-family: "GyeonggiBatang";
-                                }
-                                #img-contents {
-                                    margin: 5vh 15vw;
-                                }
+<style scoped>
+#boardrecipe-header {
+  background: linear-gradient(rgba(0, 0, 0, 0.5)),
+    url("../../assets/images/image7.jpg") no-repeat;
+  background-size: 100%;
+  height: 50vh;
+  background-position-y: 30%;
+  color: white;
+}
+#boardrecipe-title {
+  margin: 0 0 0 15vw;
+  display: inline;
+  position: relative;
+  float: left;
+  top: 30vmin;
+  font-size: 11vmin;
+  font-family: "BBTreeGB";
+}
+#boardrecipe-username {
+  margin: 0 0 0 2rem;
+  display: inline;
+  position: relative;
+  float: left;
+  top: 40vh;
+  font-family: "BBTreeGB";
+}
+#boardrecipe-date {
+  display: inline;
+  bottom: 0;
+  float: right;
+  margin-top: 3vh;
+  font-size: 3vmin;
+  font-family: "GyeonggiBatang";
+}
+#boardrecipe-context {
+  color: #ccc;
+  margin: 5vw 15vw;
+  font-family: "GyeonggiBatang";
+}
+#boardrecipe-footer {
+  color: #ccc;
+  margin: 0vmax 10vmax;
+  padding: 0 1rem;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid #ccc;
+}
+.boardrecipe-button3 {
+  margin: 0 0.5vmin;
+  width: 14vmin;
+  height: 6vmin;
+  border: 1px solid #ccc;
+  border-radius: 10vmin;
+  font-size: 2.5vmin;
+  font-family: "GyeonggiBatang";
+}
+.boardrecipe-button2 {
+  margin: 0 0.5vmin;
+  width: 12vmin;
+  height: 5vmin;
+  border: 1px solid #ccc;
+  border-radius: 10vmin;
+  font-size: 2.5vmin;
+  font-family: "GyeonggiBatang";
+}
+#like-button {
+  display: block;
+  position: relative;
+  color: #ccc;
+  text-align: center;
+  margin-bottom: 3vh;
+  font-family: "GyeonggiBatang";
+}
+#comment-set {
+  margin: 3vmin;
+  color: #ccc;
+  margin: 0vmax 10vmax;
+  padding: 2rem 1rem;
+  font-family: "GyeonggiBatang";
+}
+#img-contents {
+  margin: 5vh 15vw;
+}
 
                                 @media (max-width: 700px) {
                                     #boardrecipe-context {

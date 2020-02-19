@@ -19,8 +19,20 @@
           <tbody>
             <tr v-for="board in info.content" v-bind:key="board.bid">
               <td class="numbering-col" v-html="board.bid"></td>
-              <td v-html="board.title" @click="detail_id(board.bid)" style="cursor: pointer;"></td>
-              <td v-html="board.user_name"></td>
+              <td
+                v-html="board.title"
+                @click="detail_id(board.bid)"
+              ></td>
+              <td>
+              <router-link
+                :to="{
+                  name: 'UserProfile',
+                  params: { username: board.user.nickname }
+                }"
+                 style="color: white; cursor: pointer;"
+              >
+                {{ board.user.nickname }}
+              </router-link></td>
               <td class="date-col" v-html="board.regdate"></td>
             </tr>
           </tbody>
@@ -29,8 +41,19 @@
     </div>
     <div id="board-list-footer">
       <button v-if="this.$store.state.username" class="board-button" @click="add_move()">글쓰기</button>
+      <button
+        v-if="this.$store.state.username"
+        class="board-button"
+        @click="add_move()"
+      >
+        글쓰기
+      </button>
       <div id="pagination">
-        <button v-for="pageNm in pageNms" :key="pageNm" @click="retrieveBoard(pageNm)">
+        <button
+          v-for="pageNm in pageNms"
+          :key="pageNm"
+          @click="retrieveBoard(pageNm)"
+        >
           <span style="margin-right:10px;">{{ pageNm }}</span>
         </button>
       </div>
@@ -67,7 +90,7 @@ export default {
           this.info = response.data.object;
           this.totalPages = response.data.object.totalPages;
           let arr = [];
-          console.log(this.info)
+          console.log(this.info);
           let min = parseInt((pageNm - 1) / 5) * 5 + 1;
           for (let index = 0; index < 5; index++) {
             if (Number(min + index) > this.totalPages) break;
@@ -93,29 +116,6 @@ export default {
     },
     getSearchData(inputValue) {
       console.log(inputValue);
-      http
-        .get("/board/search", {
-          params: {
-            searchData: inputValue
-          }
-        })
-        .then(response => {
-          this.info = response.data.object;
-          this.totalPages = response.data.object.totalPages;
-          console.log(this.info);
-          let arr = [];
-
-          let min = 1;
-          for (let index = 0; index < 5; index++) {
-            if (Number(min + index) > this.totalPages) break;
-            arr.push(Number(min + index));
-          }
-          this.pageNms = arr;
-        })
-        .catch(error => {
-          this.errored = true;
-        })
-        .finally(() => (this.loading = false));
     }
   },
   mounted() {
@@ -123,15 +123,15 @@ export default {
   }
 };
 </script>
-<style>
+<style scoped>
 td {
   font-family: "GyeonggiBatang";
 }
 #board-list-header {
-  background: linear-gradient(rgba(0, 0, 0, 0.5)),
+  background: linear-gradient(rgba(0, 0, 0, 0.3)),
     url("../../assets/images/image5.jpg") no-repeat;
   background-size: 100%;
-  height: 50vh;
+  height: 60vh;
   background-position-y: 30%;
   color: white;
 }
@@ -140,7 +140,7 @@ td {
   display: inline;
   position: relative;
   float: left;
-  top: 30vmin;
+  top: 35vmin;
   font-size: 11vmin;
   font-family: "BBTreeGB";
 }
@@ -153,7 +153,6 @@ td {
 #board-context {
   color: #ccc;
   margin: 5vmax 10vmax;
-  font-family: "GyeonggiBatang";
 }
 .board-button {
   margin: 0 0.5rem;
@@ -179,13 +178,20 @@ td {
     display: none;
   }
   #board-list-header {
-    height: 35vh;
+    height: 50vh;
     background-size: 200vw;
     background-position-x: 50%;
   }
   #board-category {
-    margin-top: 4vmin;
-    font-size: 8vmin;
+    margin-top: 3vmin;
+    font-size: 7vmin;
   }
+}
+.search {
+  border-bottom: 2px solid #ccc;
+  width: 230px;
+  margin-right: 10px;
+  margin-left: auto;
+  margin-bottom: 20px;
 }
 </style>

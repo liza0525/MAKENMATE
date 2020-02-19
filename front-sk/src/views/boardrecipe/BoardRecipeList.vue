@@ -20,7 +20,17 @@
             <tr class="text-center" v-for="board in info.content" v-bind:key="board.rid">
               <td class="numbering-col" v-html="board.rid"></td>
               <td v-html="board.title" @click="detail_id(board.rid)" style="cursor: pointer;"></td>
-              <td v-html="board.user.nickname"></td>
+              <td>
+                <router-link
+                  :to="{
+                  name: 'UserProfile',
+                  params: {
+                    username: board.user.nickname
+                  }
+                }"
+                 style="color: white; cursor: pointer;">
+                {{ board.user.nickname }}</router-link>
+              </td>
               <td class="date-col" v-html="board.regdate"></td>
             </tr>
           </tbody>
