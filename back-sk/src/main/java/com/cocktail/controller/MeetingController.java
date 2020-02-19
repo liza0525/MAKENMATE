@@ -140,9 +140,12 @@ public class MeetingController {
 	    	meet.setPeople(meet.getPeople() + 1);
 	    	um.setUser(find);
 	    	um.setMeeting(meet);
-	    	um.setUserImg(find.getImage());
+    		um.setUserImg(find.getImage());
 	    	um.setUsername(username);
-	    	userMeetingDao.save(um);
+	    	
+	    	meetingDao.save(meet);
+	    	if(userMeetingDao.findByUser_uidAndMeeting_mid(find.getUid(), mid) == null)
+	    		userMeetingDao.save(um);
 	    	resultMap.put("status", "true");
 	    	resultMap.put("data", "success");
 	        return new ResponseEntity<>(resultMap, HttpStatus.OK);

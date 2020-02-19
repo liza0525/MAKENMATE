@@ -1,5 +1,5 @@
 <template>
-<div id="kakao-btn" @click="gotoURL()">
+  <div id="kakao-btn" @click="gotoURL()">
     <button>
       <svg
         xmlns="http://www.w3.org/2000/svg"

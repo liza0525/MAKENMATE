@@ -86,7 +86,7 @@
         @input="autocomplete"
         v-model="searchData"
         @keypress.enter="search(1)"
-        class="neon-input"
+        class="search-input"
         placeholder="Search"
         style="width:50%; font-size:0.8rem"
       />
@@ -132,7 +132,7 @@
           @input="autocomplete"
           v-model="searchData"
           @keypress.enter="search(1)"
-          class="neon-input"
+          class="search-input"
           placeholder="Search"
         />
         <button @click="search(1)" style="margin-top: 1%; margin-left:1%">
@@ -488,10 +488,10 @@ export default {
   color: rgba(242, 30, 178, 0.78);
   background-color: #ffffff;
   display: inline-block;
-  width: 15%;
+  width: 30%;
   font-size: 1.3rem;
   text-align: left;
-  margin-right: 2.8%;
+  margin-right: 3.6%;
   padding-left: 1.5%;
   padding-bottom: 0.7%;
   padding-top: 0.7%;
@@ -552,8 +552,8 @@ export default {
   background-color: #ffffff;
 }
 
-.neon-input {
-  width: 20%;
+.search-input {
+  width: 30%;
   padding-top: 1%;
   padding-bottom: 1%;
   font-size: 1.3rem;
@@ -567,7 +567,7 @@ export default {
   font-size: 150%;
   font-family: "국립박물관문화재단클래식B";
 }
-.neon-input::placeholder {
+.search-input::placeholder {
   font-family: "GyeonggiBatang";
   color: #c6e2ff;
   animation: neon-box 0.08s ease-in-out infinite alternate;
