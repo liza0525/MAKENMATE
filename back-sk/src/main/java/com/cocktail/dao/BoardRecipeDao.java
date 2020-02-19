@@ -17,4 +17,5 @@ public interface BoardRecipeDao extends JpaRepository<BoardRecipe, Integer> {
     Optional<BoardRecipe> findByRid(int rid);
     // List<board> findByComments(int bid);
 	Page<BoardRecipe> findAllByTitleLike(String title, Pageable pageable);
+	Page<BoardRecipe> findAllByUser_uid(int user_uid, Pageable pageable);
 }

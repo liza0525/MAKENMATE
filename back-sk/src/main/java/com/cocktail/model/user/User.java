@@ -18,6 +18,8 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.cocktail.model.board.Board;
+import com.cocktail.model.boardRecipe.BoardRecipe;
 import com.cocktail.model.like.BoardCommentsLike;
 import com.cocktail.model.like.BoardLike;
 import com.cocktail.model.like.BoardRecipeCommentsLike;
@@ -112,18 +114,13 @@ public class User implements UserDetails {
 		this.uid = uid;
 	}
 
-	// @JsonManagedReference
-	// @OneToMany
-	// @Builder.Default
-	// @JoinColumn(name = "cmid")
-	// private List<Comments> commentsArray = new ArrayList<>();
 
-	// @Column(insertable = false, updatable = false)
-	// private LocalDateTime createDate;
-	// @ManyToOne(targetEntity = Comments.class, fetch = FetchType.EAGER)
-	// @JoinColumn(name = "cmid")
-	// private Comments comments;
-
+	@OneToMany(mappedBy = "user")
+	@JsonManagedReference
+	private final List<Board> board = new ArrayList<>();
+//	@OneToMany(mappedBy = "user")
+//	@JsonManagedReference
+//	private final List<BoardRecipe> boardRecipe = new ArrayList<>();
 	@OneToMany(mappedBy = "user")
 	@JsonManagedReference
 	private final List<CocktailLike> cocktailLike = new ArrayList<>();

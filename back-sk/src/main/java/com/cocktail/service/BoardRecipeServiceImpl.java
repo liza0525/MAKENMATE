@@ -43,7 +43,7 @@ public class BoardRecipeServiceImpl implements BoardRecipeService {
     }
 
     @Override
-    public Page<BoardRecipe> getAllBoardRecipeLike(String searchData, Pageable pageable) {
+    public Page<BoardRecipe> getAllBoardRecipeTitleLike(String searchData, Pageable pageable) {
         return boardRecipeDao.findAllByTitleLike(searchData, pageable);
     }
 
