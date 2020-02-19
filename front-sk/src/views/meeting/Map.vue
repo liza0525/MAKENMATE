@@ -1,5 +1,8 @@
 <template>
   <div>
+    <div class="search">
+      <Search @searchData="getSearchData" class="search"></Search>
+    </div>
     <google-map class="googleMap" @click="addMarker">
       <div slot-scope="{ google, map }">
         <google-map-marker
@@ -256,6 +259,9 @@ export default {
         this.gettingLocation = false;
         this.errorStr = e.message;
       }
+    },
+    getSearchData(inputValue) {
+      console.log(inputValue);
     }
   }
 };
@@ -301,5 +307,8 @@ export default {
 }
 input {
   width: 90%;
+}
+.search {
+  z-index: 2;
 }
 </style>

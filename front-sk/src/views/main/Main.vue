@@ -1,7 +1,13 @@
 <template>
   <div>
     <div>
-    <div class="animated infinite pulse" id="scroll-down" style="width: 100%;">scroll down ↓</div>
+      <div
+        class="animated infinite pulse"
+        id="scroll-down"
+        style="width: 100%;"
+      >
+        scroll down ↓
+      </div>
     </div>
     <full-page ref="fullpage" :options="options" id="fullpage">
       <!-- page 1 -->
@@ -208,7 +214,7 @@ export default {
         };
         modal[i].onclick = function(e) {
           modal[i].style.display = "none";
-        }
+        };
       }
     }
   },
@@ -364,7 +370,7 @@ span {
 .info-members-name {
   display: inline;
   font-size: 2rem;
-  font-family: 'BBTreeGB';
+  font-family: "BBTreeGB";
 }
 .modal {
   display: none;
@@ -442,8 +448,11 @@ a {
 }
 
 .stars {
-  background-image: 
-    radial-gradient(2.3px 2.3px at 20px 30px,#eee,rgba(0, 0, 0, 0)),
+  background-image: radial-gradient(
+      2.3px 2.3px at 20px 30px,
+      #eee,
+      rgba(0, 0, 0, 0)
+    ),
     radial-gradient(2px 2px at 40px 70px, #fff, rgba(0, 0, 0, 0)),
     radial-gradient(2.3px 2.3px at 50px 160px, #ddd, rgba(0, 0, 0, 0)),
     radial-gradient(2px 2px at 90px 40px, #fff, rgba(0, 0, 0, 0)),
