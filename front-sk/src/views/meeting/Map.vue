@@ -1,9 +1,11 @@
 <template>
   <div>
-    <div class="search">
-      <Search @searchData="getSearchData" class="search"></Search>
-    </div>
-    <google-map class="googleMap" @click="addMarker">
+    <google-map
+      class="googleMap"
+      @click="addMarker"
+      :style="{ height: map.height }"
+      style="margin-top:4rem"
+    >
       <div slot-scope="{ google, map }">
         <google-map-marker
           v-for="(marker, index) in markers"
@@ -18,6 +20,8 @@
           :google="google"
           :map="map"
           position="BOTTOM_CENTER"
+          :style="{ height: map.height }"
+          style="top:4rem"
         >
           <input type="text" />
         </google-map-custom-control>
@@ -117,18 +121,39 @@ export default {
         place: "",
         detail: ""
       },
+      window: {
+        width: 0,
+        height: 0
+      },
       open: false,
       location: null,
       gettingLocation: false,
       errorStr: null,
-      Images: []
+      Images: [],
+      map: {
+        width: 0,
+        height: 0
+      }
     };
   },
   mounted() {
+    window.addEventListener("resize", this.handleResize);
+    this.handleResize();
     this.username = this.$store.state.username;
     this.getMarker();
   },
+  destroyed() {
+    window.removeEventListener("resize", this.handleResize);
+  },
   methods: {
+    handleResize() {
+      this.window.width = window.innerWidth;
+      this.window.height = window.innerHeight;
+      // console.log(typeof this.window.height);
+      this.window.height = this.window.height + "px";
+      this.map.height = "calc(" + this.window.height + " - 8rem)";
+      this.window.height = "calc(" + this.window.height + " - 4rem)";
+    },
     addMarker(e) {
       const { lat, lng } = e.latLng.toJSON();
       this.open = !this.open;
