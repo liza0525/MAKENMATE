@@ -7,7 +7,9 @@
             class="neon-card mx-auto"
             style="padding: 10%;width: 30vw; background-color: black"
           >
-            <h1 class="neon-label" style="text-align: center;">회원 탈퇴</h1>
+            <h1 class="neon-label" style="text-align: center;margin-bottom:10%">
+              회원 탈퇴
+            </h1>
             <label for="password" class="neon-label col-12 mb-2">
               비밀번호
             </label>
@@ -17,7 +19,7 @@
               id="password"
               placeholder="비밀번호를 입력하세요."
               class="neon-input col-12 mb-4"
-              @keyup.enter="login"
+              @keyup.enter="withdraw"
             />
             <div class="error-text neon-label" v-if="error.password != false">
               {{ error.password }}
@@ -111,7 +113,6 @@ input::placeholder {
   background: linear-gradient(rgba(0, 0, 0, 0.7)),
     url("../../../assets/images/account_bg.jpg") no-repeat;
   background-size: cover;
-  height: 100vh;
 }
 #sns-login {
   width: 100%;
