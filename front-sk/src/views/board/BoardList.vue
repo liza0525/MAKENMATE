@@ -4,6 +4,8 @@
       <h1 id="board-category">자유 게시판</h1>
     </div>
     <div id="board-context">
+      <!-- 검색 기능은 getSearchData 메소드에 정리 -->
+      <Search @searchData="getSearchData" class="search"></Search>
       <v-simple-table dark>
         <template>
           <thead>
@@ -52,8 +54,12 @@
 
 <script>
 import http from "../../http-common";
+import Search from "../../components/common/Search.vue";
 export default {
   name: "board-list",
+  components: {
+    Search
+  },
   data: () => {
     return {
       info: [],
@@ -98,6 +104,9 @@ export default {
           bid: sendbid
         }
       });
+    },
+    getSearchData(inputValue) {
+      console.log(inputValue);
     }
   },
   mounted() {
@@ -146,13 +155,13 @@ td {
   font-size: 2vmin;
   font-family: "GyeonggiBatang";
 }
-#pagination {
+.pagination {
   display: inline;
   float: right;
   font-size: 18px;
   font-family: "GyeonggiBatang";
 }
-@media (max-width: 700px) {
+@media (max-width: 960px) {
   #board-context {
     margin: 2vmax 3vmax;
   }

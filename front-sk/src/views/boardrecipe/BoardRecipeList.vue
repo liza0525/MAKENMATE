@@ -4,6 +4,8 @@
       <h1 id="boardrecipe-category">레시피 공유</h1>
     </div>
     <div id="boardrecipe-context">
+      <!-- 검색 기능은 getSearchData 메소드에 정리 -->
+      <Search @searchData="getSearchData" class="search"></Search>
       <v-simple-table dark>
         <template>
           <thead>
@@ -55,6 +57,7 @@
 </template>
 <script>
 import http from "../../http-common";
+import Search from "../../components/common/Search.vue";
 export default {
   name: "boardrecipe-list",
   data: () => {
@@ -65,6 +68,9 @@ export default {
       totalPages: 0,
       pageNms: []
     };
+  },
+  components: {
+    Search,
   },
   methods: {
     retrieveBoard(pageNm) {
@@ -102,6 +108,9 @@ export default {
           rid: sendrid
         }
       });
+    },
+    getSearchData(inputValue) {
+      console.log(inputValue);
     }
   },
   mounted() {
@@ -152,12 +161,6 @@ export default {
   border: 1px solid #ccc;
   border-radius: 10vmin;
   font-size: 2vmin;
-  font-family: "GyeonggiBatang";
-}
-#pagination {
-  display: inline;
-  float: right;
-  font-size: 18px;
   font-family: "GyeonggiBatang";
 }
 @media (max-width: 700px) {
