@@ -3,7 +3,11 @@
     <div id="user-scrap-header">
       <h1 id="user-scrap-title">{{ user.nickname }} Profile</h1>
     </div>
-    <div class="backgroundcolor" v-show="window.width >= 768">
+    <div
+      class="backgroundcolor"
+      v-show="window.width >= 768"
+      style="padding-bottom:10%"
+    >
       <v-row no-gutters>
         <v-col class="col-1"></v-col>
         <div
@@ -23,6 +27,7 @@
         </div>
 
         <v-col class="col-1"></v-col>
+
         <v-col>
           <div style="display:inline-block; width: 70%">
             <div
@@ -146,19 +151,22 @@
         </v-col>
       </v-row>
 
-      <h1
-        class="sansfont"
-        style=" margin-top:5%;font-size:200%; text-align:center; font-weight:bolder;"
-      >
-        {{ user.nickname }}님이 쓴 글
-      </h1>
-      <v-row>
-        <!-- <v-col v-for="(board, i) in boardArray" :key="i">
-
-        </v-col>-->
-      </v-row>
+      <div v-show="boardArray.length > 0">
+        <div
+          class="sansfont"
+          style=" margin-top:20%;font-size:200%; text-align:center; font-weight:bolder;"
+        >
+          {{ user.nickname }}님이 쓴 글
+        </div>
+        <div v-for="(board, i) in boardArray" :key="i">
+          {{ board.title }}
+        </div>
+      </div>
     </div>
-    <div style="background-color:#FFF" v-show="window.width < 768">
+    <div
+      style="background-color:#FFF;padding-bottom:40%"
+      v-show="window.width < 768"
+    >
       <v-row no-gutters>
         <v-col class="col-1"></v-col>
         <div
@@ -184,13 +192,16 @@
             >
               {{ user.nickname }}
             </div>
-            <span class="sansfont" style="margin-left:3%;font-size:100%;"
+            <span
+              class="sansfont"
+              style="margin-left:3%;font-size:100%;display:block;margin-top:5%;"
+              v-show="window.width < 1035"
               >(ID : {{ user.email }})</span
             >
           </div>
           <div
             class="text-center"
-            style=" margin-top:10%;display:inline-block;float:right;  margin-right:2%;"
+            style=" margin-top:10%;display:inline-block;float:right;margin-right:2%;"
           >
             <v-btn
               v-show="updateIntro"
@@ -292,18 +303,23 @@
           </carousel-3d>
         </v-col>
       </v-row>
-
-      <h1
-        class="sansfont"
-        style=" margin-top:20%;font-size:200%; text-align:center; font-weight:bolder;"
-      >
-        {{ user.nickname }}님이 쓴 글
-      </h1>
-      <v-row>
-        <!-- <v-col v-for="(board, i) in boardArray" :key="i">
-
-        </v-col>-->
-      </v-row>
+      <div v-show="boardArray.length > 0">
+        <div>{{ user.nickname }}님이 쓴 글</div>
+        <div v-for="(board, i) in boardArray" :key="i">
+          {{ board.title }}
+        </div>
+      </div>
+      <div v-show="boardArray.length > 0">
+        <div
+          class="sansfont"
+          style=" margin-top:20%;font-size:200%; text-align:center; font-weight:bolder;"
+        >
+          {{ user.nickname }}님이 쓴 글
+        </div>
+        <div v-for="(board, i) in boardArray" :key="i">
+          {{ board.title }}
+        </div>
+      </div>
     </div>
   </div>
 </template>
