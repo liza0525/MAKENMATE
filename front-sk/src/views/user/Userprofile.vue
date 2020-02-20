@@ -8,7 +8,7 @@
         <v-col class="col-1"></v-col>
         <div class="col-12 col-md-6 col-lg-4 col-sm-6" style="text-align:center;">
           <div
-            style="position:absoulte; margin-top:4%; display:inline-block; overflow: hidden;  height:300px; width: 300px; border-radius:300px;"
+            style="position:absoulte; margin-top:4%; margin-bottom: 8%; display:inline-block; overflow: hidden;  height:300px; width: 300px; border-radius:300px;"
           >
             <img :src="user.image" style="position:absoulte; width:100%; height:100%;" />
             <!--file upload component-->

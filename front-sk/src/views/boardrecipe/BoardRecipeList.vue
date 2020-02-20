@@ -18,7 +18,12 @@
               style="opacity:100 !important; visibility:visible;height:200px !important;background-color:#ffffff;"
             >
               <v-card style="height:100px">
-                <v-img :src="slide.image" alt="ll" style="height:100%;"></v-img>
+                <!-- <v-img :src="slide.image" alt="ll" style="height:100%;"></v-img> -->
+                <div style="height:100%; font-size: 20px; text-align:center;display:table;">
+                  <div
+                    style="display:table-cell; vertical-align: middle; text-align:center;"
+                  >{{slide.contents}}</div>
+                </div>
                 <h1
                   class="sansfont"
                   style="margin-left:30px; margin-top:10px;font-weight:bolder;"
