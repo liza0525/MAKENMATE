@@ -369,7 +369,8 @@ export default {
            this.user.image = require(`../../assets/images/profile_default.png`);
         }else {
           //DB image column 경로
-          this.user.image = require("/home/ubuntu/image/"+this.user.image);
+          //this.user.image = require("/home/ubuntu/image/"+this.user.image);
+          this.user.image = require(this.user.image);
           console.log(this.user.image);
         }
       });
