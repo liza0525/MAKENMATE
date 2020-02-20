@@ -39,7 +39,7 @@
           </v-list>
         </v-menu>
         <!-- search bar -->
-        <v-menu offset-y :close-on-content-click="false">
+        <!-- <v-menu offset-y :close-on-content-click="false">
           <template v-slot:activator="{ on }">
             <v-btn icon color="#fff" v-on="on">
               <v-icon>mdi-magnify</v-icon>
@@ -49,7 +49,7 @@
             <div style="margin-left: 15px; margin-top: 15px">통합 검색</div>
               <Search @searchData="goToTotalSearch" id="search"></Search>
           </v-list>
-        </v-menu>
+        </v-menu> -->
         <!-- account dropdown -->
         <v-menu offset-y bottom>
           <template v-slot:activator="{ on }">
@@ -106,25 +106,17 @@
       <!-- nav-contents-sm -->
       <div id="nav-contents-sm">
         <!-- search bar -->
-        <v-menu offset-y :close-on-content-click="false">
+        <!-- <v-menu offset-y :close-on-content-click="false">
           <template v-slot:activator="{ on }">
             <v-btn icon color="#fff" v-on="on">
               <v-icon>mdi-magnify</v-icon>
             </v-btn>
           </template>
           <v-list>
-            <v-row style="margin: 0 0.5rem 0 0.5rem;">
-              <v-col cols="9">
-                <v-text-field label="칵테일에 관한 모든 검색" placeholder="검색어 입력"></v-text-field>
-              </v-col>
-              <v-col cols="2">
-                <v-btn icon>
-                  <v-icon>mdi-magnify</v-icon>
-                </v-btn>
-              </v-col>
-            </v-row>
+            <div style="margin-left: 15px; margin-top: 15px">통합 검색</div>
+              <Search @searchData="goToTotalSearch" id="search"></Search>
           </v-list>
-        </v-menu>
+        </v-menu> -->
         <!-- hamberger button -->
         <v-app-bar-nav-icon color="#fff" @click.stop="right = !right" />
         <v-navigation-drawer dark v-model="right" app right>
@@ -231,10 +223,10 @@
 </template>
 <script>
 const storage = window.sessionStorage;
-import Search from "../../components/common/Search.vue";
+// import Search from "../../components/common/Search.vue";
 export default {
   components: {
-    Search,
+    // Search,
   },
   data() {
     return {
