@@ -24,6 +24,7 @@ import FileUpload from "./components/FileUpload.vue";
 import BoardRecipeAdd from "./views/boardrecipe/BoardRecipeAdd.vue";
 import BoardRecipeUpdate from "./views/boardrecipe/BoardRecipeUpdate.vue";
 import mMap from "./views/meeting/Map";
+import SearchResult from "./views/SearchResult.vue";
 export default [
   {
     path: "/",
@@ -160,5 +161,10 @@ export default [
     path: "/meeting",
     name: "Meeting",
     component: mMap
+  },
+  {
+    path: "/search/result",
+    name: "SearchResult",
+    component: SearchResult
   }
 ];

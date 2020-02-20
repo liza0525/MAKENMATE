@@ -28,7 +28,7 @@
             type="text"
             name="contentsid"
             id="_contentsid"
-            v-model="board.content"
+            v-model="board.contents"
             style="width:100%; height: 10rem; border-bottom:1px solid #ccc"
           />
         </div>

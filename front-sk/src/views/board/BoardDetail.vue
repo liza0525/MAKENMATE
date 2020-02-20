@@ -42,7 +42,7 @@
         class="board-button"
         v-if="this.$store.state.username === board.user_name"
         @click="update_board(board.bid)"
-      >mdi-pencil</v-icon>
+      >mdi-pencil-plus</v-icon>
       <v-icon
         class="board-button"
         v-if="this.$store.state.username === board.user_name"
@@ -60,29 +60,28 @@
 
     <!-- 댓글 -->
     <div id="board-comment-set">
-      <div id="comment-title">
-        <h1 style="display: inline; margin-right: 3vw">Comment</h1>
+      <div id="comment-title" style="text-align: center;">
+        <h1 style="display: inline; margin-right: 3vw; font-family: 'BBTreeGB';">Comment</h1>
         <div style="display: inline;">
-          <input type="text" v-model="comment" style="border-bottom: 1px solid #ccc; width: 45vw" />
-          <button @click="submitComment" type="submit">댓글</button>
+          <input type="text" v-model="comment" style="border-bottom: 1px solid #ccc; width: 45vw" @keydown.enter="submitComment" />
+          <v-btn fab small dark @click="submitComment" type="submit">
+            <v-icon>mdi-plus</v-icon>
+          </v-btn>
         </div>
       </div>
       <div :v-if="reply" v-for="(re, i) in reply" :key="i" style="margin-top: 5px; display:block;">
         <div v-if="isInput[i] === 0">
-          <span>
+          <p style="margin: 10px 0px;">
             <font size="3">
-              <br />
-              {{ users[i] }}
+                {{ users[i] }}
             </font>
-          </span>
-          <br />
-          <br />
+          </p>
           <span>
-            <font size="4">{{ re.content }}</font>
+            <font size="3">{{ re.content }}</font>
           </span>
           <p v-if="username === users[i]" style="display:inline-block; float: right;">
-            <button @click="click(i)" style="margin-right: 15px">수정</button>
-            <button @click="deleteComment(i, re.cmid)">삭제</button>
+            <v-icon @click="click(i)" style="margin-right: 15px">mdi-pencil-plus</v-icon>
+              <v-icon @click="deleteComment(i, re.cmid)">mdi-close</v-icon>
           </p>
           <br />
           <br />
@@ -90,16 +89,23 @@
           <br />
         </div>
         <div v-else>
-          <span>
-            {{ users[i] }} :
-            <input v-model="re.content" />
-          </span>
-          <p v-if="username === users[i]" style="display:inline-block;">
-            <button @click="updateComment(i, re.cmid, re.content)">수정</button>
+          <p style="margin: 10px 0px;">
+            <font size="3">
+                {{ users[i] }}
+            </font>
           </p>
+          <div>
+            <input id="comment-input" v-model="re.content" @keydown.enter="updateComment(i, re.cmid, re.content)"  />
+          <p v-if="username === users[i]" style="display:inline-block;">
+              <v-icon @click="updateComment(i, re.cmid, re.content)">
+                mdi-check
+              </v-icon>
+          </p>
+          </div>
+          <hr style="opacity: 0.3;" />
         </div>
       </div>
-      <div>
+      <div style="text-align: center; margin-top: 15px;">
         <button v-for="pageNm in pageNms" :key="pageNm" @click="search(pageNm)">
           <span style="margin-right:10px;">{{ pageNm }}</span>
         </button>
@@ -418,13 +424,19 @@ export default {
   border-radius: 10vmin;
 }
 #board-comment-set {
-  margin: 3vmin;
-  margin: 0vmax 10vmax;
+  margin: 0vmax 15vmax;
   padding: 2rem 1rem;
   font-family: "BBTreeGL";
 }
 #img-contents {
   margin: 5vh 15vw;
+}
+#comment-input {
+  padding: 0;
+  width: 93%;
+  height: 100%;
+  margin-bottom: 15px;
+  font-size: 15px;
 }
 @media (max-width: 700px) {
   #board-context {
@@ -451,6 +463,22 @@ export default {
 @media (max-width: 375px) {
   #board-footer {
     margin: 0vmax 5vmax;
+  }
+  #board-comment-set {
+    margin: 0vmax 1vw;
+  }
+}
+@media (max-width:426px) {
+  #board-comment-set {
+    margin: 0vmax 5vmax;
+  }
+  #comment-input {
+    width: 70%;
+  }
+}
+@media (max-width:768px) {
+  #board-comment-set {
+    margin: 0vmax 10vmax;
   }
 }
 </style>
