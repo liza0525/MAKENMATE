@@ -1,7 +1,7 @@
 <template>
   <div style="background-color: white; padding-bottom: 5vh">
     <div id="search-result-header">
-      <h1 id="search-result-title">통합 검색 결과</h1>
+      <h1 id="search-result-title">"{{ q }}" 통합 검색 결과</h1>
     </div>
     <div id="search-result-context">
       <h1 class="search-result-category">칵테일 검색 결과</h1>
@@ -9,11 +9,11 @@
         {{ cocktail }}
       </div>
       <h1 class="search-result-category">자유 게시판 검색 결과</h1>
-      <div v-for="(board, i) in boardResult" :key=i>
+      <div v-for="(board, j) in boardResult" :key=j>
         {{ board }}
       </div>
       <h1 class="search-result-category">레시피 공유 검색 결과</h1>
-      <div v-for="(boardrecipe, i) in boardRecipeResult" :key=i>
+      <div v-for="(boardrecipe, k) in boardRecipeResult" :key=k>
         {{ boardrecipe }}
       </div>
     </div>
@@ -24,12 +24,16 @@
 export default {
   data() {
     return {
+      q: "",
       cocktailResult: [1, 2, 3, 4],
       boardResult: [5, 6, 7, 8],
       boardRecipeResult: [9, 10, 11, 12]
     };
   },
-  methods: {}
+  methods: {},
+  created() {
+    this.q = this.$route.params.q
+  },
 };
 </script>
 

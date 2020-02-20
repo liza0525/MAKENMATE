@@ -2,7 +2,7 @@
   <div>
     <v-app-bar id="navbar" color="#000" data-app hide-on-scroll>
       <router-link :to="{ name: 'Main' }">
-        <h1 id="nav-logo" color="#fff">Cocktail</h1>
+        <h1 color="#fff" class="x-sign">MAKE&MATE</h1>
       </router-link>
       <v-spacer></v-spacer>
       <!-- nav-contents-lg -->
@@ -52,19 +52,8 @@
             </v-btn>
           </template>
           <v-list>
-            <v-row style="margin: 0 0.5rem 0 0.5rem;">
-              <v-col cols="9">
-                <v-text-field
-                  label="칵테일에 관한 모든 검색"
-                  placeholder="검색어 입력"
-                ></v-text-field>
-              </v-col>
-              <v-col cols="2">
-                <v-btn icon>
-                  <v-icon>mdi-magnify</v-icon>
-                </v-btn>
-              </v-col>
-            </v-row>
+            <div style="margin-left: 15px; margin-top: 15px">통합 검색</div>
+              <Search @searchData="goToTotalSearch" id="search"></Search>
           </v-list>
         </v-menu>
         <!-- account dropdown -->
@@ -267,7 +256,11 @@
 </template>
 <script>
 const storage = window.sessionStorage;
+import Search from "../../components/common/Search.vue";
 export default {
+  components: {
+    Search,
+  },
   data() {
     return {
       acc_menus: [],
@@ -289,12 +282,52 @@ export default {
         this.$store.commit("Username", { username: val });
       }
     }
-  }
+  },
+  methods: {
+    goToTotalSearch(InputValue) {
+      console.log(InputValue)
+      this.$router.push({
+        name: "SearchResult",
+        params: {
+          q: InputValue
+        }
+      })
+    }
+  },
 };
 </script>
 <style scoped>
 @import url("https://fonts.googleapis.com/css?family=Lobster&display=swap");
 @import url("https://fonts.googleapis.com/css?family=Noto+Sans+KR:500&display=swap");
+@import url("https://fonts.googleapis.com/css?family=Open+Sans|Yellowtail&display=swap");
+.x-sign {
+  font-family: "Yellowtail", cursive;
+  --interval: 1s;
+  display: block;
+  text-shadow: 0 0 10px rgba(242, 30, 178, 1), 0 0 20px rgba(242, 30, 178, 1),
+    0 0 40px rgba(242, 30, 178, 1), 0 0 80px rgba(242, 30, 178, 1);
+  will-change: filter, color;
+  filter: saturate(60%);
+  /* animation: flicker steps(100) var(--interval) 1s infinite; */
+  color: #fff;
+  --color1: rgba(242, 30, 178, 1);
+  --color2: rgba(242, 30, 178, 1);
+  --color3: rgba(242, 30, 178, 1);
+  --color4: rgba(242, 30, 178, 1);
+}
+@keyframes flicker {
+  50% {
+    color: white;
+    filter: saturate(200%) hue-rotate(20deg);
+  }
+}
+
+#search {
+  border-bottom: 1px solid #000;
+  width: 230px;
+  margin: 0 10px;
+  margin-bottom: 20px;
+}
 #navbar {
   top: 0px;
   left: 0px;
