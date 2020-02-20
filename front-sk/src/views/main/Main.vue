@@ -1,13 +1,7 @@
 <template>
   <div>
     <div>
-      <div
-        class="animated infinite pulse"
-        id="scroll-down"
-        style="width: 100%;"
-      >
-        scroll down ↓
-      </div>
+      <div class="animated infinite pulse" id="scroll-down" style="width: 100%;">scroll down ↓</div>
     </div>
     <full-page ref="fullpage" :options="options" id="fullpage">
       <!-- page 1 -->
@@ -18,21 +12,19 @@
         <div class="stars"></div>
         <div class="stars"></div>
         <div class="scroling-intro-wrap"></div>
-        <h1 class="animated flipInX delay-1s" id="main-title">
-          Daily Cocktail Party
-        </h1>
+        <h1 class="animated flipInX delay-1s" id="main-title">Daily Cocktail Party</h1>
       </div>
       <!-- page 2 -->
       <div class="section">
         <v-row>
           <v-col class="main-subtitle" id="main-st-1">
             <span style="background-color: #FFBB00;">칵테일</span>을 사랑하는
-            <br />모든 이들과 함께하는 Cocktail
+            <br />모든 이들과 함께하는 MAKE&MATE
           </v-col>
           <v-col cols="12" sm="6" class="main-img" id="page2">
             <div class="main-subtitle" id="main-st-2">
               <span style="background-color: #FFBB00;">칵테일</span>을 사랑하는
-              <br />모든 이들과 함께하는 Cocktail
+              <br />모든 이들과 함께하는 MAKE&MATE
             </div>
           </v-col>
         </v-row>
@@ -43,7 +35,9 @@
           술과 술이 만나 칵테일이 되듯이
           <br />우리의 레시피를 모아 더
           <span style="background-color: #000;">특별한 순간</span>을 만들고자
-          합니다. <br />이러한 가치를 아는 사람들이 모여 함께 한다면 <br />더욱
+          합니다.
+          <br />이러한 가치를 아는 사람들이 모여 함께 한다면
+          <br />더욱
           <span style="background-color: #000;">특별한 하루</span>를 보내지
           않을까요..?
           <br />
@@ -74,60 +68,33 @@
               <h1 class="info-members-name">{{ person.name }}</h1>
               <div style="margin-left: auto; float:right; font-size: 2rem;">
                 <a :href="person.instagram" target="_blank">
-                  <i
-                    v-if="person.instagram != null"
-                    class="fab fa-instagram"
-                  ></i
-                ></a>
+                  <i v-if="person.instagram != null" class="fab fa-instagram"></i>
+                </a>
                 <a :href="person.github" target="_blank">
-                  <i
-                    v-if="person.github != null"
-                    class="fab fa-github"
-                    style="margin-left: 10px;"
-                  ></i
-                ></a>
+                  <i v-if="person.github != null" class="fab fa-github" style="margin-left: 10px;"></i>
+                </a>
                 <a :href="`mailto:${person.email}`">
-                  <i
-                    v-if="person.email != null"
-                    class="far fa-envelope"
-                    style="margin-left: 10px;"
-                  ></i
-                ></a>
+                  <i v-if="person.email != null" class="far fa-envelope" style="margin-left: 10px;"></i>
+                </a>
               </div>
             </v-card-title>
             <v-card-text>
               <p style="font-weight: bold;">Role : {{ person.role }}</p>
               <div class="ability-chart">
                 Java/Spring
-                <v-progress-circular
-                  rotate="270"
-                  :value="person.java"
-                  color="#EC380B"
-                ></v-progress-circular>
+                <v-progress-circular rotate="270" :value="person.java" color="#EC380B"></v-progress-circular>
               </div>
               <div class="ability-chart">
                 HTML/CSS/Vue.js
-                <v-progress-circular
-                  rotate="270"
-                  :value="person.vue"
-                  color="#F05F3B"
-                ></v-progress-circular>
+                <v-progress-circular rotate="270" :value="person.vue" color="#F05F3B"></v-progress-circular>
               </div>
               <div class="ability-chart">
                 Python/Django
-                <v-progress-circular
-                  rotate="270"
-                  :value="person.python"
-                  color="#429F9E"
-                ></v-progress-circular>
+                <v-progress-circular rotate="270" :value="person.python" color="#429F9E"></v-progress-circular>
               </div>
               <div class="ability-chart">
                 Server
-                <v-progress-circular
-                  rotate="2 70"
-                  :value="person.server"
-                  color="#007872"
-                ></v-progress-circular>
+                <v-progress-circular rotate="2 70" :value="person.server" color="#007872"></v-progress-circular>
               </div>
             </v-card-text>
           </v-card>
