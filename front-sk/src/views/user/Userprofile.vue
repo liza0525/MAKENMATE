@@ -344,6 +344,7 @@ export default {
       nextBt: ">",
       fistBt: "<<",
       lastBt: ">>",
+      hey: "",
       window: {
         width: 0,
         height: 0
@@ -364,8 +365,13 @@ export default {
         this.user = {
           ...this.$store.state.user
         };
-        if (this.user.image === null)
-          this.user.image = require(`../../assets/images/profile_default.png`);
+        if (this.user.image === null) {
+           this.user.image = require(`../../assets/images/profile_default.png`);
+        }else {
+          //DB image column 경로
+          this.user.image = require("/home/ubuntu/image/"+this.user.image);
+          console.log(this.user.image);
+        }
       });
     this.$store
       .dispatch(Constant.GET_COCKTAILLIKE, { username: this.user.nickname })
