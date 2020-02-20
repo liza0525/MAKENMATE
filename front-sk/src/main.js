@@ -12,21 +12,28 @@ import Carousel3d from "vue-carousel-3d";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { faUserSecret } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+import vueGoogleMapWrapper from "@/plugins/vue-google-map-wrapper";
+import config from "../config";
 
 Vue.config.productionTip = false;
 
 Vue.use(Router);
 Vue.use(VueFullPage);
 Vue.use(Carousel3d);
-
+Vue.use(vueGoogleMapWrapper, {
+  apiKey: config.apiKey
+});
 library.add(faUserSecret);
-
 Vue.component("font-awesome-icon", FontAwesomeIcon);
 
 Vue.config.productionTip = false;
 
 const router = new Router({
-  // mode: "history",
+  mode: "history",
+  base: process.env.BASE_URL,
+  scrollBehavior(to, from, savedPosition) {
+    return { x: 0, y: 0 };
+  },
   routes
 });
 

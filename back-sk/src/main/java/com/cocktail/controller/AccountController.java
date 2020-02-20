@@ -10,9 +10,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -40,6 +40,7 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @RestController
+@RequestMapping(value = "/backend")
 public class AccountController {
 	// 디비 셋팅 후 주석을 푸세요.
 	@Autowired
@@ -84,7 +85,7 @@ public class AccountController {
 
 	public Object signup(@RequestParam(required = true) final String email,
 			@RequestParam(required = true) final String password,
-			@RequestParam(required = true) final String nickname) {
+			@RequestParam(required = true) final String nickname) throws Exception {
 		// 이메일, 닉네임 중복처리 필수
 		// 이메일 형식 체크
 		// 비밀번호 영문/숫자 혼용 8자 이상인지 체크
@@ -101,17 +102,16 @@ public class AccountController {
 					.roles(Collections.singletonList("ROLE_USER")).build());
 		}
 		// 메일 전송
-		// String url = "http://localhost:3000/"+email; // 인증할 url
-		// StringBuffer sb = new StringBuffer();
-		// sb.append("<h1>[이메일 인증]</h1>")
-		// .append("<p>아래 링크를 클릭하시면 이메일 인증이 완료됩니다.</p>")
-		// .append("<a href='http://localhost:3000/user/joinConfirm?email=")
-		// .append(email)
-		//// .append("&authkey=")
-		//// .append(authkey)
-		// .append("' target='_blenk'>이메일 인증 확인</a>");
-		// emailService.sendSimpleMessage(email, "회원가입 인증 메일입니다",
-		// sb.toString());
+		 String url = "http://localhost:3000/"+email; // 인증할 url
+		 StringBuffer sb = new StringBuffer();
+		 sb.append("<h1>[이메일 인증]</h1>")
+		 .append("<p>아래 링크를 클릭하시면 이메일 인증이 완료됩니다.</p>");
+//		 .append("<a href='http://localhost:3000/user/joinConfirm?email=")
+//		 .append(email)
+		// .append("&authkey=")
+		// .append(authkey)
+//		 .append("' target='_blenk'>이메일 인증 확인</a>");
+		 emailService.sendMail(email, "회원가입 인증 메일입니다",		 sb.toString());
 		return responseService.getSuccessResponse();
 	}
 

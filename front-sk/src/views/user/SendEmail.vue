@@ -23,7 +23,7 @@
 export default {};
 </script>
 
-<style>
+<style scoped>
 #send-email-window {
   margin: 15vh auto;
 }

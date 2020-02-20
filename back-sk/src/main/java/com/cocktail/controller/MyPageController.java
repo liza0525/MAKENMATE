@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cocktail.dao.UserDao;
@@ -23,6 +24,7 @@ import io.swagger.annotations.ApiResponses;
         @ApiResponse(code = 500, message = "Failure", response = BasicResponse.class) })
 
 @RestController
+@RequestMapping(value = "/backend")
 public class MyPageController {
     // 디비 셋팅 후 주석을 푸세요.
      @Autowired

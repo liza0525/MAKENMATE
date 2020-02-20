@@ -2,7 +2,6 @@ package com.cocktail.service;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -21,37 +20,46 @@ import com.cocktail.model.boardRecipe.BRdetail;
 import com.cocktail.model.boardRecipe.BoardRecipe;
 import com.cocktail.model.user.User;
 import com.cocktail.model.user.UserScrap;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Service
 public class BoardRecipeServiceImpl implements BoardRecipeService {
 
-    @Autowired private BoardRecipeDao boardRecipeDao;
+    @Autowired
+    private BoardRecipeDao boardRecipeDao;
 
-    @Autowired private UserDao userdao;
+    @Autowired
+    private UserDao userdao;
 
-    @Autowired private UserScrapDao userScrapDao;
+    @Autowired
+    private UserScrapDao userScrapDao;
 
-    @Autowired private FileDAO filedao;
+    @Autowired
+    private FileDAO filedao;
+
     // 공유게시판 전체 리스트 조회
-    @Override public Page<BoardRecipe> getAllBoardRecipe(Pageable pageable) {
+    @Override
+    public Page<BoardRecipe> getAllBoardRecipe(Pageable pageable) {
         return boardRecipeDao.findAll(pageable);
     }
 
+    @Override
+    public Page<BoardRecipe> getAllBoardRecipeTitleLike(String searchData, Pageable pageable) {
+        return boardRecipeDao.findAllByTitleLike(searchData, pageable);
+    }
+
     // 글번호로 공유게시판 상세조회
-    @Override public BRdetail findById(int rid) {
+    @Override
+    public BRdetail findById(int rid) {
         // BRdetail br = boardRecipeDao.findBRdetailById(bid); BoardRecipe boardrecipe =
         // boardRecipeDao.findByRid(bid).orElseThrow();
-        BoardRecipe boardrecipe = boardRecipeDao
-            .findById(rid)
-            .orElseThrow(CocktailException::new);
+        BoardRecipe boardrecipe = boardRecipeDao.findById(rid).orElseThrow(CocktailException::new);
         BRdetail br = new BRdetail();
         br.setRid(boardrecipe.getRid());
         br.setTitle(boardrecipe.getTitle());
         br.setContents(boardrecipe.getContents());
         br.setRegdate(boardrecipe.getRegdate());
         br.setUser_name(boardrecipe.getUser().getNickname());
-
+        br.setRlike(boardrecipe.getBoardRecipeLike().size());
         List<UploadFile> file = filedao.list(boardrecipe.getRid());
         ArrayList<String> bb = new ArrayList<>();
         if (file.size() != 0) {
@@ -65,7 +73,8 @@ public class BoardRecipeServiceImpl implements BoardRecipeService {
     }
 
     // 로그인한 유저가 스크랩한 유저 목록에 있는지 없는지
-    @Override public Boolean getUserIdScrappingList(int rid, String username) {
+    @Override
+    public Boolean getUserIdScrappingList(int rid, String username) {
         List<UserScrap> userScrapList = userScrapDao.findAllByBoardrecipe_rid(rid);
         List<String> usernameList = new ArrayList<>();
         Boolean isScrapping = true;
@@ -80,7 +89,8 @@ public class BoardRecipeServiceImpl implements BoardRecipeService {
         return isScrapping;
     }
 
-    @Override public int save(BRdetail brdetail) {
+    @Override
+    public int save(BRdetail brdetail) {
         BoardRecipe br = new BoardRecipe();
         br.setContents(brdetail.getContents());
         // r.setImage();
@@ -92,15 +102,11 @@ public class BoardRecipeServiceImpl implements BoardRecipeService {
         User u = userdao.findByNickname(brdetail.getUser_name());
         br.setUser(u);
         br = boardRecipeDao.save(br);
-        System
-            .out
-            .println(brdetail.getFile());
-        //해당 file board 번호 업데이트
+        System.out.println(brdetail.getFile());
+        // 해당 file board 번호 업데이트
 
-        String str = (String)brdetail.getFile();
-        String text = str
-            .replace("[", "")
-            .replace("]", "");
+        String str = (String) brdetail.getFile();
+        String text = str.replace("[", "").replace("]", "");
 
         if (!text.equals("49104755")) {
             String[] wpqkf = text.split(",");
@@ -113,7 +119,8 @@ public class BoardRecipeServiceImpl implements BoardRecipeService {
         return br.getRid();
     }
 
-    @Override public void updateById(BRdetail brdetail) {
+    @Override
+    public void updateById(BRdetail brdetail) {
         BoardRecipe br = boardRecipeDao.getBoardRecipeByRid(brdetail.getRid());
         br.setContents(brdetail.getContents());
         // br.setImage(image);
@@ -125,14 +132,15 @@ public class BoardRecipeServiceImpl implements BoardRecipeService {
         boardRecipeDao.save(br);
     }
 
-    @Override public void deleteById(int bid) {
+    @Override
+    public void deleteById(int bid) {
         boardRecipeDao.deleteById(bid);
     }
 
     @Override
     public List<BRdetail> getBestRecipe() {
         List<BRdetail> list = new ArrayList<>();
-        
+
         return null;
     }
 }

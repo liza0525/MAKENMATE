@@ -1,197 +1,151 @@
 <template>
-  <div v-if="window.width >= 1000">
-  <div id="boardrecipe-detail">
+  <div id="boardrecipe-detail" style="background-color: white;">
     <div id="boardrecipe-header">
       <h1 id="boardrecipe-title">{{ boardRecipe.title }}</h1>
-      <h3 id="boardrecipe-username">by. {{ boardRecipe.user_name }}</h3>
+      <h3 id="boardrecipe-username">
+        by.
+        <router-link
+          :to="{
+          name: 'UserProfile',
+          params: {
+            username: boardRecipe.user_name,
+          }
+        }"
+          style="color:white;"
+        >{{ boardRecipe.user_name }}</router-link>
+      </h3>
     </div>
     <div id="boardrecipe-context" v-html="boardRecipe.contents"></div>
-    
+
     <!-- 업로드 이미지-->
     <v-row id="img-contents">
-    <v-col cols="6" md="3" v-for="images in imagepath" v-bind:key="images">
-      <v-card class="d-inline-block mx-auto"> 
-      <v-img :src="images"></v-img>
-      </v-card>
+      <v-col cols="6" md="3" v-for="images in imagepath" v-bind:key="images">
+        <v-card class="d-inline-block mx-auto">
+          <v-img :src="images"></v-img>
+        </v-card>
       </v-col>
     </v-row>
 
     <!-- like button -->
-    <div id="like-button">
-      <button class="boardrecipe-button3" @click="clickLike">
-        <span v-show="!islike">
-          <i class="far fa-heart"></i>
-        </span>
-        <span v-show="islike" style="color: red;">
-          <i class="fas fa-heart"></i>
-        </span>
-        {{ likebyboardrecipe }}
-      </button>
+    <div style="text-align: center; margin-bottom: 3rem;">
+      <v-btn v-show="!islike" fab small dark @click="clickLike" style="margin-right: 10px;">
+        <v-icon>mdi-heart</v-icon>
+      </v-btn>
+      <v-btn
+        v-show="islike"
+        fab
+        small
+        dark
+        @click="clickLike"
+        style="background: red; margin-right: 10px;"
+      >
+        <v-icon>mdi-heart</v-icon>
+      </v-btn>
       <!-- 스크랩 -->
-      <button
-        class="boardrecipe-button3"
+      <v-btn
+        fab
+        small
+        dark
         v-if="this.$store.state.username && !isScrapped"
         @click="addToScrapList"
-        style="cursor: pointer"
-      >스크랩</button>
-      <button
-        class="boardrecipe-button3"
+      >
+        <v-icon>mdi-bookmark</v-icon>
+      </v-btn>
+      <v-btn
+        fab
+        small
+        dark
         v-if="this.$store.state.username && isScrapped"
         @click="removeFromScrapList"
-        style="cursor: pointer"
-      >스크랩 취소</button>
+        style="background: green;"
+      >
+        <v-icon>mdi-bookmark</v-icon>
+      </v-btn>
     </div>
 
+    <!-- crud 버튼 -->
     <div id="boardrecipe-footer">
-      <button class="boardrecipe-button3" @click="go_to_list()">목록</button>
-      <button
-        class="boardrecipe-button3"
+      <v-icon class="boardrecipe-button" @click="go_to_list()">mdi-format-list-bulleted</v-icon>
+      <v-icon
+        class="boardrecipe-button"
         v-if="this.$store.state.username === boardRecipe.user_name"
         @click="update_board(boardRecipe.rid)"
-      >수정</button>
-      <button
-        class="boardrecipe-button3"
+      >mdi-pencil-plus</v-icon>
+      <v-icon
+        class="boardrecipe-button"
         v-if="this.$store.state.username === boardRecipe.user_name"
         @click="delete_board(boardRecipe.rid)"
-      >삭제</button>
-      <div id="boardrecipe-date">{{ boardRecipe.regdate }}</div>
+      >mdi-delete</v-icon>
+      <!--  -->
+      <div id="boardrecipe-date">
+        좋아요
+        <v-icon style="color: red;">mdi-heart</v-icon>
+        {{ likebyboardrecipe }}개
+        <br />
+        {{ boardRecipe.regdate }}
+      </div>
     </div>
 
     <!-- 댓글 -->
-    <div id="comment-set">
-      <div id="comment-title">
-        <h1 style="display: inline; margin-right: 3vw">Comment</h1>
+    <div id="boardrecipe-comment-set">
+      <div id="comment-title" style="text-align: center;">
+        <h1 style="display: inline; margin-right: 3vw; font-family: 'BBTreeGB';">Comment</h1>
         <div style="display: inline;">
-          <input type="text" v-model="comment" style="border-bottom: 1px solid #ccc; width: 45vw" />
-          <button class="boardrecipe-button3" @click="submitComment" type="submit">댓글</button>
+          <input type="text" v-model="comment" style="border-bottom: 1px solid #ccc; width: 45vw" @keydown.enter="submitComment" />
+          <v-btn fab small dark @click="submitComment" type="submit">
+            <v-icon>mdi-plus</v-icon>
+          </v-btn>
         </div>
       </div>
       <div :v-if="reply" v-for="(re, i) in reply" :key="i" style="margin-top: 5px; display:block;">
         <div v-if="isInput[i] === 0">
-          <span><br> {{ users[i] }} <br><br> {{ re.content }} <br><br><hr style="opacity: 0.3;"> <br></span>
-          <p v-if="username === users[i]" style="display:inline-block;">
-            <button @click="click(i)">수정</button>
-            <button @click="deleteComment(i, re.cmid)">삭제</button>
+          <p style="margin: 10px 0px;">
+            <font size="3">
+                {{ users[i] }}
+            </font>
           </p>
+          <span>
+            <font size="3">{{ re.content }}</font>
+          </span>
+          <p v-if="username === users[i]" style="display:inline-block; float: right;">
+            <v-icon @click="click(i)" style="margin-right: 15px">mdi-pencil-plus</v-icon>
+              <v-icon @click="deleteComment(i, re.cmid)">mdi-close</v-icon>
+          </p>
+          <br />
+          <br />
+          <hr style="opacity: 0.3;" />
+          <br />
         </div>
         <div v-else>
-          <span>
-            {{ users[i] }} :
-            <input v-model="re.content" />
-          </span>
-          <p v-if="username === users[i]" style="display:inline-block;">
-            <button @click="updateComment(i, re.cmid, re.content)">수정</button>
+          <p style="margin: 10px 0px;">
+            <font size="3">
+                {{ users[i] }}
+            </font>
           </p>
+          <div>
+            <input id="comment-input" v-model="re.content" @keydown.enter="updateComment(i, re.cmid, re.content)"  />
+          <p v-if="username === users[i]" style="display:inline-block;">
+              <v-icon @click="updateComment(i, re.cmid, re.content)">
+                mdi-check
+              </v-icon>
+          </p>
+          </div>
+          <hr style="opacity: 0.3;" />
         </div>
       </div>
-      <div>
+      <div style="text-align: center; margin-top: 15px;">
         <button v-for="pageNm in pageNms" :key="pageNm" @click="search(pageNm)">
           <span style="margin-right:10px;">{{ pageNm }}</span>
         </button>
       </div>
     </div>
-  </div>
-  </div>
-  <div v-else>
-<div id="boardrecipe-detail">
-    <div id="boardrecipe-header">
-      <h1 id="boardrecipe-title">{{ boardRecipe.title }}</h1>
-      <h3 id="boardrecipe-username">by. {{ boardRecipe.user_name }}</h3>
-    </div>
-    <div id="boardrecipe-context" v-html="boardRecipe.contents"></div>
-    
-    <!-- 업로드 이미지-->
-    <v-row id="img-contents">
-    <v-col cols="6" md="3" v-for="images in imagepath" v-bind:key="images">
-      <v-card class="d-inline-block mx-auto"> 
-      <v-img :src="images"></v-img>
-      </v-card>
-      </v-col>
-    </v-row>
-
-    <!-- like button -->
-    <div id="like-button">
-      <button class="boardrecipe-button2" @click="clickLike">
-        <span v-show="!islike">
-          <i class="far fa-heart"></i>
-        </span>
-        <span v-show="islike" style="color: red;">
-          <i class="fas fa-heart"></i>
-        </span>
-        {{ likebyboardrecipe }}
-      </button>
-      <!-- 스크랩 -->
-      <button
-        class="boardrecipe-button2"
-        v-if="this.$store.state.username && !isScrapped"
-        @click="addToScrapList"
-        style="cursor: pointer"
-      >스크랩</button>
-      <button
-        class="boardrecipe-button2"
-        v-if="this.$store.state.username && isScrapped"
-        @click="removeFromScrapList"
-        style="cursor: pointer"
-      >스크랩 취소</button>
-    </div>
-
-    <div id="boardrecipe-footer">
-      <button class="boardrecipe-button2" @click="go_to_list()">목록</button>
-      <button
-        class="boardrecipe-button2"
-        v-if="this.$store.state.username === boardRecipe.user_name"
-        @click="update_board(boardRecipe.rid)"
-      >수정</button>
-      <button
-        class="boardrecipe-button2"
-        v-if="this.$store.state.username === boardRecipe.user_name"
-        @click="delete_board(boardRecipe.rid)"
-      >삭제</button>
-      <div id="boardrecipe-date">{{ boardRecipe.regdate }}</div>
-    </div>
-
-    <!-- 댓글 -->
-    <div id="comment-set">
-      <div id="comment-title">
-        <h1 style="display: inline; margin-right: 3vw">Comment</h1>
-        <div style="display: inline;">
-          <input type="text" v-model="comment" style="border-bottom: 1px solid #ccc; width: 45vw" />
-          <button class="boardrecipe-button2" @click="submitComment" type="submit">댓글</button>
-        </div>
-      </div>
-      <div :v-if="reply" v-for="(re, i) in reply" :key="i" style="margin-top: 5px; display:block;">
-        <div v-if="isInput[i] === 0">
-          <span>{{ users[i] }} <br><br> {{ re.content }} <hr><br></span>
-          <p v-if="username === users[i]" style="display:inline-block;">
-            <button @click="click(i)">수정</button>
-            <button @click="deleteComment(i, re.cmid)">삭제</button>
-          </p>
-        </div>
-        <div v-else>
-          <span>
-            {{ users[i] }} :
-            <input v-model="re.content" />
-          </span>
-          <p v-if="username === users[i]" style="display:inline-block;">
-            <button @click="updateComment(i, re.cmid, re.content)">수정</button>
-          </p>
-        </div>
-      </div>
-      <div>
-        <button v-for="pageNm in pageNms" :key="pageNm" @click="search(pageNm)">
-          <span style="margin-right:10px;">{{ pageNm }}</span>
-        </button>
-      </div>
-    </div>
-  </div>
-
-
   </div>
 </template>
 
 <script>
 import Constant from "../../Constant";
 import http from "@/http-common";
+
 export default {
   data() {
     return {
@@ -213,15 +167,13 @@ export default {
     };
   },
   created() {
-
     window.addEventListener("resize", this.handleResize);
     this.handleResize();
-    this.username= this.$store.state.username,
-    this.rid = Number(this.$route.params.rid);
+    (this.username = this.$store.state.username),
+      (this.rid = Number(this.$route.params.rid));
     http.get("/boardrecipe/" + this.rid).then(res => {
       // console.log(res.data)
       this.boardRecipe = res.data;
-      
       if (this.boardRecipe.filelist.length != 0) {
         console.log(this.boardRecipe.filelist[0]);
         for (let i = 0; i < this.boardRecipe.filelist.length; i++) {
@@ -236,31 +188,23 @@ export default {
           pageNm: 1
         })
         .then(() => {
-          this.reply = { ...this.$store.state.reply };
-          this.users = { ...this.$store.state.users };
+          this.reply = {
+            ...this.$store.state.reply
+          };
+          this.users = {
+            ...this.$store.state.users
+          };
           for (let i = 0; i < this.reply.length; ++i) {
             this.isInput.push(0);
-            // this.likebycomments.push(0);
-            // this.$store
-            //   .dispatch(Constant.GET_LIKEBYUSERANDBOARDRECIPECOMMENTS, {
-            //     username: this.$store.state.username,
-            //     cmid: this.reply[i].cmid
-            //   })
-            //   .then(res => {
-            //     let list = [...this.isLike];
-            //     if (res.data.object == null) list.splice(i, 1, false);
-            //     else list.splice(i, 1, true);
-            //     this.isLike = list;
-            //   });
-            // this.$store
-            //   .dispatch(Constant.GET_LIKEBYBOARDRECIPECOMMENTS, {
-            //     cmid: this.reply[i].cmid
-            //   })
-            //   .then(res => {
-            //     let list = [...this.likebycomments];
-            //     list.splice(i, 1, this.$store.state.likebycomments);
-            //     this.likebycomments = list;
-            //   });
+            // this.likebycomments.push(0); this.$store
+            // .dispatch(Constant.GET_LIKEBYUSERANDBOARDRECIPECOMMENTS, {     username:
+            // this.$store.state.username,     cmid: this.reply[i].cmid   })   .then(res =>
+            // {     let list = [...this.isLike];     if (res.data.object == null)
+            // list.splice(i, 1, false);     else list.splice(i, 1, true);     this.isLike =
+            // list;   }); this.$store   .dispatch(Constant.GET_LIKEBYBOARDRECIPECOMMENTS, {
+            // cmid: this.reply[i].cmid   })   .then(res => {     let list =
+            // [...this.likebycomments];     list.splice(i, 1,
+            // this.$store.state.likebycomments);     this.likebycomments = list;   });
           }
           let arr = [];
 
@@ -335,15 +279,7 @@ export default {
       this.window.height = "calc(" + this.window.height + " - 4rem)";
 
       console.log(this.window);
-
-      if(this.window.width <= 1000){
-        const element = document.getElementsByClassName("boardrecipe-button");
-        for (let i = 0; i < element.length; i++) {
-          console.log(element[i].width);
-        }
-      }
     },
-
 
     addToScrapList() {
       this.isScrapped = true;
@@ -425,47 +361,27 @@ export default {
     update_board(boardid) {
       this.$router.push({
         name: "BoardRecipeUpdate",
-        params: { rid: boardid }
+        params: {
+          rid: boardid
+        }
       });
     },
     go_to_list() {
       this.$router.push({ name: "BoardRecipeList" });
     },
-    // clickLikeComments(i) {
-    //   console.log(this.reply[i]);
-
-    //   if (this.isLike[i] == false) {
-    //     this.$store
-    //       .dispatch(Constant.ADD_BOARDRECIPECOMMENTSLIKE, {
-    //         cmid: this.reply[i].cmid,
-    //         username: this.$store.state.username
-    //       })
-    //       .then(() => {
-    //         let list = [...this.isLike];
-    //         list.splice(i, 1, true);
-    //         this.isLike = list;
-    //         let list2 = [...this.likebycomments];
-    //         list2.splice(i, 1, this.likebycomments[i] + 1);
-    //         this.likebycomments = list2;
-    //       });
-    //   } else {
-    //     this.$store
-    //       .dispatch(Constant.REMOVE_BOARDRECIPECOMMENTSLIKE, {
-    //         cmid: this.reply[i].cmid,
-    //         username: this.$store.state.username
-    //       })
-    //       .then(() => {
-    //         let list = [...this.isLike];
-    //         0;
-    //         list.splice(i, 1, false);
-    //         this.isLike = list;
-
-    //         let list2 = [...this.likebycomments];
-    //         list2.splice(i, 1, this.likebycomments[i] - 1);
-    //         this.likebycomments = list2;
-    //       });
-    //   }
-    // },
+    // clickLikeComments(i) {   console.log(this.reply[i]);   if (this.isLike[i] ==
+    // false) {     this.$store .dispatch(Constant.ADD_BOARDRECIPECOMMENTSLIKE, {
+    // cmid: this.reply[i].cmid,         username: this.$store.state.username
+    // }) .then(() => {         let list = [...this.isLike];         list.splice(i,
+    // 1, true);         this.isLike = list;         let list2 =
+    // [...this.likebycomments];         list2.splice(i, 1, this.likebycomments[i] +
+    // 1);         this.likebycomments = list2;       });   } else {     this.$store
+    // .dispatch(Constant.REMOVE_BOARDRECIPECOMMENTSLIKE, {         cmid:
+    // this.reply[i].cmid,         username: this.$store.state.username       })
+    // .then(() => {         let list = [...this.isLike];         0; list.splice(i,
+    // 1, false);         this.isLike = list;         let list2 =
+    // [...this.likebycomments];         list2.splice(i, 1, this.likebycomments[i] -
+    // 1);         this.likebycomments = list2;       });   } },
     search(pageNm) {
       this.$store
         .dispatch(Constant.GET_REPLYBOARDRECIPE, {
@@ -473,8 +389,12 @@ export default {
           pageNm: pageNm
         })
         .then(() => {
-          this.reply = { ...this.$store.state.reply };
-          this.users = { ...this.$store.state.users };
+          this.reply = {
+            ...this.$store.state.reply
+          };
+          this.users = {
+            ...this.$store.state.users
+          };
           for (let i = 0; i < this.reply.length; ++i) {
             this.isInput.push(0);
           }
@@ -487,6 +407,9 @@ export default {
           }
           this.pageNms = arr;
         });
+    },
+    goback() {
+      this.$router.go(-1);
     }
   },
   destroyed() {
@@ -495,10 +418,10 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 #boardrecipe-header {
-  background: linear-gradient(rgba(0, 0, 0, 0.3)),
-    url("../../assets/images/image6.jpg") no-repeat;
+  background: linear-gradient(rgba(0, 0, 0, 0.5)),
+    url("../../assets/images/image7.jpg") no-repeat;
   background-size: 100%;
   height: 60vh;
   background-position-y: 30%;
@@ -511,7 +434,7 @@ export default {
   float: left;
   top: 35vmin;
   font-size: 11vmin;
-  font-family: 'BBTreeGB';
+  font-family: "BBTreeGB";
 }
 #boardrecipe-username {
   margin: 0 0 0 2rem;
@@ -519,78 +442,60 @@ export default {
   position: relative;
   float: left;
   top: 40vh;
-  font-family: 'BBTreeGB';
+  font-family: "BBTreeGB";
 }
 #boardrecipe-date {
   display: inline;
   bottom: 0;
   float: right;
-  margin-top: 3vh;
-  font-size: 3vmin;
-  font-family: "GyeonggiBatang";
+  text-align: right;
+  font-family: "BBTreeGL";
 }
 #boardrecipe-context {
-  color: #ccc;
   margin: 5vw 15vw;
-  font-family: "GyeonggiBatang";
+  font-size: 1.2rem;
+  font-size: 1rem;
+  line-height: 1.5rem;
+  font-family: "BBTreeGL";
 }
 #boardrecipe-footer {
-  color: #ccc;
   margin: 0vmax 10vmax;
   padding: 0 1rem;
   padding-bottom: 2rem;
   border-bottom: 1px solid #ccc;
 }
-.boardrecipe-button3{
-  margin: 0 0.5vmin;
-  width: 14vmin;
-  height: 6vmin;
-  border: 1px solid #ccc;
-  border-radius: 10vmin;
-  font-size: 2.5vmin;
-  font-family: "GyeonggiBatang";
+.boardrecipe-button {
+  font-size: 2rem;
+  margin: 0 5px;
 }
-.boardrecipe-button2{
-  margin: 0 0.5vmin;
-  width: 12vmin;
-  height: 5vmin;
-  border: 1px solid #ccc;
-  border-radius: 10vmin;
-  font-size: 2.5vmin;
-  font-family: "GyeonggiBatang";
-}
-#like-button {
-  display: block;
-  position: relative;
-  color: #ccc;
-  text-align: center;
-  margin-bottom: 3vh;
-  font-family: "GyeonggiBatang";
-}
-#comment-set {
-  margin: 3vmin;
-  color: #ccc;
-  margin: 0vmax 10vmax;
+#boardrecipe-comment-set {
+  margin: 0vmax 15vmax;
   padding: 2rem 1rem;
-  font-family: "GyeonggiBatang";
+  font-family: "BBTreeGL";
 }
 #img-contents {
   margin: 5vh 15vw;
 }
-
+#comment-input {
+  padding: 0;
+  width: 93%;
+  height: 100%;
+  margin-bottom: 15px;
+  font-size: 15px;
+}
 @media (max-width: 700px) {
   #boardrecipe-context {
-    margin: 10vw 15vw 15vw 15vw;
+    margin: 10vw 15vw 15vw;
     font-size: 15px;
   }
   #boardrecipe-header {
-    height: 50vh;
+    height: 35vh;
     background-size: 200vw;
     background-position-x: 50%;
   }
   #boardrecipe-title {
-    margin-top: 3vmin;
-    font-size: 7vmin;
+    margin-top: 4vmin;
+    font-size: 8vmin;
   }
   #boardrecipe-username {
     margin: 0 0 0 2vw;
@@ -598,6 +503,27 @@ export default {
     float: left;
     top: 40vmin;
     font-size: 3vmin;
+  }
+}
+@media (max-width: 375px) {
+  #boardrecipe-footer {
+    margin: 0vmax 5vmax;
+  }
+  #boardrecipe-comment-set {
+    margin: 0vmax 1vw;
+  }
+}
+@media (max-width:426px) {
+  #boardrecipe-comment-set {
+    margin: 0vmax 5vmax;
+  }
+  #comment-input {
+    width: 70%;
+  }
+}
+@media (max-width:768px) {
+  #boardrecipe-comment-set {
+    margin: 0vmax 10vmax;
   }
 }
 </style>

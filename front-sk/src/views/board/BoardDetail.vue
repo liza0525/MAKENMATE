@@ -1,8 +1,19 @@
 <template>
-  <div id="board-detail">
+  <div id="board-detail" style="background-color: white;">
     <div id="board-header">
       <h1 id="board-title">{{ board.title }}</h1>
-      <h3 id="board-username">by. {{ board.user_name }}</h3>
+      <h3 id="board-username">
+        by.
+        <router-link
+          :to="{
+          name: 'UserProfile',
+          params: {
+            username: board.user_name,
+          }
+        }"
+          style="color:white;"
+        >{{ board.user_name }}</router-link>
+      </h3>
     </div>
     <div id="board-context" v-html="board.contents"></div>
 
@@ -13,64 +24,88 @@
       <v-img :src="images"></v-img>
       </v-card>
       </v-col>
-    </v-row> -->
+    </v-row>-->
 
     <!-- like button -->
-    <div id="board-like-button">
-      <button class="board-button" @click="clickLike">
-        <span v-show="!islike">
-          <i class="far fa-heart"></i>
-        </span>
-        <span v-show="islike" style="color: red;">
-          <i class="fas fa-heart"></i>
-        </span>
-      {{ likebyboard }}
-      </button>
+    <div style="text-align: center; margin-bottom: 3rem;">
+      <v-btn v-show="!islike" fab small dark @click="clickLike">
+        <v-icon>mdi-heart</v-icon>
+      </v-btn>
+      <v-btn v-show="islike" fab small dark @click="clickLike" style="background: red;">
+        <v-icon>mdi-heart</v-icon>
+      </v-btn>
     </div>
-
+    <!-- crud 버튼 -->
     <div id="board-footer">
-      <button class="board-button" @click="go_to_list()">목록</button>
-      <button
+      <v-icon class="board-button" @click="go_to_list()">mdi-format-list-bulleted</v-icon>
+      <v-icon
         class="board-button"
         v-if="this.$store.state.username === board.user_name"
         @click="update_board(board.bid)"
-      >수정</button>
-      <button
+      >mdi-pencil-plus</v-icon>
+      <v-icon
         class="board-button"
         v-if="this.$store.state.username === board.user_name"
         @click="delete_board(board.bid)"
-      >삭제</button>
-      <div id="board-date">{{ board.regdate }}</div>
+      >mdi-delete</v-icon>
+      <!--  -->
+      <div id="board-date">
+        좋아요
+        <v-icon style="color: red;">mdi-heart</v-icon>
+        {{ likebyboard }}개
+        <br />
+        {{ board.regdate }}
+      </div>
     </div>
 
     <!-- 댓글 -->
     <div id="board-comment-set">
-      <div id="comment-title">
-        <h1 style="display: inline; margin-right: 3vw">Comment</h1>
+      <div id="comment-title" style="text-align: center;">
+        <h1 style="display: inline; margin-right: 3vw; font-family: 'BBTreeGB';">Comment</h1>
         <div style="display: inline;">
-          <input type="text" v-model="comment" style="border-bottom: 1px solid #ccc; width: 45vw" />
-          <button class="board-button" @click="submitComment" type="submit">댓글</button>
+          <input type="text" v-model="comment" style="border-bottom: 1px solid #ccc; width: 45vw" @keydown.enter="submitComment" />
+          <v-btn fab small dark @click="submitComment" type="submit">
+            <v-icon>mdi-plus</v-icon>
+          </v-btn>
         </div>
       </div>
       <div :v-if="reply" v-for="(re, i) in reply" :key="i" style="margin-top: 5px; display:block;">
         <div v-if="isInput[i] === 0">
-          <span>{{ users[i] }} : {{ re.content }}</span>
-          <p v-if="username === users[i]" style="display:inline-block;">
-            <button @click="click(i)">수정</button>
-            <button @click="deleteComment(i, re.cmid)">삭제</button>
+          <p style="margin: 10px 0px;">
+            <font size="3">
+                {{ users[i] }}
+            </font>
           </p>
+          <span>
+            <font size="3">{{ re.content }}</font>
+          </span>
+          <p v-if="username === users[i]" style="display:inline-block; float: right;">
+            <v-icon @click="click(i)" style="margin-right: 15px">mdi-pencil-plus</v-icon>
+              <v-icon @click="deleteComment(i, re.cmid)">mdi-close</v-icon>
+          </p>
+          <br />
+          <br />
+          <hr style="opacity: 0.3;" />
+          <br />
         </div>
         <div v-else>
-          <span>
-            {{ users[i] }} :
-            <input v-model="re.content" />
-          </span>
-          <p v-if="username === users[i]" style="display:inline-block;">
-            <button @click="updateComment(i, re.cmid, re.content)">수정</button>
+          <p style="margin: 10px 0px;">
+            <font size="3">
+                {{ users[i] }}
+            </font>
           </p>
+          <div>
+            <input id="comment-input" v-model="re.content" @keydown.enter="updateComment(i, re.cmid, re.content)"  />
+          <p v-if="username === users[i]" style="display:inline-block;">
+              <v-icon @click="updateComment(i, re.cmid, re.content)">
+                mdi-check
+              </v-icon>
+          </p>
+          </div>
+          <hr style="opacity: 0.3;" />
         </div>
       </div>
-      <div>
+      <div style="text-align: center; margin-top: 15px;">
         <button v-for="pageNm in pageNms" :key="pageNm" @click="search(pageNm)">
           <span style="margin-right:10px;">{{ pageNm }}</span>
         </button>
@@ -107,6 +142,9 @@ export default {
   },
   mounted() {
     this.getData();
+  },
+  created() {
+    this.username = this.$store.state.username;
   },
   computed: {
     users: {
@@ -182,6 +220,7 @@ export default {
         comment: this.comment
       });
       this.search(0);
+      this.isInput.push(0);
       this.users.push(this.username);
       this.comment = "";
     },
@@ -319,9 +358,17 @@ export default {
 };
 </script>
 <style scoped>
+/* 본문 서체 */
+@font-face {
+  font-family: "BBTreeGL";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_nine_@1.1/BBTreeGL.woff")
+    format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
 #board-header {
-  background: linear-gradient(rgba(0, 0, 0, 0.3)),
-    url("../../assets/images/image.png") no-repeat;
+  background: linear-gradient(rgba(0, 0, 0, 0.5)),
+    url("../../assets/images/image5.jpg") no-repeat;
   background-size: 100%;
   height: 60vh;
   background-position-y: 30%;
@@ -334,7 +381,7 @@ export default {
   float: left;
   top: 35vmin;
   font-size: 11vmin;
-  font-family: 'BBTreeGB';
+  font-family: "BBTreeGB";
 }
 #board-username {
   margin: 0 0 0 2rem;
@@ -342,69 +389,68 @@ export default {
   position: relative;
   float: left;
   top: 40vh;
-  font-family: 'BBTreeGB';
+  font-family: "BBTreeGB";
 }
 #board-date {
   display: inline;
   bottom: 0;
   float: right;
-  margin-top: 3vh;
-  font-size: 3vmin;
-  font-family: "GyeonggiBatang";
+  text-align: right;
+  font-family: "BBTreeGL";
 }
 #board-context {
-  color: #ccc;
   margin: 5vw 15vw;
-  font-family: "GyeonggiBatang";
+  font-size: 1.2rem;
+  font-size: 1rem;
+  line-height: 1.5rem;
+  font-family: "BBTreeGL";
 }
 #board-footer {
-  color: #ccc;
   margin: 0vmax 10vmax;
   padding: 0 1rem;
   padding-bottom: 2rem;
   border-bottom: 1px solid #ccc;
 }
 .board-button {
-  margin: 0 0.5vmin;
-  width: 15vmin;
-  height: 9vmin;
-  border: 1px solid #ccc;
-  border-radius: 10vmin;
-  font-size: 2.5vmin;
-  font-family: "GyeonggiBatang";
+  font-size: 2rem;
+  margin: 0 5px;
 }
 #board-like-button {
-  display: block;
-  position: relative;
-  color: white;
-  text-align: center;
-  margin-bottom: 3vh;
-  font-family: "GyeonggiBatang";
+  width: 7rem;
+  height: 3rem !important;
+  margin: 0 5px;
+  margin-bottom: 10vh;
+  font-size: 1.3rem;
+  border-radius: 10vmin;
 }
 #board-comment-set {
-  margin: 3vmin;
-  color: #ccc;
-  margin: 0vmax 10vmax;
+  margin: 0vmax 15vmax;
   padding: 2rem 1rem;
-  font-family: "GyeonggiBatang";
+  font-family: "BBTreeGL";
 }
 #img-contents {
   margin: 5vh 15vw;
 }
-
+#comment-input {
+  padding: 0;
+  width: 93%;
+  height: 100%;
+  margin-bottom: 15px;
+  font-size: 15px;
+}
 @media (max-width: 700px) {
   #board-context {
     margin: 10vw 15vw 15vw 15vw;
     font-size: 15px;
   }
   #board-header {
-    height: 50vh;
+    height: 35vh;
     background-size: 200vw;
     background-position-x: 50%;
   }
   #board-title {
-    margin-top: 3vmin;
-    font-size: 7vmin;
+    margin-top: 4vmin;
+    font-size: 8vmin;
   }
   #board-username {
     margin: 0 0 0 2vw;
@@ -412,6 +458,27 @@ export default {
     float: left;
     top: 40vmin;
     font-size: 3vmin;
+  }
+}
+@media (max-width: 375px) {
+  #board-footer {
+    margin: 0vmax 5vmax;
+  }
+  #board-comment-set {
+    margin: 0vmax 1vw;
+  }
+}
+@media (max-width:426px) {
+  #board-comment-set {
+    margin: 0vmax 5vmax;
+  }
+  #comment-input {
+    width: 70%;
+  }
+}
+@media (max-width:768px) {
+  #board-comment-set {
+    margin: 0vmax 10vmax;
   }
 }
 </style>

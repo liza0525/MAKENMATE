@@ -1,38 +1,98 @@
 <template>
-  <div>
-    <div id="boardrecipe-list-header">
+  <div style="background-color: white; padding-bottom: 5vh">
+    <div id="boardrecipe-header">
       <h1 id="boardrecipe-category">레시피 공유</h1>
     </div>
     <div id="boardrecipe-context">
+      <v-row v-show="info.content.length > 3">
+        <v-col>
+          <h1
+            class="sansfont"
+            style=" margin-bottom:5%;font-size:200%; text-align:center; font-weight:bolder;"
+          >Top3</h1>
+          <carousel-3d count="3" style="opacity:100 !important; height:230px !important;">
+            <slide
+              v-for="(slide, i) in topThree"
+              :index="i"
+              :key="i"
+              style="opacity:100 !important; visibility:visible;height:200px !important;background-color:#ffffff;"
+            >
+              <v-card style="height:100px">
+                <!-- <v-img :src="slide.image" alt="ll" style="height:100%;"></v-img> -->
+                <div style="height:100%; font-size: 20px; text-align:center;display:table;">
+                  <div
+                    style="display:table-cell; vertical-align: middle; text-align:center;"
+                  >{{slide.contents}}</div>
+                </div>
+                <h1
+                  class="sansfont"
+                  style="margin-left:30px; margin-top:10px;font-weight:bolder;"
+                >{{ slide.title }}</h1>
+                <div style="margin-left:30px;margin-top:10px;display:inline-block">
+                  <i class="fas fa-lg fa-heart"></i>
+                  {{ slide.boardRecipeLike.length }}
+                </div>
+                <button
+                  @click="goToDetail(slide.rid)"
+                  class="sansfont"
+                  style="color:blue;margin-left:230px"
+                >...더보기</button>
+              </v-card>
+            </slide>
+          </carousel-3d>
+        </v-col>
+      </v-row>
       <!-- 검색 기능은 getSearchData 메소드에 정리 -->
-      <Search @searchData="getSearchData" class="search"></Search>
-      <v-simple-table dark>
+      <Search @searchData="getSearchData" id="search"></Search>
+      <v-simple-table>
         <template>
           <thead>
-            <tr>
-              <th class="numbering-col">No.</th>
-              <th>제목</th>
-              <th>글쓴이</th>
-              <th class="date-col">날짜</th>
+            <tr></tr>
+            <tr id="table-header">
+              <th id="table-header-no">No.</th>
+              <th id="table-header-title">제목</th>
+              <th id="table-header-writer">글쓴이</th>
+              <th id="table-header-date">날짜</th>
             </tr>
           </thead>
           <tbody>
             <tr class="text-center" v-for="board in info.content" v-bind:key="board.rid">
-              <td class="numbering-col" v-html="board.rid"></td>
-              <td v-html="board.title" @click="detail_id(board.rid)" style="cursor: pointer;"></td>
-              <td v-html="board.user.nickname"></td>
-              <td class="date-col" v-html="board.regdate"></td>
+              <td class="table-content-no" v-html="board.rid"></td>
+              <td
+                class="table-content-title"
+                v-html="board.title"
+                @click="detail_id(board.rid)"
+                style="cursor: pointer;"
+              ></td>
+              <td class="table-content-writer">
+                <router-link
+                  :to="{
+                  name: 'UserProfile',
+                  params: {
+                    username: board.user.nickname
+                  }
+                }"
+                  style="cursor: pointer;"
+                >{{ board.user.nickname }}</router-link>
+              </td>
+              <td class="table-content-date" v-html="board.regdate"></td>
             </tr>
           </tbody>
         </template>
       </v-simple-table>
     </div>
-    <div id="boardrecipe-list-footer">
-      <button v-if="this.$store.state.username" class="boardrecipe-button" @click="add_move()">글쓰기</button>
-      <div class="pagination">
+    <div style="width: 100%; text-align: center; color: #000;">
+      <div id="pagination">
         <button v-for="pageNm in pageNms" :key="pageNm" @click="retrieveBoard(pageNm)">
           <span style="margin-right:10px;">{{ pageNm }}</span>
         </button>
+      </div>
+    </div>
+    <div id="boardrecipe-footer">
+      <div class="board-button">
+        <v-btn fab small dark @click="add_move()">
+          <v-icon>mdi-pencil</v-icon>
+        </v-btn>
       </div>
     </div>
   </div>
@@ -40,6 +100,7 @@
 <script>
 import http from "../../http-common";
 import Search from "../../components/common/Search.vue";
+import { Carousel3d, Slide } from "vue-carousel-3d";
 export default {
   name: "boardrecipe-list",
   data: () => {
@@ -48,11 +109,14 @@ export default {
       loading: true,
       errored: false,
       totalPages: 0,
-      pageNms: []
+      pageNms: [],
+      topThree: []
     };
   },
   components: {
     Search,
+    Carousel3d,
+    Slide
   },
   methods: {
     retrieveBoard(pageNm) {
@@ -93,10 +157,44 @@ export default {
     },
     getSearchData(inputValue) {
       console.log(inputValue);
+      http
+        .get("/boardrecipe/search", {
+          params: {
+            searchData: inputValue
+          }
+        })
+        .then(response => {
+          this.info = response.data.object;
+          this.totalPages = response.data.object.totalPages;
+          console.log(this.info);
+          let arr = [];
+
+          let min = 1;
+          for (let index = 0; index < 5; index++) {
+            if (Number(min + index) > this.totalPages) break;
+            arr.push(Number(min + index));
+          }
+          this.pageNms = arr;
+        })
+        .catch(error => {
+          this.errored = true;
+        })
+        .finally(() => (this.loading = false));
     }
   },
   mounted() {
     this.retrieveBoard(1);
+    http
+      .get("/boardrecipe/top")
+      .then(response => {
+        let arr = [];
+        this.topThree = response.data.object;
+        console.log(this.topThree);
+      })
+      .catch(error => {
+        this.errored = true;
+      })
+      .finally(() => (this.loading = false));
   }
 };
 </script>
@@ -108,11 +206,12 @@ export default {
   font-weight: normal;
   font-style: normal;
 }
-#boardrecipe-list-header {
-  background: url("../../assets/images/image6.jpg") no-repeat;
+#boardrecipe-header {
+  background: linear-gradient(rgba(0, 0, 0, 0.5)),
+    url("../../assets/images/image7.jpg") no-repeat;
   background-size: 100%;
   height: 60vh;
-  background-position-y: 20%;
+  background-position-y: 30%;
   color: white;
 }
 #boardrecipe-category {
@@ -124,42 +223,100 @@ export default {
   font-size: 11vmin;
   font-family: "BBTreeGB";
 }
-#boardrecipe-list-footer {
-  color: #ccc;
+#boardrecipe-footer {
   margin: 0vmax 10vmax;
-  padding: 2rem 1rem;
-  border-top: 1px solid #ccc;
 }
 #boardrecipe-context {
-  color: #ccc;
   margin: 5vmax 10vmax;
-  font-family: "GyeonggiBatang";
+  font-family: "BBTreeGL";
 }
 .boardrecipe-button {
-  margin: 0 0.5rem;
-  width: 15vmin;
-  height: 9vmin;
-  border: 1px solid #ccc;
-  border-radius: 10vmin;
-  font-size: 2vmin;
-  font-family: "GyeonggiBatang";
+  font-size: 2rem;
+  margin: 0 5px;
 }
-@media (max-width: 700px) {
-  #boardrecipe-context {
+#search {
+  border-bottom: 1px solid #000;
+  width: 230px;
+  margin-right: 10px;
+  margin-left: auto;
+  margin-bottom: 20px;
+}
+tr {
+  text-align: center;
+}
+tr {
+  text-align: center;
+}
+td {
+  padding: 20px !important;
+}
+th {
+  font-size: 15px !important;
+  color: white !important;
+}
+#table-header {
+  background-color: #000;
+}
+#table-header-no,
+.table-content-no {
+  width: 10%;
+}
+#table-header-title,
+.table-content-title {
+  width: 50%;
+}
+#table-header-writer,
+.table-content-writer {
+  width: 20%;
+}
+#table-header-date,
+.table-content-date {
+  width: 20%;
+}
+@media (max-width: 960px) {
+  #board-context {
     margin: 2vmax 3vmax;
   }
-  .numbering-col,
-  .date-col {
-    display: none;
-  }
-  #boardrecipe-list-header {
+  #board-list-header {
     height: 50vh;
     background-size: 200vw;
     background-position-x: 50%;
   }
-  #boardrecipe-category {
+  #board-category {
     margin-top: 3vmin;
     font-size: 7vmin;
+  }
+  #table-header-no,
+  #table-header-date,
+  .table-content-no,
+  .table-content-date {
+    display: none;
+  }
+  #table-header-writer,
+  .table-content-writer {
+    width: 30%;
+  }
+}
+@media (max-width: 700px) {
+  #board-context {
+    margin: 10vw 15vw 15vw 15vw;
+    font-size: 15px;
+  }
+  #boardrecipe-header {
+    height: 35vh;
+    background-size: 200vw;
+    background-position-x: 50%;
+  }
+  #board-title {
+    margin-top: 4vmin;
+    font-size: 8vmin;
+  }
+  #board-username {
+    margin: 0 0 0 2vw;
+    display: inline;
+    float: left;
+    top: 40vmin;
+    font-size: 3vmin;
   }
 }
 </style>

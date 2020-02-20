@@ -1,5 +1,5 @@
 <template>
-  <div id="app" >
+  <div id="app">
     <file-pond
       name="test"
       ref="pond"
@@ -9,7 +9,7 @@
       accepted-file-types="image/jpeg, image/png"
       allowImagePreview="false"
       :server="server"
-      maxFiles=1
+      maxFiles="1"
       v-bind:files="myFiles"
       v-on:init="handleFilePondInit"
     />
@@ -29,6 +29,8 @@ import "filepond/dist/filepond.min.css";
 import "filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.css";
 
 import store from "../vuex/store";
+import http from "@/http-common";
+import config from "../../config";
 // Create component
 const FilePond = vueFilePond(
   FilePondPluginFileValidateType,
@@ -52,7 +54,7 @@ export default {
           progress,
           abort,
           transfer,
-          options,
+          options
         ) => {
           // fieldName is the name of the input field file is the actual file object to
           // send
@@ -61,7 +63,7 @@ export default {
           formData.append(fieldName, file, file.name);
 
           const request = new XMLHttpRequest();
-          request.open("POST", "http://localhost:8080/uploadFile");
+          request.open("POST", config.url + "/uploadFile");
           console.log(formData);
           // Should call the progress method to update the progress to 100% before calling
           // load Setting computable to false switches the loading indicator to infinite
@@ -82,6 +84,16 @@ export default {
               self.$store.commit(Constant.ADD_FILELIST, {
                 filelist: JSON.parse(request.responseText).id
               });
+              http
+                .put("/userprofileimage/", null, {
+                  params: {
+                    fid: JSON.parse(request.responseText).id,
+                    username: window.sessionStorage.getItem("login_username")
+                  }
+                })
+                .then(res => {
+                  console.log(res.data);
+                });
               //console.log(this.$store.state.filelist)
             } else {
               // Can call the error method if something is wrong, should exit after
@@ -103,11 +115,7 @@ export default {
           var self = this;
           const request = new XMLHttpRequest();
           const id = JSON.parse(uniqueFileId).id;
-          request.open(
-            "DELETE",
-            "http://localhost:8080/uploadFileDelete/" + id,
-            true
-          );
+          request.open("DELETE", config.url + "/uploadFileDelete/" + id, true);
           request.send();
           // Should remove the earlier created temp file here ... Can call the error
           // method if something is wrong, should exit after
@@ -135,7 +143,7 @@ export default {
   }
 };
 </script>
-<style scoped>
+<style scoped="scoped">
 #app {
   margin: 5vmax 10vmax;
 }
