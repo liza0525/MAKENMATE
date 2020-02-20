@@ -37,20 +37,39 @@
           </tbody>
         </template>
       </v-simple-table>
+<<<<<<< HEAD
     </div>
       <div style="width: 100%; text-align: center; color: #000;">
       <div id="pagination">
         <button v-for="pageNm in pageNms" :key="pageNm" @click="retrieveBoard(pageNm)">
+=======
+      <div id="pagination" style="text-align:center;">
+        <button
+          v-for="pageNm in pageNms"
+          :key="pageNm"
+          @click="retrieveBoard(pageNm)"
+        >
+>>>>>>> 7d608c28a4cab7ea00a6093f63fd52323c8cb123
           <span style="margin-right:10px;">{{ pageNm }}</span>
         </button>
       </div>
     </div>
     <div id="boardrecipe-list-footer">
+<<<<<<< HEAD
       <div class="board-button">
         <v-btn fab small dark @click="add_move()">
           <v-icon>mdi-pencil</v-icon>
         </v-btn>
       </div>
+=======
+      <button
+        v-if="this.$store.state.username"
+        class="boardrecipe-button"
+        @click="add_move()"
+      >
+        글쓰기
+      </button>
+>>>>>>> 7d608c28a4cab7ea00a6093f63fd52323c8cb123
     </div>
   </div>
 </template>

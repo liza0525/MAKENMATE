@@ -1,7 +1,8 @@
 <template>
-  <div style="background-color: white; padding-bottom: 5vh">
+  <!-- <div style="background-color: white; padding-bottom: 5vh"> -->
+  <div style="background-color: white;" :style="{ height: window.height }">
     <div id="user-scrap-header">
-      <h1 id="user-scrap-title">스크랩 목록</h1>
+      <h1 id="user-scrap-title" class="sansfont">스크랩 목록</h1>
     </div>
     <div id="user-scrap-context">
       <v-simple-table>
@@ -20,6 +21,7 @@
                 @click="goRecipeDetail(scrap.rid)"
                 style="cursor: pointer;"
               ></td>
+<<<<<<< HEAD
               <td class="table-content-writer">
                 
                 <router-link
@@ -31,6 +33,21 @@
                 }"
                  style="color: black; cursor: pointer;">{{ scrap.user.nickname }}</router-link></td>
               <td class="table-content-scrap">
+=======
+              <td id="writer-col">
+                <router-link
+                  :to="{
+                    name: 'UserProfile',
+                    params: {
+                      username: scrap.user.nickname
+                    }
+                  }"
+                  style="color: black; cursor: pointer;"
+                  >{{ scrap.user.nickname }}</router-link
+                >
+              </td>
+              <td>
+>>>>>>> 7d608c28a4cab7ea00a6093f63fd52323c8cb123
                 <button
                   @click="removeFromScrapList(scrap.rid)"
                   style="color: rgb(230, 0, 0); font-weight: bold;"
@@ -69,10 +86,16 @@ export default {
       nextBt: ">",
       fistBt: "<<",
       lastBt: ">>",
-      pageNms: []
+      pageNms: [],
+      window: {
+        width: 0,
+        height: 0
+      }
     };
   },
   created() {
+    window.addEventListener("resize", this.handleResize);
+    this.handleResize();
     this.username = this.$store.state.username;
     this.loadScrapList(1);
   },
@@ -126,7 +149,17 @@ export default {
           rid: selectedRid
         }
       });
+    },
+    handleResize() {
+      this.window.width = window.innerWidth;
+      this.window.height = window.innerHeight;
+      // console.log(typeof this.window.height);
+      this.window.height = this.window.height + "px";
+      this.window.height = "calc(" + this.window.height + " - 4rem)";
     }
+  },
+  destroyed() {
+    window.removeEventListener("resize", this.handleResize);
   }
 };
 </script>

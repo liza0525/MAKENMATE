@@ -64,11 +64,12 @@
       </div>
       <div :v-if="reply" v-for="(re, i) in reply" :key="i" style="margin-top: 5px; display:block;">
         <div v-if="isInput[i] === 0">
-          <span>{{ users[i] }} : {{ re.content }}</span>
-          <p v-if="username === users[i]" style="display:inline-block;">
-            <button @click="click(i)">수정</button>
+          <span><font size="3"><br> {{ users[i] }}</font></span> <br><br>  <span><font size="4">{{ re.content }}</font></span>
+          <p v-if="username === users[i]" style="display:inline-block; float: right;">
+            <button @click="click(i)" style="margin-right: 15px">수정</button>
             <button @click="deleteComment(i, re.cmid)">삭제</button>
           </p>
+          <br><br><hr style="opacity: 0.3;"> <br>
         </div>
         <div v-else>
           <span>
@@ -117,6 +118,9 @@ export default {
   },
   mounted() {
     this.getData();
+  },
+  created() {
+    this.username= this.$store.state.username
   },
   computed: {
     users: {
@@ -192,6 +196,7 @@ export default {
         comment: this.comment
       });
       this.search(0);
+      this.isInput.push(0);
       this.users.push(this.username);
       this.comment = "";
     },
