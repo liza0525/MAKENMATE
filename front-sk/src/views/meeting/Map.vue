@@ -383,7 +383,7 @@ export default {
 @import "~vue-simple-drawer/src/index";
 
 .btn {
-  top: 120px;
+  top: 150px;
   right: 10px;
   background-color: #fff;
   width: 40px !important;
@@ -399,7 +399,7 @@ export default {
   border-bottom: 2px solid black;
   width: 230px;
   right: 50px;
-  top: 120px;
+  top: 150px;
   color: black;
   font-weight: 700;
 }
