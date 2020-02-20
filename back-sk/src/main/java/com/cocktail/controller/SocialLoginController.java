@@ -116,7 +116,6 @@ public class SocialLoginController {
         String userInfo = kakao.getUserInfo(access_token);
         ModelAndView mav = new ModelAndView();
         String[] arr = userInfo.split("&");
-        System.out.println(Arrays.toString(arr));
 		String nickname = arr[0].split("=")[1];
 		String email = null;
 		String[] tmp = arr[1].split("=");
