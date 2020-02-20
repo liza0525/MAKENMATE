@@ -17,17 +17,9 @@
             </tr>
           </thead>
           <tbody>
-            <tr
-              class="text-center"
-              v-for="board in info.content"
-              v-bind:key="board.rid"
-            >
+            <tr class="text-center" v-for="board in info.content" v-bind:key="board.rid">
               <td class="numbering-col" v-html="board.rid"></td>
-              <td
-                v-html="board.title"
-                @click="detail_id(board.rid)"
-                style="cursor: pointer;"
-              ></td>
+              <td v-html="board.title" @click="detail_id(board.rid)" style="cursor: pointer;"></td>
               <td>
                 <router-link
                   :to="{
@@ -37,9 +29,7 @@
                     }
                   }"
                   style="color: white; cursor: pointer;"
-                >
-                  {{ board.user.nickname }}</router-link
-                >
+                >{{ board.user.nickname }}</router-link>
               </td>
               <td class="date-col" v-html="board.regdate"></td>
             </tr>
@@ -47,23 +37,13 @@
         </template>
       </v-simple-table>
       <div id="pagination" style="text-align:center;">
-        <button
-          v-for="pageNm in pageNms"
-          :key="pageNm"
-          @click="retrieveBoard(pageNm)"
-        >
+        <button v-for="pageNm in pageNms" :key="pageNm" @click="retrieveBoard(pageNm)">
           <span style="margin-right:10px;">{{ pageNm }}</span>
         </button>
       </div>
     </div>
     <div id="boardrecipe-list-footer">
-      <button
-        v-if="this.$store.state.username"
-        class="boardrecipe-button"
-        @click="add_move()"
-      >
-        글쓰기
-      </button>
+      <button v-if="this.$store.state.username" class="boardrecipe-button" @click="add_move()">글쓰기</button>
     </div>
   </div>
 </template>
@@ -86,6 +66,7 @@ export default {
   },
   methods: {
     retrieveBoard(pageNm) {
+      console.log(window.sessionStorage.getItem("Authorization"));
       http
         .get("/boardrecipe", {
           params: {
