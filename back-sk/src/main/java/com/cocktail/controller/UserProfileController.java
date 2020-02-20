@@ -1,5 +1,7 @@
 package com.cocktail.controller;
 
+import java.io.File;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -78,25 +80,18 @@ public class UserProfileController {
         }
 
         @PutMapping(value = "/userprofileimage")
-        public Object userimage(@RequestParam(required = true) final int fid,
+        public Object userimage(@RequestParam(required = true) final String image,
                         @RequestParam(required = true) final String username) {
-                System.out.println("fid       " + fid);
                 System.out.println("username       " + username);
-                UploadFile file = filedao.findById(fid);
-
-                // String str = "image/";
-                // String filename = str.concat(file.getFileName());
-                String filename = file.getFileName();
-
-                System.out.println(filename);
 
                 User user = userDao.findByNickname(username);
-                user.setImage(filename);
+                user.setImage(image);
                 userDao.save(user);
 
                 final BasicResponse result = new BasicResponse();
                 result.status = true;
                 result.data = "success";
+                result.object = user;
                 return new ResponseEntity<>(result, HttpStatus.OK);
         }
 

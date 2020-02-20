@@ -155,13 +155,13 @@ export default {
           name: "정윤영",
           role: "backend / frontend",
           profileUrl: require("../../assets/images/cyy.jpg"),
-          instagram: "http://www.instagram.com",
-          github: "https://www.github.com",
-          email: "a@naver.com",
-          java: 15,
-          vue: 20,
-          python: 30,
-          server: 40
+          instagram: "http://www.instagram.com/jjungnewww",
+          github: "https://www.github.com/liza0525",
+          email: "lizziechung@naver.com",
+          java: 50,
+          vue: 85,
+          python: 70,
+          server: 30
         }
       ]
     };
@@ -204,7 +204,13 @@ export default {
         name: "Join",
         params: { nickname: this.$route.query.nickname }
       });
-    } else {
+    } else if (
+      !(
+        this.$route.query.token == "undefined" ||
+        this.$route.query.token == null ||
+        this.$route.query.token == ""
+      )
+    ) {
       http
         .post("/user/auth", null, {
           params: {

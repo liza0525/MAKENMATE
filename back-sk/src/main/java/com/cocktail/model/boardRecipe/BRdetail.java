@@ -34,4 +34,6 @@ public class BRdetail implements Serializable {
     private String user_name;
 
     private ArrayList<String> filelist;
+    
+    private int rlike;
 }

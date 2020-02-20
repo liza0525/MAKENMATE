@@ -21,7 +21,6 @@
               id="password"
               @keyup.enter="login"
               placeholder="비밀번호를 입력하세요."
-              :readonly="isKakao"
               type="password"
               class="neon-input col-12 mb-4"
             />
@@ -38,10 +37,10 @@
                 <div class="text">
                   <p id="label-title">SNS 로그인</p>
                 </div>
-                    
+
                 <kakaoLogin :component="component" />
                 <!-- <GoogleLogin :component="component" /> -->
-                <NaverLogin :component="component"  />
+                <NaverLogin :component="component" />
               </div>
               <div class="add-option">
                 <div class="text">
@@ -141,6 +140,7 @@ export default {
               this.$store.state.username = res.data.object.nickname;
               this.$store.state.useremail = res.data.object.email;
               this.$router.push("/");
+              console.log(storage.getItem("Authorization"));
             }
             //요청이 끝나면 버튼 활성화
             this.isSubmit = true;
@@ -242,8 +242,8 @@ input:-webkit-autofill,
 input:-webkit-autofill:hover,
 input:-webkit-autofill:focus,
 input:-webkit-autofill:active {
-transition: background-color 5000s ease-in-out 0s;
--webkit-transition: background-color 9999s ease-out;
+  transition: background-color 5000s ease-in-out 0s;
+  -webkit-transition: background-color 9999s ease-out;
   -webkit-text-fill-color: #fff !important;
 }
 

@@ -15,7 +15,7 @@
           style="text-align:center;"
         >
           <div
-            style="position:absoulte; margin-top:4%; display:inline-block; overflow: hidden;  height:300px; width: 300px; border-radius:300px;"
+            style="position:absoulte; margin-top:4%; margin-bottom: 8%; display:inline-block; overflow: hidden;  height:300px; width: 300px; border-radius:300px;"
           >
             <img
               :src="user.image"
@@ -23,7 +23,9 @@
             />
             <!--file upload component-->
           </div>
-          <FileUploadNotPriview style="margin: 0px" />
+          <label id="largeFile" for="file">
+            <input type="file" id="file" />
+          </label>
         </div>
 
         <v-col class="col-1"></v-col>
@@ -154,13 +156,56 @@
       <div v-show="boardArray.length > 0">
         <div
           class="sansfont"
-          style="font-size:200%; text-align:center; font-weight:bolder;"
+          style="font-size:200%; text-align:center; font-weight:bolder; margin-bottom: 15px;"
         >
           {{ user.nickname }}님이 쓴 글
         </div>
-        <div v-for="(board, i) in boardArray" :key="i">
-          {{ board.title }}
+        <div
+          class="table-font"
+          style="font-size: 15px; margin-left: 10px; margin-bottom: 10px;"
+        >
+          <span @click="selectTable = boardArray" style="cursor: pointer;"
+            >자유 게시판</span
+          >
+          |
+          <span @click="selectTable = boardRecipeArray" style="cursor: pointer;"
+            >레시피 공유</span
+          >
         </div>
+        <!-- toggling table -->
+        <v-simple-table>
+          <template>
+            <thead>
+              <tr id="table-header">
+                <th id="table-header-title">제목</th>
+                <th id="table-header-writer">글쓴이</th>
+                <th id="table-header-date">날짜</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="(board, i) in selectTable" :key="i">
+                <td
+                  v-if="selectTable === boardArray"
+                  class="table-content-title"
+                  v-html="board.title"
+                  @click="detail_bid(board.bid)"
+                  style="cursor: pointer;"
+                ></td>
+                <td
+                  v-if="selectTable === boardRecipeArray"
+                  class="table-content-title"
+                  v-html="board.title"
+                  @click="detail_rid(board.rid)"
+                  style="cursor: pointer;"
+                ></td>
+                <td class="table-content-writer">
+                  {{ board.user.nickname }}
+                </td>
+                <td class="table-content-date" v-html="board.regdate"></td>
+              </tr>
+            </tbody>
+          </template>
+        </v-simple-table>
       </div>
     </div>
     <div
@@ -182,7 +227,9 @@
             />
             <!--file upload component-->
           </div>
-          <FileUploadNotPriview style="margin: 0px" />
+          <label id="largeFile" for="file">
+            <input type="file" id="file" />
+          </label>
         </div>
         <v-col>
           <div style="display:inline-block; width: 70%">
@@ -303,13 +350,64 @@
         <div style="text-align:center" v-show="boardArray.length > 0">
           <h1
             class="sansfont"
-            style=" font-size:200%; text-align:center; font-weight:bolder;"
+            style=" font-size:200%; text-align:center; font-weight:bolder; margin-bottom: 10px;"
           >
             {{ user.nickname }}님이 쓴 글
           </h1>
-          <div v-for="(board, i) in boardArray" :key="i">
-            {{ board.title }}
+          <div
+            class="table-font"
+            style="font-size: 15px; margin-left: 10px; margin-bottom: 10px;"
+          >
+            <span @click="selectTable = boardArray" style="cursor: pointer;"
+              >자유 게시판</span
+            >
+            |
+            <span
+              @click="selectTable = boardRecipeArray"
+              style="cursor: pointer;"
+              >레시피 공유</span
+            >
           </div>
+          <v-simple-table class="table-font" style="padding: 0 10px;">
+            <template>
+              <thead>
+                <tr id="table-header">
+                  <th id="table-header-title">제목</th>
+                  <th id="table-header-writer">글쓴이</th>
+                  <th id="table-header-date">날짜</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="(board, i) in selectTable" :key="i">
+                  <td
+                    v-if="selectTable === boardArray"
+                    class="table-content-title"
+                    v-html="board.title"
+                    @click="detail_bid(board.bid)"
+                    style="cursor: pointer;"
+                  ></td>
+                  <td
+                    v-if="selectTable === boardRecipeArray"
+                    class="table-content-title"
+                    v-html="board.title"
+                    @click="detail_rid(board.rid)"
+                    style="cursor: pointer;"
+                  ></td>
+                  <td class="table-content-writer">
+                    <router-link
+                      :to="{
+                        name: 'UserProfile',
+                        params: { username: board.user.nickname }
+                      }"
+                      style="color: black; cursor: pointer;"
+                      >{{ board.user.nickname }}</router-link
+                    >
+                  </td>
+                  <td class="table-content-date" v-html="board.regdate"></td>
+                </tr>
+              </tbody>
+            </template>
+          </v-simple-table>
         </div>
       </div>
     </div>
@@ -319,9 +417,7 @@
 <script>
 import Constant from "../../Constant";
 import { Carousel3d, Slide } from "vue-carousel-3d";
-import FileUpload from "@/components/FileUpload";
 import http from "../../http-common";
-import FileUploadNotPriview from "@/components/FileUploadNotPriview";
 
 export default {
   data: () => {
@@ -340,6 +436,7 @@ export default {
       pageNm: 1,
       boardArray: [],
       boardRecipeArray: [],
+      selectTable: [],
       prevBt: "<",
       nextBt: ">",
       fistBt: "<<",
@@ -355,6 +452,42 @@ export default {
     };
   },
   mounted() {
+    var file = document.getElementById("file");
+    var self = this;
+    file.onchange = function(event) {
+      var target = event.currentTarget;
+      var xmlHttpRequest = new XMLHttpRequest();
+      xmlHttpRequest.open("POST", "https://api.imgur.com/3/image/", true);
+      xmlHttpRequest.setRequestHeader(
+        "Authorization",
+        "Client-ID 5d0f43f26473d77"
+      );
+      xmlHttpRequest.onreadystatechange = function() {
+        if (xmlHttpRequest.readyState == 4) {
+          if (xmlHttpRequest.status == 200) {
+            var result = JSON.parse(xmlHttpRequest.responseText);
+            // this.user.image = result.data.link;
+            http
+              .put("/userprofileimage/", null, {
+                params: {
+                  image: result.data.link,
+                  username: self.$store.state.username
+                }
+              })
+              .then(res => {
+                console.log(res.data);
+                self.user = res.data.object;
+              });
+            console.log(result);
+          } else {
+            alert("업로드 실패");
+            // this.user.image = "http://dy.gnch.or.kr/img/no-image.jpg";
+          }
+        }
+      };
+      xmlHttpRequest.send(target.files[0]);
+      // this.user.image = "https://nrm.dfg.ca.gov/images/image-loader.gif";
+    };
     window.addEventListener("resize", this.handleResize);
     this.handleResize();
     this.user.nickname = this.$route.params.username;
@@ -365,12 +498,11 @@ export default {
           ...this.$store.state.user
         };
         if (this.user.image === null) {
-           this.user.image = require(`../../assets/images/profile_default.png`);
-        }else {
+          this.user.image = require(`../../assets/images/profile_default.png`);
+        } else {
           //DB image column 경로
           //this.user.image = require("/home/ubuntu/image/"+this.user.image);
           //this.user.image = require(this.user.image); //ciritical dependncy error
-          console.log(this.user.image);
         }
       });
     this.$store
@@ -404,7 +536,6 @@ export default {
           .then(res => {
             this.boardArray = res.data.boards.content;
             this.page.board = res.data.boards.totalPages;
-            console.log(this.boardArray);
           });
         http
           .get("/boardrecipe/user", {
@@ -415,7 +546,6 @@ export default {
           .then(res => {
             this.boardRecipeArray = res.data.object.content;
             this.page.boardrecipe = res.data.object.totalPages;
-            console.log(this.boardRecipeArray);
           });
       });
   },
@@ -423,7 +553,6 @@ export default {
     window.removeEventListener("resize", this.handleResize);
   },
   components: {
-    FileUploadNotPriview,
     Carousel3d,
     Slide
   },
@@ -452,6 +581,27 @@ export default {
       // console.log(typeof this.window.height);
       this.window.height = this.window.height + "px";
       this.window.height = "calc(" + this.window.height + " - 4rem)";
+    },
+    detail_rid(sendrid) {
+      this.$router.push({
+        name: "BoardRecipeDetail",
+        params: {
+          rid: sendrid
+        }
+      });
+    },
+    detail_bid(sendbid) {
+      this.$router.push({
+        name: "BoardDetail",
+        params: {
+          bid: sendbid
+        }
+      });
+    }
+  },
+  watch: {
+    boardArray() {
+      this.selectTable = this.boardArray;
     }
   }
 };
@@ -540,7 +690,6 @@ carousel-3d {
   font-size: 11vmin;
   font-family: "BBTreeGB";
 }
-
 .backgroundcolor {
   background-color: #ffffff;
   padding-top: 8%;
@@ -554,13 +703,42 @@ carousel-3d {
   /* font-family: "Jua", sans-serif; */
   /* font-family: "Malgun Gothic"; */
 }
-.cocktailfont {
-  font-family: "국립박물관문화재단클래식B";
+td,
+tr,
+th,
+span {
+  font-family: "GyeonggiBatang";
 }
 .carousel-3d-slider {
   height: 600px !important;
 }
 
+label#largeFile:after {
+  width: 10%;
+  max-width: 200px;
+  content: "Upload your Image";
+  left: 0;
+  right: 0;
+  margin: 50px auto;
+  text-align: center;
+  padding: 20px 0px 20px 0px;
+  border-radius: 10px;
+  border: 4px dashed #ccc;
+  color: #ccc;
+  font-family: "Helvetica Neue", Helvetica, Arial;
+  font-size: 30px;
+}
+
+label#largeFile:hover:after {
+  background: #ccc;
+  color: #fff;
+  cursor: pointer;
+}
+
+label#largeFile input#file {
+  width: 0px;
+  height: 0px;
+}
 @media (max-width: 700px) {
   #user-scrap-header {
     height: 35vh;
@@ -570,6 +748,47 @@ carousel-3d {
   #user-scrap-title {
     margin-top: 4vmin;
     font-size: 8vmin;
+  }
+}
+tr {
+  text-align: center;
+}
+td {
+  padding: 20px !important;
+}
+th {
+  font-size: 15px !important;
+  color: white !important;
+}
+#table-header {
+  background-color: #000;
+}
+#table-header-no,
+.table-content-no {
+  width: 10%;
+}
+#table-header-title,
+.table-content-title {
+  width: 50%;
+}
+#table-header-writer,
+.table-content-writer {
+  width: 20%;
+}
+#table-header-date,
+.table-content-date {
+  width: 20%;
+}
+@media (max-width: 960px) {
+  #table-header-no,
+  #table-header-date,
+  .table-content-no,
+  .table-content-date {
+    display: none;
+  }
+  #table-header-writer,
+  .table-content-writer {
+    width: 30%;
   }
 }
 </style>
