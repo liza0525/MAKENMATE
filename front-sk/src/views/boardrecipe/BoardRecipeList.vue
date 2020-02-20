@@ -4,12 +4,50 @@
       <h1 id="boardrecipe-category">레시피 공유</h1>
     </div>
     <div id="boardrecipe-context">
+      <v-row v-show="info.content.length > 3">
+        <v-col>
+          <h1
+            class="sansfont"
+            style=" margin-bottom:5%;font-size:200%; text-align:center; font-weight:bolder;"
+          >Top3</h1>
+          <carousel-3d count="3" style="opacity:100 !important; height:230px !important;">
+            <slide
+              v-for="(slide, i) in topThree"
+              :index="i"
+              :key="i"
+              style="opacity:100 !important; visibility:visible;height:200px !important;background-color:#ffffff;"
+            >
+              <v-card style="height:100px">
+                <!-- <v-img :src="slide.image" alt="ll" style="height:100%;"></v-img> -->
+                <div style="height:100%; font-size: 20px; text-align:center;display:table;">
+                  <div
+                    style="display:table-cell; vertical-align: middle; text-align:center;"
+                  >{{slide.contents}}</div>
+                </div>
+                <h1
+                  class="sansfont"
+                  style="margin-left:30px; margin-top:10px;font-weight:bolder;"
+                >{{ slide.title }}</h1>
+                <div style="margin-left:30px;margin-top:10px;display:inline-block">
+                  <i class="fas fa-lg fa-heart"></i>
+                  {{ slide.boardRecipeLike.length }}
+                </div>
+                <button
+                  @click="goToDetail(slide.rid)"
+                  class="sansfont"
+                  style="color:blue;margin-left:230px"
+                >...더보기</button>
+              </v-card>
+            </slide>
+          </carousel-3d>
+        </v-col>
+      </v-row>
       <!-- 검색 기능은 getSearchData 메소드에 정리 -->
       <Search @searchData="getSearchData" id="search"></Search>
       <v-simple-table>
         <template>
           <thead>
-            <tr>
+            <tr></tr>
             <tr id="table-header">
               <th id="table-header-no">No.</th>
               <th id="table-header-title">제목</th>
@@ -20,7 +58,12 @@
           <tbody>
             <tr class="text-center" v-for="board in info.content" v-bind:key="board.rid">
               <td class="table-content-no" v-html="board.rid"></td>
-              <td class="table-content-title" v-html="board.title" @click="detail_id(board.rid)" style="cursor: pointer;"></td>
+              <td
+                class="table-content-title"
+                v-html="board.title"
+                @click="detail_id(board.rid)"
+                style="cursor: pointer;"
+              ></td>
               <td class="table-content-writer">
                 <router-link
                   :to="{
@@ -29,8 +72,8 @@
                     username: board.user.nickname
                   }
                 }"
-                 style="cursor: pointer;">
-                {{ board.user.nickname }}</router-link>
+                  style="cursor: pointer;"
+                >{{ board.user.nickname }}</router-link>
               </td>
               <td class="table-content-date" v-html="board.regdate"></td>
             </tr>
@@ -38,7 +81,7 @@
         </template>
       </v-simple-table>
     </div>
-      <div style="width: 100%; text-align: center; color: #000;">
+    <div style="width: 100%; text-align: center; color: #000;">
       <div id="pagination">
         <button v-for="pageNm in pageNms" :key="pageNm" @click="retrieveBoard(pageNm)">
           <span style="margin-right:10px;">{{ pageNm }}</span>
@@ -57,6 +100,7 @@
 <script>
 import http from "../../http-common";
 import Search from "../../components/common/Search.vue";
+import { Carousel3d, Slide } from "vue-carousel-3d";
 export default {
   name: "boardrecipe-list",
   data: () => {
@@ -65,11 +109,14 @@ export default {
       loading: true,
       errored: false,
       totalPages: 0,
-      pageNms: []
+      pageNms: [],
+      topThree: []
     };
   },
   components: {
-    Search
+    Search,
+    Carousel3d,
+    Slide
   },
   methods: {
     retrieveBoard(pageNm) {
@@ -137,6 +184,17 @@ export default {
   },
   mounted() {
     this.retrieveBoard(1);
+    http
+      .get("/boardrecipe/top")
+      .then(response => {
+        let arr = [];
+        this.topThree = response.data.object;
+        console.log(this.topThree);
+      })
+      .catch(error => {
+        this.errored = true;
+      })
+      .finally(() => (this.loading = false));
   }
 };
 </script>
@@ -199,16 +257,20 @@ th {
 #table-header {
   background-color: #000;
 }
-#table-header-no, .table-content-no {
+#table-header-no,
+.table-content-no {
   width: 10%;
 }
-#table-header-title, .table-content-title {
+#table-header-title,
+.table-content-title {
   width: 50%;
 }
-#table-header-writer, .table-content-writer {
+#table-header-writer,
+.table-content-writer {
   width: 20%;
 }
-#table-header-date, .table-content-date {
+#table-header-date,
+.table-content-date {
   width: 20%;
 }
 @media (max-width: 960px) {

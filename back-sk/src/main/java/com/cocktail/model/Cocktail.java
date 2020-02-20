@@ -46,7 +46,7 @@ public class Cocktail {
     private String image;
     private String snack;
     private String bar;
-
+    
     // @JsonIgnore
     // @OneToMany
     // @JoinColumn(name = "cmid")

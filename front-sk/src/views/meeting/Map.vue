@@ -68,7 +68,12 @@
             >
               <img :src="um.userImg" style="height:100%; width:100%" />
             </div>
-            <button style="float:right;font-size:20" @click="goMeeting(meet.mid)">신청하기</button>
+            <button
+              style="float:right;font-size:20"
+              v-if="check(meet.usermeeting)"
+              @click="goMeeting(meet.mid)"
+            >신청하기</button>
+            <p v-else>신청 완료</p>
             <button
               v-if="meet.author === username"
               @click="deleteMeeting(meet.mid)"
@@ -157,7 +162,8 @@
         <div>
           <h1>{{ meeting.title }}</h1>
           <p>{{ meeting.people }} / {{ meeting.count }}명</p>
-          <button @click="goMeeting(meeting.mid)">신청하기</button>
+          <button v-if="check(meeting.usermeeting)" @click="goMeeting(meeting.mid)">신청하기</button>
+          <p v-else>신청 완료</p>
         </div>
       </v-card>
     </div>
@@ -289,6 +295,7 @@ export default {
     },
     getMarker() {
       http.get("/meeting").then(res => {
+        console.log(res);
         this.meetings = res.data.object;
         this.markers = [];
         this.meetings.forEach(el => {
@@ -374,6 +381,22 @@ export default {
     getSearchData(inputValue) {
       console.log(inputValue);
       this.isClickSearch = !this.isClickSearch;
+    },
+    check(meeting) {
+      let error = true;
+      if (
+        meeting != undefined ||
+        meeting != null ||
+        typeof meeting != "undefined"
+      ) {
+        meeting.forEach(el => {
+          if (el.username === this.username) {
+            console.log("success");
+            error = false;
+          }
+        });
+      }
+      return error;
     }
   }
 };

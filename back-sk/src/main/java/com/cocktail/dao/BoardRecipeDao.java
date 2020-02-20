@@ -1,5 +1,6 @@
 package com.cocktail.dao;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.domain.Page;
@@ -18,4 +19,5 @@ public interface BoardRecipeDao extends JpaRepository<BoardRecipe, Integer> {
     // List<board> findByComments(int bid);
 	Page<BoardRecipe> findAllByTitleLike(String title, Pageable pageable);
 	Page<BoardRecipe> findAllByUser_uid(int user_uid, Pageable pageable);
+	List<BoardRecipe> findAll();
 }
