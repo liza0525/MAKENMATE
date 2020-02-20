@@ -10,7 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -86,7 +85,7 @@ public class AccountController {
 
 	public Object signup(@RequestParam(required = true) final String email,
 			@RequestParam(required = true) final String password,
-			@RequestParam(required = true) final String nickname) {
+			@RequestParam(required = true) final String nickname) throws Exception {
 		// 이메일, 닉네임 중복처리 필수
 		// 이메일 형식 체크
 		// 비밀번호 영문/숫자 혼용 8자 이상인지 체크
@@ -112,8 +111,7 @@ public class AccountController {
 		// .append("&authkey=")
 		// .append(authkey)
 //		 .append("' target='_blenk'>이메일 인증 확인</a>");
-		 emailService.sendSimpleMessage(email, "회원가입 인증 메일입니다",
-		 sb.toString());
+		 emailService.sendMail(email, "회원가입 인증 메일입니다",		 sb.toString());
 		return responseService.getSuccessResponse();
 	}
 

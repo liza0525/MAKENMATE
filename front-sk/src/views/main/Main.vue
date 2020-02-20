@@ -204,7 +204,13 @@ export default {
         name: "Join",
         params: { nickname: this.$route.query.nickname }
       });
-    } else {
+    } else if (
+      !(
+        this.$route.query.token == "undefined" ||
+        this.$route.query.token == null ||
+        this.$route.query.token == ""
+      )
+    ) {
       http
         .post("/user/auth", null, {
           params: {

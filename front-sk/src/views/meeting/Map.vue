@@ -26,7 +26,12 @@
           @keypress.enter="getSearchData(searchData)"
           placeholder="Search"
         />
-        <v-btn icon v-show="isClickSearch" class="btn" style="width:40px; height:40px">
+        <v-btn
+          icon
+          v-show="isClickSearch"
+          class="btn"
+          style="width:40px; height:40px"
+        >
           <v-icon @click="getSearchData(searchData)">mdi-magnify</v-icon>
         </v-btn>
         <google-map-marker
@@ -45,7 +50,6 @@
           :style="{ height: map.height }"
           style="top:4rem"
         >
-          <input type="text" />
         </google-map-custom-control>
       </div>
     </google-map>
@@ -60,7 +64,9 @@
           <div v-for="meet in meetings" :key="meet.mid">
             <h1 style="margin-top:3%">{{ meet.title }}</h1>
             <p>{{ meet.date }}</p>
-            <p style="display:inline-block">{{ meet.people }} / {{ meet.count }}명</p>
+            <p style="display:inline-block">
+              {{ meet.people }} / {{ meet.count }}명
+            </p>
             <div
               v-for="um in meet.usermeeting"
               style="margin-left: 2%;overflow: hidden; display:inline-block; height:30px; width: 30px; border-radius:30px;"
@@ -68,15 +74,28 @@
             >
               <img :src="um.userImg" style="height:100%; width:100%" />
             </div>
-            <button style="float:right;font-size:20" @click="goMeeting(meet.mid)">신청하기</button>
+            <button
+              style="float:right;font-size:20"
+              v-if="check(meet.usermeeting)"
+              @click="goMeeting(meet.mid)"
+            >
+              신청하기
+            </button>
+            <p v-else>신청 완료</p>
             <button
               v-if="meet.author === username"
               @click="deleteMeeting(meet.mid)"
               style="float:right; margin-right: 2%"
-            >삭제</button>
+            >
+              삭제
+            </button>
             <hr style="margin-top:3%" />
           </div>
-          <div class="up" :style="{ top: meetingHeightTrue }" style="padding:4%">
+          <div
+            class="up"
+            :style="{ top: meetingHeightTrue }"
+            style="padding:4%"
+          >
             <div style="text-align:center">
               <button @click="isOpen = !isOpen">
                 <i class="fas fa-4x fa-chevron-down"></i>
@@ -104,7 +123,11 @@
               <input type="text" v-model="meeting.place" placeholder="장소" />
               <br />
               <label>상세 주소</label>
-              <input type="text" v-model="meeting.detail" placeholder="상세 주소" />
+              <input
+                type="text"
+                v-model="meeting.detail"
+                placeholder="상세 주소"
+              />
               <button
                 @click="makeMeeting()"
                 style="border: 1px solid white; width:100%; padding: 2%"
@@ -123,7 +146,9 @@
           <div v-for="meet in meetings" :key="meet.mid">
             <h1 style="margin-top:3%">{{ meet.title }}</h1>
             <p>{{ meet.date }}</p>
-            <p style="display:inline-block">{{ meet.people }} / {{ meet.count }}명</p>
+            <p style="display:inline-block">
+              {{ meet.people }} / {{ meet.count }}명
+            </p>
             <div
               v-for="um in meet.usermeeting"
               style="margin-left: 2%;overflow: hidden; display:inline-block; height:30px; width: 30px; border-radius:30px;"
@@ -131,12 +156,19 @@
             >
               <img :src="um.userImg" style="height:100%; width:100%" />
             </div>
-            <button style="float:right;font-size:20" @click="goMeeting(meet.mid)">신청하기</button>
+            <button
+              style="float:right;font-size:20"
+              @click="goMeeting(meet.mid)"
+            >
+              신청하기
+            </button>
             <button
               v-if="meet.author === username"
               @click="deleteMeeting(meet.mid)"
               style="float:right; margin-right: 2%"
-            >삭제</button>
+            >
+              삭제
+            </button>
             <hr style="margin-top:3%" />
           </div>
           <div v-show="!isOpen" style="text-align:center">
@@ -157,7 +189,13 @@
         <div>
           <h1>{{ meeting.title }}</h1>
           <p>{{ meeting.people }} / {{ meeting.count }}명</p>
-          <button @click="goMeeting(meeting.mid)">신청하기</button>
+          <button
+            v-if="check(meeting.usermeeting)"
+            @click="goMeeting(meeting.mid)"
+          >
+            신청하기
+          </button>
+          <p v-else>신청 완료</p>
         </div>
       </v-card>
     </div>
@@ -289,6 +327,7 @@ export default {
     },
     getMarker() {
       http.get("/meeting").then(res => {
+        console.log(res);
         this.meetings = res.data.object;
         this.markers = [];
         this.meetings.forEach(el => {
@@ -374,6 +413,29 @@ export default {
     getSearchData(inputValue) {
       console.log(inputValue);
       this.isClickSearch = !this.isClickSearch;
+      let url =
+        "https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=" +
+        inputValue +
+        "&inputtype=textquery&fields=photos,formatted_address,name,rating,opening_hours,geometry&key=" +
+        config.apiKey;
+
+      axios.get(url).then(res => console.log(res));
+    },
+    check(meeting) {
+      let error = true;
+      if (
+        meeting != undefined ||
+        meeting != null ||
+        typeof meeting != "undefined"
+      ) {
+        meeting.forEach(el => {
+          if (el.username === this.username) {
+            console.log("success");
+            error = false;
+          }
+        });
+      }
+      return error;
     }
   }
 };
