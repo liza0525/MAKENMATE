@@ -149,7 +149,7 @@ export default {
 }
 #search {
   border-bottom: 1px solid #000;
-  width: 230px;
+  width: 250px;
   margin-right: 10px;
   margin-left: auto;
   margin-bottom: 20px;
@@ -201,6 +201,28 @@ th {
   #table-header-writer,
   .table-content-writer {
     width: 30%;
+  }
+}
+@media (max-width: 700px) {
+  #board-context {
+    margin: 10vw 15vw 15vw 15vw;
+    font-size: 15px;
+  }
+  #board-header {
+    height: 35vh;
+    background-size: 200vw;
+    background-position-x: 50%;
+  }
+  #board-title {
+    margin-top: 4vmin;
+    font-size: 8vmin;
+  }
+  #board-username {
+    margin: 0 0 0 2vw;
+    display: inline;
+    float: left;
+    top: 40vmin;
+    font-size: 3vmin;
   }
 }
 </style>

@@ -27,12 +27,12 @@
     </v-row>-->
 
     <!-- like button -->
-    <div style="text-align: center;">
+    <div style="text-align: center; margin-bottom: 3rem;">
       <v-btn v-show="!islike" fab small dark @click="clickLike">
-          <v-icon>mdi-heart</v-icon>
+        <v-icon>mdi-heart</v-icon>
       </v-btn>
       <v-btn v-show="islike" fab small dark @click="clickLike" style="background: red;">
-          <v-icon>mdi-heart</v-icon>
+        <v-icon>mdi-heart</v-icon>
       </v-btn>
     </div>
     <!-- crud 버튼 -->
@@ -49,8 +49,13 @@
         @click="delete_board(board.bid)"
       >mdi-delete</v-icon>
       <!--  -->
-      <div id="board-date">좋아요
-          <v-icon style="color: red;">mdi-heart</v-icon> {{ likebyboard }}개 | {{ board.regdate }}</div>
+      <div id="board-date">
+        좋아요
+        <v-icon style="color: red;">mdi-heart</v-icon>
+        {{ likebyboard }}개
+        <br />
+        {{ board.regdate }}
+      </div>
     </div>
 
     <!-- 댓글 -->
@@ -64,12 +69,25 @@
       </div>
       <div :v-if="reply" v-for="(re, i) in reply" :key="i" style="margin-top: 5px; display:block;">
         <div v-if="isInput[i] === 0">
-          <span><font size="3"><br> {{ users[i] }}</font></span> <br><br>  <span><font size="4">{{ re.content }}</font></span>
+          <span>
+            <font size="3">
+              <br />
+              {{ users[i] }}
+            </font>
+          </span>
+          <br />
+          <br />
+          <span>
+            <font size="4">{{ re.content }}</font>
+          </span>
           <p v-if="username === users[i]" style="display:inline-block; float: right;">
             <button @click="click(i)" style="margin-right: 15px">수정</button>
             <button @click="deleteComment(i, re.cmid)">삭제</button>
           </p>
-          <br><br><hr style="opacity: 0.3;"> <br>
+          <br />
+          <br />
+          <hr style="opacity: 0.3;" />
+          <br />
         </div>
         <div v-else>
           <span>
@@ -120,7 +138,7 @@ export default {
     this.getData();
   },
   created() {
-    this.username= this.$store.state.username
+    this.username = this.$store.state.username;
   },
   computed: {
     users: {
@@ -371,7 +389,7 @@ export default {
   display: inline;
   bottom: 0;
   float: right;
-  margin-top: 3vh;
+  text-align: right;
   font-family: "BBTreeGL";
 }
 #board-context {
@@ -403,7 +421,7 @@ export default {
   margin: 3vmin;
   margin: 0vmax 10vmax;
   padding: 2rem 1rem;
-  font-family: "GyeonggiBatang";
+  font-family: "BBTreeGL";
 }
 #img-contents {
   margin: 5vh 15vw;
@@ -428,6 +446,11 @@ export default {
     float: left;
     top: 40vmin;
     font-size: 3vmin;
+  }
+}
+@media (max-width: 375px) {
+  #board-footer {
+    margin: 0vmax 5vmax;
   }
 }
 </style>

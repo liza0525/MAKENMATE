@@ -1,6 +1,6 @@
 <template>
   <div style="background-color: white; padding-bottom: 5vh">
-    <div id="boardrecipe-list-header">
+    <div id="boardrecipe-header">
       <h1 id="boardrecipe-category">레시피 공유</h1>
     </div>
     <div id="boardrecipe-context">
@@ -37,39 +37,20 @@
           </tbody>
         </template>
       </v-simple-table>
-<<<<<<< HEAD
     </div>
       <div style="width: 100%; text-align: center; color: #000;">
       <div id="pagination">
         <button v-for="pageNm in pageNms" :key="pageNm" @click="retrieveBoard(pageNm)">
-=======
-      <div id="pagination" style="text-align:center;">
-        <button
-          v-for="pageNm in pageNms"
-          :key="pageNm"
-          @click="retrieveBoard(pageNm)"
-        >
->>>>>>> 7d608c28a4cab7ea00a6093f63fd52323c8cb123
           <span style="margin-right:10px;">{{ pageNm }}</span>
         </button>
       </div>
     </div>
-    <div id="boardrecipe-list-footer">
-<<<<<<< HEAD
+    <div id="boardrecipe-footer">
       <div class="board-button">
         <v-btn fab small dark @click="add_move()">
           <v-icon>mdi-pencil</v-icon>
         </v-btn>
       </div>
-=======
-      <button
-        v-if="this.$store.state.username"
-        class="boardrecipe-button"
-        @click="add_move()"
-      >
-        글쓰기
-      </button>
->>>>>>> 7d608c28a4cab7ea00a6093f63fd52323c8cb123
     </div>
   </div>
 </template>
@@ -167,7 +148,7 @@ export default {
   font-weight: normal;
   font-style: normal;
 }
-#boardrecipe-list-header {
+#boardrecipe-header {
   background: linear-gradient(rgba(0, 0, 0, 0.5)),
     url("../../assets/images/image7.jpg") no-repeat;
   background-size: 100%;
@@ -184,22 +165,16 @@ export default {
   font-size: 11vmin;
   font-family: "BBTreeGB";
 }
-#boardrecipe-list-footer {
+#boardrecipe-footer {
   margin: 0vmax 10vmax;
 }
 #boardrecipe-context {
-  color: #ccc;
   margin: 5vmax 10vmax;
-  font-family: "GyeonggiBatang";
+  font-family: "BBTreeGL";
 }
 .boardrecipe-button {
-  margin: 0 0.5rem;
-  width: 15vmin;
-  height: 9vmin;
-  border: 1px solid #ccc;
-  border-radius: 10vmin;
-  font-size: 2vmin;
-  font-family: "GyeonggiBatang";
+  font-size: 2rem;
+  margin: 0 5px;
 }
 #search {
   border-bottom: 1px solid #000;
@@ -258,6 +233,28 @@ th {
   #table-header-writer,
   .table-content-writer {
     width: 30%;
+  }
+}
+@media (max-width: 700px) {
+  #board-context {
+    margin: 10vw 15vw 15vw 15vw;
+    font-size: 15px;
+  }
+  #boardrecipe-header {
+    height: 35vh;
+    background-size: 200vw;
+    background-position-x: 50%;
+  }
+  #board-title {
+    margin-top: 4vmin;
+    font-size: 8vmin;
+  }
+  #board-username {
+    margin: 0 0 0 2vw;
+    display: inline;
+    float: left;
+    top: 40vmin;
+    font-size: 3vmin;
   }
 }
 </style>

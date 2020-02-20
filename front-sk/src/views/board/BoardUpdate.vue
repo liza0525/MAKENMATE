@@ -114,7 +114,7 @@ export default {
 }
 #board-context {
   margin: 5vw 15vw;
-  font-family: "GyeonggiBatang";
+  font-family: "BBTreeGL";
 }
 .board-button {
   width: 7rem;
