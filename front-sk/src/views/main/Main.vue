@@ -19,12 +19,12 @@
         <v-row>
           <v-col class="main-subtitle" id="main-st-1">
             <span style="background-color: #FFBB00;">칵테일</span>을 사랑하는
-            <br />모든 이들과 함께하는 Cocktail
+            <br />모든 이들과 함께하는 MAKE&MATE
           </v-col>
           <v-col cols="12" sm="6" class="main-img" id="page2">
             <div class="main-subtitle" id="main-st-2">
               <span style="background-color: #FFBB00;">칵테일</span>을 사랑하는
-              <br />모든 이들과 함께하는 Cocktail
+              <br />모든 이들과 함께하는 MAKE&MATE
             </div>
           </v-col>
         </v-row>
@@ -131,9 +131,9 @@ export default {
           name: "손현희",
           role: "backend / frontend",
           profileUrl: require("../../assets/images/shh.jpg"),
-          instagram: "http://www.instagram.com",
-          github: "https://www.github.com",
-          email: "a@naver.com",
+          instagram: null,
+          github: "http://github.com/hyunhee418",
+          email: "gusgml0758@naver.com",
           java: 15,
           vue: 20,
           python: 30,
