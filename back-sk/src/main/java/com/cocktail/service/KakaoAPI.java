@@ -33,7 +33,8 @@ public class KakaoAPI {
             StringBuilder sb = new StringBuilder();
             sb.append("grant_type=authorization_code");
             sb.append("&client_id=2660ec76173c2f0ea3aa79f02dc02b76");
-            sb.append("&redirect_uri=http://localhost:8080/user/kakaoLogin");
+            sb.append("&redirect_uri=https://localhost/backend/user/kakaoLogin"); // local
+//            sb.append("&redirect_uri=https://i02a309.p.ssafy.io/backend/user/kakaoLogin"); // aws
             sb.append("&code=" + authorize_code);
             bw.write(sb.toString());
             bw.flush();
@@ -93,10 +94,13 @@ public class KakaoAPI {
             JsonObject kakao_account = element.getAsJsonObject().get("kakao_account").getAsJsonObject();
             
             String nickname = properties.getAsJsonObject().get("nickname").getAsString();
-            String email = kakao_account.getAsJsonObject().get("email").getAsString();
             
-            if(email != null)
-            	ret = "nickname=" + nickname + "&email=" + email;
+            String email = "";
+            
+            if(kakao_account.getAsJsonObject().get("email") != null) 
+            	email = kakao_account.getAsJsonObject().get("email").getAsString(); 
+            
+            ret = "nickname=" + nickname + "&email=" + email;
             
         } catch (IOException e) {
             // TODO Auto-generated catch block

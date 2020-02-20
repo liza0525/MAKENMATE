@@ -1,67 +1,87 @@
-<!--
-    가입하기는 기본적인 폼만 제공됩니다
-    기능명세에 따라 개발을 진행하세요.
-    Sub PJT I에서는 UX, 디자인 등을 포함하여 백엔드를 제외하여 개발합니다.
- -->
 <template>
-  <div class="wrapC" style="margin-top : 30px">
+  <div class="account-bg">
     <div>
-      <h1>가입하기</h1>
-      <div class="input-with-label">
-        <input v-model="nickname" id="nickname" placeholder="닉네임을 입력하세요." type="text" />
-        <label for="nickname">닉네임</label>
-      </div>
+      <div id="join-window">
+        <v-row>
+          <v-col class="neon-card mx-auto" style="width: 30vw; background-color: black">
+            <h1 class="neon-label" style="text-align: center;">한 잔 하러 회원가입&#x1F378;</h1>
+            <label class="neon-label col-12 mb-2">닉네임</label>
+            <input
+              v-model="nickname"
+              id="nickname"
+              placeholder="닉네임을 입력하세요."
+              style="disabled:true;"
+              :readonly="isKakao"
+              type="text"
+              class="neon-input col-12 mb-4"
+            />
+            <label class="neon-label col-12 mb-2">이메일</label>
+            <input
+              v-model="email"
+              id="email"
+              placeholder="이메일을 입력하세요."
+              class="neon-input col-12 mb-4"
+            />
+            <!-- <button @click="checkEmail()" :disabled="!duplicateEmail">중복 체크</button> -->
+            <div class="error-text" v-if="error.email">{{ error.email }}</div>
+            <label class="neon-label col-12 mb-2">비밀번호</label>
+            <input
+              v-model="password"
+              id="password"
+              placeholder="비밀번호를 입력하세요."
+              :readonly="isKakao"
+              type="password"
+              class="neon-input col-12 mb-4"
+            />
+            <div class="error-text" v-if="password != 0 && error.password">{{ error.password }}</div>
+            <label class="neon-label col-12 mb-2">비밀번호 확인</label>
+            <input
+              v-model="passwordConfirm"
+              :type="passwordConfirmType"
+              id="password-confirm"
+              placeholder="비밀번호를 다시한번 입력하세요."
+              :readonly="isKakao"
+              class="neon-input col-12 mb-4"
+            />
+            <div
+              class="error-text"
+              v-if="passwordConfirm != 0 && password != passwordConfirm"
+            >{{ error.passwordConfirm }}</div>
+            <label>
+              <input @click="termConfirm" type="checkbox" id="term" />
+              <span>약관에 동의합니다.</span>
+            </label>
+            <span
+              @click="termPopup = !termPopup"
+              style="margin-top: 5px; margin-left: 10px; cursor: pointer;"
+            >약관 보기</span>
 
-      <div class="input-with-label">
-        <input v-model="email" id="email" placeholder="이메일을 입력하세요." type="text" />
-        <label for="email">이메일</label>
-        <!-- <button @click="checkEmail()" :disabled="!duplicateEmail">중복 체크</button> -->
-        <div class="error-text" v-if="error.email">{{ error.email }}</div>
+            <v-card v-if="termPopup" dark scrollable style="10px">
+              <v-card-title class="headline">Cocktail 이용 약관 동의</v-card-title>
+              <v-card-text>개인정보 수집 및 이용 동의(필수)<br />
+              위치 정보 제공 동의(필수)
+              </v-card-text>
+              <v-card-actions>
+                <v-spacer></v-spacer>
+              </v-card-actions>
+            </v-card>
+            <div class="my-5 width-100">
+              <button
+                type="button"
+                v-on:click="join()"
+                :disabled="!isSubmit"
+                :class="{ disabled: !isSubmit }"
+                class="neon-btn col-12 mb-4"
+              >가입하기</button>
+            </div>
+          </v-col>
+        </v-row>
       </div>
-
-      <div class="input-with-label">
-        <input v-model="password" type="password" id="password" placeholder="비밀번호를 입력하세요." />
-        <label for="password">비밀번호</label>
-        <div class="error-text" v-if="password != 0 && error.password">{{ error.password }}</div>
-      </div>
-
-      <div class="input-with-label">
-        <input
-          v-model="passwordConfirm"
-          :type="passwordConfirmType"
-          id="password-confirm"
-          placeholder="비밀번호를 다시한번 입력하세요."
-        />
-        <label for="password-confirm">비밀번호 확인</label>
-        <div
-          class="error-text"
-          v-if="passwordConfirm != 0 && password != passwordConfirm"
-        >{{ error.passwordConfirm }}</div>
-      </div>
-    </div>
-    <div>
-      <label>
-        <input v-model="isTerm" @click="isTerm = !isTerm" type="checkbox" id="term" />
-        <span>약관을 동의합니다.</span>
-      </label>
-
-      <span @click="termPopup = !termPopup">약관보기</span>
-      <div v-if="termPopup == true">"약관입니다"</div>
-      <router-link v-bind:to="{ name: 'CompleteJoin' }">
-        <button
-          class="btn btn--back"
-          v-on:click="join()"
-          :disabled="!isSubmit"
-          :class="{ disabled: !isSubmit }"
-        >회원 가입</button>
-      </router-link>
     </div>
   </div>
 </template>
 
 <script>
-import "../../assets/css/style.scss";
-import "../../assets/css/user.scss";
 import PasswordValidator from "password-validator";
 import * as EmailValidator from "email-validator";
 import UserApi from "../../apis/UserApi";
@@ -87,11 +107,24 @@ export default {
       passwordType: "password",
       passwordConfirmType: "password",
       passwordSchema: new PasswordValidator(),
-      termPopup: false
+      termPopup: false,
+      isKakao: false
     };
   },
   created() {
     this.component = this;
+    if (
+      !(
+        this.$route.params.nickname == "undefined" ||
+        this.$route.params.nickname == null ||
+        this.$route.params.nickname == ""
+      )
+    ) {
+      this.nickname = this.$route.params.nickname;
+      this.password = "kakao4312!@#$";
+      this.passwordConfirm = "kakao4312!@#$";
+      this.isKakao = true;
+    }
     this.passwordSchema
       .is()
       .min(8)
@@ -107,6 +140,9 @@ export default {
       this.checkForm();
     },
     password: function(v) {
+      this.checkForm();
+    },
+    passwordConfirm: function(v){
       this.checkForm();
     },
     isTerm: function(v) {
@@ -125,6 +161,13 @@ export default {
       )
         this.error.password = "영문,숫자 포함 8 자리이상이어야 합니다.";
       else this.error.password = false;
+
+      if(this.password.length > 0 &&
+        this.passwordConfirm.length > 0 &&
+        this.password !== this.passwordConfirm
+      )
+        this.error.passwordConfirm = "비밀번호가 일치하지 않습니다.";
+      else this.error.passwordConfirm = false;
 
       let isSubmit = false;
       if (this.email.length > 0 && this.password.length > 0) isSubmit = true;
@@ -147,13 +190,18 @@ export default {
         };
         this.isSubmit = false;
 
-        if (!this.isTerm || this.passwordConfirm != this.password) {
+        if (!this.isTerm || this.passwordConfirm !== this.password) {
+          console.log(this.isTerm, this.password, this.passwordConfirm)
           if (!this.isTerm) this.error.term = "약관에 동의해야 합니다.";
           else this.error.term = false;
 
-          if (this.passwordConfirm != this.password)
-            this.error.passwordConfirm = "비밀번호와 일치하지 않습니다.";
-          else this.error.passwordConfirm = false;
+          if (this.passwordConfirm == this.password){
+            console.log("ggg")
+            this.error.passwordConfirm = "비밀번호가 일치하지 않습니다.";
+          } else {
+            console.log("hhh")
+            this.error.passwordConfirm = false;
+          }
 
           this.isSubmit = true;
         } else {
@@ -203,16 +251,58 @@ export default {
           }
         );
       }
+    },
+    termConfirm() {
+      this.isTerm = !this.isTerm;
+      this.termPopup = false;
     }
   }
 };
 </script>
 <style scoped>
-.wrapC {
-  color: white;
+#join-window {
+  margin: 15vh auto;
 }
-.input-with-label input,
-label {
-  color: white;
+/* check box */
+[type="checkbox"]:checked + span:before,
+[type="radio"]:checked + span:before {
+  background: rgb(194, 78, 97);
+  border: 1px solid rgb(194, 78, 97);
+}
+[type="checkbox"]:checked + span,
+[type="checkbox"]:not(:checked) + span,
+[type="radio"]:checked + span,
+[type="radio"]:not(:checked) + span {
+  position: relative;
+  padding-left: 38px;
+  cursor: pointer;
+  display: inline-block;
+  color: rgb(255, 255, 255);
+  font-weight: 600;
+  line-height: 30px;
+}
+@media (min-width: 0px) {
+  #join-window {
+    width: 90%;
+  }
+}
+@media (min-width: 600px) {
+  #join-window {
+    width: 50%;
+  }
+}
+@media (min-width: 1024px) {
+  #join-window {
+    width: 30%;
+  }
+}
+
+/* neon */
+
+.neon-input ~ .neon-input ~ .neon-input {
+  animation-delay: 1.5s;
+}
+.neon-input ~ .neon-input ~ .neon-input ~ .neon-input {
+  animation-delay: 1s;
 }
 </style>

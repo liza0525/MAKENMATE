@@ -1,5 +1,5 @@
 <template>
-  <div class="btn--naver" @click="gotoURL()">
+  <div id="naver-btn" @click="gotoURL()">
     <button>
       <svg
         id="svg"

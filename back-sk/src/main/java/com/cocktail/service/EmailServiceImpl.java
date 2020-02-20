@@ -1,5 +1,7 @@
 package com.cocktail.service;
 
+import org.apache.commons.mail.DefaultAuthenticator;
+import org.apache.commons.mail.HtmlEmail;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -21,4 +23,35 @@ public class EmailServiceImpl implements EmailService {
         System.out.println(to + " " + subject + " " + text);
         emailSender.send(message);
     }
+    public void sendMail(String userEmail, String subject, String msg) throws Exception{
+        
+        //mail server 설정 
+         String charSet ="utf-8";
+        String hostSMTP = "smtp.gmail.com";
+        
+        String hostSMTPid = "smtptest2222@gmail.com";//id
+        String hostSMTPpwd = "qweasd1`";
+        
+        //보내는 이 설정
+        String fromEmail = "smtptest2222@gmail.com";
+        String fromName = "Cocktail";   
+        
+        HtmlEmail mail = new HtmlEmail();
+        mail.setDebug(true);
+        mail.setCharset(charSet);
+        mail.setSSLOnConnect(true);
+        mail.setHostName(hostSMTP);
+        mail.setSmtpPort(587);
+//        mail.setAuthentication(hostSMTPid, hostSMTPpwd);
+        mail.setAuthenticator(new DefaultAuthenticator(hostSMTPid, hostSMTPpwd));
+        mail.setStartTLSEnabled(true);
+        mail.addTo(userEmail);
+        mail.setSSLOnConnect(true);
+        mail.setFrom(fromEmail,fromName,charSet);
+        mail.setSubject(subject);
+        mail.setHtmlMsg(msg);
+        mail.send();
+    }
+        
+
 }
