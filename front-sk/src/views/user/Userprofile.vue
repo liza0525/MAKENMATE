@@ -344,7 +344,6 @@ export default {
       nextBt: ">",
       fistBt: "<<",
       lastBt: ">>",
-      hey: "",
       window: {
         width: 0,
         height: 0
@@ -370,7 +369,7 @@ export default {
         }else {
           //DB image column 경로
           //this.user.image = require("/home/ubuntu/image/"+this.user.image);
-          this.user.image = require(this.user.image);
+          //this.user.image = require(this.user.image); //ciritical dependncy error
           console.log(this.user.image);
         }
       });
