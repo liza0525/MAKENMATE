@@ -1,26 +1,27 @@
 <template>
-  <div>
-    <div id="boardrecipe-list-header">
+  <div style="background-color: white; padding-bottom: 5vh">
+    <div id="boardrecipe-header">
       <h1 id="boardrecipe-category">레시피 공유</h1>
     </div>
     <div id="boardrecipe-context">
       <!-- 검색 기능은 getSearchData 메소드에 정리 -->
-      <Search @searchData="getSearchData" class="search"></Search>
-      <v-simple-table dark>
+      <Search @searchData="getSearchData" id="search"></Search>
+      <v-simple-table>
         <template>
           <thead>
             <tr>
-              <th class="numbering-col">No.</th>
-              <th>제목</th>
-              <th>글쓴이</th>
-              <th class="date-col">날짜</th>
+            <tr id="table-header">
+              <th id="table-header-no">No.</th>
+              <th id="table-header-title">제목</th>
+              <th id="table-header-writer">글쓴이</th>
+              <th id="table-header-date">날짜</th>
             </tr>
           </thead>
           <tbody>
             <tr class="text-center" v-for="board in info.content" v-bind:key="board.rid">
-              <td class="numbering-col" v-html="board.rid"></td>
-              <td v-html="board.title" @click="detail_id(board.rid)" style="cursor: pointer;"></td>
-              <td>
+              <td class="table-content-no" v-html="board.rid"></td>
+              <td class="table-content-title" v-html="board.title" @click="detail_id(board.rid)" style="cursor: pointer;"></td>
+              <td class="table-content-writer">
                 <router-link
                   :to="{
                   name: 'UserProfile',
@@ -28,21 +29,27 @@
                     username: board.user.nickname
                   }
                 }"
-                 style="color: white; cursor: pointer;">
+                 style="cursor: pointer;">
                 {{ board.user.nickname }}</router-link>
               </td>
-              <td class="date-col" v-html="board.regdate"></td>
+              <td class="table-content-date" v-html="board.regdate"></td>
             </tr>
           </tbody>
         </template>
       </v-simple-table>
     </div>
-    <div id="boardrecipe-list-footer">
-      <button v-if="this.$store.state.username" class="boardrecipe-button" @click="add_move()">글쓰기</button>
+      <div style="width: 100%; text-align: center; color: #000;">
       <div id="pagination">
         <button v-for="pageNm in pageNms" :key="pageNm" @click="retrieveBoard(pageNm)">
           <span style="margin-right:10px;">{{ pageNm }}</span>
         </button>
+      </div>
+    </div>
+    <div id="boardrecipe-footer">
+      <div class="board-button">
+        <v-btn fab small dark @click="add_move()">
+          <v-icon>mdi-pencil</v-icon>
+        </v-btn>
       </div>
     </div>
   </div>
@@ -141,11 +148,11 @@ export default {
   font-weight: normal;
   font-style: normal;
 }
-#boardrecipe-list-header {
+#boardrecipe-header {
   background: linear-gradient(rgba(0, 0, 0, 0.5)),
     url("../../assets/images/image7.jpg") no-repeat;
   background-size: 100%;
-  height: 50vh;
+  height: 60vh;
   background-position-y: 30%;
   color: white;
 }
@@ -154,46 +161,100 @@ export default {
   display: inline;
   position: relative;
   float: left;
-  top: 30vmin;
+  top: 35vmin;
   font-size: 11vmin;
   font-family: "BBTreeGB";
 }
-#boardrecipe-list-footer {
-  color: #ccc;
+#boardrecipe-footer {
   margin: 0vmax 10vmax;
-  padding: 2rem 1rem;
-  border-top: 1px solid #ccc;
 }
 #boardrecipe-context {
-  color: #ccc;
   margin: 5vmax 10vmax;
-  font-family: "GyeonggiBatang";
+  font-family: "BBTreeGL";
 }
 .boardrecipe-button {
-  margin: 0 0.5rem;
-  width: 15vmin;
-  height: 9vmin;
-  border: 1px solid #ccc;
-  border-radius: 10vmin;
-  font-size: 2vmin;
-  font-family: "GyeonggiBatang";
+  font-size: 2rem;
+  margin: 0 5px;
 }
-@media (max-width: 700px) {
-  #boardrecipe-context {
+#search {
+  border-bottom: 1px solid #000;
+  width: 230px;
+  margin-right: 10px;
+  margin-left: auto;
+  margin-bottom: 20px;
+}
+tr {
+  text-align: center;
+}
+tr {
+  text-align: center;
+}
+td {
+  padding: 20px !important;
+}
+th {
+  font-size: 15px !important;
+  color: white !important;
+}
+#table-header {
+  background-color: #000;
+}
+#table-header-no, .table-content-no {
+  width: 10%;
+}
+#table-header-title, .table-content-title {
+  width: 50%;
+}
+#table-header-writer, .table-content-writer {
+  width: 20%;
+}
+#table-header-date, .table-content-date {
+  width: 20%;
+}
+@media (max-width: 960px) {
+  #board-context {
     margin: 2vmax 3vmax;
   }
-  .numbering-col,
-  .date-col {
+  #board-list-header {
+    height: 50vh;
+    background-size: 200vw;
+    background-position-x: 50%;
+  }
+  #board-category {
+    margin-top: 3vmin;
+    font-size: 7vmin;
+  }
+  #table-header-no,
+  #table-header-date,
+  .table-content-no,
+  .table-content-date {
     display: none;
   }
-  #boardrecipe-list-header {
+  #table-header-writer,
+  .table-content-writer {
+    width: 30%;
+  }
+}
+@media (max-width: 700px) {
+  #board-context {
+    margin: 10vw 15vw 15vw 15vw;
+    font-size: 15px;
+  }
+  #boardrecipe-header {
     height: 35vh;
     background-size: 200vw;
     background-position-x: 50%;
   }
-  #boardrecipe-category {
+  #board-title {
     margin-top: 4vmin;
     font-size: 8vmin;
+  }
+  #board-username {
+    margin: 0 0 0 2vw;
+    display: inline;
+    float: left;
+    top: 40vmin;
+    font-size: 3vmin;
   }
 }
 </style>

@@ -1,7 +1,7 @@
 <template>
-  <div style="padding-top: 100px; color: red;">
-<div id="boardrecipe-list-header">
-      <h1 id="boardrecipe-category">{{ board.title }}</h1>
+  <div style="background-color: white;">
+    <div id="boardrecipe-header">
+      <h1 id="boardrecipe-category">레시피 공유</h1>
     </div>
     <div v-if="!submitted">
       <form
@@ -9,7 +9,7 @@
         method="post"
         id="_boardForm"
         name="boaradForm"
-        @submit.prevent="updateBoard"
+        @submit.prevent="addBoard"
       >
         <div id="boardrecipe-context">
           <h1 style="display: inline;">제목</h1>
@@ -28,14 +28,19 @@
             type="text"
             name="contentsid"
             id="_contentsid"
-            v-model="board.contents"
+            v-model="board.content"
             style="width:100%; height: 10rem; border-bottom:1px solid #ccc"
           />
         </div>
 
         <file-upload />
         <div style="text-align: center;">
-          <button class="boardrecipe-button" type="submit" name="button">수정</button>
+          <v-btn class="boardrecipe-button" type="submit" dark color="dark">
+            <v-icon left>mdi-checkbox-marked-circle</v-icon> 등록
+          </v-btn>
+          <v-btn class="boardrecipe-button" @click="$router.go(-1)" dark color="light">
+            <v-icon left>mdi-cancel</v-icon> 취소
+          </v-btn>
         </div>
       </form>
     </div>
@@ -90,6 +95,14 @@ export default {
 };
 </script>
 <style scoped="scoped">
+#boardrecipe-header {
+  background: linear-gradient(rgba(0, 0, 0, 0.5)),
+    url("../../assets/images/image7.jpg") no-repeat;
+  background-size: 100%;
+  height: 60vh;
+  background-position-y: 30%;
+  color: white;
+}
 #boardrecipe-category {
   margin: 0 0 0 15vw;
   display: inline;
@@ -97,20 +110,42 @@ export default {
   float: left;
   top: 35vmin;
   font-size: 11vmin;
-  font-family: 'BBTreeGB';
+  font-family: "BBTreeGB";
 }
 #boardrecipe-context {
-  color: #ccc;
-  padding: 2rem 5vw;
-  font-family: "GyeonggiBatang";
+  margin: 5vw 15vw;
+  font-family: "BBTreeGL";
 }
 .boardrecipe-button {
-  color: #ccc;
-  width: 50vmin;
-  height: 9vmin;
-  margin-bottom: 3vh;
-  font-size: 3vmin;
-  border: 1px solid #ccc;
+  width: 7rem;
+  height: 3rem !important;
+  margin: 0 5px;
+  margin-bottom: 10vh;
+  font-size: 1rem;
+  background-color: black;
   border-radius: 10vmin;
+  color: white;
+}
+@media (max-width: 700px) {
+  #board-context {
+    margin: 10vw 15vw 15vw 15vw;
+    font-size: 15px;
+  }
+  #boardrecipe-header {
+    height: 35vh;
+    background-size: 200vw;
+    background-position-x: 50%;
+  }
+  #board-title {
+    margin-top: 4vmin;
+    font-size: 8vmin;
+  }
+  #board-username {
+    margin: 0 0 0 2vw;
+    display: inline;
+    float: left;
+    top: 40vmin;
+    font-size: 3vmin;
+  }
 }
 </style>

@@ -103,16 +103,16 @@ public class BoardRecipeController{
         return new ResponseEntity<>(resultMap, HttpStatus.OK);
      }
      
-     //best 3
-    //  @GetMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
-    //  public Object boardRecipeList() {
-    //      final BasicResponse result = new BasicResponse();
-    //      result.status = true;
-    //      result.data = "success"; 
-    //      result.object = this.boardrecipeservice.getBestRecipe();
-    //      //System.out.println(this.boardrecipeservice.getAllBoardRecipe(pageable).getContent());
-    //      return new ResponseEntity<>(result, HttpStatus.OK);
-    //  }
+    //best 3
+    // @GetMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
+    // public Object boardRecipeList() {
+    //    final BasicResponse result = new BasicResponse();
+    //    result.status = true;
+    //    result.data = "success"; 
+    //    result.object = this.boardrecipeservice.getBestRecipe();
+    //    //System.out.println(this.boardrecipeservice.getAllBoardRecipe(pageable).getContent());
+    //    return new ResponseEntity<>(result, HttpStatus.OK);
+    // }
     
     @GetMapping(value = "/user")
     public Object getBoardRecipeByUser(

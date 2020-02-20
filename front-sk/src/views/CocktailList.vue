@@ -75,7 +75,7 @@
             }"
           >
             <v-img :src="filter.image" :alt="filter.name" style="width:100%;" />
-            <v-text class="x-sign" style="font-size:1.5vmax;text-align:center;">{{ filter.title }}</v-text>
+            <div class="x-sign" style="font-size:1.5vmax;text-align:center;">{{ filter.title }}</div>
           </router-link>
         </div>
       </div>
@@ -119,10 +119,10 @@
               class="sansfont"
               style="margin-top:10px;display:inline-block;width:72%;overflow:auto;height:7%;font-size:120%;margin-left:15px;font-weight:bolder;"
             >{{ cocktail.cname }}</h1>
-            <v-text style="margin-top:12px;margin-right:15px;float:right;display:inline-block;">
+            <div style="margin-top:12px;margin-right:15px;float:right;display:inline-block;">
               <i class="fas fa-lg fa-heart"></i>
               {{ getLikesByCocktail[i] }}
-            </v-text>
+            </div>
           </v-card>
         </v-col>
       </v-row>
@@ -551,7 +551,10 @@ export default {
   border-radius: 5px;
   background-color: #ffffff;
 }
-
+.paging-size {
+  font-size: 150%;
+  font-family: "국립박물관문화재단클래식B";
+}
 .search-input {
   width: 30%;
   padding-top: 1%;
@@ -559,13 +562,9 @@ export default {
   font-size: 1.3rem;
   font-family: "GyeonggiBatang";
   color: #c6e2ff;
-  border: 2px solid #ffffff;
-  border-radius: 5px;
+  border-bottom: 2px solid #ffffff;
+  /* border-radius: 5px; */
   background-color: transparent;
-}
-.paging-size {
-  font-size: 150%;
-  font-family: "국립박물관문화재단클래식B";
 }
 .search-input::placeholder {
   font-family: "GyeonggiBatang";
