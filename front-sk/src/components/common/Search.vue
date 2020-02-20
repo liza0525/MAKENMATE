@@ -1,7 +1,7 @@
 <template>
   <div>
     <input v-model="searchData" type="text" id="search-bar" @keypress.enter="onInput()" placeholder="Search">
-    <v-btn icon style="color:white;">
+    <v-btn icon>
       <v-icon @click="onInput()">mdi-magnify</v-icon>
     </v-btn>
   </div>
@@ -26,6 +26,9 @@ export default {
 
 <style>
 #search-bar{
-  color:white; 
+  color: black; 
+}
+#search-bar::placeholder {
+  color: black;
 }
 </style>

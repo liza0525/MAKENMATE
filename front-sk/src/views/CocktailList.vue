@@ -551,7 +551,10 @@ export default {
   border-radius: 5px;
   background-color: #ffffff;
 }
-
+.paging-size {
+  font-size: 150%;
+  font-family: "국립박물관문화재단클래식B";
+}
 .search-input {
   width: 30%;
   padding-top: 1%;
@@ -559,13 +562,9 @@ export default {
   font-size: 1.3rem;
   font-family: "GyeonggiBatang";
   color: #c6e2ff;
-  border: 2px solid #ffffff;
-  border-radius: 5px;
+  border-bottom: 2px solid #ffffff;
+  /* border-radius: 5px; */
   background-color: transparent;
-}
-.paging-size {
-  font-size: 150%;
-  font-family: "국립박물관문화재단클래식B";
 }
 .search-input::placeholder {
   font-family: "GyeonggiBatang";

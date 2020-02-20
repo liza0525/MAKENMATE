@@ -1,5 +1,5 @@
 <template>
-  <div v-if="window.width >= 1000">
+  <div v-if="window.width >= 1000" style="background-color: white;">
     <div id="boardrecipe-detail">
       <div id="boardrecipe-header">
         <h1 id="boardrecipe-title">{{ boardRecipe.title }}</h1>
@@ -574,7 +574,7 @@ export default {
   background: linear-gradient(rgba(0, 0, 0, 0.5)),
     url("../../assets/images/image7.jpg") no-repeat;
   background-size: 100%;
-  height: 50vh;
+  height: 60vh;
   background-position-y: 30%;
   color: white;
 }
@@ -583,7 +583,7 @@ export default {
   display: inline;
   position: relative;
   float: left;
-  top: 30vmin;
+  top: 35vmin;
   font-size: 11vmin;
   font-family: "BBTreeGB";
 }

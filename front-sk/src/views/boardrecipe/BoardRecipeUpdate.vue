@@ -1,5 +1,5 @@
 <template>
-  <div style="padding-top: 100px; color: red;">
+  <div style="background-color: white;">
 <div id="boardrecipe-list-header">
       <h1 id="boardrecipe-category">{{ board.title }}</h1>
     </div>
@@ -97,11 +97,11 @@ export default {
   float: left;
   top: 35vmin;
   font-size: 11vmin;
-  font-family: 'BBTreeGB';
+  font-family: "BBTreeGB";
 }
 #boardrecipe-context {
   color: #ccc;
-  padding: 2rem 5vw;
+  margin: 5vw 15vw;
   font-family: "GyeonggiBatang";
 }
 .boardrecipe-button {
