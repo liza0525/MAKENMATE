@@ -7,6 +7,28 @@
       style="margin-top:4rem"
     >
       <div slot-scope="{ google, map }">
+        <v-btn
+          icon
+          v-show="!isClickSearch"
+          @click="isClickSearch = !isClickSearch"
+          class="btn"
+          style="width:40px; height:40px"
+        >
+          <v-icon @click="isClickSearch = !isClickSearch">mdi-magnify</v-icon>
+        </v-btn>
+        <input
+          v-model="searchData"
+          type="text"
+          id="search-bar"
+          class="search"
+          v-show="isClickSearch"
+          style="background-color: rgba(245, 245, 245, 0.5);color: black;"
+          @keypress.enter="getSearchData(searchData)"
+          placeholder="Search"
+        />
+        <v-btn icon v-show="isClickSearch" class="btn" style="width:40px; height:40px">
+          <v-icon @click="getSearchData(searchData)">mdi-magnify</v-icon>
+        </v-btn>
         <google-map-marker
           v-for="(marker, index) in markers"
           :google="google"
@@ -38,9 +60,7 @@
           <div v-for="meet in meetings" :key="meet.mid">
             <h1 style="margin-top:3%">{{ meet.title }}</h1>
             <p>{{ meet.date }}</p>
-            <p style="display:inline-block">
-              {{ meet.people }} / {{ meet.count }}명
-            </p>
+            <p style="display:inline-block">{{ meet.people }} / {{ meet.count }}명</p>
             <div
               v-for="um in meet.usermeeting"
               style="margin-left: 2%;overflow: hidden; display:inline-block; height:30px; width: 30px; border-radius:30px;"
@@ -48,26 +68,15 @@
             >
               <img :src="um.userImg" style="height:100%; width:100%" />
             </div>
-            <button
-              style="float:right;font-size:20"
-              @click="goMeeting(meet.mid)"
-            >
-              신청하기
-            </button>
+            <button style="float:right;font-size:20" @click="goMeeting(meet.mid)">신청하기</button>
             <button
               v-if="meet.author === username"
               @click="deleteMeeting(meet.mid)"
               style="float:right; margin-right: 2%"
-            >
-              삭제
-            </button>
+            >삭제</button>
             <hr style="margin-top:3%" />
           </div>
-          <div
-            class="up"
-            :style="{ top: meetingHeightTrue }"
-            style="padding:4%"
-          >
+          <div class="up" :style="{ top: meetingHeightTrue }" style="padding:4%">
             <div style="text-align:center">
               <button @click="isOpen = !isOpen">
                 <i class="fas fa-4x fa-chevron-down"></i>
@@ -75,40 +84,27 @@
             </div>
             <div>
               <label>제목</label>
-              <input
-                type="text"
-                v-model="meeting.title"
-                placeholder="제목"
-              /><br />
+              <input type="text" v-model="meeting.title" placeholder="제목" />
+              <br />
               <label>시간</label>
               <!-- <input
               type="text"
               v-model="meeting.date"
               placeholder="시간"
-            /><br /> -->
+              /><br />-->
               <datetime
                 style="margin: 2%;bottom:100%;width:100%"
                 format="YYYY-MM-DD H:i:s"
                 v-model="meeting.date"
               ></datetime>
               <label>인원</label>
-              <input
-                type="text"
-                v-model="meeting.count"
-                placeholder="인원"
-              /><br />
+              <input type="text" v-model="meeting.count" placeholder="인원" />
+              <br />
               <label>장소</label>
-              <input
-                type="text"
-                v-model="meeting.place"
-                placeholder="장소"
-              /><br />
+              <input type="text" v-model="meeting.place" placeholder="장소" />
+              <br />
               <label>상세 주소</label>
-              <input
-                type="text"
-                v-model="meeting.detail"
-                placeholder="상세 주소"
-              />
+              <input type="text" v-model="meeting.detail" placeholder="상세 주소" />
               <button
                 @click="makeMeeting()"
                 style="border: 1px solid white; width:100%; padding: 2%"
@@ -127,9 +123,7 @@
           <div v-for="meet in meetings" :key="meet.mid">
             <h1 style="margin-top:3%">{{ meet.title }}</h1>
             <p>{{ meet.date }}</p>
-            <p style="display:inline-block">
-              {{ meet.people }} / {{ meet.count }}명
-            </p>
+            <p style="display:inline-block">{{ meet.people }} / {{ meet.count }}명</p>
             <div
               v-for="um in meet.usermeeting"
               style="margin-left: 2%;overflow: hidden; display:inline-block; height:30px; width: 30px; border-radius:30px;"
@@ -137,19 +131,12 @@
             >
               <img :src="um.userImg" style="height:100%; width:100%" />
             </div>
-            <button
-              style="float:right;font-size:20"
-              @click="goMeeting(meet.mid)"
-            >
-              신청하기
-            </button>
+            <button style="float:right;font-size:20" @click="goMeeting(meet.mid)">신청하기</button>
             <button
               v-if="meet.author === username"
               @click="deleteMeeting(meet.mid)"
               style="float:right; margin-right: 2%"
-            >
-              삭제
-            </button>
+            >삭제</button>
             <hr style="margin-top:3%" />
           </div>
           <div v-show="!isOpen" style="text-align:center">
@@ -183,6 +170,7 @@ import http from "../../http-common";
 import axios from "axios";
 import config from "../../../config";
 import datetime from "vuejs-datetimepicker";
+
 export default {
   components: {
     Drawer,
@@ -195,8 +183,10 @@ export default {
         lat: 37.5,
         lng: 127
       },
+      isClickSearch: false,
       username: "",
       meetings: [],
+      searchData: "",
       meeting: {
         mid: 0,
         title: "",
@@ -383,6 +373,7 @@ export default {
     },
     getSearchData(inputValue) {
       console.log(inputValue);
+      this.isClickSearch = !this.isClickSearch;
     }
   }
 };
@@ -390,9 +381,31 @@ export default {
 
 <style lang="scss" scoped>
 @import "~vue-simple-drawer/src/index";
+
+.btn {
+  top: 120px;
+  right: 10px;
+  background-color: #fff;
+  width: 40px !important;
+  height: 40px !important;
+  position: fixed;
+}
 .googleMap {
   height: 41rem;
   position: relative;
+}
+.search {
+  position: fixed;
+  border-bottom: 2px solid black;
+  width: 230px;
+  right: 50px;
+  top: 120px;
+  color: black;
+  font-weight: 700;
+}
+.search::placeholder {
+  color: #252424;
+  font-weight: 700;
 }
 .modal {
   display: none;
@@ -425,8 +438,5 @@ export default {
 }
 input {
   width: 90%;
-}
-.search {
-  z-index: 2;
 }
 </style>
