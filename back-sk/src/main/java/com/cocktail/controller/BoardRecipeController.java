@@ -1,10 +1,13 @@
 package com.cocktail.controller;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.web.PageableDefault;
@@ -30,6 +33,7 @@ import com.cocktail.model.boardRecipe.BRdetail;
 import com.cocktail.model.boardRecipe.BoardRecipe;
 import com.cocktail.model.user.User;
 import com.cocktail.service.BoardRecipeService;
+
 
 @CrossOrigin(origins = { "*" }, maxAge = 3600) // "*" => http://localhost:3000
 @RestController
@@ -103,16 +107,27 @@ public class BoardRecipeController{
         return new ResponseEntity<>(resultMap, HttpStatus.OK);
      }
      
-    //best 3
-    // @GetMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
-    // public Object boardRecipeList() {
-    //    final BasicResponse result = new BasicResponse();
-    //    result.status = true;
-    //    result.data = "success"; 
-    //    result.object = this.boardrecipeservice.getBestRecipe();
-    //    //System.out.println(this.boardrecipeservice.getAllBoardRecipe(pageable).getContent());
-    //    return new ResponseEntity<>(result, HttpStatus.OK);
-    // }
+     @GetMapping(value = "/top",produces = {MediaType.APPLICATION_JSON_VALUE})
+     public Object boardRecipeList() {
+    	List<BoardRecipe> list = boardrecipeDao.findAll();
+    	List<BoardRecipe> res = new ArrayList<>();
+    	
+    	Collections.sort(list, new Comparator<BoardRecipe>() {
+			@Override
+			public int compare(BoardRecipe o1, BoardRecipe o2) {
+				return o2.getBoardRecipeLike().size() - o1.getBoardRecipeLike().size();
+			}
+		});
+    	
+    	for (int i = 0; i < 3; i++) 
+			res.add(list.get(i));
+		
+    	final BasicResponse result = new BasicResponse();
+        result.status = true;
+        result.data = "success"; 
+        result.object = res;
+        return new ResponseEntity<>(result, HttpStatus.OK);
+     }
     
     @GetMapping(value = "/user")
     public Object getBoardRecipeByUser(

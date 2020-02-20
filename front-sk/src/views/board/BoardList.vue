@@ -1,65 +1,52 @@
 <template>
-  <div>
-    <div id="board-list-header">
+  <div style="background-color: white; padding-bottom: 5vh">
+    <div id="board-header">
       <h1 id="board-category">자유 게시판</h1>
     </div>
     <div id="board-context">
       <!-- 검색 기능은 getSearchData 메소드에 정리 -->
-      <Search @searchData="getSearchData" class="search"></Search>
-      <v-simple-table dark>
+      <Search @searchData="getSearchData" id="search"></Search>
+      <v-simple-table>
         <template>
           <thead>
-            <tr>
-              <th class="numbering-col">No.</th>
-              <th>제목</th>
-              <th>글쓴이</th>
-              <th class="date-col">날짜</th>
+            <tr id="table-header">
+              <th id="table-header-no">No.</th>
+              <th id="table-header-title">제목</th>
+              <th id="table-header-writer">글쓴이</th>
+              <th id="table-header-date">날짜</th>
             </tr>
           </thead>
           <tbody>
             <tr v-for="board in info.content" v-bind:key="board.bid">
-              <td class="numbering-col" v-html="board.bid"></td>
-              <td v-html="board.title" @click="detail_id(board.bid)"></td>
-              <td>
+              <td class="table-content-no" v-html="board.bid"></td>
+              <td class="table-content-title" v-html="board.title" @click="detail_id(board.bid)" style="cursor: pointer;"></td>
+              <td class="table-content-writer">
                 <router-link
                   :to="{
-                    name: 'UserProfile',
-                    params: { username: board.user.nickname }
-                  }"
-                  style="color: white; cursor: pointer;"
-                >
-                  {{ board.user.nickname }}
-                </router-link>
+                  name: 'UserProfile',
+                  params: { username: board.user.nickname }
+                }"
+                  style="color: black; cursor: pointer;"
+                >{{ board.user.nickname }}</router-link>
               </td>
-              <td class="date-col" v-html="board.regdate"></td>
+              <td class="table-content-date" v-html="board.regdate"></td>
             </tr>
           </tbody>
         </template>
       </v-simple-table>
+      <div style="width: 100%; text-align: center; color: #000;">
+        <div id="pagination">
+          <button v-for="pageNm in pageNms" :key="pageNm" @click="retrieveBoard(pageNm)">
+            <span style="margin-right:10px;">{{ pageNm }}</span>
+          </button>
+        </div>
+      </div>
     </div>
     <div id="board-list-footer">
-      <button
-        v-if="this.$store.state.username"
-        class="board-button"
-        @click="add_move()"
-      >
-        글쓰기
-      </button>
-      <button
-        v-if="this.$store.state.username"
-        class="board-button"
-        @click="add_move()"
-      >
-        글쓰기
-      </button>
-      <div id="pagination">
-        <button
-          v-for="pageNm in pageNms"
-          :key="pageNm"
-          @click="retrieveBoard(pageNm)"
-        >
-          <span style="margin-right:10px;">{{ pageNm }}</span>
-        </button>
+      <div class="board-button">
+        <v-btn fab small dark @click="add_move()">
+          <v-icon>mdi-pencil</v-icon>
+        </v-btn>
       </div>
     </div>
   </div>
@@ -128,11 +115,8 @@ export default {
 };
 </script>
 <style scoped>
-td {
-  font-family: "GyeonggiBatang";
-}
-#board-list-header {
-  background: linear-gradient(rgba(0, 0, 0, 0.3)),
+#board-header {
+  background: linear-gradient(rgba(0, 0, 0, 0.5)),
     url("../../assets/images/image5.jpg") no-repeat;
   background-size: 100%;
   height: 60vh;
@@ -149,37 +133,55 @@ td {
   font-family: "BBTreeGB";
 }
 #board-list-footer {
-  color: #ccc;
   margin: 0vmax 10vmax;
-  padding: 2rem 1rem;
-  border-top: 1px solid #ccc;
 }
 #board-context {
   color: #ccc;
-  margin: 5vmax 10vmax;
+  margin: 3vmax 10vmax;
 }
 .board-button {
-  margin: 0 0.5rem;
-  width: 15vmin;
-  height: 9vmin;
-  border: 1px solid #ccc;
-  border-radius: 10vmin;
-  font-size: 2vmin;
-  font-family: "GyeonggiBatang";
+  margin: 3vh 0.5rem;
 }
 .pagination {
-  display: inline;
-  float: right;
+  margin: 1rem 100px;
   font-size: 18px;
-  font-family: "GyeonggiBatang";
+  display: inline;
+}
+#search {
+  border-bottom: 1px solid #000;
+  width: 250px;
+  margin-right: 10px;
+  margin-left: auto;
+  margin-bottom: 20px;
+}
+tr {
+  text-align: center;
+}
+td {
+  padding: 20px !important;
+}
+th {
+  font-size: 15px !important;
+  color: white !important;
+}
+#table-header {
+  background-color: #000;
+}
+#table-header-no, .table-content-no {
+  width: 10%;
+}
+#table-header-title, .table-content-title {
+  width: 50%;
+}
+#table-header-writer, .table-content-writer {
+  width: 20%;
+}
+#table-header-date, .table-content-date {
+  width: 20%;
 }
 @media (max-width: 960px) {
   #board-context {
     margin: 2vmax 3vmax;
-  }
-  .numbering-col,
-  .date-col {
-    display: none;
   }
   #board-list-header {
     height: 50vh;
@@ -190,12 +192,37 @@ td {
     margin-top: 3vmin;
     font-size: 7vmin;
   }
+  #table-header-no,
+  #table-header-date,
+  .table-content-no,
+  .table-content-date {
+    display: none;
+  }
+  #table-header-writer,
+  .table-content-writer {
+    width: 30%;
+  }
 }
-.search {
-  border-bottom: 2px solid #ccc;
-  width: 230px;
-  margin-right: 10px;
-  margin-left: auto;
-  margin-bottom: 20px;
+@media (max-width: 700px) {
+  #board-context {
+    margin: 10vw 15vw 15vw 15vw;
+    font-size: 15px;
+  }
+  #board-header {
+    height: 35vh;
+    background-size: 200vw;
+    background-position-x: 50%;
+  }
+  #board-title {
+    margin-top: 4vmin;
+    font-size: 8vmin;
+  }
+  #board-username {
+    margin: 0 0 0 2vw;
+    display: inline;
+    float: left;
+    top: 40vmin;
+    font-size: 3vmin;
+  }
 }
 </style>

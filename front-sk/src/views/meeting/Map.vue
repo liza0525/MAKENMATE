@@ -7,6 +7,28 @@
       style="margin-top:4rem"
     >
       <div slot-scope="{ google, map }">
+        <v-btn
+          icon
+          v-show="!isClickSearch"
+          @click="isClickSearch = !isClickSearch"
+          class="btn"
+          style="width:40px; height:40px"
+        >
+          <v-icon @click="isClickSearch = !isClickSearch">mdi-magnify</v-icon>
+        </v-btn>
+        <input
+          v-model="searchData"
+          type="text"
+          id="search-bar"
+          class="search"
+          v-show="isClickSearch"
+          style="background-color: rgba(245, 245, 245, 0.5);color: black;"
+          @keypress.enter="getSearchData(searchData)"
+          placeholder="Search"
+        />
+        <v-btn icon v-show="isClickSearch" class="btn" style="width:40px; height:40px">
+          <v-icon @click="getSearchData(searchData)">mdi-magnify</v-icon>
+        </v-btn>
         <google-map-marker
           v-for="(marker, index) in markers"
           :google="google"
@@ -154,6 +176,7 @@ import http from "../../http-common";
 import axios from "axios";
 import config from "../../../config";
 import datetime from "vuejs-datetimepicker";
+
 export default {
   components: {
     Drawer,
@@ -166,8 +189,10 @@ export default {
         lat: 37.5,
         lng: 127
       },
+      isClickSearch: false,
       username: "",
       meetings: [],
+      searchData: "",
       meeting: {
         mid: 0,
         title: "",
@@ -355,6 +380,7 @@ export default {
     },
     getSearchData(inputValue) {
       console.log(inputValue);
+      this.isClickSearch = !this.isClickSearch;
     },
     check(meeting) {
       let error = true;
@@ -378,9 +404,31 @@ export default {
 
 <style lang="scss" scoped>
 @import "~vue-simple-drawer/src/index";
+
+.btn {
+  top: 150px;
+  right: 10px;
+  background-color: #fff;
+  width: 40px !important;
+  height: 40px !important;
+  position: fixed;
+}
 .googleMap {
   height: 41rem;
   position: relative;
+}
+.search {
+  position: fixed;
+  border-bottom: 2px solid black;
+  width: 230px;
+  right: 50px;
+  top: 150px;
+  color: black;
+  font-weight: 700;
+}
+.search::placeholder {
+  color: #252424;
+  font-weight: 700;
 }
 .modal {
   display: none;
@@ -413,8 +461,5 @@ export default {
 }
 input {
   width: 90%;
-}
-.search {
-  z-index: 2;
 }
 </style>

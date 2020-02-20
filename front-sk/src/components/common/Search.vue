@@ -7,7 +7,7 @@
       @keypress.enter="onInput()"
       placeholder="Search"
     />
-    <v-btn icon style="color:black;">
+    <v-btn icon class="v-btn" style="color:black;">
       <v-icon @click="onInput()">mdi-magnify</v-icon>
     </v-btn>
   </div>
@@ -33,6 +33,5 @@ export default {
 <style>
 #search-bar {
   color: black;
-  z-index: 50;
 }
 </style>
