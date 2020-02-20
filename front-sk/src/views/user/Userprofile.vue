@@ -154,13 +154,36 @@
       <div v-show="boardArray.length > 0">
         <div
           class="sansfont"
-          style="font-size:200%; text-align:center; font-weight:bolder;"
+          style="font-size:200%; text-align:center; font-weight:bolder; margin-bottom: 15px;"
         >
           {{ user.nickname }}님이 쓴 글
         </div>
-        <div v-for="(board, i) in boardArray" :key="i">
-          {{ board.title }}
+        <div class="table-font" style="font-size: 15px; margin-left: 10px; margin-bottom: 10px;">
+          <span @click="selectTable=boardArray" style="cursor: pointer;">자유 게시판</span> | 
+          <span @click="selectTable=boardRecipeArray" style="cursor: pointer;">레시피 공유</span>
         </div>
+        <!-- toggling table -->
+        <v-simple-table>
+        <template>
+          <thead>
+            <tr id="table-header">
+              <th id="table-header-title">제목</th>
+              <th id="table-header-writer">글쓴이</th>
+              <th id="table-header-date">날짜</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="(board, i) in selectTable" :key="i">
+              <td v-if="selectTable === boardArray" class="table-content-title" v-html="board.title" @click="detail_bid(board.bid)" style="cursor: pointer;"></td>
+              <td v-if="selectTable === boardRecipeArray" class="table-content-title" v-html="board.title" @click="detail_rid(board.rid)" style="cursor: pointer;"></td>
+              <td class="table-content-writer">
+                {{ board.user.nickname }}
+              </td>
+              <td class="table-content-date" v-html="board.regdate"></td>
+            </tr>
+          </tbody>
+        </template>
+      </v-simple-table>
       </div>
     </div>
     <div
@@ -303,13 +326,41 @@
         <div style="text-align:center" v-show="boardArray.length > 0">
           <h1
             class="sansfont"
-            style=" font-size:200%; text-align:center; font-weight:bolder;"
+            style=" font-size:200%; text-align:center; font-weight:bolder; margin-bottom: 10px;"
           >
             {{ user.nickname }}님이 쓴 글
           </h1>
-          <div v-for="(board, i) in boardArray" :key="i">
-            {{ board.title }}
-          </div>
+        <div class="table-font" style="font-size: 15px; margin-left: 10px; margin-bottom: 10px;">
+          <span @click="selectTable=boardArray" style="cursor: pointer;">자유 게시판</span> | 
+          <span @click="selectTable=boardRecipeArray" style="cursor: pointer;">레시피 공유</span>
+        </div>
+        <v-simple-table class="table-font" style="padding: 0 10px;">
+        <template>
+          <thead>
+            <tr id="table-header">
+              <th id="table-header-title">제목</th>
+              <th id="table-header-writer">글쓴이</th>
+              <th id="table-header-date">날짜</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="(board, i) in selectTable" :key="i">
+              <td v-if="selectTable === boardArray" class="table-content-title" v-html="board.title" @click="detail_bid(board.bid)" style="cursor: pointer;"></td>
+              <td v-if="selectTable === boardRecipeArray" class="table-content-title" v-html="board.title" @click="detail_rid(board.rid)" style="cursor: pointer;"></td>
+              <td class="table-content-writer">
+                <router-link
+                  :to="{
+                  name: 'UserProfile',
+                  params: { username: board.user.nickname }
+                }"
+                  style="color: black; cursor: pointer;"
+                >{{ board.user.nickname }}</router-link>
+              </td>
+              <td class="table-content-date" v-html="board.regdate"></td>
+            </tr>
+          </tbody>
+        </template>
+      </v-simple-table>
         </div>
       </div>
     </div>
@@ -340,6 +391,7 @@ export default {
       pageNm: 1,
       boardArray: [],
       boardRecipeArray: [],
+      selectTable: [],
       prevBt: "<",
       nextBt: ">",
       fistBt: "<<",
@@ -351,7 +403,7 @@ export default {
       page: {
         board: 0,
         boardrecipe: 0
-      }
+      },
     };
   },
   mounted() {
@@ -452,6 +504,27 @@ export default {
       // console.log(typeof this.window.height);
       this.window.height = this.window.height + "px";
       this.window.height = "calc(" + this.window.height + " - 4rem)";
+    },
+    detail_rid(sendrid) {
+      this.$router.push({
+        name: "BoardRecipeDetail",
+        params: {
+          rid: sendrid
+        }
+      });
+    },
+    detail_bid(sendbid) {
+      this.$router.push({
+        name: "BoardDetail",
+        params: {
+          bid: sendbid
+        }
+      });
+    },
+  },
+  watch: {
+    boardArray() {
+      this.selectTable = this.boardArray
     }
   }
 };
@@ -540,7 +613,6 @@ carousel-3d {
   font-size: 11vmin;
   font-family: "BBTreeGB";
 }
-
 .backgroundcolor {
   background-color: #ffffff;
   padding-top: 8%;
@@ -554,8 +626,8 @@ carousel-3d {
   /* font-family: "Jua", sans-serif; */
   /* font-family: "Malgun Gothic"; */
 }
-.cocktailfont {
-  font-family: "국립박물관문화재단클래식B";
+td, tr, th, span {
+  font-family: "GyeonggiBatang";
 }
 .carousel-3d-slider {
   height: 600px !important;
@@ -570,6 +642,43 @@ carousel-3d {
   #user-scrap-title {
     margin-top: 4vmin;
     font-size: 8vmin;
+  }
+}
+tr {
+  text-align: center;
+}
+td {
+  padding: 20px !important;
+}
+th {
+  font-size: 15px !important;
+  color: white !important;
+}
+#table-header {
+  background-color: #000;
+}
+#table-header-no, .table-content-no {
+  width: 10%;
+}
+#table-header-title, .table-content-title {
+  width: 50%;
+}
+#table-header-writer, .table-content-writer {
+  width: 20%;
+}
+#table-header-date, .table-content-date {
+  width: 20%;
+}
+@media (max-width: 960px) {
+  #table-header-no,
+  #table-header-date,
+  .table-content-no,
+  .table-content-date {
+    display: none;
+  }
+  #table-header-writer,
+  .table-content-writer {
+    width: 30%;
   }
 }
 </style>

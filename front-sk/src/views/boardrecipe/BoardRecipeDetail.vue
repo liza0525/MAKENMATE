@@ -70,7 +70,7 @@
         class="boardrecipe-button"
         v-if="this.$store.state.username === boardRecipe.user_name"
         @click="update_board(boardRecipe.rid)"
-      >mdi-pencil</v-icon>
+      >mdi-pencil-plus</v-icon>
       <v-icon
         class="boardrecipe-button"
         v-if="this.$store.state.username === boardRecipe.user_name"
@@ -469,7 +469,7 @@ export default {
   margin: 0 5px;
 }
 #boardrecipe-comment-set {
-  margin: 0vmax 10vmax;
+  margin: 0vmax 15vmax;
   padding: 2rem 1rem;
   font-family: "BBTreeGL";
 }
