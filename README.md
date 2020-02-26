@@ -109,7 +109,7 @@ npm install
 |       DB 구축        | Cocktail Detail 기능 구현 및 css | 스프링 시큐리티 & JWT 기능 구현 | 로그인 / 회원가입 계정 관련 페이지 css |
 |     동영상 편집      |   Userprofile 기능 구현 및 css   |            SSL 적용             |  자유 게시판 / 레시피 공유 게시판 css  |
 |                      |   Usermypage 기능 구현 및 css    |            서버 배포            |    유저 스크랩 backend 구현 및 css     |
-|                      |         칵테일 파티 css          |    좋아요 및 댓글 기능 구현     |                                        |
+|                      |         칵테일 파티 css          |    좋아요 및 댓글 기능 구현     |             통합 검색 css              |
 |                      |  비밀번호 변경 / 회원 탈퇴 css   |      칵테일 파티 기능 구현      |                                        |
 
 

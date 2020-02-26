@@ -6,7 +6,7 @@
     <div id="search-result-context">
       <h1 class="search-result-category">칵테일 검색 결과</h1>
       <!-- 칵테일 게시판 -->
-      <div class="array-container">
+      <div class="array-container" v-if="cocktailResult !== null">
         <div
           v-for="(cocktail, i) in cocktailResult"
           :index="i"
@@ -98,7 +98,7 @@ import Constant from "../Constant";
 export default {
   data() {
     return {
-      q: "",
+      // q: "",
       cocktailResult: [],
       boardResult: [],
       boardRecipeResult: [],
@@ -186,12 +186,29 @@ export default {
     },
   },
   created() {
-    this.$store.state.totalSearchKeyword = this.$route.params.q,
-    this.q = this.$store.state.totalSearchKeyword,
+    this.q = this.$store.state.totalSearchKeyword;
     this.getCocktailRes(1);
     this.getBoardRes(1);
     this.getBoardRecipeRes(1);
   },
+  computed: {
+    q: {
+      get() {
+        return this.$store.state.totalSearchKeyword;
+      },
+      set(val){
+        this.$store.state.totalSearchKeyword = val;
+        this.getCocktailRes(1);
+        this.getBoardRes(1);
+        this.getBoardRecipeRes(1);
+      }
+    }
+  },
+  watch: {
+    q(val){
+      this.q = val
+    }
+  }
 };
 </script>
 

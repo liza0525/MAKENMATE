@@ -252,13 +252,17 @@ export default {
   },
   methods: {
     goToTotalSearch(InputValue) {
+      this.$store.state.totalSearchKeyword = InputValue
       console.log(InputValue)
       this.$router.push({
         name: "SearchResult",
         params: {
           q: InputValue
         }
-      })
+      }).catch(err => this.callbackFunc(InputValue))
+    },
+    callbackFunc(InputValue){
+      this.$store.state.totalSearchKeyword = InputValue
     }
   },
 };
