@@ -31,7 +31,8 @@ const state = {
   filedelete: 0,
   totalPages: 0,
   likebyboardrecipe: 0,
-  likebyboard: 0
+  likebyboard: 0,
+  totalSearchKeyword:""
 };
 
 export default new Vuex.Store({

@@ -151,7 +151,6 @@ export default {
     return {
       rid: 0,
       boardRecipe: {},
-      userIdScrappingList: [],
       isScrapped: false,
       username: "",
       comment: "",

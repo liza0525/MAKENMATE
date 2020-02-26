@@ -43,7 +43,7 @@
     "vuejs-datetimepicker": "^1.1.13",
     "vuetify": "^2.2.5",
     "vuex": "^3.1.2",
-    "yarn": "^1.21.1"
+    "yarn": "^1.22.0"
   },
   "devDependencies": {
     "@babel/preset-env": "^7.7.6",
