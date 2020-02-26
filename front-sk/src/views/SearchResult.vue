@@ -5,27 +5,89 @@
     </div>
     <div id="search-result-context">
       <h1 class="search-result-category">칵테일 검색 결과</h1>
-      <div v-for="(cocktail, i) in cocktailResult" :key=i>
-        {{ cocktail.cname }}
-      </div>
-      <h1 class="search-result-category">자유 게시판 검색 결과</h1>
-      <div v-for="(board, j) in boardResult.content" :key=j>
-        {{ board.title }}
-      </div>
-        <div id="pagination">
-          <button v-for="pageNm in pageNmsB" :key="pageNm" @click="getBoardRes(pageNm)">
-            <span style="margin-right:10px;">{{ pageNm }}</span>
-          </button>
+      <!-- 칵테일 게시판 -->
+      <div class="array-container">
+        <div
+          v-for="(cocktail, i) in cocktailResult"
+          :index="i"
+          :key="i"
+          style="display: inline-block; margin: 0 0.5rem; width: 200px !important; height:350px !important; background-color:#ffffff;"
+        >
+          <v-card style="height:300px">
+            <v-img :src="cocktail.image" 
+            alt="cocktail.cname" 
+            style="width: 100%; height:100%; cursor:pointer" 
+            @click="goToCocktailDetail(cocktail.cid)"></v-img>
+            <h1
+              class="sansfont"
+              style="margin-left:30px; margin-top:10px;font-weight:bolder; cursor: pointer"
+              @click="goToCocktailDetail(cocktail.cid)"
+            >{{ cocktail.cname }}</h1>
+          </v-card>
         </div>
+      </div>
+      <!-- 공유 게시판 -->
       <h1 class="search-result-category">레시피 공유 검색 결과</h1>
-      <div v-for="(boardrecipe, k) in boardRecipeResult.content" :key=k>
-        {{ boardrecipe.title }}
+      <div class="array-container">
+        <v-card
+          v-for="(boardrecipe, j) in boardRecipeResult.content"
+          :key="j"
+          style="display: inline-block; width: 250px; margin: 0 0.5rem;"
+        >
+          <v-card-text>
+            <v-list-item-avatar size="20" style="display: inline; cursor: pointer"
+            @click="goToUserDetail(boardrecipe.user.nickname)">
+              <v-img class="elevation-3" :src="boardrecipe.user.image"></v-img>
+            </v-list-item-avatar>
+            <div style="display: inline; margin-left: 5px; cursor: pointer"
+            @click="goToUserDetail(boardrecipe.user.nickname)">{{ boardrecipe.user.nickname }}</div>
+            <div @click="goToBRecipeDetail(boardrecipe.rid)" style="cursor: pointer">
+            <h2>{{ boardrecipe.title }}</h2>
+            <div class="card-contents">{{ boardrecipe.contents }}</div>
+            </div>
+            <div style="border-top: 0.5px solid #ccc; padding-top: 1rem; text-align: right;">
+              <i class="fas fa-lg fa-heart" style="margin-left: 1rem"></i>
+              <i class="fas fa-lg fa-bookmark" style="margin-left: 1rem"></i>
+            </div>
+          </v-card-text>
+        </v-card>
       </div>
-        <div id="pagination">
-          <button v-for="pageNm in pageNmsBR" :key="pageNm" @click="getBoardRecipeRes(pageNm)">
-            <span style="margin-right:10px;">{{ pageNm }}</span>
-          </button>
-        </div>
+      <!-- <div id="pagination">
+        <button v-for="pageNm in pageNmsBR" :key="pageNm" @click="getBoardRecipeRes(pageNm)">
+          <span style="margin-right:10px;">{{ pageNm }}</span>
+        </button>
+      </div>-->
+      <!-- 자유 게시판 -->
+      <h1 class="search-result-category">자유 게시판 검색 결과</h1>
+      <div class="array-container">
+        <v-card
+          v-for="(board, j) in boardResult.content"
+          :key="j"
+          style="display: inline-block; width: 250px; margin: 0 0.5rem;"
+        >
+          <v-card-text>
+            <v-list-item-avatar size="20" style="display: inline; cursor: pointer">
+              <v-img class="elevation-3" :src="board.user.image" @click="goToUserDetail(board.user.nickname)"></v-img>
+            </v-list-item-avatar>
+            <div style="display: inline; margin-left: 5px; cursor: pointer;" 
+            @click="goToUserDetail(board.user.nickname)">{{ board.user.nickname }}</div>
+            <div @click="goToBoardDetail(board.bid)" style="cursor: pointer">
+            <h2>{{ board.title }}</h2>
+            <div class="card-contents">{{ board.contents }}</div>
+            </div>
+            <div style="border-top: 0.5px solid #ccc; padding-top: 1rem; text-align: right;">
+              <i class="fas fa-lg fa-heart"></i>
+            </div>
+          </v-card-text>
+        </v-card>
+      </div>
+
+      <!---->
+      <!-- <div id="pagination">
+        <button v-for="pageNm in pageNmsB" :key="pageNm" @click="getBoardRes(pageNm)">
+          <span style="margin-right:10px;">{{ pageNm }}</span>
+        </button>
+      </div>-->
     </div>
   </div>
 </template>
@@ -45,7 +107,7 @@ export default {
       totalPagesBR: 0,
       filtered: "",
       pageNmsB: [],
-      pageNmsBR: [],
+      pageNmsBR: []
     };
   },
   methods: {
@@ -54,7 +116,7 @@ export default {
         .dispatch(Constant.GET_COCKTAILLIST, {
           pageNm: pageNm,
           filtered: this.filtered,
-          searchedFiltered: this.q
+          searchedFiltered: this.$store.state.totalSearchKeyword
         })
         .then(() => {
           this.cocktailResult = { ...this.$store.state.cocktailList };
@@ -64,7 +126,7 @@ export default {
       http
         .get("/board/search", {
           params: {
-            searchData: this.q
+            searchData: this.$store.state.totalSearchKeyword
           }
         })
         .then(response => {
@@ -89,7 +151,7 @@ export default {
       http
         .get("/boardrecipe/search", {
           params: {
-            searchData: this.q
+            searchData: this.$store.state.totalSearchKeyword
           }
         })
         .then(response => {
@@ -109,22 +171,27 @@ export default {
           this.errored = true;
         })
         .finally(() => (this.loading = false));
-    
+    },
+    goToCocktailDetail(cid) {
+      this.$router.push("/cocktail/detail/" + cid);
+    },
+    goToUserDetail(username) {
+      this.$router.push("/user/userprofile/" + username);
+    },
+    goToBoardDetail(bid) {
+      this.$router.push("/board/detail/" + bid);
+    },
+    goToBRecipeDetail(rid) {
+      this.$router.push("/boardrecipe/detail/" + rid);
     },
   },
   created() {
-    this.q = this.$route.params.q
-    this.getCocktailRes(1)
-    this.getBoardRes(1)
-    this.getBoardRecipeRes(1)
+    this.$store.state.totalSearchKeyword = this.$route.params.q,
+    this.q = this.$store.state.totalSearchKeyword,
+    this.getCocktailRes(1);
+    this.getBoardRes(1);
+    this.getBoardRecipeRes(1);
   },
-  mounted() {
-  },
-  watch: {
-    q(){
-      this.q = this.$route.params.q
-    }
-  }
 };
 </script>
 
@@ -153,9 +220,43 @@ export default {
 .search-result-category {
   font-family: "BBTreeGB";
   border-bottom: 1px solid #ccc;
+  margin-top: 3rem;
+  margin-bottom: 1.5rem;
+}
+.card-contents {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  margin: 0.5rem 0;
+
+  white-space: normal;
+  line-height: 1.2rem;
+  height: 3.6rem;
+  text-align: left;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+}
+.array-container {
+  padding: 1rem 0;
+  overflow-x: scroll;
+  white-space: nowrap;
+}
+.array-container::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+.array-container ::-webkit-scrollbar-track {
+  border-radius: 1px;
+}
+
+.array-container::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background-color: #bfbfbf;
 }
 @media (max-width: 960px) {
-  #board-context {
+  #search-result-context {
     margin: 2vmax 3vmax;
   }
   #search-result-header {
@@ -166,6 +267,13 @@ export default {
   #search-result-title {
     margin-top: 3vmin;
     font-size: 7vmin;
+  }
+  .array-container {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+  }
+  .array-container::-webkit-scrollbar {
+      display: none; /* Chrome, Safari, Opera*/
   }
 }
 </style>
