@@ -4,9 +4,9 @@
       <h1 id="search-result-title">"{{ q }}" 통합 검색 결과</h1>
     </div>
     <div id="search-result-context">
-      <h1 class="search-result-category">칵테일 검색 결과</h1>
+      <h1 v-if="cocktailResult.content !== null" class="search-result-category">칵테일 검색 결과</h1>
       <!-- 칵테일 게시판 -->
-      <div class="array-container" v-if="cocktailResult !== null">
+      <div class="array-container">
         <div
           v-for="(cocktail, i) in cocktailResult"
           :index="i"
@@ -27,7 +27,7 @@
         </div>
       </div>
       <!-- 공유 게시판 -->
-      <h1 class="search-result-category">레시피 공유 검색 결과</h1>
+      <h1 v-if="boardRecipeResult.content != null" class="search-result-category">레시피 공유 검색 결과</h1>
       <div class="array-container">
         <v-card
           v-for="(boardrecipe, j) in boardRecipeResult.content"
@@ -46,8 +46,7 @@
             <div class="card-contents">{{ boardrecipe.contents }}</div>
             </div>
             <div style="border-top: 0.5px solid #ccc; padding-top: 1rem; text-align: right;">
-              <i class="fas fa-lg fa-heart" style="margin-left: 1rem"></i>
-              <i class="fas fa-lg fa-bookmark" style="margin-left: 1rem"></i>
+              {{ boardrecipe.regdate }}
             </div>
           </v-card-text>
         </v-card>
@@ -76,7 +75,7 @@
             <div class="card-contents">{{ board.contents }}</div>
             </div>
             <div style="border-top: 0.5px solid #ccc; padding-top: 1rem; text-align: right;">
-              <i class="fas fa-lg fa-heart"></i>
+              {{ board.regdate }}
             </div>
           </v-card-text>
         </v-card>
@@ -87,7 +86,7 @@
         <button v-for="pageNm in pageNmsB" :key="pageNm" @click="getBoardRes(pageNm)">
           <span style="margin-right:10px;">{{ pageNm }}</span>
         </button>
-      </div>-->
+      </div> -->
     </div>
   </div>
 </template>
