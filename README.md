@@ -98,6 +98,14 @@ npm install
 
 
 
+### 통합 검색 페이지
+
+- 통합검색을 통해칵테일 / 레시피 공유 / 자유 게시판의 글을검색할 수 있습니다.
+
+![totalsearch.png](./README_IMG/totalsearch.png)
+
+
+
 ## Member
 
 ### 업무 분담 내역
